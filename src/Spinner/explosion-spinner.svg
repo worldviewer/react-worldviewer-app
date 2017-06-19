@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+	 width="400px" height="400px" viewBox="-200 -200 400 400" xml:space="preserve">
+
+	<g transform="translate(-100,-100)">
+		<g>
+			<path fill="#EF4E16" d="M119.844,105.312L150,88.594l-33.907,1.562l10.156-20.781l-18.437,12.969l2.344-28.594L96.875,77.344 L76.719,50l8.594,34.062l-30-10l23.906,21.875L50,101.719l28.125,6.407l-15.781,27.968l25.781-15.468L89.062,150l10.625-26.875 l14.218,21.25l-0.781-25.469l24.376,9.219L119.844,105.312z">
+
+				<animateTransform
+					attributeType="XML"
+					type="rotate"
+					fill="remove"
+					attributeName="transform"
+					restart="always"
+					accumulate="none"
+					from="0 100 100"
+					additive="replace"
+					calcMode="linear"
+					to="360 100 100"
+					repeatCount="indefinite"
+					dur="2s" />
+
+				<animateTransform
+					attributeType="XML"
+					type="scale"
+					fill="remove"
+					attributeName="transform"
+					restart="always"
+					accumulate="none"
+					additive="sum"
+					calcMode="linear"
+					values="1;1.5;1;1.5;1;1.5;1"
+					repeatCount="indefinite"
+					dur="2s" />
+
+				<animateTransform
+					attributeType="XML"
+					type="translate"
+					fill="remove"
+					attributeName="transform"
+					restart="always"
+					accumulate="none"
+					additive="sum"
+					calcMode="linear"
+					values="0,0;-32,-32;0,0;-32,-32;0,0;-32,-32;0,0"
+					repeatCount="indefinite"
+					dur="2s" />
+
+			</path>
+		</g>
+
+		<path fill="#FFCE31" d="M111.093,102.812l17.656-8.281l-19.531-0.469l5.158-11.719l-10.313,5.938l0.312-15.781L97.5,85.625 L87.031,72.188l4.531,17.031l-17.5-4.375l14.219,12.188l-17.656,4.218L86.875,105l-11.406,17.5l17.5-11.875l0.469,15.47 l6.25-14.062l7.187,10.468l-0.156-12.657l12.813,5.625L111.093,102.812z">
+
+			<animateTransform
+				attributeType="XML"
+				type="rotate"
+				fill="remove"
+				attributeName="transform"
+				restart="always"
+				accumulate="none"
+				from="0 100 100"
+				additive="replace"
+				calcMode="linear"
+				to="360 100 100"
+				repeatCount="indefinite"
+				dur="2s" />
+
+		</path>
+
+		<path fill="#FFFFFF" d="M104.53,100.625l7.501-3.438l-8.283-0.156l2.188-5l-4.375,2.5l0.156-6.719l-2.968,5.625l-4.375-5.625 L96.25,95l-7.344-1.875l5.938,5.156l-7.5,1.719l6.875,1.562l-4.844,7.5l7.5-5l0.156,6.562l2.656-6.093l2.969,4.531v-5.469 l5.469,2.5L104.53,100.625z">
+
+			<animateTransform
+				attributeType="XML"
+				type="rotate"
+				fill="remove"
+				attributeName="transform"
+				restart="always"
+				accumulate="none"
+				from="0 100 100"
+				additive="replace"
+				calcMode="linear"
+				to="360 100 100"
+				repeatCount="indefinite"
+				dur="2s" />
+
+		</path>
+	</g>
+
+</svg>
