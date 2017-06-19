@@ -44,6 +44,8 @@ A far more detailed explanation of the problem this project is solving is explai
 
 ## The State of the Prototype
 
+(I am currently upgrading the dependencies and adding in authentication and authorization; until that is complete, the functionality will be impacted; accordingly, there is no GitHub Pages deployment at the moment.)
+
 To experience the discourse layers, swipe vertically.
 
 Since one of the primary objectives of the app is to teach the epistemological structure of science (and especially what a worldview is), I am now briefly showing a diagram of the users' current layer of discourse when they swipe vertically between them.
