@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TransitionGroup from 'react-addons-transition-group';
-import Bounce from './bounce.min.js';
+import Bounce from 'bounce.js';
 import './SwipeOverlay.scss';
 
 import worldviews from './science-structure-worldviews.svg';

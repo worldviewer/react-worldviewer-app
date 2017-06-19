@@ -118,7 +118,7 @@ class AppComponent extends Component {
 
 					<Navbar.Header>
 						<Navbar.Brand>
-							<Link to="/">Auctions</Link>
+							<Link to="/">Controversies</Link>
 						</Navbar.Brand>
 						<Navbar.Toggle />
 					</Navbar.Header>

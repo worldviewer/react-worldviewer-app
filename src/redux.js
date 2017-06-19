@@ -6,6 +6,10 @@ if (!Object.values) {
 }
 
 const types = {
+	SET_USER_TOKEN: 'SET_USER_TOKEN',
+	SET_USER_TOKEN_LOADING: 'SET_USER_TOKEN_LOADING',
+	UNSET_USER_TOKEN_LOADING: 'UNSET_USER_TOKEN_LOADING',
+
 	SHOW_BUBBLE: 'SHOW_BUBBLE',
 	SPIN_BUBBLE_NUMBER: 'SPIN_BUBBLE_NUMBER',
 	DISABLE_SPIN_BUBBLE_NUMBERS: 'DISABLE_SPIN_BUBBLE_NUMBERS',
@@ -45,6 +49,11 @@ const types = {
 };
 
 const initialState = {
+	user: {
+		token: null,
+		tokenLoading: true
+	},
+
 	base: {
 		api: 'https://czlxg9sj34.execute-api.us-east-1.amazonaws.com/dev/cards/',
 		background: 'https://controversy-cards-assets.s3.amazonaws.com/',
@@ -156,6 +165,25 @@ const initialState = {
 		isFullScreen: false,
 		timeoutId: null
 	}
+};
+
+export const setUserToken = (token) => {
+	return {
+		type: types.SET_USER_TOKEN,
+		token
+	};
+};
+
+export const setUserTokenLoading = () => {
+	return {
+		type: types.SET_USER_TOKEN_LOADING
+	};
+};
+
+export const unsetUserTokenLoading = () => {
+	return {
+		type: types.UNSET_USER_TOKEN_LOADING
+	};
 };
 
 export const showBubble = (num) => {
@@ -386,6 +414,33 @@ export default (state = initialState, action) => {
 		zindexes;
 
 	switch(action.type) {
+		case types.SET_USER_TOKEN:
+			return {
+				...state,
+				user: {
+					...state.user,
+					token: action.token
+				}
+			};
+
+		case types.SET_USER_TOKEN_LOADING:
+			return {
+				...state,
+				user: {
+					...state.user,
+					tokenLoading: true
+				}
+			};
+
+		case types.UNSET_USER_TOKEN_LOADING:
+			return {
+				...state,
+				user: {
+					...state.user,
+					tokenLoading: false
+				}
+			};
+			
 		case types.SHOW_BUBBLE:
 			let newDisplayState = state.bubbles.display.slice();
 			newDisplayState[action.num] = true;
