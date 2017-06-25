@@ -237,11 +237,6 @@ export const setSwipeOverlaySize = (isFullScreen) => {
 };
 
 export default (state = initialState, action) => {
-	let controls,
-		isEnd,
-		isBeginning,
-		zindexes;
-
 	switch(action.type) {
 		case types.SET_USER_TOKEN:
 			return {
