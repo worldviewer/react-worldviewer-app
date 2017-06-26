@@ -1,3 +1,4 @@
+// React Dependencies
 import React, { Component } from 'react';
 
 // React-Bootstrap Dependencies
@@ -46,7 +47,6 @@ class AppComponent extends Component {
 
 	handleNavLink = (event) => {
 		event.preventDefault();
-		console.dir('this.props.history: ' + this.props.history);
 		this.props.history.push(event.currentTarget.getAttribute('href'));
 	}
 
