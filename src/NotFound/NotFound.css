@@ -1,6 +1,7 @@
 .NotFoundPage {
-	background: url(page-not-found.png) no-repeat center center fixed;
-	background-size: cover;
+	background: url(controversy-not-found.png) no-repeat center center fixed;
+	background-color: black;
+	background-size: contain;
 	height: 100%;
 	position: fixed;
 	width: 100%;
