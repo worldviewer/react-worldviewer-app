@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Home.scss';
+import './Home.css';
 import { withRouter } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-bootstrap';
 
@@ -23,7 +23,10 @@ class HomeComponent extends Component {
 				<Grid>
 					<Row>
 						<Col>
-							<h3><code>Home</code></h3>
+							<img
+								alt="blind men and the elephant logo"
+								src="./elephant.png"
+								className="Logo" />
 						</Col>
 					</Row>
 				</Grid>
