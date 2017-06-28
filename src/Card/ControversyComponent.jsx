@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import './Controversy.scss';
 
-import Spinner from '../Spinner/Spinner.jsx';
-import Preload from '../Preload/Preload.jsx';
+// import Spinner from '../Spinner/Spinner.jsx';
+// import Preload from '../Preload/Preload.jsx';
 import SwipeableViews from 'react-swipeable-views';
 import FeedCard from '../FeedCard/FeedCard.jsx';
 import SwipeOverlay from '../SwipeOverlay/SwipeOverlay.jsx';
@@ -14,7 +14,7 @@ import debounce from 'debounce';
 import { withRouter } from 'react-router-dom';
 
 // Permits HTML markup encoding in controversy card text
-import { Parser as HtmlToReactParser } from 'html-to-react';
+// import { Parser as HtmlToReactParser } from 'html-to-react';
 
 class ControversyComponent extends Component {
 	constructor(props) {
@@ -71,7 +71,7 @@ class ControversyComponent extends Component {
 
 	render() {
 		const
-			h = new HtmlToReactParser(),
+			// h = new HtmlToReactParser(),
 
 			containerStyles = {
 				height: '100vh'

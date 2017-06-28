@@ -22,10 +22,7 @@ import FeedCardList from './FeedCardList/FeedCardList.jsx';
 import FeedCard from './FeedCard/FeedCard.jsx';
 
 // Amazon Cognito Dependencies
-import AWS from 'aws-sdk';
-import { CognitoUserPool } from 'amazon-cognito-identity-js';
-import { invokeApig, getUserToken, getCurrentUser } from './libs/awsLib';
-import config from './config.js';
+import { getUserToken, getCurrentUser } from './libs/awsLib';
 
 // React Router Dependencies
 import { Route, Switch } from 'react-router';
@@ -96,7 +93,7 @@ class AppComponent extends Component {
 
 					<Navbar.Header>
 						<Navbar.Brand>
-							<Link to="/">Controversies</Link>
+							<Link to="/">Controversies of Science</Link>
 						</Navbar.Brand>
 						<Navbar.Toggle />
 					</Navbar.Header>
