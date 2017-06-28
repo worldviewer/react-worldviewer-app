@@ -1,7 +1,14 @@
+// React Dependencies
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import { CognitoUserPool, AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
-import config from '../config.js';
+
+// React Bootstrap Dependencies
+import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import LoaderButton from '../LoaderButton/LoaderButton.js';
+
+// AWS Dependencies
+import { login } from '../libs/awsLib';
+
+// React Router Dependencies
 import { withRouter } from 'react-router-dom';
 
 import './Login.css';
@@ -11,11 +18,6 @@ class LoginComponent extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			username: '',
-			password: ''
-		};
-
 		this.props = props;
 	}
 
@@ -24,55 +26,34 @@ class LoginComponent extends Component {
 	// uppercase letters, lowercase letters, special characters, numbers,
 	// min length 8 characters
 	validateForm() {
-		return this.state.username.length > 0
-			&& this.state.password.length > 0;
+		return this.props.user.username.length > 0
+			&& this.props.user.password.length > 0;
 	}
 
-	handleChange = (event) => {
-		this.setState({
-			[event.target.id]: event.target.value
-		});
+	handlePasswordChange = (event) => {
+		this.props.setPassword(event.target.value);
+	}
+
+	handleUsernameChange = (event) => {
+		this.props.setUsername(event.target.value);
 	}
 
 	handleSubmit = async (event) => {
 		event.preventDefault();
 
+		this.props.setUserTokenLoading();
+
 		// TODO: Switch alert on error to flash messaging
 		try {
-			const token = await this.login(this.state.username, this.state.password);
+			const token = await login(this.props.user.username, this.props.user.password);
 			this.props.setUserToken(token);
+			this.props.unsetUserTokenLoading();
 			this.props.history.push('/');
 		}
 		catch(e) {
 			alert(e);
+			this.props.unsetUserTokenLoading();
 		}
-	}
-
-	// From http://serverless-stack.com/chapters/login-with-aws-cognito.html
-	login = (username, password) => {
-		const userPool = new CognitoUserPool({
-			UserPoolId: config.cognito.USER_POOL_ID,
-			ClientId: config.cognito.APP_CLIENT_ID
-		});
-
-		const authenticationData = {
-			Username: username,
-			Password: password
-		};
-
-		const user = new CognitoUser({
-			Username: username,
-			Pool: userPool
-		});
-
-		const authenticationDetails = new AuthenticationDetails(authenticationData);
-
-		return new Promise((resolve, reject) => (
-			user.authenticateUser(authenticationDetails, {
-				onSuccess: (result) => resolve(result.getIdToken().getJwtToken()),
-				onFailure: (err) => reject(err)
-			})
-		));
 	}
 
 	render() {
@@ -85,25 +66,26 @@ class LoginComponent extends Component {
 						<FormControl
 							autoFocus
 							type="email"
-							value={this.state.username}
-							onChange={this.handleChange} />
+							value={this.props.user.username}
+							onChange={this.handleUsernameChange} />
 					</FormGroup>
 
 					<FormGroup controlId="password" bsSize="small">
 						<ControlLabel>Password</ControlLabel>
 						<FormControl
-							value={this.state.password}
-							onChange={this.handleChange}
+							value={this.props.user.password}
+							onChange={this.handlePasswordChange}
 							type="password" />
 					</FormGroup>
 
-					<Button
+					<LoaderButton
 						block
 						bsSize="small"
 						disabled={ !this.validateForm() }
-						type="submit">
-						Login
-					</Button>
+						type="submit"
+						isLoading={this.props.user.tokenLoading}
+						text="Login"
+						loadingText="Logging in…" />
 
 				</form>
 			</div>

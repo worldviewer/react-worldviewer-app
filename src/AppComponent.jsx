@@ -7,6 +7,7 @@ import { Nav, NavItem, Navbar } from 'react-bootstrap';
 // Components
 import Home from './Home/Home.jsx';
 import Login from './Login/Login.jsx';
+import Signup from './Signup/Signup.jsx';
 import NotFound from './NotFound/NotFound.jsx';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
 
@@ -154,6 +155,7 @@ class AppComponent extends Component {
 				<Switch>
 					<Route exact path="/" component={Home} />
 					<Route exact path="/login" component={Login} />
+					<Route exact path="/signup" component={Signup} />
 					<Route path="/news" component={News} />
 					<Route path="/search" component={Search} />
 

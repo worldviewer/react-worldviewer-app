@@ -9,6 +9,15 @@ const types = {
 	SET_USER_TOKEN: 'SET_USER_TOKEN',
 	SET_USER_TOKEN_LOADING: 'SET_USER_TOKEN_LOADING',
 	UNSET_USER_TOKEN_LOADING: 'UNSET_USER_TOKEN_LOADING',
+	SET_TOKEN_FETCH_COMPLETE: 'SET_TOKEN_FETCH_COMPLETE',
+
+	SET_USERNAME: 'SET_USERNAME',
+	SET_PASSWORD: 'SET_PASSWORD',
+	SET_PASSWORD_CONFIRMATION: 'SET_PASSWORD_CONFIRMATION',
+	SET_CONFIRMATION_CODE: 'SET_CONFIRMATION_CODE',
+
+	CLEAR_USER: 'CLEAR_USER',
+	SET_NEW_USER: 'SET_NEW_USER',
 
 	CLICK_ICON: 'CLICK_ICON',
 	OPEN_MENU: 'OPEN_MENU',
@@ -30,7 +39,13 @@ const types = {
 const initialState = {
 	user: {
 		token: null,
-		tokenLoading: true
+		tokenLoading: true,
+		tokenFetchComplete: false,
+		username: '',
+		password: '',
+		confirmPassword: '',
+		confirmationCode: '',
+		newUser: null
 	},
 
 	base: {
@@ -126,6 +141,53 @@ export const setUserTokenLoading = () => {
 export const unsetUserTokenLoading = () => {
 	return {
 		type: types.UNSET_USER_TOKEN_LOADING
+	};
+};
+
+export const setTokenFetchComplete = () => {
+	return {
+		type: types.SET_TOKEN_FETCH_COMPLETE
+	};
+};
+
+export const setUsername = (username) => {
+	return {
+		type: types.SET_USERNAME,
+		username
+	};
+};
+
+export const setPassword = (password) => {
+	return {
+		type: types.SET_PASSWORD,
+		password
+	};
+};
+
+export const setPasswordConfirmation = (confirmPassword) => {
+	return {
+		type: types.SET_PASSWORD_CONFIRMATION,
+		confirmPassword
+	};
+};
+
+export const setConfirmationCode = (confirmationCode) => {
+	return {
+		type: types.SET_CONFIRMATION_CODE,
+		confirmationCode
+	};
+};
+
+export const clearUser = () => {
+	return {
+		type: types.CLEAR_USER
+	};
+};
+
+export const setNewUser = (newUser) => {
+	return {
+		type: types.SET_NEW_USER,
+		newUser
 	};
 };
 
@@ -262,6 +324,70 @@ export default (state = initialState, action) => {
 				user: {
 					...state.user,
 					tokenLoading: false
+				}
+			};
+
+		case types.SET_TOKEN_FETCH_COMPLETE:
+			return {
+				...state,
+				user: {
+					...state.user,
+					tokenFetchComplete: true
+				}
+			};
+
+		case types.SET_USERNAME:
+			return {
+				...state,
+				user: {
+					...state.user,
+					username: action.username,
+				}
+			};
+
+		case types.SET_PASSWORD:
+			return {
+				...state,
+				user: {
+					...state.user,
+					password: action.password,
+				}
+			};
+
+		case types.SET_PASSWORD_CONFIRMATION:
+			return {
+				...state,
+				user: {
+					...state.user,
+					confirmPassword: action.confirmPassword
+				}
+			};
+
+		case types.SET_CONFIRMATION_CODE:
+			return {
+				...state,
+				user: {
+					...state.user,
+					confirmationCode: action.confirmationCode
+				}
+			};
+
+		case types.CLEAR_USER:
+			return {
+				...state,
+				user: {
+					...state.user,
+					username: '',
+					password: ''
+				}
+			};
+
+		case types.SET_NEW_USER:
+			return {
+				...state,
+				user: {
+					...state.user,
+					newUser: action.newUser
 				}
 			};
 

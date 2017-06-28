@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import LoginComponent from './LoginComponent.jsx';
-import { setUserToken, setUsername, setPassword, setUserTokenLoading, unsetUserTokenLoading } from '../redux.js';
+import SignupComponent from './SignupComponent.jsx';
+import { setUserTokenLoading, unsetUserTokenLoading, setUsername, setPassword, setNewUser, setPasswordConfirmation, setConfirmationCode, setUserToken } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -25,13 +25,22 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setPassword: (password) => {
 			return dispatch(setPassword(password));
+		},
+		setNewUser: (newUser) => {
+			return dispatch(setNewUser(newUser));
+		},
+		setPasswordConfirmation: (confirmPassword) => {
+			return dispatch(setPasswordConfirmation(confirmPassword));
+		},
+		setConfirmationCode: (confirmationCode) => {
+			return dispatch(setConfirmationCode(confirmationCode));
 		}
-	};
+	}
 };
 
-const Login = connect(
+const Signup = connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(LoginComponent);
+)(SignupComponent);
 
-export default withRouter(Login);
+export default withRouter(Signup);
