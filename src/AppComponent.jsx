@@ -22,7 +22,9 @@ import FeedCardList from './FeedCardList/FeedCardList.jsx';
 import FeedCard from './FeedCard/FeedCard.jsx';
 
 // Amazon Cognito Dependencies
+import AWS from 'aws-sdk';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { invokeApig, getUserToken, getCurrentUser } from './libs/awsLib';
 import config from './config.js';
 
 // React Router Dependencies
@@ -53,39 +55,13 @@ class AppComponent extends Component {
 	}
 
 	handleLogout = (event) => {
-		const currentUser = this.getCurrentUser();
+		const currentUser = getCurrentUser();
 
 		if (currentUser !== null) {
 			currentUser.signOut();
 		}
 
 		this.props.setUserToken(null);
-	}
-
-	// getCurrentUser() and getUserToken() come from http://serverless-stack.com
-	// /chapters/load-the-state-from-the-session.html. There is similar code at
-	// http://docs.aws.amazon.com/cognito/latest/developerguide
-	// /using-amazon-cognito-user-identity-pools-javascript-examples.html.
-	getCurrentUser = () => {
-		const userPool = new CognitoUserPool({
-			UserPoolId: config.cognito.USER_POOL_ID,
-			ClientId: config.cognito.APP_CLIENT_ID
-		});
-
-		return userPool.getCurrentUser();
-	}
-
-	getUserToken = (currentUser) => {
-		return new Promise((resolve, reject) => {
-			currentUser.getSession((err, session) => {
-				if (err) {
-					reject(err);
-					return;
-				}
-
-				resolve(session.getIdToken().getJwtToken());
-			});
-		});
 	}
 
 	// http://serverless-stack.com/chapters/load-the-state-from-the-session.html
@@ -95,7 +71,7 @@ class AppComponent extends Component {
 	// we need to ensure that the rest of our app is only ready to go after
 	// this has been loaded.
 	async componentDidMount() {
-		const currentUser = this.getCurrentUser();
+		const currentUser = getCurrentUser();
 
 		if (currentUser === null) {
 			this.props.unsetUserTokenLoading();
@@ -103,7 +79,7 @@ class AppComponent extends Component {
 		}
 
 		try {
-			const userToken = await this.getUserToken(currentUser);
+			const userToken = await getUserToken(currentUser);
 			this.props.setUserToken(userToken);
 		}
 		catch(e) {
