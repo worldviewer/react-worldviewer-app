@@ -29,8 +29,9 @@ import config from './config.js';
 import { Route, Switch } from 'react-router';
 import { withRouter, Link } from 'react-router-dom';
 
-// Material Design Dependencies
+// CSS Dependencies
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import './App.css';
 
 const
 	Card = () => (
