@@ -19,6 +19,7 @@ import App from './App.jsx';
 
 // Bootstrap CSS - https://bootswatch.com/ - Solar Theme
 // changes: .navbar {border-radius: none}
+// removed media query .container widths
 import './styles/bootstrap-solar.css';
 
 // Middleware
