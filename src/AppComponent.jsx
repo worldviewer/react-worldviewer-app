@@ -33,9 +33,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './App.css';
 
 const
-	Card = () => (
+	mdControversy = () => (
 		<MuiThemeProvider>
 			<Controversy />
+		</MuiThemeProvider>
+	),
+
+	mdFeedCard = () => (
+		<MuiThemeProvider>
+			<FeedCard />
 		</MuiThemeProvider>
 	);
 
@@ -133,11 +139,11 @@ class AppComponent extends Component {
 					<Route path="/news" component={News} />
 					<Route path="/search" component={Search} />
 
-					<Route path="/:controversy/worldview/card" component={Card} />
+					<Route path="/:controversy/worldview/card" component={mdControversy} />
 					<Route path="/:controversy/worldview/text" component={CardText} />
 					<Route path="/:controversy/:worldview?/comments" component={Comments} />
 
-					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed" component={FeedCard} />
+					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed" component={mdFeedCard} />
 					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)" component={FeedCardList} />
 					
 					<Route component={NotFound} />

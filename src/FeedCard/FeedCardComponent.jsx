@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './FeedCard.scss';
+import './FeedCard.css';
 import share from './share.svg';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';

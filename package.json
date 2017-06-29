@@ -63,6 +63,8 @@
     "json-loader": "^0.5.4",
     "less": "^2.7.2",
     "node-sass": "^4.5.3",
+    "node-sass-chokidar": "0.0.3",
+    "npm-run-all": "^4.0.2",
     "object-assign": "4.1.1",
     "openseadragon": "^2.2.1",
     "postcss-flexbugs-fixes": "3.0.0",
@@ -81,9 +83,12 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm run build-css && react-scripts build",
+    "test": "node scripts/test.js --env=jsdom",
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
   },
   "jest": {
     "collectCoverageFrom": [

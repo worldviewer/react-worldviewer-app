@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './Controversy.scss';
+import './Controversy.css';
 
 // import Spinner from '../Spinner/Spinner.jsx';
 // import Preload from '../Preload/Preload.jsx';
@@ -78,7 +78,7 @@ class ControversyComponent extends Component {
 			};
 
 		return (
-			<div ref={c => this.container = c}>
+			<div ref={c => this.container = c} className="Controversy">
 				<SwipeOverlay
 					isFullScreen={this.props.discourse.isFullScreen}
 					discourseLevel={this.props.discourse.level}

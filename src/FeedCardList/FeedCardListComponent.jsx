@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './FeedCardList.scss';
+import './FeedCardList.css';
 import { withRouter } from 'react-router-dom';
 
 // Permits HTML markup encoding in feed text

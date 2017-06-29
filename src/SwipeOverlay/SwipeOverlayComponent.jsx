@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TransitionGroup from 'react-addons-transition-group';
 import Bounce from 'bounce.js';
-import './SwipeOverlay.scss';
+import './SwipeOverlay.css';
 
 import worldviews from './science-structure-worldviews.svg';
 import models from './science-structure-models.svg';

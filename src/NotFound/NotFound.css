@@ -1,12 +1,10 @@
 .NotFoundPage {
-	background: url(controversy-not-found.png) no-repeat center center fixed;
-	background-color: black;
-	background-size: contain;
-	height: 100%;
-	position: fixed;
-	width: 100%;
-}
+  background: url(controversy-not-found.png) no-repeat center center fixed;
+  background-color: black;
+  background-size: contain;
+  height: 100%;
+  position: fixed;
+  width: 100%; }
 
 .navbar {
-	margin-bottom: 0;
-}
+  margin-bottom: 0; }

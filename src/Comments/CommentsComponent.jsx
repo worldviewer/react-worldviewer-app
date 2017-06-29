@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Comments.scss';
+import './Comments.css';
 import { withRouter } from 'react-router-dom';
 
 // Permits HTML markup encoding in feed text

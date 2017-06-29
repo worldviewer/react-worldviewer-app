@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Search.scss';
+import './Search.css';
 import { withRouter } from 'react-router-dom';
 
 // Permits HTML markup encoding in feed text
@@ -18,7 +18,7 @@ class SearchComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="Search">
 				<h3><code>Search</code></h3>
 			</div>
 		);

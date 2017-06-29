@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './News.scss';
+import './News.css';
 import { withRouter } from 'react-router-dom';
 
 // Permits HTML markup encoding in feed text
@@ -18,7 +18,7 @@ class NewsComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="News">
 				<h3><code>News</code></h3>
 			</div>
 		);
