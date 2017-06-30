@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SignupComponent from './SignupComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUsername, setPassword, setNewUser, setPasswordConfirmation, setConfirmationCode, setUserToken } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUsername, setPassword, setNewUser, setPasswordConfirmation, setConfirmationCode, setUserToken } from '../../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {

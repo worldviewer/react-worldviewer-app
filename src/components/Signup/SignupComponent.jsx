@@ -9,7 +9,7 @@ import { HelpBlock, FormGroup, FormControl, ControlLabel } from 'react-bootstrap
 import LoaderButton from '../LoaderButton/LoaderButton';
 
 // AWS Dependencies
-import { signup, confirm, authenticate } from '../libs/awsLib';
+import { signup, confirm, authenticate } from '../../libs/awsLib';
 
 import './Signup.css';
 

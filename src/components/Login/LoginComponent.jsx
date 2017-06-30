@@ -6,7 +6,7 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton.js';
 
 // AWS Dependencies
-import { login } from '../libs/awsLib';
+import { login } from '../../libs/awsLib';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';

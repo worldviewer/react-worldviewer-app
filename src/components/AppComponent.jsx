@@ -6,17 +6,17 @@ import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
 
 // Code-Splitter
-import asyncComponent from './asyncComponent';
+import asyncComponent from '../asyncComponent';
 
 // Amazon Cognito Dependencies
-import { getUserToken, getCurrentUser } from './libs/awsLib';
+import { getUserToken, getCurrentUser } from '../libs/awsLib';
 
 // React Router Dependencies
 import { Route, Switch } from 'react-router';
 import { withRouter, Link } from 'react-router-dom';
 
 // CSS Dependencies
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './App.css';
 
 // Components

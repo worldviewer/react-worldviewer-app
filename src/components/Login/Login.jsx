@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import LoginComponent from './LoginComponent.jsx';
-import { setUserToken, setUsername, setPassword, setUserTokenLoading, unsetUserTokenLoading } from '../redux.js';
+import { setUserToken, setUsername, setPassword, setUserTokenLoading, unsetUserTokenLoading } from '../../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {

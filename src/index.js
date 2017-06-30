@@ -15,7 +15,7 @@ import reducer from './redux.js';
 import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 
-import App from './App.jsx';
+import App from './components/App.jsx';
 
 // Bootstrap CSS - https://bootswatch.com/ - Solar Theme
 // changes: .navbar {border-radius: none}
