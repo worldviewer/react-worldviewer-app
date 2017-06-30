@@ -36,7 +36,9 @@ import './App.css';
 // splits our app based on this. It looks at these imports and generates the
 // required parts (or chunks).
 
-const AsyncHome = asyncComponent(() => import('./Home/Home.jsx'));
+/* eslint-disable */
+
+const AsyncHome = asyncComponent(() => { import('./Home/Home.jsx') });
 const AsyncLogin = asyncComponent(() => import('./Login/Login.jsx'));
 const AsyncSignup = asyncComponent(() => import('./Signup/Signup.jsx'));
 const AsyncNotFound = asyncComponent(() => import('./NotFound/NotFound.jsx'));
@@ -47,6 +49,8 @@ const AsyncCardText = asyncComponent(() => import('./CardText/CardText.jsx'));
 const AsyncComments = asyncComponent(() => import('./Comments/Comments.jsx'));
 const AsyncFeedCardList = asyncComponent(() => import('./FeedCardList/FeedCardList.jsx'));
 const AsyncFeedCard = asyncComponent(() => import('./FeedCard/FeedCard.jsx'));
+
+/* eslint-enable */
 
 // const
 // 	mdControversy = () => (
@@ -73,7 +77,7 @@ class AppComponent extends Component {
 		this.props.history.push(event.currentTarget.getAttribute('href'));
 	}
 
-	handleLogout = (event) => {
+	handleLogout = () => {
 		const currentUser = getCurrentUser();
 
 		if (currentUser !== null) {
@@ -100,8 +104,7 @@ class AppComponent extends Component {
 		try {
 			const userToken = await getUserToken(currentUser);
 			this.props.setUserToken(userToken);
-		}
-		catch(e) {
+		} catch (e) {
 			alert(e);
 		}
 
