@@ -22,6 +22,9 @@ import App from './App.jsx';
 // removed media query .container widths
 import './styles/bootstrap-solar.css';
 
+// Fonts
+import './styles/league-gothic-font.css';
+
 // Middleware
 const middlewareStoreEnhancer = applyMiddleware(
 	thunkMiddleware.withExtraArgument({

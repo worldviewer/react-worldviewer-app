@@ -27,6 +27,7 @@ class HomeComponent extends Component {
 								alt="blind men and the elephant logo"
 								src="./elephant.png"
 								className="Logo" />
+							<p className="testing">Testing 1 2 3 ...</p>
 						</Col>
 					</Row>
 				</Grid>
