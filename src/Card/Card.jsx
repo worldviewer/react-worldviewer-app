@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { fetchCard, fetchCardRequest, fetchCardSuccess, fetchCardError,
 	setLoaded, setDiscourseLevel, activateSwipeOverlay,
 	deactivateSwipeOverlay, setSwipeOverlaySize } from '../redux';
-import ControversyComponent from './ControversyComponent.jsx';
+import CardComponent from './CardComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -45,9 +45,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	};
 };
 
-const Controversy = connect(
+const Card = connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(ControversyComponent);
+)(CardComponent);
 
-export default withRouter(Controversy);
+export default withRouter(Card);

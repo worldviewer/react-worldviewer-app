@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './Controversy.css';
+import './Card.css';
 
 // import Spinner from '../Spinner/Spinner.jsx';
 // import Preload from '../Preload/Preload.jsx';
@@ -16,7 +16,7 @@ import { withRouter } from 'react-router-dom';
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
-class ControversyComponent extends Component {
+class CardComponent extends Component {
 	constructor(props) {
 		super(props);
 
@@ -78,7 +78,7 @@ class ControversyComponent extends Component {
 			};
 
 		return (
-			<div ref={c => this.container = c} className="Controversy">
+			<div ref={c => this.container = c} className="Card">
 				<SwipeOverlay
 					isFullScreen={this.props.discourse.isFullScreen}
 					discourseLevel={this.props.discourse.level}
@@ -119,4 +119,4 @@ class ControversyComponent extends Component {
 	}
 }
 
-export default withRouter(ControversyComponent);
+export default withRouter(CardComponent);

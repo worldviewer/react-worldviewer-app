@@ -3,23 +3,10 @@ import React, { Component } from 'react';
 
 // React-Bootstrap Dependencies
 import { Nav, NavItem, Navbar } from 'react-bootstrap';
-
-// Components
-import Home from './Home/Home.jsx';
-import Login from './Login/Login.jsx';
-import Signup from './Signup/Signup.jsx';
-import NotFound from './NotFound/NotFound.jsx';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
 
-import News from './News/News.jsx';
-import Search from './Search/Search.jsx';
-
-import Controversy from './Card/Controversy.jsx';
-import CardText from './CardText/CardText.jsx';
-import Comments from './Comments/Comments.jsx';
-
-import FeedCardList from './FeedCardList/FeedCardList.jsx';
-import FeedCard from './FeedCard/FeedCard.jsx';
+// Code-Splitter
+import asyncComponent from './asyncComponent';
 
 // Amazon Cognito Dependencies
 import { getUserToken, getCurrentUser } from './libs/awsLib';
@@ -32,18 +19,47 @@ import { withRouter, Link } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import './App.css';
 
-const
-	mdControversy = () => (
-		<MuiThemeProvider>
-			<Controversy />
-		</MuiThemeProvider>
-	),
+// Components
+// http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
+// Create React App (from 1.0 onwards) allows us to dynamically import parts of
+// our app using import. While, the dynamic import() can be used for any component
+// in our React app; it works really well with React Router. Since, React Router
+// is figuring out which component to load based on the path; it would make sense
+// that we dynamically import those components only when we navigate to them.
 
-	mdFeedCard = () => (
-		<MuiThemeProvider>
-			<FeedCard />
-		</MuiThemeProvider>
-	);
+// It’s important to note that we are not doing an import here. We are only
+// passing in a function to asyncComponent that will dynamically import() when
+// the AsyncHome component is created. Also, it might seem weird that we are
+// passing a function here. Why not just pass in a string (say ./containers/Home)
+// and then do the dynamic import() inside the AsyncComponent? This is because
+// we want to explicitly state the component we are dynamically importing. Webpack
+// splits our app based on this. It looks at these imports and generates the
+// required parts (or chunks).
+
+const AsyncHome = asyncComponent(() => import('./Home/Home.jsx'));
+const AsyncLogin = asyncComponent(() => import('./Login/Login.jsx'));
+const AsyncSignup = asyncComponent(() => import('./Signup/Signup.jsx'));
+const AsyncNotFound = asyncComponent(() => import('./NotFound/NotFound.jsx'));
+const AsyncNews = asyncComponent(() => import('./News/News.jsx'));
+const AsyncSearch = asyncComponent(() => import('./Search/Search.jsx'));
+const AsyncControversy = asyncComponent(() => import('./Card/Card.jsx'));
+const AsyncCardText = asyncComponent(() => import('./CardText/CardText.jsx'));
+const AsyncComments = asyncComponent(() => import('./Comments/Comments.jsx'));
+const AsyncFeedCardList = asyncComponent(() => import('./FeedCardList/FeedCardList.jsx'));
+const AsyncFeedCard = asyncComponent(() => import('./FeedCard/FeedCard.jsx'));
+
+// const
+// 	mdControversy = () => (
+// 		<MuiThemeProvider>
+// 			<Controversy />
+// 		</MuiThemeProvider>
+// 	),
+
+// 	mdFeedCard = () => (
+// 		<MuiThemeProvider>
+// 			<FeedCard />
+// 		</MuiThemeProvider>
+// 	);
 
 class AppComponent extends Component {
 	constructor(props) {
@@ -133,20 +149,20 @@ class AppComponent extends Component {
 				</Navbar>
 
 				<Switch>
-					<Route exact path="/" component={Home} />
-					<Route exact path="/login" component={Login} />
-					<Route exact path="/signup" component={Signup} />
-					<Route path="/news" component={News} />
-					<Route path="/search" component={Search} />
+					<Route exact path="/" component={AsyncHome} />
+					<Route exact path="/login" component={AsyncLogin} />
+					<Route exact path="/signup" component={AsyncSignup} />
+					<Route path="/news" component={AsyncNews} />
+					<Route path="/search" component={AsyncSearch} />
 
-					<Route path="/:controversy/worldview/card" component={mdControversy} />
-					<Route path="/:controversy/worldview/text" component={CardText} />
-					<Route path="/:controversy/:worldview?/comments" component={Comments} />
+					<Route path="/:controversy/worldview/card" component={AsyncControversy} />
+					<Route path="/:controversy/worldview/text" component={AsyncCardText} />
+					<Route path="/:controversy/:worldview?/comments" component={AsyncComments} />
 
-					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed" component={mdFeedCard} />
-					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)" component={FeedCardList} />
+					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed" component={AsyncFeedCard} />
+					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)" component={AsyncFeedCardList} />
 					
-					<Route component={NotFound} />
+					<Route component={AsyncNotFound} />
 				</Switch>
 			</div>
 		);
