@@ -61,21 +61,30 @@ class LoginComponent extends Component {
 			<div className="Login">
 				<form onSubmit={this.handleSubmit}>
 
-					<FormGroup controlId="username" bsSize="small">
+					<FormGroup
+						controlId="username"
+						bsSize="small">
+
 						<ControlLabel>Email</ControlLabel>
 						<FormControl
 							autoFocus
+							placeholder="Login with email"
 							type="email"
 							value={this.props.user.username}
 							onChange={this.handleUsernameChange} />
+
 					</FormGroup>
 
-					<FormGroup controlId="password" bsSize="small">
+					<FormGroup
+						controlId="password"
+						bsSize="small">
+
 						<ControlLabel>Password</ControlLabel>
 						<FormControl
 							value={this.props.user.password}
 							onChange={this.handlePasswordChange}
 							type="password" />
+
 					</FormGroup>
 
 					<LoaderButton

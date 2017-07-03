@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // React Bootstrap
-import { HelpBlock, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { HelpBlock, FormGroup, FormControl, ControlLabel, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton';
 
 // AWS Dependencies
@@ -18,7 +18,18 @@ class Signup extends Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			tooltipPlacement: window.innerWidth > 713 ? "left" : "top"
+		}
+
+		window.addEventListener('resize', this.setTooltipPlacement);
+
 		this.props = props;
+		this.passwordTooltip = (
+			<Tooltip id="tooltip">
+				8 character minimum length: Use at least one uppercase, one lowercase, one special character & one number
+			</Tooltip>
+		);
 	}
 
 	// TODO: Check for NPM package that does this; either way, pull this
@@ -50,6 +61,11 @@ class Signup extends Component {
 
 	handleConfirmationCodeChange = (event) => {
 		this.props.setConfirmationCode(event.target.value);
+	}
+
+	setTooltipPlacement = () => {
+		const placement = window.innerWidth > 713 ? "left" : "top";
+		this.setState({tooltipPlacement: placement});
 	}
 
 	handleSubmit = async (event) => {
@@ -128,29 +144,45 @@ class Signup extends Component {
 		return (
 			<form onSubmit={this.handleSubmit}>
 
-				<FormGroup controlId="username" bsSize="small">
+				<FormGroup
+					controlId="username"
+					bsSize="small">
+
 					<ControlLabel>Email</ControlLabel>
 					<FormControl
+						placeholder="e.g. chris@controversiesofscience.com"
 						autoFocus
 						type="email"
 						value={this.props.user.username}
 						onChange={this.handleUsernameChange} />
+
 				</FormGroup>
 
-				<FormGroup controlId="password" bsSize="small">
-					<ControlLabel>Password</ControlLabel>
-					<FormControl
-						value={this.props.user.password}
-						onChange={this.handlePasswordChange}
-						type="password" />
-				</FormGroup>
+				<OverlayTrigger placement={this.state.tooltipPlacement} overlay={this.passwordTooltip}>
+					<FormGroup
+						controlId="password"
+						bsSize="small">
 
-				<FormGroup controlId="confirmPassword" bsSize="small">
+						<ControlLabel>Password</ControlLabel>
+						<FormControl
+							placeholder="e.g. A1%bama!"
+							value={this.props.user.password}
+							onChange={this.handlePasswordChange}
+							type="password" />
+
+					</FormGroup>
+				</OverlayTrigger>
+
+				<FormGroup
+					controlId="confirmPassword"
+					bsSize="small">
+
 					<ControlLabel>Confirm Password</ControlLabel>
 					<FormControl
 						value={this.props.user.confirmPassword}
 						onChange={this.handleConfirmationChange}
 						type="password" />
+
 				</FormGroup>
 
 				<LoaderButton

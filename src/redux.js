@@ -48,6 +48,12 @@ const initialState = {
 		newUser: null
 	},
 
+	validations: {
+		password: '',
+		username: '',
+		confirmPassword: ''
+	},
+
 	base: {
 		api: 'https://czlxg9sj34.execute-api.us-east-1.amazonaws.com/dev/cards/',
 		background: 'https://controversy-cards-assets.s3.amazonaws.com/',
