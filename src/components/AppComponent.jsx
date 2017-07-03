@@ -38,7 +38,7 @@ import './App.css';
 
 /* eslint-disable */
 
-const AsyncHome = asyncComponent(() => { import('./Home/Home.jsx') });
+const AsyncHome = asyncComponent(() => import('./Home/Home.jsx'));
 const AsyncLogin = asyncComponent(() => import('./Login/Login.jsx'));
 const AsyncSignup = asyncComponent(() => import('./Signup/Signup.jsx'));
 const AsyncNotFound = asyncComponent(() => import('./NotFound/NotFound.jsx'));
