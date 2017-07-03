@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import SignupComponent from './SignupComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUsername, setPassword, setNewUser, setPasswordConfirmation, setConfirmationCode, setUserToken } from '../../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUsername, setPassword, setNewUser, setPasswordConfirmation, setConfirmationCode, setUserToken, setPasswordValidation, setUsernameValidation, setConfirmPasswordValidation } from '../../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		user: state.reducer.user
+		user: state.reducer.user,
+		validations: state.reducer.validations
 	};
 };
 
@@ -34,6 +35,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setConfirmationCode: (confirmationCode) => {
 			return dispatch(setConfirmationCode(confirmationCode));
+		},
+		setUsernameValidation: (validation) => {
+			return dispatch(setUsernameValidation(validation));
+		},
+		setPasswordValidation: (validation) => {
+			return dispatch(setPasswordValidation(validation));
+		},
+		setConfirmPasswordValidation: (validation) => {
+			return dispatch(setConfirmPasswordValidation(validation));
 		}
 	}
 };

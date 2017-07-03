@@ -32,11 +32,7 @@ class Signup extends Component {
 		);
 	}
 
-	// TODO: Check for NPM package that does this; either way, pull this
-	// out of this component so that we can reuse it for signup too
-	// NOTE: Cognito User Pools default to password requirement:
-	// uppercase letters, lowercase letters, special characters, numbers,
-	// min length 8 characters
+	// TODO: Use NPM package to validate email
 	validateForm() {
 		return this.props.user.username.length > 0
 			&& this.props.user.password.length > 0
@@ -47,23 +43,40 @@ class Signup extends Component {
 		return this.props.user.confirmationCode.length > 0;
 	}
 
+	handleUsernameChange = (event) => {
+		this.props.setUsername(event.target.value);
+	}
+
 	handlePasswordChange = (event) => {
 		this.props.setPassword(event.target.value);
 	}
 
-	handleUsernameChange = (event) => {
-		this.props.setUsername(event.target.value);
+	// NOTE: Cognito User Pools default to password requirement:
+	// uppercase letters, lowercase letters, special characters, numbers,
+	// min length 8 characters
+	updatePasswordValidationState(password) {
+		const validation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[ !#$%&?()[\]\\=+-_{}':;<>.,|~`"@^*/]).{8,}$/;
+		const passwordValidationState = validation.test(password) ?
+			'success' :
+			'error';
+		this.props.setPasswordValidation(passwordValidationState);
 	}
 
 	handleConfirmationChange = (event) => {
 		this.props.setPasswordConfirmation(event.target.value);
 	}
 
+	updatePasswordConfirmValidationState(password, confirmPassword) {
+		const validation = password === confirmPassword;
+		const passwordConfirmValidationState = validation ? 'success' : 'error';
+		this.props.setConfirmPasswordValidation(passwordConfirmValidationState);
+	}
+
 	handleConfirmationCodeChange = (event) => {
 		this.props.setConfirmationCode(event.target.value);
 	}
 
-	setTooltipPlacement = () => {
+	setTooltipPlacement() {
 		const placement = window.innerWidth > 713 ? "left" : "top";
 		this.setState({tooltipPlacement: placement});
 	}
@@ -110,6 +123,15 @@ class Signup extends Component {
 		catch(e) {
 			alert(e);
 			this.props.unsetUserTokenLoading();
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.user.password !== this.props.user.password ||
+			nextProps.user.confirmPassword !== this.props.user.confirmPassword) {
+
+			this.updatePasswordValidationState(nextProps.user.password);
+			this.updatePasswordConfirmValidationState(nextProps.user.password, nextProps.user.confirmPassword);
 		}
 	}
 
@@ -160,6 +182,7 @@ class Signup extends Component {
 
 				<OverlayTrigger placement={this.state.tooltipPlacement} overlay={this.passwordTooltip}>
 					<FormGroup
+						validationState={this.props.validations.password}
 						controlId="password"
 						bsSize="small">
 
@@ -169,11 +192,13 @@ class Signup extends Component {
 							value={this.props.user.password}
 							onChange={this.handlePasswordChange}
 							type="password" />
+						<FormControl.Feedback />
 
 					</FormGroup>
 				</OverlayTrigger>
 
 				<FormGroup
+					validationState={this.props.validations.confirmPassword}
 					controlId="confirmPassword"
 					bsSize="small">
 
@@ -182,6 +207,7 @@ class Signup extends Component {
 						value={this.props.user.confirmPassword}
 						onChange={this.handleConfirmationChange}
 						type="password" />
+					<FormControl.Feedback />
 
 				</FormGroup>
 
