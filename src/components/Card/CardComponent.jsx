@@ -13,6 +13,8 @@ import debounce from 'debounce';
 
 import { withRouter } from 'react-router-dom';
 
+import { Grid, Row, Col } from 'react-bootstrap';
+
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
@@ -79,41 +81,47 @@ class CardComponent extends Component {
 
 		return (
 			<div ref={c => this.container = c} className="Card">
-				<SwipeOverlay
-					isFullScreen={this.props.discourse.isFullScreen}
-					discourseLevel={this.props.discourse.level}
-					active={this.props.discourse.overlay}
-					discourseHandler={this.props.setDiscourseLevel}
-					deactivateOverlayHandler={this.props.deactivateSwipeOverlay} />
+				<Grid>
+					<Row>
+						<Col>
+							<SwipeOverlay
+								isFullScreen={this.props.discourse.isFullScreen}
+								discourseLevel={this.props.discourse.level}
+								active={this.props.discourse.overlay}
+								discourseHandler={this.props.setDiscourseLevel}
+								deactivateOverlayHandler={this.props.deactivateSwipeOverlay} />
 
-				<SwipeableViews
-					axis='y'
-					containerStyle={containerStyles}
-					resistance
-					ignoreNativeScroll
-					index={this.props.discourse.level}
-					onChangeIndex={this.handleSwipe}>
+							<SwipeableViews
+								axis='y'
+								containerStyle={containerStyles}
+								resistance
+								ignoreNativeScroll
+								index={this.props.discourse.level}
+								onChangeIndex={this.handleSwipe}>
 
-					<div className="Worldview">
-						<FeedCard level="worldview" />
-					</div>					
+								<div className="Worldview">
+									<FeedCard level="worldview" />
+								</div>					
 
-					<div className="Model">
-						<FeedCard level="model" />
-					</div>
+								<div className="Model">
+									<FeedCard level="model" />
+								</div>
 
-					<div className="Propositional">
-						<FeedCard level="propositional" />
-					</div>
+								<div className="Propositional">
+									<FeedCard level="propositional" />
+								</div>
 
-					<div className="Conceptual">
-						<FeedCard level="conceptual" />
-					</div>
+								<div className="Conceptual">
+									<FeedCard level="conceptual" />
+								</div>
 
-					<div className="Narrative">
-						<FeedCard level="narrative" />
-					</div>
-				</SwipeableViews>
+								<div className="Narrative">
+									<FeedCard level="narrative" />
+								</div>
+							</SwipeableViews>
+						</Col>
+					</Row>
+				</Grid>
 			</div>
 		);
 	}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Search.css';
 import { withRouter } from 'react-router-dom';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -19,7 +20,13 @@ class SearchComponent extends Component {
 	render() {
 		return (
 			<div className="Search">
-				<h3><code>Search</code></h3>
+				<Grid>
+					<Row>
+						<Col>
+							<h3><code>Search</code></h3>
+						</Col>
+					</Row>
+				</Grid>
 			</div>
 		);
 	}

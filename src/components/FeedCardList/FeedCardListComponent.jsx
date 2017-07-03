@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './FeedCardList.css';
 import { withRouter } from 'react-router-dom';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -18,8 +19,14 @@ class FeedCardListComponent extends Component {
 
 	render() {
 		return (
-			<div>
-				<h3><code>FeedCardList</code></h3>
+			<div className="FeedCardList">
+				<Grid>
+					<Row>
+						<Col>
+							<h3><code>FeedCardList</code></h3>
+						</Col>
+					</Row>
+				</Grid>
 			</div>
 		);
 	}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './News.css';
 import { withRouter } from 'react-router-dom';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -19,7 +20,13 @@ class NewsComponent extends Component {
 	render() {
 		return (
 			<div className="News">
-				<h3><code>News</code></h3>
+				<Grid>
+					<Row>
+						<Col>
+							<h3><code>News</code></h3>
+						</Col>
+					</Row>
+				</Grid>
 			</div>
 		);
 	}

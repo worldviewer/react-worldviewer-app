@@ -30,7 +30,7 @@
 //     font-style: italic;
 // }
 
-.Model .feedcard {
+.Model .Feedcard {
 	background: #E57373;
 
 	&::before {
@@ -48,7 +48,7 @@
 	}
 }
 
-.Propositional .feedcard {
+.Propositional .Feedcard {
 	background: #42A5F5;
 
 	&::before {
@@ -66,7 +66,7 @@
 	}
 }
 
-.Conceptual .feedcard {
+.Conceptual .Feedcard {
 	background: #7CB342;
 
 	&::before {
@@ -84,7 +84,7 @@
 	}
 }
 
-.Narrative .feedcard {
+.Narrative .Feedcard {
 	background: #26A69A;
 
 	&::before {
@@ -102,7 +102,7 @@
 	}
 }
 
-.feedcard {
+.Feedcard {
 	// font-family: 'Lato', 'Helvetica';
 	height: 100%;
 	overflow-y: hidden;

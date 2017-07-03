@@ -19,7 +19,7 @@ class HomeComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="Home">
 				<Grid>
 					<Row>
 						<Col>
