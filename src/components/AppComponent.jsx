@@ -1,9 +1,10 @@
 // React Dependencies
 import React, { Component } from 'react';
 
-// React-Bootstrap Dependencies
+// UI Dependencies
 import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
+import { Notification } from 'react-notification';
 
 // Code-Splitter
 import asyncComponent from '../asyncComponent';
@@ -68,6 +69,11 @@ class AppComponent extends Component {
 		this.props = props;
 	}
 
+	dismissAlert() {
+		console.log('dismiss');
+		this.props.dismissAlert();
+	}
+
 	handleNavLink = (event) => {
 		event.preventDefault();
 		this.props.history.push(event.currentTarget.getAttribute('href'));
@@ -110,6 +116,15 @@ class AppComponent extends Component {
 	render() {
 		return !this.props.isLoadingUserToken && (
 			<div>
+
+				{/* Notification's onClick handler appears to be broken */}
+				<div onClick={() => this.props.dismissAlert()}>
+					<Notification
+						isActive={this.props.notification.active}
+						message={this.props.notification.message}
+						title={this.props.notification.title} />
+				</div>
+
 				<Navbar fluid collapseOnSelect>
 
 					<Navbar.Header>

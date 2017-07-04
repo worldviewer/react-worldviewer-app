@@ -43,7 +43,6 @@ class LoginComponent extends Component {
 
 		this.props.setUserTokenLoading();
 
-		// TODO: Switch alert on error to flash messaging
 		try {
 			const token = await login(this.props.user.username, this.props.user.password);
 			this.props.setUserToken(token);
@@ -51,7 +50,9 @@ class LoginComponent extends Component {
 			this.props.history.push('/');
 		}
 		catch(e) {
-			alert(e);
+			console.log('error: ' + e.message);
+			this.props.setAlert('Error Logging In: ', e.message);
+			setTimeout(() => this.props.dismissAlert(), 5000);
 			this.props.unsetUserTokenLoading();
 		}
 	}

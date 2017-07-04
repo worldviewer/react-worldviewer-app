@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
 
-// React Bootstrap
+// UI
 import { HelpBlock, FormGroup, FormControl, ControlLabel, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton';
 
@@ -23,9 +23,11 @@ class Signup extends Component {
 			tooltipPlacement: window.innerWidth > 713 ? "left" : "top"
 		}
 
-		window.addEventListener('resize', this.setTooltipPlacement);
+		window.addEventListener('resize', () => this.setTooltipPlacement());
 
 		this.props = props;
+		this.setTooltipPlacement.bind(this);
+
 		this.passwordTooltip = (
 			<Tooltip id="tooltip">
 				8 character minimum length: Use at least one uppercase, one lowercase, one special character & one number
@@ -99,9 +101,14 @@ class Signup extends Component {
 			const newUser = await signup(this.props.user.username, this.props.user.password);
 			this.props.setNewUser(newUser);
 			this.props.unsetUserTokenLoading();
+
+			this.props.setAlert('Success: ', 'Check your email for validation code');
+			setTimeout(() => this.props.dismissAlert(), 5000);
 		}
 		catch(e) {
-			alert(e);
+			this.props.setAlert('Error Creating Account: ', e.message);
+			setTimeout(() => this.props.dismissAlert(), 5000);
+
 			this.props.unsetUserTokenLoading();
 		}
 	}
@@ -130,7 +137,8 @@ class Signup extends Component {
 			this.props.history.push('/');
 		}
 		catch(e) {
-			alert(e);
+			this.props.setAlert('Error Confirming Account: ', e.message);
+			setTimeout(() => this.props.dismissAlert(), 5000);
 			this.props.unsetUserTokenLoading();
 		}
 	}

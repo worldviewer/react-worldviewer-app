@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, dismissAlert } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		user: state.reducer.user
+		user: state.reducer.user,
+		notification: state.reducer.notification
 	};
 };
 
@@ -19,6 +20,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setUserToken: (token) => {
 			return dispatch(setUserToken(token));
+		},
+		dismissAlert: () => {
+			return dispatch(dismissAlert());
 		}
 	}
 };

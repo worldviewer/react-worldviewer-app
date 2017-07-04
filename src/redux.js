@@ -23,6 +23,9 @@ const types = {
 	CLEAR_USER: 'CLEAR_USER',
 	SET_NEW_USER: 'SET_NEW_USER',
 
+	SET_ALERT: 'SET_ALERT',
+	DISMISS_ALERT: 'DISMISS_ALERT',
+
 	CLICK_ICON: 'CLICK_ICON',
 	OPEN_MENU: 'OPEN_MENU',
 	CLOSE_MENU: 'CLOSE_MENU',
@@ -56,6 +59,12 @@ const initialState = {
 		password: null,
 		username: null,
 		confirmPassword: null
+	},
+
+	notification: {
+		active: false,
+		title: '',
+		message: ''
 	},
 
 	base: {
@@ -219,6 +228,20 @@ export const setNewUser = (newUser) => {
 	return {
 		type: types.SET_NEW_USER,
 		newUser
+	};
+};
+
+export const setAlert = (title, message) => {
+	return {
+		type: types.SET_ALERT,
+		title,
+		message
+	};
+};
+
+export const dismissAlert = () => {
+	return {
+		type: types.DISMISS_ALERT
 	};
 };
 
@@ -446,6 +469,28 @@ export default (state = initialState, action) => {
 				user: {
 					...state.user,
 					newUser: action.newUser
+				}
+			};
+
+		case types.SET_ALERT:
+			return {
+				...state,
+				notification: {
+					...state.notification,
+					active: true,
+					title: action.title,
+					message: action.message
+				}
+			};
+
+		case types.DISMISS_ALERT:
+			return {
+				...state,
+				notification: {
+					...state.notification,
+					active: false,
+					title: '',
+					message: ''
 				}
 			};
 
