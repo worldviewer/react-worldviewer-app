@@ -12,6 +12,7 @@ import LoaderButton from '../LoaderButton/LoaderButton';
 import { signup, confirm, authenticate } from '../../libs/awsLib';
 
 import './Signup.css';
+import isemail from 'isemail';
 
 // From http://serverless-stack.com/chapters/signup-with-aws-cognito.html
 class Signup extends Component {
@@ -32,10 +33,9 @@ class Signup extends Component {
 		);
 	}
 
-	// TODO: Use NPM package to validate email
 	validateForm() {
-		return this.props.user.username.length > 0
-			&& this.props.user.password.length > 0
+		return isemail.validate(this.props.user.username)
+			&& this.getPasswordValidationState(this.props.user.password)
 			&& this.props.user.password === this.props.user.confirmPassword;
 	}
 
@@ -51,25 +51,34 @@ class Signup extends Component {
 		this.props.setPassword(event.target.value);
 	}
 
+	handleConfirmationChange = (event) => {
+		this.props.setPasswordConfirmation(event.target.value);
+	}
+
 	// NOTE: Cognito User Pools default to password requirement:
 	// uppercase letters, lowercase letters, special characters, numbers,
 	// min length 8 characters
-	updatePasswordValidationState(password) {
+	getPasswordValidationState(password) {
 		const validation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[ !#$%&?()[\]\\=+-_{}':;<>.,|~`"@^*/]).{8,}$/;
-		const passwordValidationState = validation.test(password) ?
+		return validation.test(password);
+	}
+
+	updatePasswordValidationState(password) {
+		const passwordValidationState = this.getPasswordValidationState(password) ?
 			'success' :
 			'error';
 		this.props.setPasswordValidation(passwordValidationState);
-	}
-
-	handleConfirmationChange = (event) => {
-		this.props.setPasswordConfirmation(event.target.value);
 	}
 
 	updatePasswordConfirmValidationState(password, confirmPassword) {
 		const validation = password === confirmPassword;
 		const passwordConfirmValidationState = validation ? 'success' : 'error';
 		this.props.setConfirmPasswordValidation(passwordConfirmValidationState);
+	}
+
+	updateUsernameValidationState(username) {
+		const usernameValidationState = isemail.validate(username) ? 'success' : 'error';
+		this.props.setUsernameValidation(usernameValidationState);
 	}
 
 	handleConfirmationCodeChange = (event) => {
@@ -133,6 +142,10 @@ class Signup extends Component {
 			this.updatePasswordValidationState(nextProps.user.password);
 			this.updatePasswordConfirmValidationState(nextProps.user.password, nextProps.user.confirmPassword);
 		}
+
+		if (nextProps.user.username !== this.props.user.username) {
+			this.updateUsernameValidationState(nextProps.user.username);
+		}
 	}
 
 	renderConfirmationForm() {
@@ -167,6 +180,7 @@ class Signup extends Component {
 			<form onSubmit={this.handleSubmit}>
 
 				<FormGroup
+					validationState={this.props.validations.username}
 					controlId="username"
 					bsSize="small">
 
@@ -177,6 +191,7 @@ class Signup extends Component {
 						type="email"
 						value={this.props.user.username}
 						onChange={this.handleUsernameChange} />
+					<FormControl.Feedback />
 
 				</FormGroup>
 
@@ -214,7 +229,7 @@ class Signup extends Component {
 				<LoaderButton
 					block
 					bsSize="small"
-					disabled={ ! this.validateForm() }
+					disabled={ !this.validateForm() }
 					type="submit"
 					isLoading={this.props.user.tokenLoading}
 					text="Signup"

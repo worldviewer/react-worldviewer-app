@@ -13,6 +13,7 @@
     "gsap": "^1.19.1",
     "history": "^4.6.2",
     "html-to-react": "^1.2.11",
+    "isemail": "^3.0.0",
     "material-ui": "^0.18.3",
     "object.values": "^1.0.4",
     "prop-types": "^15.5.10",
