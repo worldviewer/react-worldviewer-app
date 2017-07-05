@@ -193,6 +193,25 @@ class AppComponent extends Component {
 		this.props.setUserToken(null);
 	}
 
+	// See bottom of http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
+	// When we think we know what the page transition is going to be, we can
+	// preload the next page at the end of componentDidMount.
+	preload = (pathname) => {
+		switch (pathname) {
+			case '/signup':
+			case '/login':
+				AsyncHome.preload();
+				break;
+
+			case '/home':
+				AsyncSearch.preload();
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	// http://serverless-stack.com/chapters/load-the-state-from-the-session.html
 	// We want to ensure that when the user refreshes the app, we load
 	// the user token from the session. We are going to do this in 
@@ -215,6 +234,8 @@ class AppComponent extends Component {
 		}
 
 		this.props.unsetUserTokenLoading();
+
+		this.preload(this.props.pathname);
 	}
 
 	render() {

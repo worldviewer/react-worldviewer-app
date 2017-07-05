@@ -6,7 +6,8 @@ import { withRouter } from 'react-router-dom';
 const mapStateToProps = (state, ownProps) => {
 	return {
 		user: state.reducer.user,
-		notification: state.reducer.notification
+		notification: state.reducer.notification,
+		pathname: state.router.location.pathname
 	};
 };
 
