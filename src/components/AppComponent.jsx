@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
 import { Notification } from 'react-notification';
+import './App.css';
+// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // Spinner / Preloader / Code-Splitter
 import Loadable from 'react-loadable';
@@ -17,12 +19,8 @@ import { getUserToken, getCurrentUser } from '../libs/awsLib';
 import { Route, Switch } from 'react-router';
 import { withRouter, Link } from 'react-router-dom';
 
-// CSS Dependencies
-// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import './App.css';
-
-// Components
 // See bottom of http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
+// This is a state handler for the react-loadable code splitter
 const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
 	const spinnerStyle = {
 		alignItems: "center",
@@ -34,7 +32,7 @@ const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
 		zIndex: 100
 	};
 
-	// Handle the loading state
+	// Handle the loading state, after pastDelay
 	if (isLoading && pastDelay) {
 		return <div style={spinnerStyle}>
 			<img
@@ -43,6 +41,7 @@ const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
 				src={spinner} />
 		</div>
 
+	// What happens if page doesn't load after timeout setting
 	} else if (timedOut) {
 		this.props.setAlert("Timeout: ", "You might want to try refreshing page");
 		setTimeout(() => this.props.dismissAlert(), 5000);
@@ -50,7 +49,7 @@ const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
 		return null;
 
 	} else if (error) {
-		this.props.setAlert("Error: ", "something's not right");
+		this.props.setAlert("Error: ", "Something's not right");
 		setTimeout(() => this.props.dismissAlert(), 5000);
 
 		return null;
@@ -76,81 +75,67 @@ const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
 // splits our app based on this. It looks at these imports and generates the
 // required parts (or chunks).
 
-const AsyncHome = Loadable({
-	loader: () => import('./Home/Home.jsx'),
+const settings = {
 	loading: LoadingComponent,
 	delay: 500,
 	timeout: 10000
+};
+
+// Components
+// Routes are loaded on-the-fly, as needed, in order to reduce the initial load time
+const AsyncHome = Loadable({
+	...settings,
+	loader: () => import('./Home/Home.jsx')
 });
 
 const AsyncLogin = Loadable({
-	loader: () => import('./Login/Login.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./Login/Login.jsx')
 });
 
 const AsyncSignup = Loadable({
-	loader: () => import('./Signup/Signup.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./Signup/Signup.jsx')
 });
 
 const AsyncNotFound = Loadable({
-	loader: () => import('./NotFound/NotFound.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./NotFound/NotFound.jsx')
 });
 
 const AsyncNews = Loadable({
-	loader: () => import('./News/News.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./News/News.jsx')
 });
 
 const AsyncSearch = Loadable({
-	loader: () => import('./Search/Search.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./Search/Search.jsx')
 });
 
 const AsyncCard = Loadable({
-	loader: () => import('./Card/Card.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./Card/Card.jsx')
 });
 
 const AsyncCardText = Loadable({
-	loader: () => import('./CardText/CardText.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./CardText/CardText.jsx')
 });
 
 const AsyncComments = Loadable({
-	loader: () => import('./Comments/Comments.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./Comments/Comments.jsx')
 });
 
 const AsyncFeedCardList = Loadable({
-	loader: () => import('./FeedCardList/FeedCardList.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./FeedCardList/FeedCardList.jsx')
 });
 
 const AsyncFeedCard = Loadable({
-	loader: () => import('./FeedCard/FeedCard.jsx'),
-	loading: LoadingComponent,
-	delay: 500,
-	timeout: 10000
+	...settings,
+	loader: () => import('./FeedCard/FeedCard.jsx')
 });
 
 // const
@@ -235,6 +220,7 @@ class AppComponent extends Component {
 
 		this.props.unsetUserTokenLoading();
 
+		// We use the current router pathname to figure out which pages to preload
 		this.preload(this.props.pathname);
 	}
 
@@ -242,7 +228,7 @@ class AppComponent extends Component {
 		return !this.props.isLoadingUserToken && (
 			<div className="App">
 
-				{/* Notification's onClick handler appears to be broken */}
+				{/* Revisit: Notification's onClick / onDismiss handlers appear to be broken */}
 				<div onClick={() => this.props.dismissAlert()}>
 					<Notification
 						isActive={this.props.notification.active}
