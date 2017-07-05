@@ -6,10 +6,7 @@ import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
 import { Notification } from 'react-notification';
 
-// Code-Splitter
-import asyncComponent from '../asyncComponent';
-
-// Spinner / Preloader
+// Spinner / Preloader / Code-Splitter
 import Loadable from 'react-loadable';
 import spinner from './Spinner/explosion-spinner.svg';
 
@@ -26,7 +23,7 @@ import './App.css';
 
 // Components
 // See bottom of http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
-const LoadingComponent = ({isLoading, error}) => {
+const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
 	const spinnerStyle = {
 		alignItems: "center",
 		display: "flex",
@@ -38,21 +35,27 @@ const LoadingComponent = ({isLoading, error}) => {
 	};
 
 	// Handle the loading state
-	if (isLoading) {
+	if (isLoading && pastDelay) {
 		return <div style={spinnerStyle}>
 			<img
 				alt="Explosion Emoji Spinner"
 				className="Spinner"
 				src={spinner} />
 		</div>
-	}
 
-	// Handle the error state
-	else if (error) {
-		return <div>Sorry, there was a problem loading the page.</div>;
-	}
+	} else if (timedOut) {
+		this.props.setAlert("Timeout: ", "You might want to try refreshing page");
+		setTimeout(() => this.props.dismissAlert(), 5000);
 
-	else {
+		return null;
+
+	} else if (error) {
+		this.props.setAlert("Error: ", "something's not right");
+		setTimeout(() => this.props.dismissAlert(), 5000);
+
+		return null;
+
+	} else {
 		return null;
 	}
 };
@@ -73,71 +76,81 @@ const LoadingComponent = ({isLoading, error}) => {
 // splits our app based on this. It looks at these imports and generates the
 // required parts (or chunks).
 
-// const AsyncHome = asyncComponent(() => import('./Home/Home.jsx'));
-// const AsyncLogin = asyncComponent(() => import('./Login/Login.jsx'));
-// const AsyncSignup = asyncComponent(() => import('./Signup/Signup.jsx'));
-// const AsyncNotFound = asyncComponent(() => import('./NotFound/NotFound.jsx'));
-// const AsyncNews = asyncComponent(() => import('./News/News.jsx'));
-// const AsyncSearch = asyncComponent(() => import('./Search/Search.jsx'));
-// const AsyncControversy = asyncComponent(() => import('./Card/Card.jsx'));
-// const AsyncCardText = asyncComponent(() => import('./CardText/CardText.jsx'));
-// const AsyncComments = asyncComponent(() => import('./Comments/Comments.jsx'));
-// const AsyncFeedCardList = asyncComponent(() => import('./FeedCardList/FeedCardList.jsx'));
-// const AsyncFeedCard = asyncComponent(() => import('./FeedCard/FeedCard.jsx'));
-
 const AsyncHome = Loadable({
 	loader: () => import('./Home/Home.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncLogin = Loadable({
 	loader: () => import('./Login/Login.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncSignup = Loadable({
 	loader: () => import('./Signup/Signup.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncNotFound = Loadable({
 	loader: () => import('./NotFound/NotFound.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncNews = Loadable({
 	loader: () => import('./News/News.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncSearch = Loadable({
 	loader: () => import('./Search/Search.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncCard = Loadable({
 	loader: () => import('./Card/Card.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncCardText = Loadable({
 	loader: () => import('./CardText/CardText.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncComments = Loadable({
 	loader: () => import('./Comments/Comments.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncFeedCardList = Loadable({
 	loader: () => import('./FeedCardList/FeedCardList.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 const AsyncFeedCard = Loadable({
 	loader: () => import('./FeedCard/FeedCard.jsx'),
-	loading: LoadingComponent
+	loading: LoadingComponent,
+	delay: 500,
+	timeout: 10000
 });
 
 // const
