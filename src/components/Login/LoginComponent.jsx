@@ -1,7 +1,7 @@
 // React Dependencies
 import React, { Component } from 'react';
 
-// React Bootstrap Dependencies
+// UI Dependencies
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton.js';
 

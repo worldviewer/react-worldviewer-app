@@ -9,6 +9,10 @@ import { Notification } from 'react-notification';
 // Code-Splitter
 import asyncComponent from '../asyncComponent';
 
+// Spinner / Preloader
+import Loadable from 'react-loadable';
+import spinner from './Spinner/explosion-spinner.svg';
+
 // Amazon Cognito Dependencies
 import { getUserToken, getCurrentUser } from '../libs/awsLib';
 
@@ -21,6 +25,39 @@ import { withRouter, Link } from 'react-router-dom';
 import './App.css';
 
 // Components
+
+const LoadingComponent = ({isLoading, error}) => {
+	const spinnerStyle = {
+		alignItems: "center",
+		display: "flex",
+		height: "100%",
+		justifyContent: "center",
+		overflow: "hidden",
+		position: "absolute",
+		width: "100%",
+		zIndex: 100
+	};
+
+	// Handle the loading state
+	if (isLoading) {
+		return <div style={spinnerStyle}>
+			<img
+				alt="Explosion Emoji Spinner"
+				className="Spinner"
+				src={spinner} />
+		</div>
+	}
+
+	// Handle the error state
+	else if (error) {
+		return <div>Sorry, there was a problem loading the page.</div>;
+	}
+
+	else {
+		return null;
+	}
+};
+
 // http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
 // Create React App (from 1.0 onwards) allows us to dynamically import parts of
 // our app using import. While, the dynamic import() can be used for any component
@@ -37,17 +74,74 @@ import './App.css';
 // splits our app based on this. It looks at these imports and generates the
 // required parts (or chunks).
 
-const AsyncHome = asyncComponent(() => import('./Home/Home.jsx'));
-const AsyncLogin = asyncComponent(() => import('./Login/Login.jsx'));
-const AsyncSignup = asyncComponent(() => import('./Signup/Signup.jsx'));
-const AsyncNotFound = asyncComponent(() => import('./NotFound/NotFound.jsx'));
-const AsyncNews = asyncComponent(() => import('./News/News.jsx'));
-const AsyncSearch = asyncComponent(() => import('./Search/Search.jsx'));
-const AsyncControversy = asyncComponent(() => import('./Card/Card.jsx'));
-const AsyncCardText = asyncComponent(() => import('./CardText/CardText.jsx'));
-const AsyncComments = asyncComponent(() => import('./Comments/Comments.jsx'));
-const AsyncFeedCardList = asyncComponent(() => import('./FeedCardList/FeedCardList.jsx'));
-const AsyncFeedCard = asyncComponent(() => import('./FeedCard/FeedCard.jsx'));
+// const AsyncHome = asyncComponent(() => import('./Home/Home.jsx'));
+// const AsyncLogin = asyncComponent(() => import('./Login/Login.jsx'));
+// const AsyncSignup = asyncComponent(() => import('./Signup/Signup.jsx'));
+// const AsyncNotFound = asyncComponent(() => import('./NotFound/NotFound.jsx'));
+// const AsyncNews = asyncComponent(() => import('./News/News.jsx'));
+// const AsyncSearch = asyncComponent(() => import('./Search/Search.jsx'));
+// const AsyncControversy = asyncComponent(() => import('./Card/Card.jsx'));
+// const AsyncCardText = asyncComponent(() => import('./CardText/CardText.jsx'));
+// const AsyncComments = asyncComponent(() => import('./Comments/Comments.jsx'));
+// const AsyncFeedCardList = asyncComponent(() => import('./FeedCardList/FeedCardList.jsx'));
+// const AsyncFeedCard = asyncComponent(() => import('./FeedCard/FeedCard.jsx'));
+
+const AsyncHome = Loadable({
+	loader: () => import('./Home/Home.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncLogin = Loadable({
+	loader: () => import('./Login/Login.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncSignup = Loadable({
+	loader: () => import('./Signup/Signup.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncNotFound = Loadable({
+	loader: () => import('./NotFound/NotFound.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncNews = Loadable({
+	loader: () => import('./News/News.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncSearch = Loadable({
+	loader: () => import('./Search/Search.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncCard = Loadable({
+	loader: () => import('./Card/Card.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncCardText = Loadable({
+	loader: () => import('./CardText/CardText.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncComments = Loadable({
+	loader: () => import('./Comments/Comments.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncFeedCardList = Loadable({
+	loader: () => import('./FeedCardList/FeedCardList.jsx'),
+	loading: LoadingComponent
+});
+
+const AsyncFeedCard = Loadable({
+	loader: () => import('./FeedCard/FeedCard.jsx'),
+	loading: LoadingComponent
+});
+
+
 
 // const
 // 	mdControversy = () => (
@@ -169,7 +263,7 @@ class AppComponent extends Component {
 					<Route path="/news" component={AsyncNews} />
 					<Route path="/search" component={AsyncSearch} />
 
-					<Route path="/:controversy/worldview/card" component={AsyncControversy} />
+					<Route path="/:controversy/worldview/card" component={AsyncCard} />
 					<Route path="/:controversy/worldview/text" component={AsyncCardText} />
 					<Route path="/:controversy/:worldview?/comments" component={AsyncComments} />
 
