@@ -20,6 +20,7 @@ import App from './components/App.jsx';
 // Bootstrap CSS - https://bootswatch.com/ - Solar Theme
 // changes: .navbar {border-radius: none}
 // removed media query .container widths
+// added media query for margin-bottom on .navbar
 import './styles/bootstrap-solar.css';
 
 // Fonts
