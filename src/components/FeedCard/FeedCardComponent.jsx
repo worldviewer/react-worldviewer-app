@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './FeedCard.css';
 import share from './share.svg';
+import down from './downdown.svg';
 import chris from './chris.jpg';
 import 'font-awesome-sass-loader';
 import { withRouter } from 'react-router-dom';
@@ -59,6 +60,10 @@ class FeedCardComponent extends Component {
 					zIndex: 10
 				},
 
+			updownStyles = this.state.isTextExpanded ?
+				{ transform: 'scaleY(1)' } :
+				{},
+
 			// Avatar images must be a minimum of 40 x 40 pixels
 			avatarStyles = {
 				height: 40,
@@ -78,15 +83,12 @@ class FeedCardComponent extends Component {
 					<Row>
 
 						<div className="info">
-							<span className="chevron fa-stack" onClick={this.handleClick}>
-								<i className="fa fa-circle fa-stack-2x fa-inverse"></i>
-
-								{this.state.isTextExpanded ?
-									<i className="circles fa fa-chevron-down fa-stack-1x"></i> :
-									<i className="circles fa fa-chevron-up fa-stack-1x"></i>
-								}
-							</span>
-
+							<Image
+								src={down}
+								className="updown"
+								style={updownStyles}
+								onClick={this.handleClick}
+								circle />
 							<div className="title">Were dark matter filaments "predicted"?</div>
 						</div>
 
