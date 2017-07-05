@@ -1,35 +1,3 @@
-// @font-face {
-//     font-family: 'Lato';
-//     src: url('../../fonts/Lato-Regular.woff2') format('woff2'),
-//     	 url('../../fonts/Lato-Regular.woff') format('woff');
-//     font-weight: normal;
-//     font-style: normal;
-// }
-
-// @font-face {
-//     font-family: 'Lato';
-//     src: url('../../fonts/Lato-Heavy.woff2') format('woff2'),
-//     	 url('../../fonts/Lato-Heavy.woff') format('woff');
-//     font-weight: bold;
-//     font-style: normal;
-// }
-
-// @font-face {
-//     font-family: 'Lato';
-//     src: url('../../fonts/Lato-Italic.woff2') format('woff2'),
-//     	 url('../../fonts/Lato-Italic.woff') format('woff');
-//     font-weight: normal;
-//     font-style: italic;
-// }
-
-// @font-face {
-//     font-family: 'Lato';
-//     src: url('../../fonts/Lato-HeavyItalic.woff2') format('woff2'),
-//     	 url('../../fonts/Lato-HeavyItalic.woff') format('woff');
-//     font-weight: bold;
-//     font-style: italic;
-// }
-
 .Model .Feedcard {
 	background: #E57373;
 
@@ -40,11 +8,11 @@
 	}
 
 	.info .breadcrumbs {
-		color: #424242;
+		color: rgba(255, 255, 255, 0.25);
 	}
 
 	.info .role {
-		color: #424242;
+		color: rgba(255, 255, 255, 0.25);
 	}
 }
 
@@ -58,11 +26,11 @@
 	}
 
 	.info .breadcrumbs {
-		color: #424242;
+		color: rgba(255, 255, 255, 0.25);
 	}
 
 	.info .role {
-		color: #424242;
+		color: rgba(255, 255, 255, 0.25);
 	}
 }
 
@@ -76,11 +44,11 @@
 	}
 
 	.info .breadcrumbs {
-		color: #424242;
+		color: rgba(255, 255, 255, 0.25);
 	}
 
 	.info .role {
-		color: #424242;
+		color: rgba(255, 255, 255, 0.25);
 	}
 }
 
@@ -94,16 +62,15 @@
 	}
 
 	.info .breadcrumbs {
-		color: #424242;
+		color: rgba(255, 255, 255, 0.25);
 	}
 
 	.info .role {
-		color: #424242;
+		color: rgba(255, 255, 255, 0.25);
 	}
 }
 
 .Feedcard {
-	// font-family: 'Lato', 'Helvetica';
 	height: 100%;
 	overflow-y: hidden;
 	position: relative;
@@ -122,51 +89,31 @@
 	.image {
 		background-image: url(http://ichef.bbci.co.uk/universe/img/ic/640/questions_and_ideas/dark_matter/dark_matter_large.jpg);
 		background-size: cover;
+		border-radius: 0;
 		font-weight: 900;
 		height: 50vh;
+		position: relative;
 		transition: height 1s;
 		width: 100vw;
 
 		// Refactor as SCSS mix-in
-	    .share-outer-circle {
+	    .share {
 	    	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-			background-color: white;
-			border: 4px solid white;
-			border-radius: 36px;
-			cursor: pointer;
-			height: 36px;
-			left: 30px;
-			position: absolute;
-			top: 30px;
 			transition: width 1s, height 1s, margin 1s, opacity 1s;
-			width: 36px;
-			z-index: 10;
 
 			&:hover {
 				opacity: 0.8 !important;
 			}
 	    }
+	}
 
-	    .share-inner-circle {
-			background-color: #1D1D1D;
-			border-radius: 36px;
-			height: 36px;
-			transition: width 1s, height 1s, opacity 1s;
-			width: 36px;
-	    }
-
-		.share {
-			left: 3px;
-			position: relative;
-			transition: width 1s, height 1s, opacity 1s;
-			top: 3px;
-			width: 30px;
-		}
+	.info, .author, .breadcrumbs, .ratings, .content {	
+		padding-left: 30px;
+		padding-right: 30px;
 	}
 
 	.info {
 		overflow-y: auto;
-		padding: 30px;
 
 		.chevron {
 	    	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -195,57 +142,58 @@
 		}
 
 		.title {
-			color: black;
+			color: white;
 			font-size: 1.5em;
+			margin-top: 30px;
+			pointer-events: none;
+		}
+	}
+
+	.ratings {
+		margin-left: -4px;
+		pointer-events: none;
+	}
+
+	.breadcrumbs {
+		font-size: 0.7em;
+		padding-top: 10px;
+		padding-bottom: 30px;
+		pointer-events: none;
+		text-transform: uppercase;
+	}
+
+	.author {
+		margin-top: 30px;
+		pointer-events: none;
+		position: relative;
+
+		.avatar {
+			display: inline-block;
 			pointer-events: none;
 		}
 
-		.breadcrumbs {
+		.author-info {
+			display: inline-block;
+			margin-left: 15px;
+			pointer-events: none;
+			position: absolute;
+			top: 1vw;
+		}
+
+		.name {
+			font-size: 1.0em;
+			pointer-events: none;
+		}
+
+		.role {
 			font-size: 0.7em;
-			padding-top: 10px;
-			padding-bottom: 30px;
 			pointer-events: none;
 			text-transform: uppercase;
 		}
+	}
 
-		.ratings {
-			margin-left: -4px;
-			pointer-events: none;
-		}
-
-		.author {
-			margin-top: 30px;
-			pointer-events: none;
-			position: relative;
-
-			.avatar {
-				display: inline-block;
-				pointer-events: none;
-			}
-
-			.author-info {
-				display: inline-block;
-				margin-left: 15px;
-				pointer-events: none;
-				position: absolute;
-				top: 1vw;
-			}
-
-			.name {
-				font-size: 1.0em;
-				pointer-events: none;
-			}
-
-			.role {
-				font-size: 0.7em;
-				pointer-events: none;
-				text-transform: uppercase;
-			}
-		}
-
-		.content {
-			padding-top: 30px;
-			pointer-events: none;
-		}
+	.content {
+		padding-top: 30px;
+		pointer-events: none;
 	}
 }
