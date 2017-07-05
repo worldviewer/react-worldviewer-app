@@ -83,6 +83,17 @@ const settings = {
 
 // Components
 // Routes are loaded on-the-fly, as needed, in order to reduce the initial load time
+// TODO: Once the homepage is built out, experiment with server-side rendering (SSR):
+
+// Instructions: https://github.com/thejameskyle/react-loadable
+// Pros & Cons: http://andrewhfarmer.com/server-side-render/
+
+// In particular: "SSR is more work for your server, so your HTTP response will take
+// a little longer to return. A lot longer if your servers are under heavy load.
+// The size of your HTML will be increased and will take longer to download. For most
+// apps this should be negligible, but could become a factor if your React components
+// contain long lists or tables."
+
 const AsyncHome = Loadable({
 	...settings,
 	loader: () => import('./Home/Home.jsx')
@@ -159,7 +170,6 @@ class AppComponent extends Component {
 	}
 
 	dismissAlert() {
-		console.log('dismiss');
 		this.props.dismissAlert();
 	}
 
@@ -215,7 +225,8 @@ class AppComponent extends Component {
 			const userToken = await getUserToken(currentUser);
 			this.props.setUserToken(userToken);
 		} catch (e) {
-			alert(e);
+			this.props.setAlert('User Token Error: ', e.message);
+			setTimeout(() => this.props.dismissAlert(), 5000);
 		}
 
 		this.props.unsetUserTokenLoading();

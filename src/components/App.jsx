@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, dismissAlert } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setAlert, dismissAlert } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -21,6 +21,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setUserToken: (token) => {
 			return dispatch(setUserToken(token));
+		},
+		setAlert: (title, message) => {
+			return dispatch(setAlert(title, message));
 		},
 		dismissAlert: () => {
 			return dispatch(dismissAlert());

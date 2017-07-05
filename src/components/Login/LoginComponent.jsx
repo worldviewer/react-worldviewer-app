@@ -50,7 +50,6 @@ class LoginComponent extends Component {
 			this.props.history.push('/');
 		}
 		catch(e) {
-			console.log('error: ' + e.message);
 			this.props.setAlert('Error Logging In: ', e.message);
 			setTimeout(() => this.props.dismissAlert(), 5000);
 			this.props.unsetUserTokenLoading();
