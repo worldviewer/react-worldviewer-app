@@ -25,15 +25,14 @@ import { withRouter, Link } from 'react-router-dom';
 import './App.css';
 
 // Components
-
+// See bottom of http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
 const LoadingComponent = ({isLoading, error}) => {
 	const spinnerStyle = {
 		alignItems: "center",
 		display: "flex",
 		height: "100%",
 		justifyContent: "center",
-		overflow: "hidden",
-		position: "absolute",
+		position: "fixed",
 		width: "100%",
 		zIndex: 100
 	};
@@ -141,8 +140,6 @@ const AsyncFeedCard = Loadable({
 	loading: LoadingComponent
 });
 
-
-
 // const
 // 	mdControversy = () => (
 // 		<MuiThemeProvider>
@@ -209,7 +206,7 @@ class AppComponent extends Component {
 
 	render() {
 		return !this.props.isLoadingUserToken && (
-			<div>
+			<div className="App">
 
 				{/* Notification's onClick handler appears to be broken */}
 				<div onClick={() => this.props.dismissAlert()}>
