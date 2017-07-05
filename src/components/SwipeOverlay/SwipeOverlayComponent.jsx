@@ -230,7 +230,7 @@ class AnimatedSwipeOverlay extends Component {
 					transform: 'translateY(-40vh)'
 				} :
 				{
-					top: '30px'
+					top: '80px'
 				},
 
 			swipeOverlayStyles = this.props.isFullScreen ?

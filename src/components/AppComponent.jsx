@@ -149,19 +149,6 @@ const AsyncFeedCard = Loadable({
 	loader: () => import('./FeedCard/FeedCard.jsx')
 });
 
-// const
-// 	mdControversy = () => (
-// 		<MuiThemeProvider>
-// 			<Controversy />
-// 		</MuiThemeProvider>
-// 	),
-
-// 	mdFeedCard = () => (
-// 		<MuiThemeProvider>
-// 			<FeedCard />
-// 		</MuiThemeProvider>
-// 	);
-
 class AppComponent extends Component {
 	constructor(props) {
 		super(props);

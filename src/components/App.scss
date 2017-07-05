@@ -2,6 +2,10 @@
 	background-color: black;
 }*/
 
+.App {
+	overflow: hidden;
+}
+
 @media (min-width: 480px) {
 	.container {
 		overflow-x: hidden;

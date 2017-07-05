@@ -47,6 +47,8 @@ class FeedCardComponent extends Component {
 				{ display: 'none' } :
 				{
 					backgroundColor: '#1D1D1D',
+					borderStyle: 'solid',
+					borderWidth: '1px',
 					cursor: 'pointer',
 					left: '30px',
 					height: '36px',
