@@ -96,16 +96,41 @@
 		transition: height 1s;
 		width: 100vw;
 
-		// Refactor as SCSS mix-in
+		// Refactor as SCSS mix-in?
 	    .share {
 	    	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-			transition: width 1s, height 1s, margin 1s, opacity 1s;
+			border-style: solid;
+			border-width: 1px;
+			cursor: pointer;
+			height: 36px;
+			left: 30px;
+			padding: 3px;
+			top: 30px;
+			transition: background-color 1s, border-color 1s, opacity 1s;
+			width: 36px;
 
 			&:hover {
+				opacity: 0;
 				background-color: rgba(255, 255, 255, 0.5) !important;
-				border-color: rgba(255, 255, 255, 0.5);
 			}
 	    }
+	}
+
+    // React is not so great when it comes to altering the fill state, so
+    // what I am doing here is stacking two components so that the bottom
+    // one shows when the top one fades out, on hover.  I do this for both
+    // .share and .updown UI elements.
+	.normal {
+		background-color: #1D1D1D;
+		position: relative;
+		z-index: 10;
+	}
+
+	.hover {
+		background-color: #839BA1;
+		border-color: rgba(255, 255, 255, 0.5);
+		position: absolute;
+		z-index: 9;
 	}
 
 	.info, .author, .breadcrumbs, .ratings, .content {	
@@ -118,9 +143,6 @@
 
 		.updown {
 	    	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-			background-color: #1D1D1D;
-			border-color: #839496;
-			border-radius: 50%;
 			border-style: solid;
 			border-width: 1px;
 			cursor: pointer;
@@ -129,13 +151,12 @@
 			top: 48.8vh;
 			right: 30px;
 	    	transform: scaleY(-1);
-			transition: width 1s, height 1s, margin 1s, opacity 1s;
+			transition: background-color 1s, border-color 1s, opacity 1s;
 			width: 24px;
-			z-index: 100;
 
 			&:hover {
-				background-color: rgba(255, 255, 255, 0.5);
-				border-color: rgba(255, 255, 255, 0.5);
+				opacity: 0;
+				background-color: rgba(255, 255, 255, 0.5) !important;
 			}
 		}
 

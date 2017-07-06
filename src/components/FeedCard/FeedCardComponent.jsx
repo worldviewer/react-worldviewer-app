@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './FeedCard.css';
 import share from './share.svg';
 import down from './downdown.svg';
+import shareHover from './share-hover.svg';
+import downHover from './downdown-hover.svg';
 import chris from './chris.jpg';
 import 'font-awesome-sass-loader';
 import { withRouter } from 'react-router-dom';
@@ -45,20 +47,8 @@ class FeedCardComponent extends Component {
 			},
 
 			shareStyles = this.state.isTextExpanded ?
-				{ display: 'none' } :
-				{
-					backgroundColor: '#1D1D1D',
-					borderStyle: 'solid',
-					borderWidth: '1px',
-					cursor: 'pointer',
-					left: '30px',
-					height: '36px',
-					padding: '3px',
-					position: 'relative',
-					top: '30px',
-					width: '36px',
-					zIndex: 10
-				},
+				{ opacity: 0 } :
+				{},
 
 			updownStyles = this.state.isTextExpanded ?
 				{ transform: 'scaleY(1)' } :
@@ -76,7 +66,8 @@ class FeedCardComponent extends Component {
 					<Row>
 
 						<div className="image" style={imageStyles}>
-							<Image src={share} style={shareStyles} className="share" circle />
+							<Image src={share} style={shareStyles} className="share normal" circle />
+							<Image src={shareHover} style={shareStyles} className="share hover" circle />
 						</div>
 
 					</Row>
@@ -85,9 +76,14 @@ class FeedCardComponent extends Component {
 						<div className="info">
 							<Image
 								src={down}
-								className="updown"
+								className="updown normal"
 								style={updownStyles}
 								onClick={this.handleClick}
+								circle />
+							<Image
+								src={downHover}
+								className="updown hover"
+								style={updownStyles}
 								circle />
 							<div className="title">Were dark matter filaments "predicted"?</div>
 						</div>

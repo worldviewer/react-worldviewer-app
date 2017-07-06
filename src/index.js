@@ -21,6 +21,7 @@ import App from './components/App.jsx';
 // changes: .navbar {border-radius: none}
 // removed media query .container widths
 // added media query for margin-bottom on .navbar
+// added tranisition delay to hamburger, .navbar-toggle
 import './styles/bootstrap-solar.css';
 
 // Fonts
