@@ -9,7 +9,8 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		card: state.reducer.card,
 		base: state.reducer.base,
-		discourse: state.reducer.discourse
+		discourse: state.reducer.discourse,
+		pathname: state.router.location.pathname
 	};
 };
 

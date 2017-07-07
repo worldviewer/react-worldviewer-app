@@ -1,24 +1,26 @@
+// React Dependencies
 import React, {Component} from 'react';
+
+// UI Dependencies
+import { Grid, Row } from 'react-bootstrap';
+import debounce from 'debounce';
 import './Card.css';
 
+// Components
 // import Preload from '../Preload/Preload.jsx';
 import SwipeableViews from 'react-swipeable-views';
 import FeedCard from '../FeedCard/FeedCard.jsx';
 import SwipeOverlay from '../SwipeOverlay/SwipeOverlay.jsx';
-
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import 'font-awesome-sass-loader';
-import debounce from 'debounce';
 
+// React Router Dependencies
 import { withRouter } from 'react-router-dom';
-
-import { Grid, Row } from 'react-bootstrap';
 
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
 class CardComponent extends Component {
-	constructor(props) {
+	constructor(props, match) {
 		super(props);
 
 		injectTapEventPlugin();
@@ -29,6 +31,7 @@ class CardComponent extends Component {
 
 		this.props = props;
 		this.handleSwipe = this.handleSwipe.bind(this);
+		this.changeRoute = this.changeRoute.bind(this);
 	}
 
 	componentDidMount() {
@@ -53,6 +56,23 @@ class CardComponent extends Component {
 
 		this.props.setDiscourseLevel(index, swipeDirection);
 		this.handleSwipeOverlay();
+	}
+
+	// When we change routes, we need to update the URL
+	changeRoute() {
+		const
+			level = [
+				'worldview',
+				'model',
+				'propositional',
+				'conceptual',
+				'narrative'
+			],
+			route = '/' + this.props.match.params.controversy +
+				'/' + level[this.props.discourse.level] +
+				(this.props.discourse.level === 0 ? '/card' : '');
+
+			// this.props.history.push(route);
 	}
 
 	handleSwipeOverlay() {
@@ -96,7 +116,8 @@ class CardComponent extends Component {
 							resistance
 							ignoreNativeScroll
 							index={this.props.discourse.level}
-							onChangeIndex={this.handleSwipe}>
+							onChangeIndex={this.handleSwipe}
+							onTransitionEnd={this.changeRoute}>
 
 							<div className="Worldview">
 								<FeedCard level="worldview" />

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		card: state.card
+		card: state.reducer.card
 	};
 };
 
