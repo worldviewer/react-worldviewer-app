@@ -4,14 +4,15 @@ import React, {Component} from 'react';
 // UI Dependencies
 import { Grid, Row } from 'react-bootstrap';
 import debounce from 'debounce';
-import './CardStack.css';
+import './MainStack.css';
 
 // Components
 // import Preload from '../Preload/Preload.jsx';
 import SwipeableViews from 'react-swipeable-views';
-import FeedCard from '../FeedCard/FeedCard.jsx';
-import FeedCardList from '../FeedCardList/FeedCardList.jsx';
-import SwipeOverlay from '../SwipeOverlay/SwipeOverlay.jsx';
+import Card from '../../components/Card/Card.jsx';
+import FeedCard from '../../components/FeedCard/FeedCard.jsx';
+import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
+import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // React Router Dependencies
@@ -20,7 +21,7 @@ import { withRouter } from 'react-router-dom';
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
-class CardStackComponent extends Component {
+class MainStackComponent extends Component {
 	constructor(props, match) {
 		super(props);
 
@@ -100,7 +101,7 @@ class CardStackComponent extends Component {
 			};
 
 		return (
-			<div ref={c => this.container = c} className="CardStack">
+			<div ref={c => this.container = c} className="MainStack">
 				<Grid>
 					<Row>
 					
@@ -121,7 +122,7 @@ class CardStackComponent extends Component {
 							onTransitionEnd={this.changeRoute}>
 
 							<div className="Worldview">
-								<FeedCard level="worldview" />
+								<Card level="worldview" />
 							</div>					
 
 							<div className="Model">
@@ -148,4 +149,4 @@ class CardStackComponent extends Component {
 	}
 }
 
-export default withRouter(CardStackComponent);
+export default withRouter(MainStackComponent);

@@ -123,9 +123,14 @@ const AsyncSearch = Loadable({
 	loader: () => import('./Search/Search.jsx')
 });
 
-const AsyncCardStack = Loadable({
+const AsyncMainStack = Loadable({
 	...settings,
-	loader: () => import('./CardStack/CardStack.jsx')
+	loader: () => import('../swipes/MainStack/MainStack.jsx')
+});
+
+const AsyncFeedStack = Loadable({
+	...settings,
+	loader: () => import('../swipes/FeedStack/FeedStack.jsx')
 });
 
 const AsyncCardText = Loadable({
@@ -277,11 +282,11 @@ class AppComponent extends Component {
 					<Route path="/news" component={AsyncNews} />
 					<Route path="/search" component={AsyncSearch} />
 
-					<Route path="/:controversy/worldview/card" component={AsyncCardStack} />
+					<Route path="/:controversy/worldview/card" component={AsyncMainStack} />
 					<Route path="/:controversy/worldview/text" component={AsyncCardText} />
 					<Route path="/:controversy/:worldview?/comments" component={AsyncComments} />
 
-					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed" component={AsyncFeedCard} />
+					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed" component={AsyncFeedStack} />
 					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)" component={AsyncFeedCardList} />
 					
 					<Route component={AsyncNotFound} />
