@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './Card.css';
 
-// import Spinner from '../Spinner/Spinner.jsx';
 // import Preload from '../Preload/Preload.jsx';
 import SwipeableViews from 'react-swipeable-views';
 import FeedCard from '../FeedCard/FeedCard.jsx';

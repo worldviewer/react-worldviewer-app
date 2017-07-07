@@ -6,7 +6,6 @@ import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
 import { Notification } from 'react-notification';
 import './App.css';
-// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // Spinner / Preloader / Code-Splitter
 import Loadable from 'react-loadable';

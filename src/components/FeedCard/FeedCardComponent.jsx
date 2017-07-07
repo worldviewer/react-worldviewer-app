@@ -1,13 +1,17 @@
+// React Dependencies
 import React, { Component } from 'react';
+
+// UI Dependencies
 import './FeedCard.css';
 import share from './share.svg';
 import down from './downdown.svg';
 import shareHover from './share-hover.svg';
 import downHover from './downdown-hover.svg';
 import chris from './chris.jpg';
-import 'font-awesome-sass-loader';
-import { withRouter } from 'react-router-dom';
 import { Grid, Row, Badge, Image } from 'react-bootstrap';
+
+// React Router Dependencies
+import { withRouter } from 'react-router-dom';
 
 // Permits HTML markup encoding in feed text
 import { Parser as HtmlToReactParser } from 'html-to-react';

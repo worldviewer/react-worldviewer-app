@@ -4,14 +4,13 @@ import React, { Component } from 'react';
 // UI Dependencies
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton.js';
+import './Login.css';
 
 // AWS Dependencies
 import { login } from '../../libs/awsLib';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
-
-import './Login.css';
 
 // Much of this code comes from http://serverless-stack.com/chapters/create-a-login-page.html
 class LoginComponent extends Component {

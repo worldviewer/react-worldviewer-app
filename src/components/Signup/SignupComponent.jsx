@@ -4,15 +4,14 @@ import React, { Component } from 'react';
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
 
-// UI
+// UI Dependencies
 import { HelpBlock, FormGroup, FormControl, ControlLabel, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton';
+import './Signup.css';
+import isemail from 'isemail';
 
 // AWS Dependencies
 import { signup, confirm, authenticate } from '../../libs/awsLib';
-
-import './Signup.css';
-import isemail from 'isemail';
 
 // From http://serverless-stack.com/chapters/signup-with-aws-cognito.html
 class Signup extends Component {
