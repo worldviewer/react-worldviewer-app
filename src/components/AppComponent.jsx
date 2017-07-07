@@ -123,9 +123,9 @@ const AsyncSearch = Loadable({
 	loader: () => import('./Search/Search.jsx')
 });
 
-const AsyncCard = Loadable({
+const AsyncCardStack = Loadable({
 	...settings,
-	loader: () => import('./Card/Card.jsx')
+	loader: () => import('./CardStack/CardStack.jsx')
 });
 
 const AsyncCardText = Loadable({
@@ -277,7 +277,7 @@ class AppComponent extends Component {
 					<Route path="/news" component={AsyncNews} />
 					<Route path="/search" component={AsyncSearch} />
 
-					<Route path="/:controversy/worldview/card" component={AsyncCard} />
+					<Route path="/:controversy/worldview/card" component={AsyncCardStack} />
 					<Route path="/:controversy/worldview/text" component={AsyncCardText} />
 					<Route path="/:controversy/:worldview?/comments" component={AsyncComments} />
 

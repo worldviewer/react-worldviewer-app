@@ -4,12 +4,13 @@ import React, {Component} from 'react';
 // UI Dependencies
 import { Grid, Row } from 'react-bootstrap';
 import debounce from 'debounce';
-import './Card.css';
+import './CardStack.css';
 
 // Components
 // import Preload from '../Preload/Preload.jsx';
 import SwipeableViews from 'react-swipeable-views';
 import FeedCard from '../FeedCard/FeedCard.jsx';
+import FeedCardList from '../FeedCardList/FeedCardList.jsx';
 import SwipeOverlay from '../SwipeOverlay/SwipeOverlay.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -19,7 +20,7 @@ import { withRouter } from 'react-router-dom';
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
-class CardComponent extends Component {
+class CardStackComponent extends Component {
 	constructor(props, match) {
 		super(props);
 
@@ -99,7 +100,7 @@ class CardComponent extends Component {
 			};
 
 		return (
-			<div ref={c => this.container = c} className="Card">
+			<div ref={c => this.container = c} className="CardStack">
 				<Grid>
 					<Row>
 					
@@ -124,19 +125,19 @@ class CardComponent extends Component {
 							</div>					
 
 							<div className="Model">
-								<FeedCard level="model" />
+								<FeedCardList level="model" />
 							</div>
 
 							<div className="Propositional">
-								<FeedCard level="propositional" />
+								<FeedCardList level="propositional" />
 							</div>
 
 							<div className="Conceptual">
-								<FeedCard level="conceptual" />
+								<FeedCardList level="conceptual" />
 							</div>
 
 							<div className="Narrative">
-								<FeedCard level="narrative" />
+								<FeedCardList level="narrative" />
 							</div>
 						</SwipeableViews>
 
@@ -147,4 +148,4 @@ class CardComponent extends Component {
 	}
 }
 
-export default withRouter(CardComponent);
+export default withRouter(CardStackComponent);

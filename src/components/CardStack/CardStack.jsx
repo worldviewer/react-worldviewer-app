@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { fetchCard, fetchCardRequest, fetchCardSuccess, fetchCardError,
 	setLoaded, setDiscourseLevel, activateSwipeOverlay,
 	deactivateSwipeOverlay, setSwipeOverlaySize } from '../../redux';
-import CardComponent from './CardComponent.jsx';
+import CardStackComponent from './CardStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -46,9 +46,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	};
 };
 
-const Card = connect(
+const CardStack = connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(CardComponent);
+)(CardStackComponent);
 
-export default withRouter(Card);
+export default withRouter(CardStack);
