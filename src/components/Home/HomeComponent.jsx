@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Home.css';
+import elephant from '../../images/elephant.png';
 import { withRouter } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-bootstrap';
 
@@ -25,7 +26,7 @@ class HomeComponent extends Component {
 						<Col>
 							<img
 								alt="blind men and the elephant logo"
-								src="./elephant.png"
+								src={elephant}
 								className="Logo" />
 							<p className="testing">Testing 1 2 3 ...</p>
 						</Col>

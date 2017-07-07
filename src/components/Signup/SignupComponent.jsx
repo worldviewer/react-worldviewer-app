@@ -9,6 +9,7 @@ import { HelpBlock, FormGroup, FormControl, ControlLabel, Tooltip, OverlayTrigge
 import LoaderButton from '../LoaderButton/LoaderButton';
 import './Signup.css';
 import isemail from 'isemail';
+import elephant from '../../images/elephant.png';
 
 // AWS Dependencies
 import { signup, confirm, authenticate } from '../../libs/awsLib';
@@ -248,9 +249,16 @@ class Signup extends Component {
 	render() {
 		return (
 			<div className="Signup">
-				{ this.props.user.newUser === null
-					? this.renderForm()
-					: this.renderConfirmationForm() }
+				<div style={{position: "relative"}}>
+					<img
+						alt="blind men and the elephant logo"
+						src={elephant}
+						className="Logo" />
+
+					{ this.props.user.newUser === null
+						? this.renderForm()
+						: this.renderConfirmationForm() }
+				</div>
 			</div>
 		);
 	}

@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton.js';
 import './Login.css';
+import elephant from '../../images/elephant.png';
 
 // AWS Dependencies
 import { login } from '../../libs/awsLib';
@@ -58,44 +59,51 @@ class LoginComponent extends Component {
 	render() {
 		return (
 			<div className="Login">
-				<form onSubmit={this.handleSubmit}>
+				<div style={{position: "relative"}}>
+					<img
+						alt="blind men and the elephant logo"
+						src={elephant}
+						className="Logo" />
 
-					<FormGroup
-						controlId="username"
-						bsSize="small">
+					<form onSubmit={this.handleSubmit}>
 
-						<ControlLabel>Email</ControlLabel>
-						<FormControl
-							autoFocus
-							placeholder="Login with email"
-							type="email"
-							value={this.props.user.username}
-							onChange={this.handleUsernameChange} />
+						<FormGroup
+							controlId="username"
+							bsSize="small">
 
-					</FormGroup>
+							<ControlLabel>Email</ControlLabel>
+							<FormControl
+								autoFocus
+								placeholder="Login with email"
+								type="email"
+								value={this.props.user.username}
+								onChange={this.handleUsernameChange} />
 
-					<FormGroup
-						controlId="password"
-						bsSize="small">
+						</FormGroup>
 
-						<ControlLabel>Password</ControlLabel>
-						<FormControl
-							value={this.props.user.password}
-							onChange={this.handlePasswordChange}
-							type="password" />
+						<FormGroup
+							controlId="password"
+							bsSize="small">
 
-					</FormGroup>
+							<ControlLabel>Password</ControlLabel>
+							<FormControl
+								value={this.props.user.password}
+								onChange={this.handlePasswordChange}
+								type="password" />
 
-					<LoaderButton
-						block
-						bsSize="small"
-						disabled={ !this.validateForm() }
-						type="submit"
-						isLoading={this.props.user.tokenLoading}
-						text="Login"
-						loadingText="Logging in…" />
+						</FormGroup>
 
-				</form>
+						<LoaderButton
+							block
+							bsSize="small"
+							disabled={ !this.validateForm() }
+							type="submit"
+							isLoading={this.props.user.tokenLoading}
+							text="Login"
+							loadingText="Logging in…" />
+
+					</form>
+				</div>
 			</div>
 		);
 	}
