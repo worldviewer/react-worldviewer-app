@@ -38,6 +38,7 @@ const types = {
 	SET_LOADED: 'SET_LOADED',
 	SET_DISCOURSE_LEVEL: 'SET_DISCOURSE_LEVEL',
 	SET_CARDSTACK_LEVEL: 'SET_CARDSTACK_LEVEL',
+	SET_FEEDSTACK_LEVEL: 'SET_FEEDSTACK_LEVEL',
 
 	ACTIVATE_SWIPE_OVERLAY: 'ACTIVATE_SWIPE_OVERLAY',
 	DEACTIVATE_SWIPE_OVERLAY: 'DEACTIVATE_SWIPE_OVERLAY',
@@ -78,6 +79,11 @@ const initialState = {
 
 	cardStack: {
 		level: 2,
+		swipeDirection: 'right'
+	},
+
+	feedStack: {
+		level: 0,
 		swipeDirection: 'right'
 	},
 
@@ -346,6 +352,14 @@ export const setCardStackLevel = (level, direction) => {
 	};
 };
 
+export const setFeedStackLevel = (level, direction) => {
+	return {
+		type: types.SET_FEEDSTACK_LEVEL,
+		level,
+		direction
+	};
+};
+
 export const activateSwipeOverlay = (timeoutId) => {
 	return {
 		type: types.ACTIVATE_SWIPE_OVERLAY,
@@ -595,6 +609,16 @@ export default (state = initialState, action) => {
 				...state,
 				cardStack: {
 					...state.cardStack,
+					level: action.level,
+					swipeDirection: action.direction
+				}
+			};
+
+		case types.SET_FEEDSTACK_LEVEL:
+			return {
+				...state,
+				feedStack: {
+					...state.feedStack,
 					level: action.level,
 					swipeDirection: action.direction
 				}

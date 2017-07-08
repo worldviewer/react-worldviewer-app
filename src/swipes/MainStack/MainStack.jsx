@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { fetchCard, fetchCardRequest, fetchCardSuccess, fetchCardError,
 	setLoaded, setDiscourseLevel, activateSwipeOverlay,
-	deactivateSwipeOverlay, setSwipeOverlaySize } from '../../redux';
+	deactivateSwipeOverlay, setSwipeOverlaySize, setCardStackLevel } from '../../redux';
 import MainStackComponent from './MainStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
@@ -10,7 +10,9 @@ const mapStateToProps = (state, ownProps) => {
 		card: state.reducer.card,
 		base: state.reducer.base,
 		discourse: state.reducer.discourse,
-		pathname: state.router.location.pathname
+		pathname: state.router.location.pathname,
+		cardStack: state.reducer.cardStack,
+		feedStack: state.reducer.feedStack
 	};
 };
 
@@ -42,6 +44,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setSwipeOverlaySize: (isFullScreen) => {
 			return dispatch(setSwipeOverlaySize(isFullScreen));
+		},
+		setCardStackLevel: (level, direction) => {
+			return dispatch(setCardStackLevel(level, direction));
 		}
 	};
 };

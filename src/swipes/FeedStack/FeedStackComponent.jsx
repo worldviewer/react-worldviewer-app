@@ -8,8 +8,9 @@ import './FeedStack.css';
 
 // Components
 import SwipeableViews from 'react-swipeable-views';
-import FeedCard from '../../components/FeedCard/FeedCard.jsx';
 import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
+import FeedCard from '../../components/FeedCard/FeedCard.jsx';
+import Comments from '../../components/Comments/Comments.jsx';
 import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -27,7 +28,7 @@ class FeedStackComponent extends Component {
 		}
 
 		this.props = props;
-		// this.handleSwipe = this.handleSwipe.bind(this);
+		this.handleSwipe = this.handleSwipe.bind(this);
 		// this.changeRoute = this.changeRoute.bind(this);
 
 		this.levels = [
@@ -37,11 +38,20 @@ class FeedStackComponent extends Component {
 			'conceptual',
 			'narrative'
 		];
+	}
 
-		// // Testing
-		// this.route = '/' + this.props.match.params.controversy +
-		// 	'/' + this.levels[this.props.discourse.level] +
-		// 	(this.props.discourse.level === 0 ? '/card' : '');
+	// We have to take a look at the pathname to determine where in the FeedStack we are.
+	// Once we know, we need to save our spot.
+	componentWillMount() {
+		if (this.props.match.params.level && this.props.match.level !== 'worldview') {
+			if (this.props.match.params.feed) {
+				this.props.setFeedStackLevel(1);
+			} else if (this.props.pathname.match(/comments$/)) {
+				this.props.setFeedStackLevel(2);
+			} else {
+				this.props.setFeedStackLevel(0);
+			}
+		}
 	}
 
 	componentDidMount() {
@@ -54,7 +64,7 @@ class FeedStackComponent extends Component {
 		const
 			swipeDirection = index > previous ? 'right' : 'left';
 
-		// this.props.setDiscourseLevel(index, swipeDirection);
+		this.props.setFeedStackLevel(index, swipeDirection);
 		// this.handleSwipeOverlay();
 	}
 
@@ -107,7 +117,7 @@ class FeedStackComponent extends Component {
 							containerStyle={containerStyles}
 							resistance
 							ignoreNativeScroll
-							index={this.props.discourse.level}
+							index={this.props.feedStack.level}
 							onChangeIndex={this.handleSwipe}
 							onTransitionEnd={this.changeRoute}>
 
@@ -117,6 +127,10 @@ class FeedStackComponent extends Component {
 
 							<div className="FeedCard">
 								<FeedCard level={currentLevel} />
+							</div>
+
+							<div className="Comments">
+								<Comments level={currentLevel} />
 							</div>
 						</SwipeableViews>
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CardStackComponent from './CardStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setDiscourseLevel, activateSwipeOverlay, deactivateSwipeOverlay, setSwipeOverlaySize, setCardStackLevel } from '../../redux.js';
+import { setDiscourseLevel, setCardStackLevel } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -15,15 +15,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		setDiscourseLevel: (level, direction) => {
 			return dispatch(setDiscourseLevel(level, direction));
-		},
-		activateSwipeOverlay: (timeoutId) => {
-			return dispatch(activateSwipeOverlay(timeoutId));
-		},
-		deactivateSwipeOverlay: () => {
-			return dispatch(deactivateSwipeOverlay());
-		},
-		setSwipeOverlaySize: (isFullScreen) => {
-			return dispatch(setSwipeOverlaySize(isFullScreen));
 		},
 		setCardStackLevel: (level, direction) => {
 			return dispatch(setCardStackLevel(level, direction));

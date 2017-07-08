@@ -10,7 +10,9 @@ import './CardStack.css';
 import SwipeableViews from 'react-swipeable-views';
 import Browser from '../../components/Browser/Browser.jsx';
 import CardText from '../../components/CardText/CardText.jsx';
+import Comments from '../../components/Comments/Comments.jsx';
 import Card from '../../components/Card/Card.jsx';
+import FeedCard from '../../components/FeedCard/FeedCard.jsx';
 import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
 import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -127,6 +129,14 @@ class CardStackComponent extends Component {
 
 							<div className="FeedCardList">
 								<FeedCardList level="worldview" />
+							</div>
+
+							<div className="FeedCard">
+								<FeedCard level="worldview" />
+							</div>
+
+							<div className="Comments">
+								<Comments />
 							</div>
 						</SwipeableViews>
 

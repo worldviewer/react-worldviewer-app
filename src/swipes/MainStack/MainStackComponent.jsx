@@ -10,7 +10,7 @@ import './MainStack.css';
 // import Preload from '../Preload/Preload.jsx';
 import SwipeableViews from 'react-swipeable-views';
 import CardStack from '../CardStack/CardStack.jsx';
-import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
+import FeedStack from '../FeedStack/FeedStack.jsx';
 import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -31,24 +31,53 @@ class MainStackComponent extends Component {
 		}
 
 		this.props = props;
+
+		this.discourseLevels = [
+			'worldview',
+			'model',
+			'propositional',
+			'conceptual',
+			'narrative'
+		];
+
+		this.cardStackLevels = [
+			'/browser',
+			'/text',
+			'/card',
+			'',
+			'/' + this.props.match.params.feed || '/feed',
+			'/comments'
+		];
+
+		this.feedStackLevels = [
+			'',
+			'/' + (this.props.match.params.feed || 'feed'),
+			'/comments'			
+		];
+
+		// When we land on this page without swiping, we determine and set the horizontal swipe
+		// position according to the cardStackLevel prop passed on by the router
+		if (this.props.cardStackLevel) {
+			this.props.setCardStackLevel(this.props.cardStackLevel, 'right');			
+		}
+
+		// Same sort of situation for discourse level, but we have to also reverse-engineer the
+		// discourse level number from the :level route parameter, and we use the discourseLevel
+		// router prop to differentiate a landing from a swipe.  On landing, we must set the
+		// discourse level (since this is otherwise set by swiping).
+		if (this.props.discourseLevel) {
+			this.props.setDiscourseLevel(this.discourseLevels.indexOf(this.props.match.params.level), 'up');
+		}
+
 		this.handleSwipe = this.handleSwipe.bind(this);
 		this.changeRoute = this.changeRoute.bind(this);
 	}
 
 	componentDidMount() {
-		this.deactivateSwipeOverlay = debounce(this.props.deactivateSwipeOverlay, this.props.discourse.isFullScreen ? 3000 : 6000);
+		this.deactivateSwipeOverlay = debounce(this.props.deactivateSwipeOverlay,
+			this.props.discourse.isFullScreen ? 3000 : 6000);
 
 		window.onscroll = function () { window.scrollTo(0, 0); };
-	}
-
-	handleAssetLoadError(error) {
-		console.log('Error loading overlay images ...');
-		console.log(error);
-	}
-
-	handleAssetLoadSuccess() {
-		console.log('All assets loaded successfully.');
-		this.props.setLoaded();
 	}
 
 	handleSwipe(index, previous) {
@@ -59,21 +88,18 @@ class MainStackComponent extends Component {
 		this.handleSwipeOverlay();
 	}
 
-	// When we change routes, we need to update the URL
+	// When we swipe, we need to update the URL.  This may not be the sort of behavior we
+	// want for feedStack; it might be better for swiping to always start the person at
+	// the FeedList component (?)
 	changeRoute() {
 		const
-			level = [
-				'worldview',
-				'model',
-				'propositional',
-				'conceptual',
-				'narrative'
-			],
 			route = '/' + this.props.match.params.controversy +
-				'/' + level[this.props.discourse.level] +
-				(this.props.discourse.level === 0 ? '/card' : '');
+				'/' + this.discourseLevels[this.props.discourse.level] +
+				(this.props.discourse.level === 0 ?
+					this.cardStackLevels[this.props.cardStack.level] :
+					this.feedStackLevels[this.props.feedStack.level]);
 
-			// this.props.history.push(route);
+			this.props.history.push(route);
 	}
 
 	handleSwipeOverlay() {
@@ -125,19 +151,19 @@ class MainStackComponent extends Component {
 							</div>					
 
 							<div className="Model">
-								<FeedCardList level="model" />
+								<FeedStack level="model" />
 							</div>
 
 							<div className="Propositional">
-								<FeedCardList level="propositional" />
+								<FeedStack level="propositional" />
 							</div>
 
 							<div className="Conceptual">
-								<FeedCardList level="conceptual" />
+								<FeedStack level="conceptual" />
 							</div>
 
 							<div className="Narrative">
-								<FeedCardList level="narrative" />
+								<FeedStack level="narrative" />
 							</div>
 						</SwipeableViews>
 

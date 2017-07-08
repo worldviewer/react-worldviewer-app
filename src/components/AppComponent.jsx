@@ -128,30 +128,30 @@ const AsyncMainStack = Loadable({
 	loader: () => import('../swipes/MainStack/MainStack.jsx')
 });
 
-const AsyncFeedStack = Loadable({
-	...settings,
-	loader: () => import('../swipes/FeedStack/FeedStack.jsx')
-});
+// const AsyncFeedStack = Loadable({
+// 	...settings,
+// 	loader: () => import('../swipes/FeedStack/FeedStack.jsx')
+// });
 
-const AsyncCardText = Loadable({
-	...settings,
-	loader: () => import('./CardText/CardText.jsx')
-});
+// const AsyncCardText = Loadable({
+// 	...settings,
+// 	loader: () => import('./CardText/CardText.jsx')
+// });
 
-const AsyncComments = Loadable({
-	...settings,
-	loader: () => import('./Comments/Comments.jsx')
-});
+// const AsyncComments = Loadable({
+// 	...settings,
+// 	loader: () => import('./Comments/Comments.jsx')
+// });
 
-const AsyncFeedCardList = Loadable({
-	...settings,
-	loader: () => import('./FeedCardList/FeedCardList.jsx')
-});
+// const AsyncFeedCardList = Loadable({
+// 	...settings,
+// 	loader: () => import('./FeedCardList/FeedCardList.jsx')
+// });
 
-const AsyncFeedCard = Loadable({
-	...settings,
-	loader: () => import('./FeedCard/FeedCard.jsx')
-});
+// const AsyncFeedCard = Loadable({
+// 	...settings,
+// 	loader: () => import('./FeedCard/FeedCard.jsx')
+// });
 
 class AppComponent extends Component {
 	constructor(props) {
@@ -276,20 +276,69 @@ class AppComponent extends Component {
 				</Navbar>
 
 				<Switch>
-					<Route exact path="/" component={AsyncHome} />
-					<Route exact path="/login" component={AsyncLogin} />
-					<Route exact path="/signup" component={AsyncSignup} />
-					<Route path="/news" component={AsyncNews} />
-					<Route path="/search" component={AsyncSearch} />
+					<Route
+						exact
+						path="/"
+						component={AsyncHome} />
+					<Route
+						exact
+						path="/login"
+						component={AsyncLogin} />
+					<Route
+						exact
+						path="/signup"
+						component={AsyncSignup} />
+					<Route
+						path="/news"
+						component={AsyncNews} />
+					<Route
+						path="/search"
+						component={AsyncSearch} />
 
-					<Route path="/:controversy/worldview/card" component={AsyncMainStack} />
-					<Route path="/:controversy/worldview/text" component={AsyncCardText} />
-					<Route path="/:controversy/:worldview?/comments" component={AsyncComments} />
+					{/* https://stackoverflow.com/questions/27864720/react-router-pass-props-to-handler-component */}
+					<Route
+						path="/:controversy/:level(worldview)/card"
+						render={ (props) =>
+							<AsyncMainStack
+								cardStackLevel={2}
+								discourseLevel={true}
+								{...props}/> } />
 
-					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed" component={AsyncFeedStack} />
-					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)" component={AsyncFeedCardList} />
+					<Route
+						path="/:controversy/:level(worldview)/text"
+						render={ (props) =>
+							<AsyncMainStack
+								cardStackLevel={1}
+								discourseLevel={true}
+								{...props}/> } />
+
+					<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/comments"
+						render={ (props) =>
+							<AsyncMainStack
+								cardStackLevel={5}
+								discourseLevel={true}
+								{...props}/> } />
+
+					{/* This route will only work if :feed is valid, otherwise should dump user onto FeedCardList.
+					    Swiping right from FeedCardList should be disabled, and will be triggered by selection. */}
+					<Route
+						path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed"
+						render={ (props) =>
+							<AsyncMainStack
+								cardStackLevel={4}
+								discourseLevel={true}
+								{...props}/> } />
+
+					<Route
+						path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)"
+						render={ (props) =>
+							<AsyncMainStack
+								cardStackLevel={3}
+								discourseLevel={true}
+								{...props}/> } />
 					
-					<Route component={AsyncNotFound} />
+					<Route
+						component={AsyncNotFound} />
 				</Switch>
 			</div>
 		);

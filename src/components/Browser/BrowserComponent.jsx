@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Browser.css';
 import { withRouter } from 'react-router-dom';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 class BrowserComponent extends Component {
 	constructor(props) {
@@ -15,8 +16,14 @@ class BrowserComponent extends Component {
 
 	render() {
 		return (
-			<div>
-				<h3><code>Browser</code></h3>
+			<div className="Browser">
+				<Grid>
+					<Row>
+						<Col>
+							<h3><code>Browser</code></h3>
+						</Col>
+					</Row>
+				</Grid>
 			</div>
 		);
 	}
