@@ -20,7 +20,7 @@ class FeedStackComponent extends Component {
 	constructor(props) {
 		super(props);
 
-		injectTapEventPlugin();
+		// injectTapEventPlugin();
 
 		this.state = {
 			id: null
@@ -30,21 +30,13 @@ class FeedStackComponent extends Component {
 		// this.handleSwipe = this.handleSwipe.bind(this);
 		// this.changeRoute = this.changeRoute.bind(this);
 
-		// this.levels = [
-		// 	'worldview',
-		// 	'model',
-		// 	'propositional',
-		// 	'conceptual',
-		// 	'narrative'
-		// ];
-
-		// this.classNames = [
-		// 	'Worldview',
-		// 	'Model',
-		// 	'Propositional',
-		// 	'Conceptual',
-		// 	'Narrative'
-		// ];
+		this.levels = [
+			'worldview',
+			'model',
+			'propositional',
+			'conceptual',
+			'narrative'
+		];
 
 		// // Testing
 		// this.route = '/' + this.props.match.params.controversy +
@@ -57,16 +49,6 @@ class FeedStackComponent extends Component {
 
 		// window.onscroll = function () { window.scrollTo(0, 0); };
 	}
-
-	// handleAssetLoadError(error) {
-	// 	console.log('Error loading overlay images ...');
-	// 	console.log(error);
-	// }
-
-	// handleAssetLoadSuccess() {
-	// 	console.log('All assets loaded successfully.');
-	// 	this.props.setLoaded();
-	// }
 
 	handleSwipe(index, previous) {
 		const
@@ -105,28 +87,6 @@ class FeedStackComponent extends Component {
 			},
 
 			currentLevel = this.levels[this.props.discourse.level];
-			// upperLevel = currentLevel === 0 ?
-			// 	null :
-			// 	this.levels[this.props.discourse.level - 1],
-			// lowerLevel = currentLevel === 4 ?
-			// 	null :
-			// 	this.levels[this.props.discourse.level + 1];
-
-			// currentClass = this.classNames[this.props.discourse.level],
-			// upperClass = currentLevel === 0 ?
-			// 	null :
-			// 	this.classNames[this.props.discourse.level - 1],
-			// lowerClass = currentLevel === 4 ?
-			// 	null :
-			// 	this.classNames[this.props.discourse.level + 1];			
-
-			// console.log(upperLevel);
-			// console.log(currentLevel);
-			// console.log(lowerLevel);
-
-			// console.log(upperClass);
-			// console.log(currentClass);
-			// console.log(lowerClass);
 
 		return (
 			<div ref={c => this.container = c} className="FeedStack">

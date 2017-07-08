@@ -37,6 +37,7 @@ const types = {
 	SET_HEIGHT: 'SET_HEIGHT',
 	SET_LOADED: 'SET_LOADED',
 	SET_DISCOURSE_LEVEL: 'SET_DISCOURSE_LEVEL',
+	SET_CARDSTACK_LEVEL: 'SET_CARDSTACK_LEVEL',
 
 	ACTIVATE_SWIPE_OVERLAY: 'ACTIVATE_SWIPE_OVERLAY',
 	DEACTIVATE_SWIPE_OVERLAY: 'DEACTIVATE_SWIPE_OVERLAY',
@@ -65,6 +66,19 @@ const initialState = {
 		active: false,
 		title: '',
 		message: ''
+	},
+
+	discourse: {
+		level: 0,
+		overlay: false,
+		swipeDirection: 'up',
+		isFullScreen: false,
+		timeoutId: null
+	},
+
+	cardStack: {
+		level: 2,
+		swipeDirection: 'right'
 	},
 
 	base: {
@@ -133,14 +147,6 @@ const initialState = {
 		propositional: [],
 		conceptual: [],
 		narrative: []
-	},
-
-	discourse: {
-		level: 0,
-		overlay: false,
-		swipeDirection: 'up',
-		isFullScreen: false,
-		timeoutId: null
 	}
 };
 
@@ -327,6 +333,14 @@ export const setLoaded = () => {
 export const setDiscourseLevel = (level, direction) => {
 	return {
 		type: types.SET_DISCOURSE_LEVEL,
+		level,
+		direction
+	};
+};
+
+export const setCardStackLevel = (level, direction) => {
+	return {
+		type: types.SET_CARDSTACK_LEVEL,
 		level,
 		direction
 	};
@@ -571,6 +585,16 @@ export default (state = initialState, action) => {
 				...state,
 				discourse: {
 					...state.discourse,
+					level: action.level,
+					swipeDirection: action.direction
+				}
+			};
+
+		case types.SET_CARDSTACK_LEVEL:
+			return {
+				...state,
+				cardStack: {
+					...state.cardStack,
 					level: action.level,
 					swipeDirection: action.direction
 				}

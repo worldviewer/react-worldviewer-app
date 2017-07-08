@@ -9,8 +9,7 @@ import './MainStack.css';
 // Components
 // import Preload from '../Preload/Preload.jsx';
 import SwipeableViews from 'react-swipeable-views';
-import Card from '../../components/Card/Card.jsx';
-import FeedCard from '../../components/FeedCard/FeedCard.jsx';
+import CardStack from '../CardStack/CardStack.jsx';
 import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
 import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -122,7 +121,7 @@ class MainStackComponent extends Component {
 							onTransitionEnd={this.changeRoute}>
 
 							<div className="Worldview">
-								<Card level="worldview" />
+								<CardStack level="worldview" />
 							</div>					
 
 							<div className="Model">

@@ -9,7 +9,8 @@ import './CardStack.css';
 // Components
 import SwipeableViews from 'react-swipeable-views';
 import Browser from '../../components/Browser/Browser.jsx';
-import FeedCard from '../../components/FeedCard/FeedCard.jsx';
+import CardText from '../../components/CardText/CardText.jsx';
+import Card from '../../components/Card/Card.jsx';
 import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
 import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -21,31 +22,23 @@ class CardStackComponent extends Component {
 	constructor(props) {
 		super(props);
 
-		injectTapEventPlugin();
+		// injectTapEventPlugin();
 
 		this.state = {
 			id: null
 		}
 
 		this.props = props;
-		// this.handleSwipe = this.handleSwipe.bind(this);
+		this.handleSwipe = this.handleSwipe.bind(this);
 		// this.changeRoute = this.changeRoute.bind(this);
 
-		// this.levels = [
-		// 	'worldview',
-		// 	'model',
-		// 	'propositional',
-		// 	'conceptual',
-		// 	'narrative'
-		// ];
-
-		// this.classNames = [
-		// 	'Worldview',
-		// 	'Model',
-		// 	'Propositional',
-		// 	'Conceptual',
-		// 	'Narrative'
-		// ];
+		this.levels = [
+			'worldview',
+			'model',
+			'propositional',
+			'conceptual',
+			'narrative'
+		];
 
 		// // Testing
 		// this.route = '/' + this.props.match.params.controversy +
@@ -59,21 +52,11 @@ class CardStackComponent extends Component {
 		// window.onscroll = function () { window.scrollTo(0, 0); };
 	}
 
-	// handleAssetLoadError(error) {
-	// 	console.log('Error loading overlay images ...');
-	// 	console.log(error);
-	// }
-
-	// handleAssetLoadSuccess() {
-	// 	console.log('All assets loaded successfully.');
-	// 	this.props.setLoaded();
-	// }
-
 	handleSwipe(index, previous) {
-		// const
-		// 	swipeDirection = index > previous ? 'right' : 'left';
+		const
+			swipeDirection = index > previous ? 'right' : 'left';
 
-		// this.props.setDiscourseLevel(index, swipeDirection);
+		this.props.setCardStackLevel(index, swipeDirection);
 		// this.handleSwipeOverlay();
 	}
 
@@ -105,29 +88,7 @@ class CardStackComponent extends Component {
 				height: '100vh'
 			},
 
-			// currentLevel = this.levels[this.props.discourse.level],
-			// upperLevel = currentLevel === 0 ?
-			// 	null :
-			// 	this.levels[this.props.discourse.level - 1],
-			// lowerLevel = currentLevel === 4 ?
-			// 	null :
-			// 	this.levels[this.props.discourse.level + 1],
-
-			// currentClass = this.classNames[this.props.discourse.level],
-			// upperClass = currentLevel === 0 ?
-			// 	null :
-			// 	this.classNames[this.props.discourse.level - 1],
-			// lowerClass = currentLevel === 4 ?
-			// 	null :
-			// 	this.classNames[this.props.discourse.level + 1];			
-
-			// console.log(upperLevel);
-			// console.log(currentLevel);
-			// console.log(lowerLevel);
-
-			// console.log(upperClass);
-			// console.log(currentClass);
-			// console.log(lowerClass);
+			currentLevel = this.levels[this.props.discourse.level];
 
 		return (
 			<div ref={c => this.container = c} className="CardStack">
@@ -164,12 +125,8 @@ class CardStackComponent extends Component {
 								<Card />
 							</div>
 
-							<div ClassName="FeedCardList">
-								<FeedCardList level="worldview">
-							</div>
-
-							<div className="Comments">
-								<Comments />
+							<div className="FeedCardList">
+								<FeedCardList level="worldview" />
 							</div>
 						</SwipeableViews>
 
