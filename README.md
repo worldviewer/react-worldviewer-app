@@ -52,6 +52,8 @@ Since one of the primary objectives of the app is to teach the epistemological s
 
 Simulated feed data is now created for all five levels of discourse (worldview, model, propositional, concept and narrative) for the Halton Arp controversy.  This is the first time that this categorization scheme has actually been put to some sort of real-world application, and it seems to work pretty well.  I noticed along the way that it is not always obvious which of the model, propositional or conceptual categories that some piece of information should bin into (so users may need some assistance built into the app to guide them on this); I think the best strategy for this would be to include questions at the point of content submission (with links to jump to the other levels).  In total, I was able to generate 67 (!) sample feed submissions -- which should provide for an extremely realistic experience with the demo.
 
+Algolia search has been integrated, but there remain a variety of minor bugs.  And the pages which will house these results are yet to be filled out yet.
+
 I've updated the scraper script to grab all of the large-resolution graphics from the G+ collection, but for some reason, G+ has really screwed this up.  About a third of these links were very low rez, so I had to download them by hand.  And I think this means that I need to take care to actually check these into the repository -- so that I never have to do this again.
 
 One thing that I'm noticing about Deep Zoomer is that it's very important that the resolution be known for each of these large pyramid-encoded images.  If these values are for some reason off, then the result is really bad.
