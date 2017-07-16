@@ -18,7 +18,7 @@ const CustomHighlight = connectHighlight(
 			parsedHit = highlight({ attributeName, hit, highlightProperty:
 				'_highlightResult' }),
 			highlightedHits = parsedHit.map(part => {
-				if (part.isHighlighted) return <mark key={counter++}>{part.value}</mark>;
+				if (part.isHighlighted) return <mark key={++counter}>{part.value}</mark>;
 				return h.parse(part.value);
 			});
 
@@ -46,7 +46,7 @@ class SearchResultComponent extends Component {
 	}
 
 	componentDidMount() {
-		console.log(this.props);
+
 	}
 
 	// Notice that we pass attributeName prop into the CustomHighlight component.

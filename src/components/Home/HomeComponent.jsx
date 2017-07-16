@@ -41,7 +41,7 @@ class HomeComponent extends Component {
 
 						<SearchBox
 							className="SearchBox"
-							translations={{placeholder: 'Enter a Scientific Controversy ...'}} />
+							translations={{placeholder: 'Enter a Controversy'}} />
 
 						<Hits
 							hitComponent={SearchResult} />
