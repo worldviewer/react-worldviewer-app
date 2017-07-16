@@ -23,6 +23,7 @@
     "react-animations": "^0.1.0",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.6.1",
+    "react-instantsearch": "^4.0.8",
     "react-loadable": "^4.0.3",
     "react-notification": "^6.7.1",
     "react-preload": "^0.5.1",

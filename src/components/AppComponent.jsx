@@ -6,6 +6,7 @@ import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
 import { Notification } from 'react-notification';
 import './App.css';
+import '../styles/react-instantsearch-algolia-theme.css';
 
 // Spinner / Preloader / Code-Splitter
 import Loadable from 'react-loadable';
@@ -227,6 +228,13 @@ class AppComponent extends Component {
 	}
 
 	render() {
+		const NavTitleStyle = {
+			fontFamily: 'LeagueGothic',
+			textTransform: 'uppercase',
+			fontSize: '20px',
+			letterSpacing: '1px'
+		}
+
 		return !this.props.isLoadingUserToken && (
 			<div className="App">
 
@@ -242,7 +250,7 @@ class AppComponent extends Component {
 
 					<Navbar.Header>
 						<Navbar.Brand>
-							<Link to="/">Controversies of Science</Link>
+							<Link to="/" style={NavTitleStyle}>Controversies of Science</Link>
 						</Navbar.Brand>
 						<Navbar.Toggle />
 					</Navbar.Header>

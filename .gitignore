@@ -22,3 +22,4 @@ yarn-error.log*
 
 src/**/*.css
 !src/styles/bootstrap-solar.css
+!src/styles/react-instantsearch-algolia.css
