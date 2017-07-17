@@ -1,6 +1,5 @@
 // React Dependencies
 import React, { Component } from 'react';
-import ReactDOMServer from 'react-dom/server';
 
 // UI Dependencies
 import { Row, Col } from 'react-bootstrap';
@@ -14,55 +13,24 @@ import { connectHighlight } from 'react-instantsearch/connectors';
 
 // HTML-to-React Parser Dependencies
 import { Parser as HtmlToReactParser } from 'html-to-react';
-import HtmlToReact from 'html-to-react';
 
-const isValidNode = () => {
-	return true;
-};
-
-// Order matters. Instructions are processed in the order they're defined.
-let processNodeDefinitions = new HtmlToReact.ProcessNodeDefinitions(React);
-let processingInstructions = [
-	{
-		// Custom <mark> processing 
-		shouldProcessNode: function (node) {
-			return node.parent && node.parent.name && node.parent.name === 'mark';
-		},
-		processNode: function (node, children) {
-			return node.data;
-		}
-	}, {
-		// Anything else 
-		shouldProcessNode: function (node) {
-			// console.log('shouldProcessNode: ', node);
-			return true;
-		},
-		processNode: processNodeDefinitions.processDefaultNode
-	}];
-
-let counter = 0;
-
-// TODO: Fix this so that the mark tag does not disrupt the HTML styling.
-// https://www.npmjs.com/package/html-to-react
+// This is a custom combination of two tools:
+// (1) https://www.npmjs.com/package/html-to-react
+// (2) https://community.algolia.com/react-instantsearch/connectors/connectHighlight.html 
 const CustomHighlight = connectHighlight(
 	({ highlight, attributeName, hit, highlightProperty }) => {
 		const
 			h = new HtmlToReactParser(),
+
 			parsedHit = highlight({ attributeName, hit, highlightProperty:
 				'_highlightResult' }),
+
 			highlightedHits = parsedHit.map(part => {
 				if (part.isHighlighted) return '<mark>' + part.value + '</mark>';
 				return part.value;
-			});
+			}),
 
-		const
 			reactComponent = highlightedHits.reduce((prev, cur) => prev + cur);
-
-		// const
-		// 	reactComponent = h.parse(highlightedHits);
-			// reactComponent = h.parseWithInstructions(highlightedHits,
-				// isValidNode, processingInstructions);
-			// reactHtml = ReactDOMServer.renderToStaticMarkup(reactComponent);
 
 		return <div>{h.parse(reactComponent)}</div>;
 	}
