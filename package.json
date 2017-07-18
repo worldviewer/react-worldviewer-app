@@ -13,7 +13,6 @@
     "gsap": "^1.19.1",
     "history": "^4.6.2",
     "html-to-react": "^1.2.11",
-    "isemail": "^3.0.0",
     "object.values": "^1.0.4",
     "prop-types": "^15.5.10",
     "radium": "^0.19.1",
@@ -36,7 +35,8 @@
     "react-toolbox": "^2.0.0-beta.12",
     "redux": "^3.7.0",
     "redux-thunk": "^2.2.0",
-    "synchronize": "^2.0.0"
+    "synchronize": "^2.0.0",
+    "validate.io-email-address": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer": "7.1.0",
@@ -93,7 +93,10 @@
     "build": "npm run build-css && react-scripts build",
     "test": "node scripts/test.js --env=jsdom",
     "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "predeploy": "npm run build",
+    "deploy": "aws s3 sync build/ s3://controversies-of-science-app",
+    "postdeploy": "aws cloudfront create-invalidation --distribution-id E36UDST6LMBBKS --paths '/*'"
   },
   "jest": {
     "collectCoverageFrom": [

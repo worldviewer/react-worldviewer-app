@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { HelpBlock, FormGroup, FormControl, ControlLabel, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton';
 import './Signup.css';
-import isemail from 'isemail';
+import isEmail from 'validate.io-email-address';
 import elephant from '../../images/elephant.png';
 
 // AWS Dependencies
@@ -36,7 +36,7 @@ class Signup extends Component {
 	}
 
 	validateForm() {
-		return isemail.validate(this.props.user.username)
+		return isEmail(this.props.user.username)
 			&& this.getPasswordValidationState(this.props.user.password)
 			&& this.props.user.password === this.props.user.confirmPassword;
 	}
@@ -79,7 +79,7 @@ class Signup extends Component {
 	}
 
 	updateUsernameValidationState(username) {
-		const usernameValidationState = isemail.validate(username) ? 'success' : 'error';
+		const usernameValidationState = isEmail(username) ? 'success' : 'error';
 		this.props.setUsernameValidation(usernameValidationState);
 	}
 
