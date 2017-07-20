@@ -9,7 +9,6 @@ import model from '../../images/model-node.svg';
 import propositional from '../../images/propositional-node.svg';
 import conceptual from '../../images/conceptual-node.svg';
 import narrative from '../../images/narrative-node.svg';
-
 import './SearchResult.css';
 
 // React Router Dependencies
@@ -69,7 +68,7 @@ class SearchResultComponent extends Component {
 			'narrative': narrative
 		}
 	}
-
+	
 	componentDidMount() {
 		const node = ReactDOM.findDOMNode(this.refs['Hit']);
 
