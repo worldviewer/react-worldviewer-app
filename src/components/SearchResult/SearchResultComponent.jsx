@@ -1,8 +1,15 @@
 // React Dependencies
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 // UI Dependencies
 import { Row, Col } from 'react-bootstrap';
+import worldview from '../../images/worldview-node.svg';
+import model from '../../images/model-node.svg';
+import propositional from '../../images/propositional-node.svg';
+import conceptual from '../../images/conceptual-node.svg';
+import narrative from '../../images/narrative-node.svg';
+
 import './SearchResult.css';
 
 // React Router Dependencies
@@ -41,7 +48,7 @@ class SearchResultComponent extends Component {
 		super(props);
 
 		this.state = {
-
+			hitHeight: 0
 		};
 
 		this.props = props;
@@ -53,10 +60,24 @@ class SearchResultComponent extends Component {
 			'cardParagraph': 'Card Paragraph',
 			'postParagraph': 'Post Paragraph'
 		};
+
+		this.discourseLevelGraphics = {
+			'worldview': worldview,
+			'model': model,
+			'propositional': propositional,
+			'conceptual': conceptual,
+			'narrative': narrative
+		}
 	}
 
 	componentDidMount() {
+		const node = ReactDOM.findDOMNode(this.refs['Hit']);
 
+		if (node) {
+			this.setState({
+				hitHeight: node.clientHeight
+			});
+		}
 	}
 
 	// Notice that we pass attributeName prop into the CustomHighlight component.
@@ -98,12 +119,13 @@ class SearchResultComponent extends Component {
 				null,
 
 			discourseLevel = this.props.hit && this.props.hit.discourseLevel ?
-				<span><b>Discourse Level: </b>{this.props.hit.discourseLevel}</span> :
-				null;
+				this.discourseLevelGraphics[this.props.hit.discourseLevel] :
+				worldview;
 
 		return this.props.hit ?
 			(<Row
 				className="hit"
+				ref="Hit"
 				key={this.props.hit.objectID}>
 
 				<Col xs={3} className="hit-image">
@@ -111,17 +133,27 @@ class SearchResultComponent extends Component {
 						alt="controversy card"
 						src={this.props.hit.images.thumbnail.url}
 						className="CardThumbnail" />
+
+					{ this.state.hitHeight > 147 && <img
+						className="hit-level"
+						src={discourseLevel}
+						alt="the level of discussion" /> }
 				</Col>
 				<Col xs={9}>
-					<span className="hit-text" style={hitTextStyle}>
+					<span
+						className="hit-text"
+						style={hitTextStyle}>
+
 						{isTitleOrSummary ? null : attributeHeader}
 						<CustomHighlight
 							attributeName={attributeName}
 							hit={this.props.hit} />
+
 					</span>
-					<span className="hit-level">
-						{discourseLevel}
-					</span>
+					{ this.state.hitHeight <= 147 && <img
+						className="hit-level"
+						src={discourseLevel}
+						alt="the level of discussion" /> }
 				</Col>
 		
 			</Row>) :
