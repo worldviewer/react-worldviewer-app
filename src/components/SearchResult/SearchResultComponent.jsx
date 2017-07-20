@@ -135,7 +135,7 @@ class SearchResultComponent extends Component {
 						className="CardThumbnail" />
 
 					{ this.state.hitHeight > 147 && <img
-						className="hit-level"
+						className="hit-level Left"
 						src={discourseLevel}
 						alt="the level of discussion" /> }
 				</Col>
@@ -151,7 +151,7 @@ class SearchResultComponent extends Component {
 
 					</span>
 					{ this.state.hitHeight <= 147 && <img
-						className="hit-level"
+						className="hit-level Right"
 						src={discourseLevel}
 						alt="the level of discussion" /> }
 				</Col>

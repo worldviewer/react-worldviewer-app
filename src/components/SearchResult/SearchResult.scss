@@ -33,4 +33,9 @@
 	height: 25px;
 	margin-bottom: 5px;
 	margin-top: 5px;
+
+	&.Right {
+		position: relative;
+		right: 4px;
+	}
 }
