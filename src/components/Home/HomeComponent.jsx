@@ -18,7 +18,7 @@ import { withRouter } from 'react-router-dom';
 // React Router / Algolia Search integration
 const
 	updateAfter = 700,
-	createURL = state => `?${qs.stringify(state)}`,
+	createURL = state => state ? `?${qs.stringify(state)}` : '',
 	searchStateToUrl = (props, searchState) =>
 		searchState ? `${props.location.pathname}${createURL(searchState)}` : '';
 
@@ -48,7 +48,33 @@ class HomeComponent extends Component {
 		this.setState({ searchState });
 	};
 
+	// componentWillReceiveProps(nextProps) {
+	// 	if (nextProps.router.location
+	// 		&& nextProps.router.location.state
+	// 		&& this.props.router.location
+	// 		&& this.props.router.location.state) {
+
+	// 		if (nextProps.router.location.state.query === '' &&
+	// 			this.props.router.location.state.query !== '') {
+
+	// 			this.props.history.push(
+	// 				searchStateToUrl(nextProps, ''),
+	// 				''
+	// 			);
+	// 			this.setState({ searchState: '' });
+
+	// 		}
+	// 	}
+	// }
+
 	render() {
+		// Be very careful with this: Do not assume that this.props.router.location.state is there!
+		const isSearch = this.props.router.location && this.props.router.location.search ? 
+			this.props.router.location.state.query !== '' :
+			false;
+
+		console.log('isSearch: ' + isSearch);
+
 		return (
 			<div className="Home">
 
@@ -71,12 +97,14 @@ class HomeComponent extends Component {
 							className="SearchBox"
 							translations={{placeholder: 'Enter a Controversy'}} />
 
-						{ this.props.query && <Stats /> }
-						{ this.props.query && <Hits hitComponent={SearchResult} /> }
+						{ isSearch && <Stats /> }
+						{ isSearch && <Hits hitComponent={SearchResult} /> }
+
+						{ isSearch && <SearchResult /> }
 
 					</Grid>
 
-					{ this.props.query && <Pagination showLast /> }
+					{ isSearch && <Pagination showLast /> }
 
 				</InstantSearch>
 

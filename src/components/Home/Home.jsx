@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		query: state.router.location.state.query
+		router: state.router
 	};
 };
 
