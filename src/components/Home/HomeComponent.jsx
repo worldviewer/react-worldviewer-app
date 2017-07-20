@@ -18,7 +18,7 @@ import { withRouter } from 'react-router-dom';
 // React Router / Algolia Search integration
 const
 	updateAfter = 700,
-	createURL = state => state ? `?${qs.stringify(state)}` : '',
+	createURL = state => `?${qs.stringify(state)}`,
 	searchStateToUrl = (props, searchState) =>
 		searchState ? `${props.location.pathname}${createURL(searchState)}` : '';
 
@@ -39,6 +39,13 @@ class HomeComponent extends Component {
 	onSearchStateChange = searchState => {
 		clearTimeout(this.debouncedSetState);
 		this.debouncedSetState = setTimeout(() => {
+
+			// This was not in the supplied code, but it is necessary in order to
+			// clear out the search query parameter when there is no active search
+			if (!searchState.query) {
+				searchState = {};
+			}
+
 			this.props.history.push(
 				searchStateToUrl(this.props, searchState),
 				searchState
@@ -48,32 +55,11 @@ class HomeComponent extends Component {
 		this.setState({ searchState });
 	};
 
-	// componentWillReceiveProps(nextProps) {
-	// 	if (nextProps.router.location
-	// 		&& nextProps.router.location.state
-	// 		&& this.props.router.location
-	// 		&& this.props.router.location.state) {
-
-	// 		if (nextProps.router.location.state.query === '' &&
-	// 			this.props.router.location.state.query !== '') {
-
-	// 			this.props.history.push(
-	// 				searchStateToUrl(nextProps, ''),
-	// 				''
-	// 			);
-	// 			this.setState({ searchState: '' });
-
-	// 		}
-	// 	}
-	// }
-
 	render() {
-		// Be very careful with this: Do not assume that this.props.router.location.state is there!
-		const isSearch = this.props.router.location && this.props.router.location.search ? 
-			this.props.router.location.state.query !== '' :
-			false;
-
-		console.log('isSearch: ' + isSearch);
+		// Do not do this: It's way too slow ...
+		// const isSearch = this.props.router.location && this.props.router.location.search ? 
+		// 	this.props.router.location.state.query !== '' :
+		// 	false;
 
 		return (
 			<div className="Home">
@@ -97,14 +83,14 @@ class HomeComponent extends Component {
 							className="SearchBox"
 							translations={{placeholder: 'Enter a Controversy'}} />
 
-						{ isSearch && <Stats /> }
-						{ isSearch && <Hits hitComponent={SearchResult} /> }
+						{ this.state.searchState.query && <Stats /> }
+						{ this.state.searchState.query && <Hits hitComponent={SearchResult} /> }
 
-						{ isSearch && <SearchResult /> }
+						<SearchResult />
 
 					</Grid>
 
-					{ isSearch && <Pagination showLast /> }
+					{ this.state.searchState.query && <Pagination showLast /> }
 
 				</InstantSearch>
 
