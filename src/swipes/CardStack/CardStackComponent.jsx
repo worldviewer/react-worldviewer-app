@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 // UI Dependencies
 import { Grid, Row } from 'react-bootstrap';
-import debounce from 'debounce';
+// import debounce from 'debounce';
 import './CardStack.css';
 
 // Components
@@ -14,8 +14,8 @@ import Comments from '../../components/Comments/Comments.jsx';
 import Card from '../../components/Card/Card.jsx';
 import FeedCard from '../../components/FeedCard/FeedCard.jsx';
 import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
-import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+// import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
+// import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
@@ -88,9 +88,9 @@ class CardStackComponent extends Component {
 
 			containerStyles = {
 				height: '100vh'
-			},
+			};
 
-			currentLevel = this.levels[this.props.discourse.level];
+			// currentLevel = this.levels[this.props.discourse.level];
 
 		return (
 			<div ref={c => this.container = c} className="CardStack">

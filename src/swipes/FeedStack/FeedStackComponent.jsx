@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 // UI Dependencies
 import { Grid, Row } from 'react-bootstrap';
-import debounce from 'debounce';
+// import debounce from 'debounce';
 import './FeedStack.css';
 
 // Components
@@ -11,8 +11,8 @@ import SwipeableViews from 'react-swipeable-views';
 import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
 import FeedCard from '../../components/FeedCard/FeedCard.jsx';
 import Comments from '../../components/Comments/Comments.jsx';
-import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+// import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
+// import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
