@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 
 // UI Dependencies
 import './FeedCard.css';
-import share from './share.svg';
-import down from './downdown.svg';
-import shareHover from './share-hover.svg';
-import downHover from './downdown-hover.svg';
-import chris from './chris.jpg';
+import share from '../../images/share.svg';
+import down from '../../images/downdown.svg';
+import shareHover from '../../images/share-hover.svg';
+import downHover from '../../images/downdown-hover.svg';
+import chris from '../../images/chris.jpg';
 import { Grid, Row, Badge, Image } from 'react-bootstrap';
 
 // React Router Dependencies

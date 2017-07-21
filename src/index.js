@@ -1,7 +1,7 @@
 // React Dependencies
 import React from 'react';
 import ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 
 // Redux Dependencies
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
@@ -63,4 +63,6 @@ ReactDOM.render(
 );
 
 // registerServiceWorker is explained at https://news.ycombinator.com/item?id=14373178
-registerServiceWorker();
+// Generates error: "Error during service worker registration: DOMException: Only secure
+// origins are allowed (see: https://goo.gl/Y0ZkNV)."  Turning off for now ...
+// registerServiceWorker();

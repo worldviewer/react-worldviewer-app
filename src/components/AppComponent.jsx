@@ -10,7 +10,7 @@ import '../styles/react-instantsearch-algolia-theme.css';
 
 // Spinner / Preloader / Code-Splitter
 import Loadable from 'react-loadable';
-import spinner from './Spinner/explosion-spinner.svg';
+import spinner from '../images/explosion-spinner.svg';
 
 // Amazon Cognito Dependencies
 import { getUserToken, getCurrentUser } from '../libs/awsLib';
@@ -119,40 +119,10 @@ const AsyncNews = Loadable({
 	loader: () => import('./News/News.jsx')
 });
 
-const AsyncSearch = Loadable({
-	...settings,
-	loader: () => import('./Search/Search.jsx')
-});
-
 const AsyncMainStack = Loadable({
 	...settings,
 	loader: () => import('../swipes/MainStack/MainStack.jsx')
 });
-
-// const AsyncFeedStack = Loadable({
-// 	...settings,
-// 	loader: () => import('../swipes/FeedStack/FeedStack.jsx')
-// });
-
-// const AsyncCardText = Loadable({
-// 	...settings,
-// 	loader: () => import('./CardText/CardText.jsx')
-// });
-
-// const AsyncComments = Loadable({
-// 	...settings,
-// 	loader: () => import('./Comments/Comments.jsx')
-// });
-
-// const AsyncFeedCardList = Loadable({
-// 	...settings,
-// 	loader: () => import('./FeedCardList/FeedCardList.jsx')
-// });
-
-// const AsyncFeedCard = Loadable({
-// 	...settings,
-// 	loader: () => import('./FeedCard/FeedCard.jsx')
-// });
 
 class AppComponent extends Component {
 	constructor(props) {
@@ -188,10 +158,6 @@ class AppComponent extends Component {
 			case '/signup':
 			case '/login':
 				AsyncHome.preload();
-				break;
-
-			case '/home':
-				AsyncSearch.preload();
 				break;
 
 			default:
@@ -299,9 +265,6 @@ class AppComponent extends Component {
 					<Route
 						path="/news"
 						component={AsyncNews} />
-					<Route
-						path="/search"
-						component={AsyncSearch} />
 
 					{/* https://stackoverflow.com/questions/27864720/react-router-pass-props-to-handler-component */}
 					<Route

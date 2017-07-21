@@ -3,11 +3,11 @@ import TransitionGroup from 'react-addons-transition-group';
 import Bounce from 'bounce.js';
 import './SwipeOverlay.css';
 
-import worldviews from './science-structure-worldviews.svg';
-import models from './science-structure-models.svg';
-import propositions from './science-structure-propositions.svg';
-import concepts from './science-structure-concepts.svg';
-import narratives from './science-structure-narratives.svg';
+import worldviews from '../../images/science-structure-worldviews.svg';
+import models from '../../images/science-structure-models.svg';
+import propositions from '../../images/science-structure-propositions.svg';
+import concepts from '../../images/science-structure-concepts.svg';
+import narratives from '../../images/science-structure-narratives.svg';
 
 class AnimatedSwipeOverlay extends Component {
 	constructor(props) {
