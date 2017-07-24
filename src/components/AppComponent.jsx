@@ -19,6 +19,10 @@ class AppComponent extends Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			navVisibility: 'hidden'
+		};
+
 		this.props = props;
 	}
 
@@ -44,6 +48,13 @@ class AppComponent extends Component {
 	// we need to ensure that the rest of our app is only ready to go after
 	// this has been loaded.
 	async componentDidMount() {
+		// Prevents reflow of mobile navbar on initial render
+		setTimeout(() => {
+			this.setState({
+				navVisibility: 'visible'
+			})
+		}, 1000);
+
 		const currentUser = getCurrentUser();
 
 		if (currentUser === null) {
@@ -70,6 +81,10 @@ class AppComponent extends Component {
 			letterSpacing: '1px'
 		}
 
+		let navStyles = {
+			visibility: this.state.navVisibility
+		};
+
 		return !this.props.isLoadingUserToken && (
 			<div className="App">
 
@@ -81,7 +96,7 @@ class AppComponent extends Component {
 						title={this.props.notification.title} />
 				</div>
 
-				<Navbar fluid collapseOnSelect>
+				<Navbar fluid collapseOnSelect style={navStyles}>
 
 					<Navbar.Header>
 						<Navbar.Brand>

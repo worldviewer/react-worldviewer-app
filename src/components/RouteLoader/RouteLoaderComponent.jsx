@@ -69,7 +69,7 @@ const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
 
 const settings = {
 	loading: LoadingComponent,
-	delay: 500,
+	delay: 1000,
 	timeout: 10000
 };
 

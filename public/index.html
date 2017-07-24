@@ -23,12 +23,28 @@
 			Learn how to configure a non-root public URL by running `npm run build`.
 		-->
 
+		<!--
+			Without this, we get a flash of unstyled content.  See explanation at
+			https://docs.google.com/presentation/d/1jt_VQC5LDF-e9j8Wtxu4KZPa8ItlmYmntGy5tdcbGOY/present?slide=id.p
+		-->
+
+		<style type="text/css">
+			.js #fouc { display: none; }
+		</style>
+
+		<script type="text/javascript">
+			document.documentElement.className = 'js';
+		</script>
+
 		<title>Controversies of Science</title>
+
 	</head>
 	<body>
+
 		<noscript>
 			You need to enable JavaScript to run this app.
 		</noscript>
+
 		<div id="root"></div>
 
 		<!--

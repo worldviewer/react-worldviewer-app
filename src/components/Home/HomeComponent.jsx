@@ -5,6 +5,9 @@ import React, { Component } from 'react';
 import './Home.css';
 import elephant from '../../images/elephant.png';
 import { Grid } from 'react-bootstrap';
+import AspectRatio from 'react-aspect-ratio';
+import 'react-aspect-ratio/aspect-ratio.css';
+import FadeIn from 'react-fade-in';
 
 // Algolia Search / React Router Integration Dependencies
 import { InstantSearch, Hits, SearchBox, Stats, Pagination } from 'react-instantsearch/dom';
@@ -22,6 +25,25 @@ const
 	createURL = state => `?${qs.stringify(state)}`,
 	searchStateToUrl = (props, searchState) =>
 		searchState ? `${props.location.pathname}${createURL(searchState)}` : '';
+
+const imageStyles = {
+	display: 'block',
+	margin: '0 auto',
+	maxWidth: '480px',
+	width: '100%'
+};
+
+// This prevents a reflow on page render, whereby image loads after the search box,
+// https://github.com/roderickhsiao/react-aspect-ratio
+const RatioImage = () => (
+	<AspectRatio ratio="480/302" style={imageStyles}>
+		<img
+			alt="blind men and the elephant logo"
+			src={elephant}
+			className="Logo" />
+
+	</AspectRatio>
+);
 
 class HomeComponent extends Component {
 	constructor(props) {
@@ -56,6 +78,11 @@ class HomeComponent extends Component {
 		this.setState({ searchState });
 	};
 
+	componentDidMount() {
+		// To prevent flash of unstyled content
+		document.getElementById('fouc').style.display = 'block';
+	}
+
 	render() {
 		// Do not do this: It's way too slow ...
 		// const isSearch = this.props.router.location && this.props.router.location.search ? 
@@ -63,35 +90,34 @@ class HomeComponent extends Component {
 		// 	false;
 
 		return (
-			<div className="Home">
+			<div className="Home" id="fouc">
 
-				<img
-					alt="blind men and the elephant logo"
-					src={elephant}
-					className="Logo" />
+				<FadeIn>
+					<RatioImage />
 
-				<InstantSearch
-					appId="HDX7ZDMWE9"
-					apiKey="f9898dbf6ec456d206e59bcbc604419d"
-					indexName="controversy_cards"
-					searchState={this.state.searchState}
-					onSearchStateChange={this.onSearchStateChange.bind(this)}
-					createURL={createURL}>
+					<InstantSearch
+						appId="HDX7ZDMWE9"
+						apiKey="f9898dbf6ec456d206e59bcbc604419d"
+						indexName="controversy_cards"
+						searchState={this.state.searchState}
+						onSearchStateChange={this.onSearchStateChange.bind(this)}
+						createURL={createURL}>
 
-					<Grid>
+						<Grid>
 
-						<SearchBox
-							className="SearchBox"
-							translations={{placeholder: 'Enter a Controversy'}} />
+							<SearchBox
+								className="SearchBox"
+								translations={{placeholder: 'Enter a Controversy'}} />
 
-						{ this.state.searchState.query && <Stats /> }
-						{ this.state.searchState.query && <Hits hitComponent={SearchResult} /> }
+							{ this.state.searchState.query && <Stats /> }
+							{ this.state.searchState.query && <Hits hitComponent={SearchResult} /> }
 
-					</Grid>
+						</Grid>
 
-					{ this.state.searchState.query && <Pagination showLast /> }
+						{ this.state.searchState.query && <Pagination showLast /> }
 
-				</InstantSearch>
+					</InstantSearch>
+				</FadeIn>
 
 			</div>
 		);
