@@ -39,8 +39,10 @@ const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
 		return null;
 
 	} else if (error) {
-		this.props.setAlert("Error: ", "Something's not right");
-		setTimeout(() => this.props.dismissAlert(), 5000);
+		// this.props.setAlert("Error: ", "Something's not right");
+		// setTimeout(() => this.props.dismissAlert(), 5000);
+
+		console.log(error);
 
 		return null;
 

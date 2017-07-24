@@ -1,15 +1,21 @@
 import { connect } from 'react-redux';
 import HomeComponent from './HomeComponent.jsx';
 import { withRouter } from 'react-router-dom';
+import { setAlert, dismissAlert } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
-	return {
-		router: state.router
-	};
+	return {...ownProps};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	return {...ownProps}
+	return {
+		setAlert: (title, message) => {
+			return dispatch(setAlert(title, message));
+		},
+		dismissAlert: () => {
+			return dispatch(dismissAlert());
+		}
+	}
 };
 
 const Home = connect(

@@ -11,6 +11,7 @@ import { InstantSearch, Hits, SearchBox, Stats, Pagination } from 'react-instant
 import SearchResult from '../SearchResult/SearchResult';
 import qs from 'qs';
 import { withRouter } from 'react-router-dom';
+// import content from './ConditionalContentConnector';
 
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -85,8 +86,6 @@ class HomeComponent extends Component {
 
 						{ this.state.searchState.query && <Stats /> }
 						{ this.state.searchState.query && <Hits hitComponent={SearchResult} /> }
-
-						<SearchResult />
 
 					</Grid>
 
