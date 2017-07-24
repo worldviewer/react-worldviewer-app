@@ -14,7 +14,7 @@ import { InstantSearch, Hits, SearchBox, Stats, Pagination } from 'react-instant
 import SearchResult from '../SearchResult/SearchResult';
 import qs from 'qs';
 import { withRouter } from 'react-router-dom';
-// import content from './ConditionalContentConnector';
+import { createConnector } from "react-instantsearch";
 
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -104,17 +104,12 @@ class HomeComponent extends Component {
 						createURL={createURL}>
 
 						<Grid>
-
 							<SearchBox
 								className="SearchBox"
 								translations={{placeholder: 'Enter a Controversy'}} />
-
-							{ this.state.searchState.query && <Stats /> }
-							{ this.state.searchState.query && <Hits hitComponent={SearchResult} /> }
-
 						</Grid>
 
-						{ this.state.searchState.query && <Pagination showLast /> }
+						<ConditionalHits />
 
 					</InstantSearch>
 				</FadeIn>
@@ -123,5 +118,34 @@ class HomeComponent extends Component {
 		);
 	}
 }
+
+// Only displays search results when there is a query
+const ConditionalHits = createConnector({
+	displayName: "ConditionalQuery",
+	getProvidedProps(props, searchState, searchResults) {
+		const { query, hits } = searchResults.results ? searchResults.results : {};
+		return { query, hits };
+	}
+})(({ query, hits }) => {
+
+	const hs =
+		hits && query
+		? (<div id="hits">
+			<Grid>
+
+				<Stats />
+				<Hits hitComponent={SearchResult} />
+
+			</Grid>
+
+			<Pagination showLast />
+		</div>)
+		: null;
+
+	return (
+		<div id="hits">
+			{hs}
+		</div>);
+});
 
 export default withRouter(HomeComponent);
