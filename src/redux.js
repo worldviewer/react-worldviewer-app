@@ -40,9 +40,9 @@ const types = {
 	SET_CARDSTACK_LEVEL: 'SET_CARDSTACK_LEVEL',
 	SET_FEEDSTACK_LEVEL: 'SET_FEEDSTACK_LEVEL',
 
-	ACTIVATE_SWIPE_OVERLAY: 'ACTIVATE_SWIPE_OVERLAY',
-	DEACTIVATE_SWIPE_OVERLAY: 'DEACTIVATE_SWIPE_OVERLAY',
-	SET_SWIPE_OVERLAY_SIZE: 'SET_SWIPE_OVERLAY_SIZE'
+	ACTIVATE_MAIN_STACK_OVERLAY: 'ACTIVATE_MAIN_STACK_OVERLAY',
+	DEACTIVATE_MAIN_STACK_OVERLAY: 'DEACTIVATE_MAIN_STACK_OVERLAY',
+	SET_MAIN_STACK_OVERLAY_SIZE: 'SET_MAIN_STACK_OVERLAY_SIZE'
 };
 
 const initialState = {
@@ -364,22 +364,22 @@ export const setFeedStackLevel = (level, direction) => {
 	};
 };
 
-export const activateSwipeOverlay = (timeoutId) => {
+export const activateMainStackOverlay = (timeoutId) => {
 	return {
-		type: types.ACTIVATE_SWIPE_OVERLAY,
+		type: types.ACTIVATE_MAIN_STACK_OVERLAY,
 		timeoutId
 	};
 };
 
-export const deactivateSwipeOverlay = () => {
+export const deactivateMainStackOverlay = () => {
 	return {
-		type: types.DEACTIVATE_SWIPE_OVERLAY
+		type: types.DEACTIVATE_MAIN_STACK_OVERLAY
 	};
 };
 
-export const setSwipeOverlaySize = (isFullScreen) => {
+export const setMainStackOverlaySize = (isFullScreen) => {
 	return {
-		type: types.SET_SWIPE_OVERLAY_SIZE,
+		type: types.SET_MAIN_STACK_OVERLAY_SIZE,
 		isFullScreen
 	};
 };
@@ -628,7 +628,7 @@ export default (state = initialState, action) => {
 				}
 			};
 
-		case types.ACTIVATE_SWIPE_OVERLAY:
+		case types.ACTIVATE_MAIN_STACK_OVERLAY:
 			return {
 				...state,
 				discourse: {
@@ -638,7 +638,7 @@ export default (state = initialState, action) => {
 				}
 			};
 
-		case types.DEACTIVATE_SWIPE_OVERLAY:
+		case types.DEACTIVATE_MAIN_STACK_OVERLAY:
 			return {
 				...state,
 				discourse: {
@@ -647,7 +647,7 @@ export default (state = initialState, action) => {
 				}
 			};
 
-		case types.SET_SWIPE_OVERLAY_SIZE:
+		case types.SET_MAIN_STACK_OVERLAY_SIZE:
 			return {
 				...state,
 				discourse: {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { fetchCard, fetchCardRequest, fetchCardSuccess, fetchCardError,
-	setLoaded, setDiscourseLevel, activateSwipeOverlay,
-	deactivateSwipeOverlay, setSwipeOverlaySize, setCardStackLevel } from '../../redux';
+	setLoaded, setDiscourseLevel, activateMainStackOverlay,
+	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel } from '../../redux';
 import MainStackComponent from './MainStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
@@ -36,14 +36,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		setDiscourseLevel: (level, direction) => {
 			return dispatch(setDiscourseLevel(level, direction));
 		},
-		activateSwipeOverlay: (timeoutId) => {
-			return dispatch(activateSwipeOverlay(timeoutId));
+		activateMainStackOverlay: (timeoutId) => {
+			return dispatch(activateMainStackOverlay(timeoutId));
 		},
-		deactivateSwipeOverlay: () => {
-			return dispatch(deactivateSwipeOverlay());
+		deactivateMainStackOverlay: () => {
+			return dispatch(deactivateMainStackOverlay());
 		},
-		setSwipeOverlaySize: (isFullScreen) => {
-			return dispatch(setSwipeOverlaySize(isFullScreen));
+		setMainStackOverlaySize: (isFullScreen) => {
+			return dispatch(setMainStackOverlaySize(isFullScreen));
 		},
 		setCardStackLevel: (level, direction) => {
 			return dispatch(setCardStackLevel(level, direction));

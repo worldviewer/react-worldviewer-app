@@ -14,7 +14,7 @@ import FeedStack from '../FeedStack/FeedStack';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // Overlays
-import SwipeOverlay from '../../overlays/SwipeOverlay/SwipeOverlay';
+import MainStackOverlay from '../../overlays/MainStackOverlay/MainStackOverlay';
 import FeedStackOverlay from '../../overlays/FeedStackOverlay/FeedStackOverlay';
 import CardStackOverlay from '../../overlays/CardStackOverlay/CardStackOverlay';
 
@@ -78,7 +78,7 @@ class MainStackComponent extends Component {
 	}
 
 	componentDidMount() {
-		this.deactivateSwipeOverlay = debounce(this.props.deactivateSwipeOverlay,
+		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
 			this.props.discourse.isFullScreen ? 3000 : 6000);
 
 		window.onscroll = function () { window.scrollTo(0, 0); };
@@ -89,7 +89,7 @@ class MainStackComponent extends Component {
 			swipeDirection = index > previous ? 'up' : 'down';
 
 		this.props.setDiscourseLevel(index, swipeDirection);
-		this.handleSwipeOverlay();
+		this.handleMainStackOverlay();
 	}
 
 	// When we swipe, we need to update the URL.  This may not be the sort of behavior we
@@ -106,9 +106,9 @@ class MainStackComponent extends Component {
 			this.props.history.push(route);
 	}
 
-	handleSwipeOverlay() {
-		this.props.activateSwipeOverlay();
-		this.deactivateSwipeOverlay();
+	handleMainStackOverlay() {
+		this.props.activateMainStackOverlay();
+		this.deactivateMainStackOverlay();
 	}
 
 	showSettings(event) {
@@ -117,7 +117,7 @@ class MainStackComponent extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.discourse.level !== this.props.discourse.level) {
-			this.deactivateSwipeOverlay();
+			this.deactivateMainStackOverlay();
 		}
 	}
 
@@ -138,12 +138,12 @@ class MainStackComponent extends Component {
 				<Grid>
 					<Row>
 					
-						<SwipeOverlay
+						<MainStackOverlay
 							isFullScreen={this.props.discourse.isFullScreen}
 							discourseLevel={this.props.discourse.level}
 							active={this.props.discourse.overlay}
 							discourseHandler={this.props.setDiscourseLevel}
-							deactivateOverlayHandler={this.props.deactivateSwipeOverlay} />
+							deactivateOverlayHandler={this.props.deactivateMainStackOverlay} />
 
 						<SwipeableViews
 							axis='y'

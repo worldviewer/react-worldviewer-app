@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TransitionGroup from 'react-addons-transition-group';
 import Bounce from 'bounce.js';
-import './SwipeOverlay.css';
+import './MainStackOverlay.css';
 
 import worldviews from '../../images/science-structure-worldviews.svg';
 import models from '../../images/science-structure-models.svg';
@@ -9,7 +9,7 @@ import propositions from '../../images/science-structure-propositions.svg';
 import concepts from '../../images/science-structure-concepts.svg';
 import narratives from '../../images/science-structure-narratives.svg';
 
-class AnimatedSwipeOverlay extends Component {
+class AnimatedMainStackOverlay extends Component {
 	constructor(props) {
 		super(props);
 
@@ -248,7 +248,7 @@ class AnimatedSwipeOverlay extends Component {
 			scienceLevelImages = [worldviews, models, propositions, concepts, narratives];
 
 		return (
-			<div className="SwipeOverlay"
+			<div className="MainStackOverlay"
 				style={swipeOverlayContainerStyles}>
 
 				<img className="science-structure"
@@ -263,12 +263,12 @@ class AnimatedSwipeOverlay extends Component {
 	}
 }
 
-class SwipeOverlayStateless extends Component {
+class MainStackOverlayStateless extends Component {
 	render() {
 		return (
 			<TransitionGroup component="div">
 				{ this.props.active &&
-					<AnimatedSwipeOverlay
+					<AnimatedMainStackOverlay
 						isFullScreen={this.props.isFullScreen}
 						discourseLevel={this.props.discourseLevel}
 						discourseHandler={this.props.discourseHandler}
@@ -279,4 +279,4 @@ class SwipeOverlayStateless extends Component {
 	}
 }
 
-export default SwipeOverlayStateless;
+export default MainStackOverlayStateless;
