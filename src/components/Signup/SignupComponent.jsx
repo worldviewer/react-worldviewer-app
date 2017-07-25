@@ -160,7 +160,7 @@ class Signup extends Component {
 		return (
 			<form onSubmit={this.handleConfirmationSubmit}>
 
-				<FormGroup controlId="confirmationCode" bsSize="small">
+				<FormGroup controlId="confirmationCode">
 					<ControlLabel>Confirmation Code</ControlLabel>
 					<FormControl
 						autoFocus
@@ -172,7 +172,6 @@ class Signup extends Component {
 
 				<LoaderButton
 					block
-					bsSize="small"
 					disabled={ !this.validateConfirmationForm() }
 					type="submit"
 					isLoading={this.props.user.tokenLoading}
@@ -189,8 +188,7 @@ class Signup extends Component {
 
 				<FormGroup
 					validationState={this.props.validations.username}
-					controlId="username"
-					bsSize="small">
+					controlId="username">
 
 					<ControlLabel>Email</ControlLabel>
 					<FormControl
@@ -206,8 +204,7 @@ class Signup extends Component {
 				<OverlayTrigger placement={this.state.tooltipPlacement} overlay={this.passwordTooltip}>
 					<FormGroup
 						validationState={this.props.validations.password}
-						controlId="password"
-						bsSize="small">
+						controlId="password">
 
 						<ControlLabel>Password</ControlLabel>
 						<FormControl
@@ -222,8 +219,7 @@ class Signup extends Component {
 
 				<FormGroup
 					validationState={this.props.validations.confirmPassword}
-					controlId="confirmPassword"
-					bsSize="small">
+					controlId="confirmPassword">
 
 					<ControlLabel>Confirm Password</ControlLabel>
 					<FormControl
@@ -236,7 +232,6 @@ class Signup extends Component {
 
 				<LoaderButton
 					block
-					bsSize="small"
 					disabled={ !this.validateForm() }
 					type="submit"
 					isLoading={this.props.user.tokenLoading}

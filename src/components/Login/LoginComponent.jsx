@@ -68,8 +68,7 @@ class LoginComponent extends Component {
 					<form onSubmit={this.handleSubmit}>
 
 						<FormGroup
-							controlId="username"
-							bsSize="small">
+							controlId="username">
 
 							<ControlLabel>Email</ControlLabel>
 							<FormControl
@@ -82,8 +81,7 @@ class LoginComponent extends Component {
 						</FormGroup>
 
 						<FormGroup
-							controlId="password"
-							bsSize="small">
+							controlId="password">
 
 							<ControlLabel>Password</ControlLabel>
 							<FormControl
@@ -95,7 +93,6 @@ class LoginComponent extends Component {
 
 						<LoaderButton
 							block
-							bsSize="small"
 							disabled={ !this.validateForm() }
 							type="submit"
 							isLoading={this.props.user.tokenLoading}

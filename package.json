@@ -14,6 +14,7 @@
     "history": "^4.6.2",
     "html-to-react": "^1.2.11",
     "object.values": "^1.0.4",
+    "openseadragon": "^2.3.0",
     "prop-types": "^15.5.10",
     "qs": "^6.5.0",
     "radium": "^0.19.1",

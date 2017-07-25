@@ -2,6 +2,10 @@
 	position: fixed;
 	height: 100%;
 	width: 100%;
+
+	input, button {
+		font-size: 16px;
+	}
 }
 
 .Logo, .Login form {
