@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CardStackOverlayComponent from './CardStackOverlayComponent.jsx';
 import { withRouter } from 'react-router-dom';
-// import { setUserToken } from '../redux.js';
+import { setCardStackLevel } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -10,7 +10,11 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	return {...ownProps}
+	return {
+		setCardStackLevel: (level) => {
+			dispatch(setCardStackLevel(level));
+		}
+	}
 };
 
 const CardStackOverlay = connect(

@@ -1,8 +1,8 @@
 .FeedStackOverlay {
 	background-color: white;
 	border: 1px solid black;
-	bottom: 0;
 	position: fixed;
+	transition: bottom 0.5s;
 	width: 100%;
 	z-index: 1000;
 
