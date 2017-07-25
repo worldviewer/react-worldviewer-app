@@ -1,0 +1,24 @@
+.CardStackOverlay {
+	background-color: white;
+	border: 1px solid black;
+	bottom: 0;
+	position: fixed;
+	width: 100%;
+	z-index: 1000;
+
+	.StackLabel {
+		border: 1px solid black;
+		color: black;
+		font-family: 'LeagueGothic';
+		height: 100%;
+		line-height: 25px;
+		padding: 6px;
+		text-align: center;
+		text-transform: uppercase;
+
+		&.active {
+			background-color: black;
+			color: white;
+		}
+	}
+}

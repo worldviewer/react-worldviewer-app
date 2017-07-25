@@ -9,10 +9,14 @@ import './MainStack.css';
 // Components
 // import Preload from '../Preload/Preload.jsx';
 import SwipeableViews from 'react-swipeable-views';
-import CardStack from '../CardStack/CardStack.jsx';
-import FeedStack from '../FeedStack/FeedStack.jsx';
-import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay.jsx';
+import CardStack from '../CardStack/CardStack';
+import FeedStack from '../FeedStack/FeedStack';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
+// Overlays
+import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay';
+import FeedStackOverlay from '../../components/FeedStackOverlay/FeedStackOverlay';
+import CardStackOverlay from '../../components/CardStackOverlay/CardStackOverlay';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
@@ -127,6 +131,10 @@ class MainStackComponent extends Component {
 
 		return (
 			<div ref={c => this.container = c} className="MainStack">
+				{ this.props.discourse.level === 0 ?
+					<CardStackOverlay /> :
+					<FeedStackOverlay /> }
+
 				<Grid>
 					<Row>
 					

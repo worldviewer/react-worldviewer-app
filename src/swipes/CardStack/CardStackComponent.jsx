@@ -57,7 +57,6 @@ class CardStackComponent extends Component {
 			<div ref={c => this.container = c} className="CardStack">
 				<Grid>
 					<Row>
-
 						<SwipeableViews
 							axis='x'
 							containerStyle={containerStyles}
@@ -90,7 +89,6 @@ class CardStackComponent extends Component {
 								<Comments />
 							</div>
 						</SwipeableViews>
-
 					</Row>
 				</Grid>
 			</div>
