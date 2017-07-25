@@ -14,9 +14,9 @@ import FeedStack from '../FeedStack/FeedStack';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // Overlays
-import SwipeOverlay from '../../components/SwipeOverlay/SwipeOverlay';
-import FeedStackOverlay from '../../components/FeedStackOverlay/FeedStackOverlay';
-import CardStackOverlay from '../../components/CardStackOverlay/CardStackOverlay';
+import SwipeOverlay from '../../overlays/SwipeOverlay/SwipeOverlay';
+import FeedStackOverlay from '../../overlays/FeedStackOverlay/FeedStackOverlay';
+import CardStackOverlay from '../../overlays/CardStackOverlay/CardStackOverlay';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
