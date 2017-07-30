@@ -4,7 +4,7 @@ An implementation of the Controversies of Science application for crowdsourcing 
 
 I'm intentionally keeping this codebase separated from the react-worldviewer-prototype, which is an attempt to create an interactive infographic.  Although they are part of a similar effort, this aspect of the project is more focused on implementing actual workflows and crowdsourcing functionality.
 
-To see a live version of this work-in-progress, go to http://worldviewer.github.io/react-worldviewer-app.
+To see a live version of this work-in-progress, go to http://controversiesofscience.com.
 
 Setting the project up is simple.  Go to the root folder with `package.json`, and type:
 
@@ -21,7 +21,7 @@ The <a href="https://plus.google.com/collection/Yhn4Y">Controversies of Science 
 
 The project will evolve into a social network which aims to teach critical thinking in the sciences by immersing non-specialists into a variety of historical and even ongoing complex scientific debates involving opposing worldviews.  This approach is inspired by current critical thinking instruction in International Baccalaureate literature classes.
 
-The project will double as a systematic effort to crowdsource information about scientific controversies, by encouraging people to track the successes and failures of controversial or challenged claims in the sciences.  In this regard, TCoS will introduce a new form of participatory science journalism intended to better help people to use science as a tool for thinking.
+The project will double as a systematic effort to crowdsource information about scientific controversies, by encouraging people to track the successes and failures of controversial or challenged claims in the sciences.  In this regard, COS will introduce a new form of participatory science journalism intended to better help people to use science as a tool for thinking.
 
 A third goal is to teach the patterns of scientific controversies and methods for refining a personalized, independent worldview in the sciences.  The premise is that this will support laypeople and specialists out of their domain seeking to navigate some novel complex scientific claim where the experts have been challenged.  There is reason to believe that this approach can as a consequence reduce peoples' susceptibility to weak or pseudoscientific claims.
 
@@ -52,7 +52,7 @@ Since one of the primary objectives of the app is to teach the epistemological s
 
 Simulated feed data is now created for all five levels of discourse (worldview, model, propositional, concept and narrative) for the Halton Arp controversy.  This is the first time that this categorization scheme has actually been put to some sort of real-world application, and it seems to work pretty well.  I noticed along the way that it is not always obvious which of the model, propositional or conceptual categories that some piece of information should bin into (so users may need some assistance built into the app to guide them on this); I think the best strategy for this would be to include questions at the point of content submission (with links to jump to the other levels).  In total, I was able to generate 67 (!) sample feed submissions -- which should provide for an extremely realistic experience with the demo.
 
-Algolia search has been integrated, but there remain a variety of minor bugs.  And the pages which will house these results are yet to be filled out yet.
+Algolia search has been integrated, but there remain a variety of minor data issues to be resolved.  And the pages which will house these results are yet to be filled out yet.  The search results page so far remains disconnected from this swiping feed functionality, but feeds and cards API's have been generated to link the two.  What remains to be done is to build out the scraper tools to populate these feeds and cards endpoints from the various sources.  The existing scraper script will need to be rewritten.
 
 I've updated the scraper script to grab all of the large-resolution graphics from the G+ collection, but for some reason, G+ has really screwed this up.  About a third of these links were very low rez, so I had to download them by hand.  And I think this means that I need to take care to actually check these into the repository -- so that I never have to do this again.
 
