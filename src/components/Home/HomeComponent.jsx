@@ -98,7 +98,7 @@ class HomeComponent extends Component {
 					<InstantSearch
 						appId="HDX7ZDMWE9"
 						apiKey="f9898dbf6ec456d206e59bcbc604419d"
-						indexName="controversy_cards"
+						indexName="controversy-cards"
 						searchState={this.state.searchState}
 						onSearchStateChange={this.onSearchStateChange.bind(this)}
 						createURL={createURL}>
