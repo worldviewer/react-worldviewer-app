@@ -99,8 +99,8 @@
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "predeploy": "npm run build",
-    "deploy": "aws s3 sync build/ s3://www.controversiesofscience.com",
-    "postdeploy": "aws cloudfront create-invalidation --distribution-id E17HLY6C4048N2 --paths '/*'"
+    "deploy": "aws s3 sync build/ s3://www.controversiesofscience.com --profile 'controversy'",
+    "postdeploy": "aws cloudfront create-invalidation --distribution-id E17HLY6C4048N2 --paths '/*' --profile 'controversy'"
   },
   "jest": {
     "collectCoverageFrom": [
