@@ -1,5 +1,6 @@
 // React Dependencies
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 // UI Dependencies
 import './Home.css';
@@ -81,6 +82,9 @@ class HomeComponent extends Component {
 	componentDidMount() {
 		// To prevent flash of unstyled content
 		document.getElementById('fouc').style.display = 'block';
+
+		const searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
+		searchBoxDOMNode.focus();
 	}
 
 	render() {
@@ -105,7 +109,9 @@ class HomeComponent extends Component {
 
 						<Grid>
 							<SearchBox
+								ref={ input => { this.textInput = input } }
 								className="SearchBox"
+								focusShortcuts={[' ']}
 								translations={{placeholder: 'Enter a Controversy'}} />
 						</Grid>
 
