@@ -9,6 +9,7 @@ import model from '../../images/model-node.svg';
 import propositional from '../../images/propositional-node.svg';
 import conceptual from '../../images/conceptual-node.svg';
 import narrative from '../../images/narrative-node.svg';
+import quote from '../../images/quote.svg';
 import './SearchResult.css';
 
 // React Router Dependencies
@@ -29,13 +30,25 @@ const CustomHighlight = connectHighlight(
 			h = new HtmlToReactParser(),
 
 			parsedHit = highlight({ attributeName, hit, highlightProperty:
-				'_highlightResult' }),
+				'_highlightResult' });
 
-			highlightedHits = parsedHit.map(part => {
+		let highlightedHits = parsedHit.map(part => {
 				if (part.isHighlighted) return '<mark>' + part.value + '</mark>';
 				return part.value;
-			}),
+			});
 
+		if (attributeName === "quoteParagraph") {
+			// We need the actual quoted sections to appear in italics
+			highlightedHits = highlightedHits.map(el => el.replace(/^"/m, '<i>"'));
+			highlightedHits = highlightedHits.map(el => el.replace(/"$/m, '"</i>'));
+
+			// If it's a quoteParagraph, then replace any carriage return characters with
+			// HTML linebreaks.  This is a hack which is necessary because when it is placed
+			// further up, the HTML breaks are converted back into carriage returns.
+			highlightedHits = highlightedHits.map(el => el.replace(/\n/g, "<br/>"));
+		}
+
+		const
 			reactComponent = highlightedHits.reduce((prev, cur) => prev + cur);
 
 		return <div>{h.parse(reactComponent)}</div>;
@@ -57,7 +70,8 @@ class SearchResultComponent extends Component {
 			'cardSummary': 'Card Summary',
 			'postName': 'Post Name',
 			'cardParagraph': 'Card Paragraph',
-			'postParagraph': 'Post Paragraph'
+			'postParagraph': 'Post Paragraph',
+			'quoteParagraph': 'Quote Paragraph'
 		};
 
 		this.discourseLevelGraphics = {
@@ -91,6 +105,7 @@ class SearchResultComponent extends Component {
 		if (hitKeys.includes('postName')) return 'postName';
 		if (hitKeys.includes('cardParagraph')) return 'cardParagraph';
 		if (hitKeys.includes('postParagraph')) return 'postParagraph';
+		if (hitKeys.includes('quoteParagraph')) return 'quoteParagraph';
 	}
 
 	render() {
@@ -119,7 +134,12 @@ class SearchResultComponent extends Component {
 
 			discourseLevel = this.props.hit && this.props.hit.discourseLevel ?
 				this.discourseLevelGraphics[this.props.hit.discourseLevel] :
-				worldview;
+				worldview,
+
+			rightQuoteStyle = {
+				position: 'relative',
+				top: this.state.hitHeight - 50
+			};
 
 		return this.props.hit ?
 			(<Row
@@ -127,33 +147,61 @@ class SearchResultComponent extends Component {
 				ref="Hit"
 				key={this.props.hit.objectID}>
 
-				<Col xs={3} className="hit-image">
-					<img
-						alt="controversy card"
-						src={this.props.hit.images.thumbnail.url}
-						className="CardThumbnail" />
+				{ this.props.hit.images ? <div className="ThumbnailHit">
+					<Col xs={3} className="hit-image">
+						<img
+							alt="controversy card"
+							src={this.props.hit.images.thumbnail.url}
+							className="CardThumbnail" />
 
-					{ this.state.hitHeight > 147 && <img
-						className="hit-level Left"
-						src={discourseLevel}
-						alt="the level of discussion" /> }
-				</Col>
-				<Col xs={9}>
-					<span
-						className="hit-text"
-						style={hitTextStyle}>
+						{ this.state.hitHeight > 147 && <img
+							className="hit-level Left"
+							src={discourseLevel}
+							alt="the level of discussion" /> }
+					</Col>
+					<Col xs={9}>
+						<span
+							className="hit-text"
+							style={hitTextStyle}>
 
-						{isTitleOrSummary ? null : attributeHeader}
+							{isTitleOrSummary ? null : attributeHeader}
+							<CustomHighlight
+								attributeName={attributeName}
+								hit={this.props.hit} />
+
+						</span>
+						{ this.state.hitHeight <= 147 && <img
+							className="hit-level Right"
+							src={discourseLevel}
+							alt="the level of discussion" /> }
+					</Col>
+				</div> :
+
+				<div
+					className="QuoteHit" 
+					style={ {overflowWrap: 'break-word'} }>
+
+					<Col xs={2}>
+						<img
+							alt="left quote"
+							src={quote}
+							className="LeftQuote" />
+					</Col>
+					<Col xs={8}>
+						<p>{this.props.hit.quoteName}</p>
+
 						<CustomHighlight
 							attributeName={attributeName}
 							hit={this.props.hit} />
-
-					</span>
-					{ this.state.hitHeight <= 147 && <img
-						className="hit-level Right"
-						src={discourseLevel}
-						alt="the level of discussion" /> }
-				</Col>
+					</Col>
+					<Col xs={2}>
+						<img
+							alt="right quote"
+							src={quote}
+							className="RightQuote"
+							style={rightQuoteStyle} />
+					</Col>
+				</div> }
 		
 			</Row>) :
 			null;

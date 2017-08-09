@@ -83,6 +83,8 @@ class HomeComponent extends Component {
 		// To prevent flash of unstyled content
 		document.getElementById('fouc').style.display = 'block';
 
+		// This is necessary because the autoFocus={true} prop which is supposedly on
+		// the SearchBox component apparently does nothing
 		const searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
 		searchBoxDOMNode.focus();
 	}

@@ -39,3 +39,11 @@
 		right: 4px;
 	}
 }
+
+.LeftQuote, .RightQuote {
+	width: 50px;
+}
+
+.RightQuote {
+	transform: scale(-1, -1);
+}
