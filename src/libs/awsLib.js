@@ -1,26 +1,45 @@
 import config from '../config.js';
 import AWS from 'aws-sdk';
+import sigV4Client from './sigV4Client';
 import { CognitoUserPool, CognitoUser, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
-// From http://serverless-stack.com/chapters/call-the-create-api.html
+// http://serverless-stack.com/chapters/connect-to-api-gateway-with-iam-auth.html
 export async function invokeApig(
 	{ path,
-	  method = 'GET',
-	  body }, userToken) {
+		method = 'GET',
+		headers = {},
+		queryParams = {},
+		body }, userToken) {
 
-	const url = `${config.apiGateway.URL}${path}`;
+	await getAwsCredentials(userToken);
 
-	// Add user token to request header
-	const headers = {
-		Authorization: userToken
-	};
+	// "We are simply following the steps to make a signed request to API
+	// Gateway here. We first get our temporary credentials using getAwsCredentials
+	// and then using the sigV4Client we sign our request. We then use the signed
+	// headers to make a HTTP fetch request."
+	const signedRequest = sigV4Client
+		.newClient({
+			accessKey: AWS.config.credentials.accessKeyId,
+			secretKey: AWS.config.credentials.secretAccessKey,
+			sessionToken: AWS.config.credentials.sessionToken,
+			region: config.apiGateway.REGION,
+			endpoint: config.apiGateway.URL,
+		})
+		.signRequest({
+			method,
+			path,
+			headers,
+			queryParams,
+			body
+		});
 
-	body = (body) ? JSON.stringify(body) : body;
+	body = body ? JSON.stringify(body) : body;
+	headers = signedRequest.headers;
 
-	const results = await fetch(url, {
+	const results = await fetch(signedRequest.url, {
 		method,
-		body,
-		headers
+		headers,
+		body
 	});
 
 	if (results.status !== 200) {
@@ -32,6 +51,15 @@ export async function invokeApig(
 
 // http://serverless-stack.com/chapters/upload-a-file-to-s3.html
 export function getAwsCredentials(userToken) {
+	// These credentials are valid till the AWS.config.credentials.expireTime.
+	// So we simply check to ensure our credentials are still valid before requesting
+	// a new set.
+	if (AWS.config.credentials && Date.now() <
+		AWS.config.credentials.expireTime - 60000) {
+
+		return;
+	}
+
 	const authenticator =
 		`cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}`;
 
