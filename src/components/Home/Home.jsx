@@ -4,7 +4,9 @@ import { withRouter } from 'react-router-dom';
 import { setAlert, dismissAlert } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
-	return {...ownProps};
+	return {
+		user: state.reducer.user
+	};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {

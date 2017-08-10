@@ -8,8 +8,9 @@ import { Notification } from 'react-notification';
 import './App.css';
 import '../styles/react-instantsearch-algolia-theme.css';
 
-// Amazon Cognito Dependencies
+// AWS Dependencies
 import { getUserToken, getCurrentUser } from '../libs/awsLib';
+import AWS from 'aws-sdk';
 
 // React Router / Spinner / Preloader / Code-Splitter Dependencies
 import { withRouter, Link } from 'react-router-dom';
@@ -31,14 +32,20 @@ class AppComponent extends Component {
 		this.props.history.push(event.currentTarget.getAttribute('href'));
 	}
 
-	handleLogout = () => {
+	handleLogout = (event) => {
 		const currentUser = getCurrentUser();
 
 		if (currentUser !== null) {
 			currentUser.signOut();
 		}
 
+		if (AWS.config.credentials) {
+			AWS.config.credentials.clearCachedId();
+		}
+
 		this.props.setUserToken(null);
+
+		this.props.history.push('/login');
 	}
 
 	// http://serverless-stack.com/chapters/load-the-state-from-the-session.html

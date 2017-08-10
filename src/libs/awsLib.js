@@ -132,10 +132,12 @@ export function getUserToken(currentUser) {
 					return;
 				}
 
-				resolve([
-					session.getIdToken().getJwtToken(),
-					attributes
-				]);
+				resolve(session.getIdToken().getJwtToken());
+				
+				// resolve([
+				// 	session.getIdToken().getJwtToken(),
+				// 	attributes
+				// ]);
 			});
 		});
 	});

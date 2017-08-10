@@ -17,6 +17,9 @@ import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { createConnector } from "react-instantsearch";
 
+// AWS Dependencies
+import { invokeApig } from '../../libs/awsLib';
+
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
@@ -79,7 +82,7 @@ class HomeComponent extends Component {
 		this.setState({ searchState });
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		// To prevent flash of unstyled content
 		document.getElementById('fouc').style.display = 'block';
 
@@ -87,6 +90,12 @@ class HomeComponent extends Component {
 		// the SearchBox component apparently does nothing
 		const searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
 		searchBoxDOMNode.focus();
+
+		// TEST
+		const slugs = await invokeApig( {path: '/controversies'}, this.props.user.token);
+
+		console.log('SLUGS:');
+		console.log(slugs);
 	}
 
 	render() {
