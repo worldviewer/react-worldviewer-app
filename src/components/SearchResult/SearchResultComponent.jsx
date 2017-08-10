@@ -11,6 +11,7 @@ import conceptual from '../../images/conceptual-node.svg';
 import narrative from '../../images/narrative-node.svg';
 import quote from '../../images/quote.svg';
 import './SearchResult.css';
+import notFoundImage from '../../images/controversy-not-found.png';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
@@ -151,8 +152,9 @@ class SearchResultComponent extends Component {
 					<Col xs={3} className="hit-image">
 						<img
 							alt="controversy card"
-							src={this.props.hit.images.thumbnail.url}
-							className="CardThumbnail" />
+							src={this.props.hit.images.thumbnail.url || notFoundImage}
+							className="CardThumbnail"
+							onError={ e => e.target.src = notFoundImage } />
 
 						{ this.state.hitHeight > 147 && <img
 							className="hit-level Left"

@@ -92,10 +92,10 @@ class HomeComponent extends Component {
 		searchBoxDOMNode.focus();
 
 		// TEST
-		const slugs = await invokeApig( {path: '/controversies'}, this.props.user.token);
+		const arp = await invokeApig( {path: '/controversies/halton-arp-the-modern-galileo'}, this.props.user.token);
 
-		console.log('SLUGS:');
-		console.log(slugs);
+		console.log('HALTON ARP CARD:');
+		console.log(arp);
 	}
 
 	render() {

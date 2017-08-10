@@ -133,11 +133,6 @@ export function getUserToken(currentUser) {
 				}
 
 				resolve(session.getIdToken().getJwtToken());
-				
-				// resolve([
-				// 	session.getIdToken().getJwtToken(),
-				// 	attributes
-				// ]);
 			});
 		});
 	});

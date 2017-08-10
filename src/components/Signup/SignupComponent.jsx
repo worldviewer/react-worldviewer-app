@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // UI Dependencies
-import { HelpBlock, FormGroup, FormControl, ControlLabel, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { HelpBlock, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import LoaderButton from '../LoaderButton/LoaderButton';
 import './Signup.css';
 import isEmail from 'validate.io-email-address';
@@ -19,20 +19,7 @@ class Signup extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			tooltipPlacement: window.innerWidth > 713 ? "left" : "top"
-		}
-
-		window.addEventListener('resize', () => this.setTooltipPlacement());
-
 		this.props = props;
-		this.setTooltipPlacement.bind(this);
-
-		this.passwordTooltip = (
-			<Tooltip id="tooltip">
-				8 character minimum length: Use at least one uppercase, one lowercase, one special character & one number
-			</Tooltip>
-		);
 	}
 
 	validateForm() {
@@ -57,11 +44,9 @@ class Signup extends Component {
 		this.props.setPasswordConfirmation(event.target.value);
 	}
 
-	// NOTE: Cognito User Pools default to password requirement:
-	// uppercase letters, lowercase letters, special characters, numbers,
-	// min length 8 characters
+	// 12-character minimum password length
 	getPasswordValidationState(password) {
-		const validation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[ !#$%&?()[\]\\=+-_{}':;<>.,|~`"@^*/]).{8,}$/;
+		const validation = /^.{12,}$/;
 		return validation.test(password);
 	}
 
@@ -73,7 +58,7 @@ class Signup extends Component {
 	}
 
 	updatePasswordConfirmValidationState(password, confirmPassword) {
-		const validation = password === confirmPassword;
+		const validation = password === confirmPassword && confirmPassword.length > 0;
 		const passwordConfirmValidationState = validation ? 'success' : 'error';
 		this.props.setConfirmPasswordValidation(passwordConfirmValidationState);
 	}
@@ -85,11 +70,6 @@ class Signup extends Component {
 
 	handleConfirmationCodeChange = (event) => {
 		this.props.setConfirmationCode(event.target.value);
-	}
-
-	setTooltipPlacement() {
-		const placement = window.innerWidth > 713 ? "left" : "top";
-		this.setState({tooltipPlacement: placement});
 	}
 
 	handleSubmit = async (event) => {
@@ -192,7 +172,6 @@ class Signup extends Component {
 
 					<ControlLabel>Email</ControlLabel>
 					<FormControl
-						placeholder="e.g. chris@controversiesofscience.com"
 						autoFocus
 						type="email"
 						value={this.props.user.username}
@@ -201,21 +180,19 @@ class Signup extends Component {
 
 				</FormGroup>
 
-				<OverlayTrigger placement={this.state.tooltipPlacement} overlay={this.passwordTooltip}>
-					<FormGroup
-						validationState={this.props.validations.password}
-						controlId="password">
+				<FormGroup
+					validationState={this.props.validations.password}
+					controlId="password">
 
-						<ControlLabel>Password</ControlLabel>
-						<FormControl
-							placeholder="e.g. A1%bama!"
-							value={this.props.user.password}
-							onChange={this.handlePasswordChange}
-							type="password" />
-						<FormControl.Feedback />
+					<ControlLabel>Password</ControlLabel>
+					<FormControl
+						placeholder="12-character minimum"
+						value={this.props.user.password}
+						onChange={this.handlePasswordChange}
+						type="password" />
+					<FormControl.Feedback />
 
-					</FormGroup>
-				</OverlayTrigger>
+				</FormGroup>
 
 				<FormGroup
 					validationState={this.props.validations.confirmPassword}
