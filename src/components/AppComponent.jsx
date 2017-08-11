@@ -115,24 +115,32 @@ class AppComponent extends Component {
 					<Navbar.Collapse>
 						<Nav pullRight>
 							{ this.props.user.token
-								? <NavItem
-									onClick={this.handleLogout}>
+								? [ <NavItem key={1}
+										onClick={this.handleLogout}>
 										Logout
-									</NavItem>
+									</NavItem>,
 
-								: [ <RouteNavItem
-									key={1}
-									onClick={this.handleNavLink}
-									href="/signup">
+									<NavItem key={2}
+										onClick={ () => this.props.history.push('/') }>
+										Search
+									</NavItem> ]
+
+								: [ <RouteNavItem key={1}
+										onClick={this.handleNavLink}
+										href="/signup">
 										Signup
 									</RouteNavItem>,
 
-									<RouteNavItem
-										key={2}
+									<RouteNavItem key={2}
 										onClick={this.handleNavLink}
 										href="/login">
-											Login
-									</RouteNavItem> ]
+										Login
+									</RouteNavItem>,
+
+									<NavItem key={3}
+										onClick={ () => this.props.history.push('/') }>
+										Search
+									</NavItem> ]
 
 							}
 						</Nav>
