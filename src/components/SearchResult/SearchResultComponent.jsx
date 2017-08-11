@@ -109,6 +109,83 @@ class SearchResultComponent extends Component {
 		if (hitKeys.includes('quoteParagraph')) return 'quoteParagraph';
 	}
 
+	renderQuote(attributeName, rightQuoteStyle) {
+		return (<div
+			className="QuoteHit" 
+			style={ {overflowWrap: 'break-word'} }>
+
+			<Col xs={2}>
+				<img
+					alt="left quote"
+					src={quote}
+					className="LeftQuote" />
+			</Col>
+			<Col xs={8}>
+				<p>{this.props.hit.quoteName}</p>
+
+				<CustomHighlight
+					attributeName={attributeName}
+					hit={this.props.hit} />
+			</Col>
+			<Col xs={2}>
+				<img
+					alt="right quote"
+					src={quote}
+					className="RightQuote"
+					style={rightQuoteStyle} />
+			</Col>
+		</div>);
+	}
+
+	renderCard(discourseLevel, hitTextStyle, isTitleOrSummary, attributeHeader,
+		attributeName, isCardHit, isPostHit) {
+
+		// /{shortSlug}/{discourseLevel}/card
+		// /{shortSlug}/{discourseLevel}/feed/{feedSlug} ... (etc)
+		let href = '/';
+		if (isTitleOrSummary) {
+			href = '/' + this.props.hit.shortSlug + '/worldview/card';
+		} else if (this.getAttributeName(this.props.hit) === 'cardParagraph') {
+			href = '/' + this.props.hit.shortSlug + '/worldview/text';
+		} else if (isPostHit) {
+			href = '/' + this.props.hit.cardSlug + '/' +
+				this.props.hit.discourseLevel + '/feed/' + this.props.hit.feedSlug
+		}
+
+		console.log(this.props.hit);
+
+		return (<a className="ThumbnailHit" href={href}>
+			<Col xs={3} className="hit-image">
+				<img
+					alt="controversy card"
+					src={this.props.hit.images.thumbnail.url || notFoundImage}
+					className="CardThumbnail"
+					onError={ e => e.target.src = notFoundImage } />
+
+				{ this.state.hitHeight > 147 && <img
+					className="hit-level Left"
+					src={discourseLevel}
+					alt="the level of discussion" /> }
+			</Col>
+			<Col xs={9}>
+				<span
+					className="hit-text"
+					style={hitTextStyle}>
+
+					{isTitleOrSummary ? null : attributeHeader}
+					<CustomHighlight
+						attributeName={attributeName}
+						hit={this.props.hit} />
+
+				</span>
+				{ this.state.hitHeight <= 147 && <img
+					className="hit-level Right"
+					src={discourseLevel}
+					alt="the level of discussion" /> }
+			</Col>
+		</a>)
+	}
+
 	render() {
 		const
 			attributeName = this.props.hit ?
@@ -140,7 +217,13 @@ class SearchResultComponent extends Component {
 			rightQuoteStyle = {
 				position: 'relative',
 				top: this.state.hitHeight - 50
-			};
+			},
+
+			// this is just one way to check for this, there are others
+			isCardHit = !!this.props.hit.gplusUrl,
+
+			isPostHit = (this.getAttributeName(this.props.hit) === 'postName') ||
+				(this.getAttributeName(this.props.hit) === 'postParagraph');
 
 		return this.props.hit ?
 			(<Row
@@ -148,62 +231,10 @@ class SearchResultComponent extends Component {
 				ref="Hit"
 				key={this.props.hit.objectID}>
 
-				{ this.props.hit.images ? <div className="ThumbnailHit">
-					<Col xs={3} className="hit-image">
-						<img
-							alt="controversy card"
-							src={this.props.hit.images.thumbnail.url || notFoundImage}
-							className="CardThumbnail"
-							onError={ e => e.target.src = notFoundImage } />
-
-						{ this.state.hitHeight > 147 && <img
-							className="hit-level Left"
-							src={discourseLevel}
-							alt="the level of discussion" /> }
-					</Col>
-					<Col xs={9}>
-						<span
-							className="hit-text"
-							style={hitTextStyle}>
-
-							{isTitleOrSummary ? null : attributeHeader}
-							<CustomHighlight
-								attributeName={attributeName}
-								hit={this.props.hit} />
-
-						</span>
-						{ this.state.hitHeight <= 147 && <img
-							className="hit-level Right"
-							src={discourseLevel}
-							alt="the level of discussion" /> }
-					</Col>
-				</div> :
-
-				<div
-					className="QuoteHit" 
-					style={ {overflowWrap: 'break-word'} }>
-
-					<Col xs={2}>
-						<img
-							alt="left quote"
-							src={quote}
-							className="LeftQuote" />
-					</Col>
-					<Col xs={8}>
-						<p>{this.props.hit.quoteName}</p>
-
-						<CustomHighlight
-							attributeName={attributeName}
-							hit={this.props.hit} />
-					</Col>
-					<Col xs={2}>
-						<img
-							alt="right quote"
-							src={quote}
-							className="RightQuote"
-							style={rightQuoteStyle} />
-					</Col>
-				</div> }
+				{ this.props.hit.images ?
+					this.renderCard(discourseLevel, hitTextStyle, isTitleOrSummary,
+						attributeHeader, attributeName, isCardHit, isPostHit) :
+					this.renderQuote(attributeName, rightQuoteStyle) }
 		
 			</Row>) :
 			null;
