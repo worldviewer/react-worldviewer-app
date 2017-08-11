@@ -47,6 +47,10 @@ const CustomHighlight = connectHighlight(
 			// HTML linebreaks.  This is a hack which is necessary because when it is placed
 			// further up, the HTML breaks are converted back into carriage returns.
 			highlightedHits = highlightedHits.map(el => el.replace(/\n/g, "<br/>"));
+		} else {
+			// Eliminate all anchor tags in search results
+			highlightedHits = highlightedHits.map(el => el.replace(/<a href=.*>/g, ''));
+			highlightedHits = highlightedHits.map(el => el.replace(/<\/a>/g, ''));
 		}
 
 		const
@@ -138,7 +142,7 @@ class SearchResultComponent extends Component {
 	}
 
 	renderCard(discourseLevel, hitTextStyle, isTitleOrSummary, attributeHeader,
-		attributeName, isCardHit, isPostHit) {
+		attributeName, isPostHit) {
 
 		// /{shortSlug}/{discourseLevel}/card
 		// /{shortSlug}/{discourseLevel}/feed/{feedSlug} ... (etc)
@@ -152,9 +156,7 @@ class SearchResultComponent extends Component {
 				this.props.hit.discourseLevel + '/feed/' + this.props.hit.feedSlug
 		}
 
-		console.log(this.props.hit);
-
-		return (<a className="ThumbnailHit" href={href}>
+		return (<a className="CardHit" href={href} style={ {overflowWrap: 'break-word'} }>
 			<Col xs={3} className="hit-image">
 				<img
 					alt="controversy card"
@@ -219,9 +221,6 @@ class SearchResultComponent extends Component {
 				top: this.state.hitHeight - 50
 			},
 
-			// this is just one way to check for this, there are others
-			isCardHit = !!this.props.hit.gplusUrl,
-
 			isPostHit = (this.getAttributeName(this.props.hit) === 'postName') ||
 				(this.getAttributeName(this.props.hit) === 'postParagraph');
 
@@ -233,7 +232,7 @@ class SearchResultComponent extends Component {
 
 				{ this.props.hit.images ?
 					this.renderCard(discourseLevel, hitTextStyle, isTitleOrSummary,
-						attributeHeader, attributeName, isCardHit, isPostHit) :
+						attributeHeader, attributeName, isPostHit) :
 					this.renderQuote(attributeName, rightQuoteStyle) }
 		
 			</Row>) :
