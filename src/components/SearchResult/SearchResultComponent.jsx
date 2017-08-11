@@ -11,7 +11,7 @@ import conceptual from '../../images/conceptual-node.svg';
 import narrative from '../../images/narrative-node.svg';
 import quote from '../../images/quote.svg';
 import './SearchResult.css';
-import notFoundImage from '../../images/controversy-not-found.png';
+import notFoundImage from '../../images/error-thumbnail.png';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
