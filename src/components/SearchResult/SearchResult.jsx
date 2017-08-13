@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		user: state.reducer.user,
 		hit: state.reducer.hit,
 		search: state.reducer.search
 	};

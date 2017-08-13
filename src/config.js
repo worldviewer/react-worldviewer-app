@@ -9,4 +9,12 @@ export default {
 		URL: 'https://1xh0wwfkjf.execute-api.us-west-1.amazonaws.com/prod',
 		REGION: 'us-west-1'
 	},
+	s3: {
+		BUCKET: 'controversy-cards-images',
+		REGION: 'us-west-2'
+	},
+	cloudfront: {
+		BUCKET: 'd2rubbqaoavtmn.cloudfront.net',
+		REGION: 'us-west-1'
+	}
 };

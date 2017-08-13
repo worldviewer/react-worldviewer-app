@@ -22,6 +22,9 @@ import { connectHighlight } from 'react-instantsearch/connectors';
 // HTML-to-React Parser Dependencies
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
+// AWS Dependencies
+// import { s3Download } from '../../libs/awsLib';
+
 // This is a custom combination of two tools:
 // (1) https://www.npmjs.com/package/html-to-react
 // (2) https://community.algolia.com/react-instantsearch/connectors/connectHighlight.html 
@@ -86,6 +89,8 @@ class SearchResultComponent extends Component {
 			'conceptual': conceptual,
 			'narrative': narrative
 		}
+
+		this.thumbnail = null;
 	}
 	
 	componentDidMount() {
@@ -144,6 +149,9 @@ class SearchResultComponent extends Component {
 	renderCard(discourseLevel, hitTextStyle, isTitleOrSummary, attributeHeader,
 		attributeName, isPostHit) {
 
+		// this.thumbnail = await s3Download(this.props.hit.images.thumbnail.url.split('/')[3] + '/thumbnail.jpg',
+		// 	this.props.user.token);
+
 		// /{shortSlug}/{discourseLevel}/card
 		// /{shortSlug}/{discourseLevel}/feed/{feedSlug} ... (etc)
 		let href = '/';
@@ -160,7 +168,7 @@ class SearchResultComponent extends Component {
 			<Col xs={3} className="hit-image">
 				<img
 					alt="controversy card"
-					src={this.props.hit.images.thumbnail.url || notFoundImage}
+					src={notFoundImage}
 					className="CardThumbnail"
 					onError={ e => e.target.src = notFoundImage } />
 

@@ -4,12 +4,17 @@ import sigV4Client from './sigV4Client';
 import { CognitoUserPool, CognitoUser, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 // http://serverless-stack.com/chapters/connect-to-api-gateway-with-iam-auth.html
+// Useful information on API gateway policies here: http://docs.aws.amazon.com/
+// apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
 export async function invokeApig(
 	{ path,
 		method = 'GET',
 		headers = {},
 		queryParams = {},
 		body }, userToken) {
+
+	console.log('userToken:');
+	console.log(userToken);
 
 	await getAwsCredentials(userToken);
 
@@ -99,6 +104,35 @@ export async function s3Upload(file, userToken) {
 		ContentType: file.type,
 		ACL: 'public-read',
 	}).promise();
+}
+
+export async function s3Download(filename, userToken) {
+	function encode(data) {
+		const str = data.reduce((a,b) => a+String.fromCharCode(b), '');
+	    return btoa(str).replace(/.{76}(?=.)/g,'$&\n');
+	}
+
+	await getAwsCredentials(userToken);
+
+	const bucket = new AWS.S3({
+		params: {
+			Bucket: config.s3.BUCKET
+		},
+
+		region: config.s3.REGION
+	});
+
+	bucket.getObject({ Key: filename }, (err, file) => {
+		if (err) {
+			console.log('Error:')
+			console.log(err);
+		}
+
+		console.log('file:');
+		console.log(file);
+
+		return "data:image/jpeg;base64," + encode(file.Body);
+	});
 }
 
 // getCurrentUser() and getUserToken() come from http://serverless-stack.com
