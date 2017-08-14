@@ -19,7 +19,6 @@ import CardStackOverlay from '../../overlays/CardStackOverlay/CardStackOverlay';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
-import qs from 'qs';
 
 // AWS Dependencies
 import { invokeApig } from '../../libs/awsLib';
@@ -125,16 +124,13 @@ class MainStackComponent extends Component {
 
 	async loadCardData() {
 		const
-			shortSlug = this.props.router.location.pathname.split('/')[1],
-			queryString = qs.parse(this.props.location.search.slice(1)),
-			paragraphNumber = queryString['paragraph'] ?
-				parseInt(queryString['paragraph'], 10) :
-				-1;
+			shortSlug = this.props.router.location.pathname.split('/')[1];
 
+		this.props.setCardDataLoading();
 		const card = await invokeApig( {path: '/controversies/' +
 			this.props.slugs.hash[shortSlug]}, this.props.user.token);
-
 		this.props.setCardData(card);
+		this.props.unsetCardDataLoading();
 	}
 
 	componentWillReceiveProps(nextProps) {

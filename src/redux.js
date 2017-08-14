@@ -45,9 +45,12 @@ const types = {
 	SET_MAIN_STACK_OVERLAY_SIZE: 'SET_MAIN_STACK_OVERLAY_SIZE',
 
 	SET_CARD_SLUGS: 'SET_CARD_SLUGS',
-	SET_CARD_DATA: 'SET_CARD_DATA',
 	SET_SLUGS_LOADING: 'SET_SLUGS_LOADING',
-	UNSET_SLUGS_LOADING: 'UNSET_SLUGS_LOADING'
+	UNSET_SLUGS_LOADING: 'UNSET_SLUGS_LOADING',
+
+	SET_CARD_DATA: 'SET_CARD_DATA',
+	SET_CARD_DATA_LOADING: 'SET_CARD_DATA_LOADING',
+	UNSET_CARD_DATA_LOADING: 'UNSET_CARD_DATA_LOADING',
 };
 
 const initialState = {
@@ -97,7 +100,10 @@ const initialState = {
 		slugsLoading: true
 	},
 
-	card: {},
+	card: {
+		data: {},
+		cardLoading: true
+	},
 
 	search: {
 		query: ''
@@ -311,6 +317,18 @@ export const setCardData = (card) => {
 	return {
 		type: types.SET_CARD_DATA,
 		card
+	};
+};
+
+export const setCardDataLoading = () => {
+	return {
+		type: types.SET_CARD_DATA_LOADING
+	};
+};
+
+export const unsetCardDataLoading = () => {
+	return {
+		type: types.UNSET_CARD_DATA_LOADING
 	};
 };
 
@@ -582,7 +600,27 @@ export default (state = initialState, action) => {
 				...state,
 				card: {
 					...state.card,
-					...action.card
+					data: {
+						...action.card
+					}
+				}
+			}
+
+		case types.SET_CARD_DATA_LOADING:
+			return {
+				...state,
+				card: {
+					...state.card,
+					cardLoading: true
+				}
+			}
+
+		case types.UNSET_CARD_DATA_LOADING:
+			return {
+				...state,
+				card: {
+					...state.card,
+					cardLoading: false
 				}
 			}
 

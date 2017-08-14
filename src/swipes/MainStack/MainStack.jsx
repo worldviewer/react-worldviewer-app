@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { setLoaded, setDiscourseLevel, activateMainStackOverlay,
-	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setCardData } from '../../redux';
+	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setCardData, setCardDataLoading, unsetCardDataLoading } from '../../redux';
 import MainStackComponent from './MainStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
@@ -39,6 +39,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setCardData: (card) => {
 			return dispatch(setCardData(card));
+		},
+		setCardDataLoading: () => {
+			return dispatch(setCardDataLoading());
+		},
+		unsetCardDataLoading: () => {
+			return dispatch(unsetCardDataLoading());
 		}
 	};
 };

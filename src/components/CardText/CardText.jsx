@@ -4,7 +4,9 @@ import { withRouter } from 'react-router-dom';
 // import { setCardText } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
-	return {...ownProps};
+	return {
+		card: state.reducer.card
+	};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
