@@ -69,6 +69,7 @@ class CardStackComponent extends Component {
 						<SwipeableViews
 							axis='x'
 							containerStyle={containerStyles}
+							disabled={!this.props.mainStack.swipeable}
 							resistance
 							index={this.props.cardStack.level}
 							onChangeIndex={this.handleSwipe}>
@@ -77,11 +78,15 @@ class CardStackComponent extends Component {
 								<Browser />
 							</div>
 
+							{/* We have to do this because there app needs help differentiating
+							    swipes from scrolls ... */}
 							<div className="CardText">
-								<CardText />
 								<div className="TextSwitch" onClick={this.toggleReading.bind(this)}>
-									{ this.props.mainStack.swipeable ? 'Click to Read' : 'Click to Finish Reading' }
+									{ this.props.mainStack.swipeable ?
+										'Click to Read' :
+										'Click to Finish Reading' }
 								</div>
+								<CardText />
 							</div>
 
 							<div className="Card">
