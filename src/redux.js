@@ -42,7 +42,12 @@ const types = {
 
 	ACTIVATE_MAIN_STACK_OVERLAY: 'ACTIVATE_MAIN_STACK_OVERLAY',
 	DEACTIVATE_MAIN_STACK_OVERLAY: 'DEACTIVATE_MAIN_STACK_OVERLAY',
-	SET_MAIN_STACK_OVERLAY_SIZE: 'SET_MAIN_STACK_OVERLAY_SIZE'
+	SET_MAIN_STACK_OVERLAY_SIZE: 'SET_MAIN_STACK_OVERLAY_SIZE',
+
+	SET_CARD_SLUGS: 'SET_CARD_SLUGS',
+	SET_CARD_DATA: 'SET_CARD_DATA',
+	SET_SLUGS_LOADING: 'SET_SLUGS_LOADING',
+	UNSET_SLUGS_LOADING: 'UNSET_SLUGS_LOADING'
 };
 
 const initialState = {
@@ -87,6 +92,13 @@ const initialState = {
 		swipeDirection: 'right'
 	},
 
+	slugs: {
+		hash: {},
+		slugsLoading: true
+	},
+
+	card: {},
+
 	search: {
 		query: ''
 	},
@@ -95,60 +107,6 @@ const initialState = {
 		api: 'https://czlxg9sj34.execute-api.us-east-1.amazonaws.com/dev/cards/',
 		background: 'https://controversy-cards-assets.s3.amazonaws.com/',
 		overlay: 'https://controversy-cards-assets.s3.amazonaws.com/'
-	},
-
-	menu: {
-		open: false
-	},
-
-	card: {
-		id: '58b8f1f7b2ef4ddae2fb8b17',
-		height: 0,
-		url: '',
-		icon: {
-			source: '',
-			left: '',
-			top: '',
-			width: ''
-		},
-		nameLeft: {
-			left: '',
-			markup: '',
-			top: ''
-		},
-		nameRight: {
-			right: '',
-			markup: '',
-			top: ''
-		},
-		summary: '',
-		type: '',
-		graphics: [],
-		zindexes: {
-			icon: 10,
-			bubble0: 10,
-			bubble1: 10,
-			bubble2: 10,
-			bubble3: 10,
-			bubble4: 10,
-			bubble5: 10,
-			bubble6: 10,
-			bubble7: 10,
-			title: 10,
-			summary: 10,
-			controls: 10 // Not yet used
-		},
-		shade: {
-			darkness: 0,
-			zindex: 0
-		}
-	},
-
-	urls: {
-		api: 'https://czlxg9sj34.execute-api.us-east-1.amazonaws.com/dev/cards/',
-		background: 'https://controversy-cards-assets.s3.amazonaws.com/58b8f1f7b2ef4ddae2fb8b17/pyramid_files/',
-		overlay: 'https://controversy-cards-assets.s3.amazonaws.com/58b8f1f7b2ef4ddae2fb8b17/assets/',
-		icon: 'https://controversy-cards-assets.s3.amazonaws.com/58b8f1f7b2ef4ddae2fb8b17/icon/'
 	},
 
 	feeds: {
@@ -261,60 +219,6 @@ export const dismissAlert = () => {
 	};
 };
 
-export const fetchCardRequest = (id) => {
-	return {
-		type: types.FETCH_CARD_REQUEST,
-		id
-	};
-};
-
-export const fetchCardError = (error) => {
-	return {
-		type: types.FETCH_CARD_ERROR,
-		error
-	};
-};
-
-// TODO: Grab zindexes
-export const fetchCardSuccess = (data) => {
-	let card = {};
-
-	card.nameLeft = data['name']['display']['left'];
-	card.nameRight = data['name']['display']['right'];
-	card.summary = data['summary'];
-	card.type = data['graphic']['type'];
-	card.icon = data['graphic']['icon'];
-	card.graphics = data['graphic']['overlays']['assets'];
-	card.text = data['text']['unicode'];
-	card.url = data['gplus']['url'];
-
-	const slideshow = data['graphic']['slideshow'];
-
-	return {
-		type: types.FETCH_CARD_SUCCESS,
-		card,
-		slideshow
-	};
-};
-
-export function fetchCard(id, url) {
-	return dispatch => {
-		dispatch(fetchCardRequest(id));
-
-		const cardRequest = new Request(url);
-
-		return fetch(cardRequest)
-			.then(response => response.json())
-			.then(json => {
-				console.log('thunk result: ', json);
-				dispatch(fetchCardSuccess(json['body'][0]));
-			})
-			.catch(error => {
-				dispatch(fetchCardError(error));
-			});
-	};
-};
-
 export const openMenu = () => {
 	return {
 		type: types.OPEN_MENU
@@ -381,6 +285,32 @@ export const setMainStackOverlaySize = (isFullScreen) => {
 	return {
 		type: types.SET_MAIN_STACK_OVERLAY_SIZE,
 		isFullScreen
+	};
+};
+
+export const setCardSlugs = (slugsHash) => {
+	return {
+		type: types.SET_CARD_SLUGS,
+		slugsHash
+	};
+};
+
+export const setSlugsLoading = () => {
+	return {
+		type: types.SET_SLUGS_LOADING
+	};
+};
+
+export const unsetSlugsLoading = () => {
+	return {
+		type: types.UNSET_SLUGS_LOADING
+	};
+};
+
+export const setCardData = (card) => {
+	return {
+		type: types.SET_CARD_DATA,
+		card
 	};
 };
 
@@ -526,42 +456,6 @@ export default (state = initialState, action) => {
 				}
 			};
 
-		case types.FETCH_CARD_ERROR:
-			console.log(action.error);
-			return state;
-
-		case types.FETCH_CARD_SUCCESS:
-			let firsts = {},
-				curBubbleNum,
-				prevBubbleNum,
-				curSlide,
-				prevSlide;
-
-			for (var i=1; i<action.slideshow.length; i++) {
-				curSlide = action.slideshow[i].bubble;
-				prevSlide = action.slideshow[i-1].bubble;
-				curBubbleNum = curSlide ? curSlide.number : null;
-				prevBubbleNum = prevSlide ? prevSlide.number : null;
-
-				if (curBubbleNum !== null && prevBubbleNum === null) {
-					firsts[curBubbleNum] = i;
-				}
-			}
-
-			return {
-				...state, 
-				card: {
-					...state.card,
-					...action.card
-				},
-				slideshow: action.slideshow,
-				slides: {
-					...state.slides,
-					num: action.slideshow.length,
-					firsts: firsts
-				}
-			};
-
 		case types.OPEN_MENU:
 			return {
 				...state,
@@ -653,6 +547,42 @@ export default (state = initialState, action) => {
 				discourse: {
 					...state.discourse,
 					isFullScreen: action.isFullScreen
+				}
+			}
+
+		case types.SET_CARD_SLUGS:
+			return {
+				...state,
+				slugs: {
+					...state.slugs,
+					hash: action.slugsHash
+				}
+			}
+
+		case types.SET_SLUGS_LOADING:
+			return {
+				...state,
+				slugs: {
+					...state.slugs,
+					slugsLoading: true
+				}
+			}
+
+		case types.UNSET_SLUGS_LOADING:
+			return {
+				...state,
+				slugs: {
+					...state.slugs,
+					slugsLoading: false
+				}
+			}
+
+		case types.SET_CARD_DATA:
+			return {
+				...state,
+				card: {
+					...state.card,
+					...action.card
 				}
 			}
 

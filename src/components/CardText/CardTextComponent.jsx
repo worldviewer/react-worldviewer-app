@@ -10,10 +10,6 @@ class CardTextComponent extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-
-		};
-
 		this.props = props;
 	}
 

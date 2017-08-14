@@ -7,7 +7,6 @@ import debounce from 'debounce';
 import './MainStack.css';
 
 // Components
-// import Preload from '../Preload/Preload.jsx';
 import SwipeableViews from 'react-swipeable-views';
 import CardStack from '../CardStack/CardStack';
 import FeedStack from '../FeedStack/FeedStack';
@@ -20,6 +19,10 @@ import CardStackOverlay from '../../overlays/CardStackOverlay/CardStackOverlay';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
+import qs from 'qs';
+
+// AWS Dependencies
+import { invokeApig } from '../../libs/awsLib';
 
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -82,6 +85,11 @@ class MainStackComponent extends Component {
 			this.props.discourse.isFullScreen ? 3000 : 6000);
 
 		window.onscroll = function () { window.scrollTo(0, 0); };
+
+		// If the slugs finish loading before the component has loaded ...
+		if (!this.props.slugs.slugsLoading) {
+			this.loadCardData();
+		}
 	}
 
 	handleSwipe(index, previous) {
@@ -103,7 +111,7 @@ class MainStackComponent extends Component {
 					this.cardStackLevels[this.props.cardStack.level] :
 					this.feedStackLevels[this.props.feedStack.level]);
 
-			this.props.history.push(route);
+		this.props.history.push(route);
 	}
 
 	handleMainStackOverlay() {
@@ -115,9 +123,28 @@ class MainStackComponent extends Component {
 		event.preventDefault();
 	}
 
+	async loadCardData() {
+		const
+			shortSlug = this.props.router.location.pathname.split('/')[1],
+			queryString = qs.parse(this.props.location.search.slice(1)),
+			paragraphNumber = queryString['paragraph'] ?
+				parseInt(queryString['paragraph'], 10) :
+				-1;
+
+		const card = await invokeApig( {path: '/controversies/' +
+			this.props.slugs.hash[shortSlug]}, this.props.user.token);
+
+		this.props.setCardData(card);
+	}
+
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.discourse.level !== this.props.discourse.level) {
 			this.deactivateMainStackOverlay();
+		}
+
+		// If the slugs finish loading after the component has mounted ...
+		if (this.props.slugs.slugsLoading && !nextProps.slugs.slugsLoading) {
+			this.loadCardData();
 		}
 	}
 

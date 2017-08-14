@@ -13,9 +13,6 @@ export async function invokeApig(
 		queryParams = {},
 		body }, userToken) {
 
-	console.log('userToken:');
-	console.log(userToken);
-
 	await getAwsCredentials(userToken);
 
 	// "We are simply following the steps to make a signed request to API

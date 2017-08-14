@@ -17,9 +17,6 @@ import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { createConnector } from "react-instantsearch";
 
-// AWS Dependencies
-import { invokeApig } from '../../libs/awsLib';
-
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
@@ -90,12 +87,6 @@ class HomeComponent extends Component {
 		// the SearchBox component apparently does nothing
 		const searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
 		searchBoxDOMNode.focus();
-
-		// TEST
-		const arp = await invokeApig( {path: '/controversies/halton-arp-the-modern-galileo'}, this.props.user.token);
-
-		console.log('HALTON ARP CARD:');
-		console.log(arp);
 	}
 
 	render() {

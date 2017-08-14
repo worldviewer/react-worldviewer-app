@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setAlert, dismissAlert } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setAlert, dismissAlert, setCardSlugs, setSlugsLoading, unsetSlugsLoading } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		slugs: state.reducer.slugs,
 		user: state.reducer.user,
 		notification: state.reducer.notification,
-		pathname: state.router.location.pathname
+		router: state.router
 	};
 };
 
@@ -27,6 +28,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		dismissAlert: () => {
 			return dispatch(dismissAlert());
+		},
+		setCardSlugs: (slugsHash) => {
+			return dispatch(setCardSlugs(slugsHash));
+		},
+		setSlugsLoading: () => {
+			return dispatch(setSlugsLoading());
+		},
+		unsetSlugsLoading: () => {
+			return dispatch(unsetSlugsLoading());
 		}
 	}
 };

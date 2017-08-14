@@ -1,35 +1,24 @@
 import { connect } from 'react-redux';
-import { fetchCard, fetchCardRequest, fetchCardSuccess, fetchCardError,
-	setLoaded, setDiscourseLevel, activateMainStackOverlay,
-	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel } from '../../redux';
+import { setLoaded, setDiscourseLevel, activateMainStackOverlay,
+	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setCardData } from '../../redux';
 import MainStackComponent from './MainStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		user: state.reducer.user,
+		router: state.router,
 		card: state.reducer.card,
 		base: state.reducer.base,
 		discourse: state.reducer.discourse,
-		pathname: state.router.location.pathname,
 		cardStack: state.reducer.cardStack,
-		feedStack: state.reducer.feedStack
+		feedStack: state.reducer.feedStack,
+		slugs: state.reducer.slugs
 	};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		fetchCard: (id, url) => {
-			return dispatch(fetchCard(id, url));
-		},
-		fetchCardRequest: (id) => {
-			return dispatch(fetchCardRequest(id));
-		},
-		fetchCardSuccess: (json) => {
-			return dispatch(fetchCardSuccess(json));
-		},
-		fetchCardError: (error) => {
-			return dispatch(fetchCardError(error));
-		},
 		setLoaded: () => {
 			return dispatch(setLoaded());
 		},
@@ -47,6 +36,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setCardStackLevel: (level, direction) => {
 			return dispatch(setCardStackLevel(level, direction));
+		},
+		setCardData: (card) => {
+			return dispatch(setCardData(card));
 		}
 	};
 };

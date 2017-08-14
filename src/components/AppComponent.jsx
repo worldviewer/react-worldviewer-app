@@ -17,6 +17,9 @@ import AWS from 'aws-sdk';
 import { withRouter, Link } from 'react-router-dom';
 import RouteLoader from './RouteLoader/RouteLoader';
 
+// Data Persistence Dependencies
+import { getSlugs } from '../libs/utils';
+
 class AppComponent extends Component {
 	constructor(props) {
 		super(props);
@@ -63,8 +66,18 @@ class AppComponent extends Component {
 			})
 		}, 1000);
 
+		const isHomePage = this.props.router.location.pathname === '/';
+
+		// Fetch the slugs hash table, which gives us a hash table lookup to
+		// convert short slugs into their long slug form.  We use the short slugs
+		// for frontend routes, whereas the long-form slugs are used for backend routes.
+		this.props.setSlugsLoading();
+		getSlugs(isHomePage, this.props.setCardSlugs, this.props.user.token);
+		this.props.unsetSlugsLoading();
+
 		const currentUser = getCurrentUser();
 
+		// WARNING: Notice the return when there is no current user!
 		if (currentUser === null) {
 			this.props.unsetUserTokenLoading();
 			return;

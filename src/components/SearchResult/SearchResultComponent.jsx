@@ -157,14 +157,23 @@ class SearchResultComponent extends Component {
 		let href = '/';
 		if (isTitleOrSummary) {
 			href = '/' + this.props.hit.shortSlug + '/worldview/card';
+
+		// Generate pretty paragraph query strings, like so:
+		// http://localhost:3000/phantom-debate/worldview/text/?paragraph=73
 		} else if (this.getAttributeName(this.props.hit) === 'cardParagraph') {
-			href = '/' + this.props.hit.shortSlug + '/worldview/text';
+			const splitId = this.props.hit.id.split('-');
+			href = '/' + this.props.hit.shortSlug + '/worldview/text/?paragraph=' +
+				splitId[splitId.length-1];
+
 		} else if (isPostHit) {
 			href = '/' + this.props.hit.cardSlug + '/' +
 				this.props.hit.discourseLevel + '/feed/' + this.props.hit.feedSlug
 		}
 
-		return (<a className="CardHit" href={href} style={ {overflowWrap: 'break-word'} }>
+		return (<a className="CardHit"
+				href={href}
+				style={ {overflowWrap: 'break-word'} }>
+
 			<Col xs={3} className="hit-image">
 				<img
 					alt="controversy card"
@@ -234,7 +243,7 @@ class SearchResultComponent extends Component {
 
 		return this.props.hit ?
 			(<Row
-				className="hit"
+				className="CardHit"
 				ref="Hit"
 				key={this.props.hit.objectID}>
 

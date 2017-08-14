@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import CardTextComponent from './CardTextComponent.jsx';
 import { withRouter } from 'react-router-dom';
+// import { setCardText } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
-	return {
-		card: state.card
-	};
+	return {...ownProps};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
