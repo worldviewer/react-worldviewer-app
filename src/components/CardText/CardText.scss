@@ -1,6 +1,8 @@
 .CardText {
 	background-color: #839BA1;
 	color: #073642;
+	overflow-wrap: break-word;
+	overflow: hidden;
 	padding: 30px;
 
 	.FirstParagraph {
@@ -14,5 +16,9 @@
 	.ActiveParagraph {
 		background-color: yellow;
 		padding: 10px;
+	}
+
+	a {
+		color: blue
 	}
 }

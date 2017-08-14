@@ -83,7 +83,7 @@ class MainStackComponent extends Component {
 		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
 			this.props.discourse.isFullScreen ? 3000 : 6000);
 
-		window.onscroll = function () { window.scrollTo(0, 0); };
+		// window.onscroll = function () { window.scrollTo(0, 0); };
 
 		// If the slugs finish loading before the component has loaded ...
 		if (!this.props.slugs.slugsLoading) {
