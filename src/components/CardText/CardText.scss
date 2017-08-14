@@ -2,8 +2,6 @@
 	background-color: #839BA1;
 	color: #073642;
 	overflow-wrap: break-word;
-	overflow: hidden;
-	padding: 30px;
 
 	.FirstParagraph {
 		font-family: LeagueGothic;
@@ -20,5 +18,9 @@
 
 	a {
 		color: blue
+	}
+
+	.Paragraphs {
+		padding: 30px;
 	}
 }

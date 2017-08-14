@@ -51,6 +51,9 @@ const types = {
 	SET_CARD_DATA: 'SET_CARD_DATA',
 	SET_CARD_DATA_LOADING: 'SET_CARD_DATA_LOADING',
 	UNSET_CARD_DATA_LOADING: 'UNSET_CARD_DATA_LOADING',
+
+	ENABLE_MAINSTACK_SWIPEABLE: 'ENABLE_MAINSTACK_SWIPEABLE',
+	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE'
 };
 
 const initialState = {
@@ -93,6 +96,10 @@ const initialState = {
 	feedStack: {
 		level: 0,
 		swipeDirection: 'right'
+	},
+
+	mainStack: {
+		swipeable: true
 	},
 
 	slugs: {
@@ -329,6 +336,18 @@ export const setCardDataLoading = () => {
 export const unsetCardDataLoading = () => {
 	return {
 		type: types.UNSET_CARD_DATA_LOADING
+	};
+};
+
+export const enableMainStackSwipeable = () => {
+	return {
+		type: types.ENABLE_MAINSTACK_SWIPEABLE
+	};
+};
+
+export const disableMainStackSwipeable = () => {
+	return {
+		type: types.DISABLE_MAINSTACK_SWIPEABLE
 	};
 };
 
@@ -621,6 +640,24 @@ export default (state = initialState, action) => {
 				card: {
 					...state.card,
 					cardLoading: false
+				}
+			}
+
+		case types.ENABLE_MAINSTACK_SWIPEABLE:
+			return {
+				...state,
+				mainStack: {
+					...state.mainStack,
+					swipeable: true
+				}
+			}
+
+		case types.DISABLE_MAINSTACK_SWIPEABLE:
+			return {
+				...state,
+				mainStack: {
+					...state.mainStack,
+					swipeable: false
 				}
 			}
 

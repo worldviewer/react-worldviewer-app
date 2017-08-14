@@ -5,7 +5,8 @@ import { setCardStackLevel } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		cardStack: state.reducer.cardStack
+		cardStack: state.reducer.cardStack,
+		mainStack: state.reducer.mainStack
 	};
 };
 

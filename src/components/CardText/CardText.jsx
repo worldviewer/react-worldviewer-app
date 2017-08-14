@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CardTextComponent from './CardTextComponent.jsx';
 import { withRouter } from 'react-router-dom';
-// import { setCardText } from '../../redux.js';
+// import {  } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {

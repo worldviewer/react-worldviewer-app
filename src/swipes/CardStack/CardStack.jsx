@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import CardStackComponent from './CardStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setDiscourseLevel, setCardStackLevel } from '../../redux.js';
+import { setDiscourseLevel, setCardStackLevel, enableMainStackSwipeable, disableMainStackSwipeable } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
 		pathname: state.router.location.pathname,
 		discourse: state.reducer.discourse,
-		cardStack: state.reducer.cardStack
+		cardStack: state.reducer.cardStack,
+		mainStack: state.reducer.mainStack
 	};
 };
 
@@ -18,6 +19,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setCardStackLevel: (level, direction) => {
 			return dispatch(setCardStackLevel(level, direction));
+		},
+		enableMainStackSwipeable: () => {
+			return dispatch(enableMainStackSwipeable());
+		},
+		disableMainStackSwipeable: () => {
+			return dispatch(disableMainStackSwipeable());
 		}
 	};
 };

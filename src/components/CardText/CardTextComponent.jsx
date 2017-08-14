@@ -58,7 +58,7 @@ class CardTextComponent extends Component {
 	}
 
 	render() {
-		return (<div>{ this.state.text }</div>);
+		return (<div className="Paragraphs">{ this.state.text }</div>);
 	}
 
 }

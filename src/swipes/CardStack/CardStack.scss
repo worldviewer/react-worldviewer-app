@@ -1,3 +1,15 @@
 .CardStack {
-	overflow: hidden;
+	.TextSwitch {
+		bottom: 50px;
+		background-color: red;
+		color: white;
+		font-family: 'LeagueGothic';
+		font-size: 20px;
+		height: 43px;
+		line-height: 43px;
+		position: fixed;
+		text-align: center;
+		text-transform: uppercase;
+		width: 100%;
+	}
 }

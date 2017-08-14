@@ -43,6 +43,14 @@ class CardStackComponent extends Component {
 		this.props.setCardStackLevel(index, swipeDirection);
 	}
 
+	toggleReading() {
+		if (this.props.mainStack.swipeable) {
+			this.props.disableMainStackSwipeable();
+		} else {
+			this.props.enableMainStackSwipeable();
+		}
+	}
+
 	showSettings(event) {
 		event.preventDefault();
 	}
@@ -57,11 +65,11 @@ class CardStackComponent extends Component {
 			<div ref={c => this.container = c} className="CardStack">
 				<Grid>
 					<Row>
+					{/* ignoreNativeScroll */}
 						<SwipeableViews
 							axis='x'
 							containerStyle={containerStyles}
 							resistance
-							ignoreNativeScroll
 							index={this.props.cardStack.level}
 							onChangeIndex={this.handleSwipe}>
 
@@ -71,6 +79,9 @@ class CardStackComponent extends Component {
 
 							<div className="CardText">
 								<CardText />
+								<div className="TextSwitch" onClick={this.toggleReading.bind(this)}>
+									{ this.props.mainStack.swipeable ? 'Click to Read' : 'Click to Finish Reading' }
+								</div>
 							</div>
 
 							<div className="Card">

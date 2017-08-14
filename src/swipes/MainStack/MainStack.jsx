@@ -13,7 +13,8 @@ const mapStateToProps = (state, ownProps) => {
 		discourse: state.reducer.discourse,
 		cardStack: state.reducer.cardStack,
 		feedStack: state.reducer.feedStack,
-		slugs: state.reducer.slugs
+		slugs: state.reducer.slugs,
+		mainStack: state.reducer.mainStack
 	};
 };
 

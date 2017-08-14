@@ -168,11 +168,12 @@ class MainStackComponent extends Component {
 							discourseHandler={this.props.setDiscourseLevel}
 							deactivateOverlayHandler={this.props.deactivateMainStackOverlay} />
 
+						{/* ignoreNativeScroll */}
 						<SwipeableViews
 							axis='y'
 							containerStyle={containerStyles}
 							resistance
-							ignoreNativeScroll
+							disabled={!this.props.mainStack.swipeable}
 							index={this.props.discourse.level}
 							onChangeIndex={this.handleSwipe}
 							onTransitionEnd={this.changeRoute}>
