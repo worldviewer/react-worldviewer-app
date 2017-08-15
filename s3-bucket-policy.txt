@@ -1,0 +1,25 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::controversy-cards-images/*",
+                "arn:aws:s3:::controversy-cards-images"
+            ],
+            "Condition": {
+                "StringNotLike": {
+                    "aws:userId": [
+                        "AROAJYKBZMU5NOFS2U24K:*",
+                        "915249704669",
+                        "AROAJPXWQHBEYC2MG6V6C:*",
+                        "AIDAJQAP4OIUWPSKGGDNU"
+                    ]
+                }
+            }
+        }
+    ]
+}

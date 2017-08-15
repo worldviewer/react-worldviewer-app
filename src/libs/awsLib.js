@@ -103,35 +103,6 @@ export async function s3Upload(file, userToken) {
 	}).promise();
 }
 
-export async function s3Download(filename, userToken) {
-	function encode(data) {
-		const str = data.reduce((a,b) => a+String.fromCharCode(b), '');
-	    return btoa(str).replace(/.{76}(?=.)/g,'$&\n');
-	}
-
-	await getAwsCredentials(userToken);
-
-	const bucket = new AWS.S3({
-		params: {
-			Bucket: config.s3.BUCKET
-		},
-
-		region: config.s3.REGION
-	});
-
-	bucket.getObject({ Key: filename }, (err, file) => {
-		if (err) {
-			console.log('Error:')
-			console.log(err);
-		}
-
-		console.log('file:');
-		console.log(file);
-
-		return "data:image/jpeg;base64," + encode(file.Body);
-	});
-}
-
 // getCurrentUser() and getUserToken() come from http://serverless-stack.com
 // /chapters/load-the-state-from-the-session.html. There is similar code at
 // http://docs.aws.amazon.com/cognito/latest/developerguide

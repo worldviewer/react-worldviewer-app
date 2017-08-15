@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
 import { Notification } from 'react-notification';
-// import mobiscroll from '../libs/mobiscroll.custom-3.2.3.min';
+import mobiscroll from '../libs/mobiscroll.custom-3.2.3.min';
 import './App.css';
 import '../styles/react-instantsearch-algolia-theme.css';
 

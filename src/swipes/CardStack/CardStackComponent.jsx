@@ -65,12 +65,12 @@ class CardStackComponent extends Component {
 			<div ref={c => this.container = c} className="CardStack">
 				<Grid>
 					<Row>
-					{/* ignoreNativeScroll */}
 						<SwipeableViews
 							axis='x'
 							containerStyle={containerStyles}
 							disabled={!this.props.mainStack.swipeable}
 							resistance
+							ignoreNativeScroll
 							index={this.props.cardStack.level}
 							onChangeIndex={this.handleSwipe}>
 
