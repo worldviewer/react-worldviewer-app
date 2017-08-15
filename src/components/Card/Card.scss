@@ -1,4 +1,9 @@
 .Card {
 	height: 100vh;
 	overflow-y: hidden;
+
+	// This places the container at the top of the page on mobile
+	.openseadragon-container {
+		top: -70px !important;
+	}
 }

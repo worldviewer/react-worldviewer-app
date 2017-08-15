@@ -10,8 +10,7 @@ class CardComponent extends Component {
 
 		this.state = {
 			cardStyle: {
-				width: '100vw',
-				height: '140vw'
+				width: '100%'
 			}
 		};
 
@@ -51,10 +50,9 @@ class CardComponent extends Component {
 			}
 		});
 
-		const resize = () => this.setupResizeHandler();
-
-		window.addEventListener('resize', resize);
-		this.setupZoomHandler(this.viewer);
+		// const resize = () => this.setupResizeHandler();
+		// window.addEventListener('resize', resize);
+		// this.setupZoomHandler(this.viewer);
 	}
 
 	// Use this to react to OpenSeadragon zoom events
@@ -65,16 +63,6 @@ class CardComponent extends Component {
 	}
 
 	setupResizeHandler() {
-		const
-			width = this.refs.clientWidth,
-			height = parseInt(width, 10)*1.4;
-
-		this.setState({
-			cardStyle: {
-				width,
-				height: height + 'vw'
-			}
-		});
 	}
 
 	componentDidMount() {
