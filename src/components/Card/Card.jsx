@@ -5,7 +5,8 @@ import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		pathname: state.router.location.pathname
+		pathname: state.router.location.pathname,
+		card: state.reducer.card
 	};
 };
 

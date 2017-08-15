@@ -11,6 +11,7 @@ export default {
 	},
 	s3: {
 		BUCKET: 'controversy-cards-images',
+		URL: 'https://s3-us-west-2.amazonaws.com/controversy-cards-images/',
 		REGION: 'us-west-2'
 	},
 	cloudfront: {
