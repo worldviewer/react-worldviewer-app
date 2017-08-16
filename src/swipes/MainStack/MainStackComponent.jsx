@@ -150,10 +150,19 @@ class MainStackComponent extends Component {
 
 			containerStyles = {
 				height: '100vh'
-			};
+			},
+
+			mainStackStyles = this.props.navbar.hidden
+				&& this.props.cardStack.level === 2 ?
+				{ top: '-55px' } :
+				{ top: '50px' };
 
 		return (
-			<div ref={c => this.container = c} className="MainStack">
+			<div
+				style={mainStackStyles}
+				ref={c => this.container = c}
+				className="MainStack">
+
 				{ this.props.discourse.level === 0 ?
 					<CardStackOverlay /> :
 					<FeedStackOverlay /> }

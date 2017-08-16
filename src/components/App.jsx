@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		cardStack: state.reducer.cardStack,
+		navbar: state.reducer.navbar,
 		slugs: state.reducer.slugs,
 		user: state.reducer.user,
 		notification: state.reducer.notification,

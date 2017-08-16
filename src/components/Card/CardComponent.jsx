@@ -35,9 +35,6 @@ class CardComponent extends Component {
 			tileSources: {
 				Image: {
 					xmlns: 'http://schemas.microsoft.com/deepzoom/2008',
-					// Url: 'https://controversy-cards-feeds.s3.amazonaws.com
-					// /halton-arp-the-modern-galileo/propositional
-					// /if-redshift-quantization-then-local-quasars/pyramid_files/',
 					Url: config.s3.URL + card.slug + '/pyramid_files/',
 					Format: 'jpg',
 					Overlap: '0',
@@ -52,17 +49,15 @@ class CardComponent extends Component {
 
 		// const resize = () => this.setupResizeHandler();
 		// window.addEventListener('resize', resize);
-		// this.setupZoomHandler(this.viewer);
+
+		this.setupZoomHandler(this.viewer);
 	}
 
 	// Use this to react to OpenSeadragon zoom events
 	setupZoomHandler(viewer) {
 		viewer.addHandler('zoom', (data) => {
-			// this.props.toggleOverlayState(data.zoom);
+			this.props.toggleNavbarState(data.zoom);
 		});
-	}
-
-	setupResizeHandler() {
 	}
 
 	componentDidMount() {

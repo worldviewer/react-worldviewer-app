@@ -53,7 +53,9 @@ const types = {
 	UNSET_CARD_DATA_LOADING: 'UNSET_CARD_DATA_LOADING',
 
 	ENABLE_MAINSTACK_SWIPEABLE: 'ENABLE_MAINSTACK_SWIPEABLE',
-	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE'
+	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE',
+
+	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE'
 };
 
 const initialState = {
@@ -128,6 +130,10 @@ const initialState = {
 		propositional: [],
 		conceptual: [],
 		narrative: []
+	},
+
+	navbar: {
+		hidden: false
 	}
 };
 
@@ -348,6 +354,13 @@ export const enableMainStackSwipeable = () => {
 export const disableMainStackSwipeable = () => {
 	return {
 		type: types.DISABLE_MAINSTACK_SWIPEABLE
+	};
+};
+
+export const toggleNavbarState = (zoom) => {
+	return {
+		type: types.TOGGLE_NAVBAR_STATE,
+		zoom
 	};
 };
 
@@ -658,6 +671,15 @@ export default (state = initialState, action) => {
 				mainStack: {
 					...state.mainStack,
 					swipeable: false
+				}
+			}
+
+		case types.TOGGLE_NAVBAR_STATE:
+			return {
+				...state,
+				navbar: {
+					...state.navbar,
+					hidden: action.zoom < 1.2
 				}
 			}
 

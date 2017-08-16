@@ -102,12 +102,15 @@ class AppComponent extends Component {
 			letterSpacing: '1px'
 		}
 
-		let navStyles = {
-			visibility: this.state.navVisibility,
-			position: 'fixed',
-			width: '100%',
-			zIndex: 100
-		};
+		let navStyles = this.props.navbar.hidden
+			&& this.props.cardStack.level === 2 ?
+			{ display: 'none' } :
+			{
+				position: 'fixed',
+				visibility: this.state.navVisibility,
+				width: '100%',
+				zIndex: 100
+			};
 
 		return !this.props.isLoadingUserToken && (
 			<div className="App">

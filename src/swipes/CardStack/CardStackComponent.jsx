@@ -89,7 +89,7 @@ class CardStackComponent extends Component {
 								<CardText />
 							</div>
 
-							<div className="Card">
+							<div className="CardStackParent">
 								<Card />
 							</div>
 
