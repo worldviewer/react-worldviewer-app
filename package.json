@@ -43,7 +43,8 @@
     "redux": "^3.7.0",
     "redux-thunk": "^2.2.0",
     "synchronize": "^2.0.0",
-    "validate.io-email-address": "^1.0.0"
+    "validate.io-email-address": "^1.0.0",
+    "zenscroll": "^4.0.0"
   },
   "devDependencies": {
     "autoprefixer": "7.1.0",
