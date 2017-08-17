@@ -52,6 +52,14 @@ const types = {
 	SET_CARD_DATA_LOADING: 'SET_CARD_DATA_LOADING',
 	UNSET_CARD_DATA_LOADING: 'UNSET_CARD_DATA_LOADING',
 
+	SET_FEED_DATA: 'SET_FEED_DATA',
+	SET_FEED_DATA_LOADING: 'SET_FEED_DATA_LOADING',
+	UNSET_FEED_DATA_LOADING: 'UNSET_FEED_DATA_LOADING',
+
+	SET_FEEDS_DATA: 'SET_FEEDS_DATA',
+	SET_FEEDS_DATA_LOADING: 'SET_FEEDS_DATA_LOADING',
+	UNSET_FEEDS_DATA_LOADING: 'UNSET_FEEDS_DATA_LOADING',
+
 	ENABLE_MAINSTACK_SWIPEABLE: 'ENABLE_MAINSTACK_SWIPEABLE',
 	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE',
 
@@ -114,22 +122,18 @@ const initialState = {
 		cardLoading: true
 	},
 
-	search: {
-		query: ''
-	},
-
-	base: {
-		api: 'https://czlxg9sj34.execute-api.us-east-1.amazonaws.com/dev/cards/',
-		background: 'https://controversy-cards-assets.s3.amazonaws.com/',
-		overlay: 'https://controversy-cards-assets.s3.amazonaws.com/'
+	feed: {
+		data: {},
+		feedLoading: true
 	},
 
 	feeds: {
-		worldview: [],
-		model: [],
-		propositional: [],
-		conceptual: [],
-		narrative: []
+		data: [],
+		feedsLoading: true
+	},
+
+	search: {
+		query: ''
 	},
 
 	navbar: {
@@ -342,6 +346,44 @@ export const setCardDataLoading = () => {
 export const unsetCardDataLoading = () => {
 	return {
 		type: types.UNSET_CARD_DATA_LOADING
+	};
+};
+
+export const setFeedData = (feed) => {
+	return {
+		type: types.SET_FEED_DATA,
+		feed
+	};
+};
+
+export const setFeedDataLoading = () => {
+	return {
+		type: types.SET_FEED_DATA_LOADING
+	};
+};
+
+export const unsetFeedDataLoading = () => {
+	return {
+		type: types.UNSET_FEED_DATA_LOADING
+	};
+};
+
+export const setFeedsData = (feedList) => {
+	return {
+		type: types.SET_FEEDS_DATA,
+		feedList
+	};
+};
+
+export const setFeedsDataLoading = () => {
+	return {
+		type: types.SET_FEEDS_DATA_LOADING
+	};
+};
+
+export const unsetFeedsDataLoading = () => {
+	return {
+		type: types.UNSET_FEEDS_DATA_LOADING
 	};
 };
 
@@ -653,6 +695,64 @@ export default (state = initialState, action) => {
 				card: {
 					...state.card,
 					cardLoading: false
+				}
+			}
+
+		case types.SET_FEED_DATA:
+			return {
+				...state,
+				feed: {
+					...state.feed,
+					data: {
+						...action.feed
+					}
+				}
+			}
+
+		case types.SET_FEED_DATA_LOADING:
+			return {
+				...state,
+				feed: {
+					...state.feed,
+					feedLoading: true
+				}
+			}
+
+		case types.UNSET_FEED_DATA_LOADING:
+			return {
+				...state,
+				feed: {
+					...state.feed,
+					feedLoading: false
+				}
+			}
+
+		case types.SET_FEEDS_DATA:
+			return {
+				...state,
+				feeds: {
+					...state.feeds,
+					data: [
+						...action.feedList
+					]
+				}
+			}
+
+		case types.SET_FEEDS_DATA_LOADING:
+			return {
+				...state,
+				feeds: {
+					...state.feeds,
+					feedsLoading: true
+				}
+			}
+
+		case types.UNSET_FEEDS_DATA_LOADING:
+			return {
+				...state,
+				feeds: {
+					...state.feeds,
+					feedsLoading: false
 				}
 			}
 

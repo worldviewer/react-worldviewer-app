@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setAlert, dismissAlert, setCardSlugs, setSlugsLoading, unsetSlugsLoading } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setAlert, dismissAlert, setCardSlugs, setSlugsLoading, unsetSlugsLoading } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -24,6 +24,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setUserToken: (token) => {
 			return dispatch(setUserToken(token));
+		},
+		setTokenFetchComplete: () => {
+			return dispatch(setTokenFetchComplete());
 		},
 		setAlert: (title, message) => {
 			return dispatch(setAlert(title, message));

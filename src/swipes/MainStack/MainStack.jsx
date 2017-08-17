@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { setLoaded, setDiscourseLevel, activateMainStackOverlay,
-	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setCardData, setCardDataLoading, unsetCardDataLoading } from '../../redux';
+	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setCardData, setCardDataLoading, unsetCardDataLoading, setFeedData, setFeedDataLoading, unsetFeedDataLoading, setFeedsData, setFeedsDataLoading, unsetFeedsDataLoading } from '../../redux';
 import MainStackComponent from './MainStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
@@ -47,6 +47,24 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		unsetCardDataLoading: () => {
 			return dispatch(unsetCardDataLoading());
+		},
+		setFeedData: (feed) => {
+			return dispatch(setFeedData(feed));
+		},
+		setFeedDataLoading: () => {
+			return dispatch(setFeedDataLoading());
+		},
+		unsetFeedDataLoading: () => {
+			return dispatch(unsetFeedDataLoading());
+		},
+		setFeedsData: (feedsList) => {
+			return dispatch(setFeedsData(feedsList));
+		},
+		setFeedsDataLoading: () => {
+			return dispatch(setFeedsDataLoading());
+		},
+		unsetFeedsDataLoading: () => {
+			return dispatch(unsetFeedsDataLoading());
 		}
 	};
 };

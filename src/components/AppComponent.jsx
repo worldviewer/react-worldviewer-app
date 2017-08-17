@@ -10,7 +10,7 @@ import './App.css';
 import '../styles/react-instantsearch-algolia-theme.css';
 
 // AWS Dependencies
-import { getUserToken, getCurrentUser } from '../libs/awsLib';
+import { getUserToken, getCurrentUser, getAwsCredentials } from '../libs/awsLib';
 import AWS from 'aws-sdk';
 
 // React Router / Spinner / Preloader / Code-Splitter Dependencies
@@ -76,22 +76,66 @@ class AppComponent extends Component {
 		this.props.unsetSlugsLoading();
 
 		const currentUser = getCurrentUser();
-
-		// WARNING: Notice the return when there is no current user!
-		if (currentUser === null) {
-			this.props.unsetUserTokenLoading();
-			return;
-		}
+		console.log('currentUser: ' + currentUser);
 
 		try {
-			const userToken = await getUserToken(currentUser);
+			const userToken = await this.getUserIDToken(currentUser);
 			this.props.setUserToken(userToken);
+			this.getCredentials(currentUser);
 		} catch (e) {
 			this.props.setAlert('User Token Error: ', e.message);
 			setTimeout(() => this.props.dismissAlert(), 5000);
 		}
 
 		this.props.unsetUserTokenLoading();
+	}
+
+	async getUserIDToken(currentUser) {
+		try {
+			if (currentUser) {
+				const userToken = await getUserToken(currentUser);
+
+				this.props.setUserToken(userToken);
+			}
+		}
+		catch(e) {
+			this.props.setAlert("Session Token Error: ",
+				"You might want to try logging back in");
+			setTimeout(() => this.props.dismissAlert(), 5000);
+		}
+
+		this.props.unsetUserTokenLoading();
+
+		// We need to know when this process is complete so that we can restrict
+		// access on pages where a user must be logged in
+		this.props.setTokenFetchComplete();
+	}
+
+	async getCredentials(currentUser) {
+		// TODO: Save parts of credentials into Redux store.  Also: Re-evaluate
+		// when exactly I should be calling this ...
+		try {
+			await getAwsCredentials(this.props.user.token);
+
+			// https://medium.com/@kangzeroo/user-management-with-aws-cognito-2-3-the-core-functionality-ec15849618a4
+			// "after we setup AWS.config.credentials it is important to
+			// refresh the credentials using AWS.config.credentials.refresh
+			// so that AWS will use the latest one we just added."
+			AWS.config.credentials.refresh(() => {
+				console.log('credentials have been refreshed ...');
+
+				if (AWS.config.credentials) {
+					console.log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
+					console.log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey + '\n\n');
+				} else {
+					console.log('No credentials\n\n');
+				}
+			});
+		}
+		catch(e) {
+			this.props.setAlert('Error Authorizing User: ', e.message);
+			setTimeout(() => this.props.dismissAlert(), 5000);			
+		}
 	}
 
 	render() {

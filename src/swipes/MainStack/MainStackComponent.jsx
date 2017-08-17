@@ -67,12 +67,14 @@ class MainStackComponent extends Component {
 			this.props.setCardStackLevel(this.props.cardStackLevel, 'right');			
 		}
 
+		this.parameterDiscourseLevel = this.discourseLevels.indexOf(this.props.match.params.level);
+
 		// Same sort of situation for discourse level, but we have to also reverse-engineer the
 		// discourse level number from the :level route parameter, and we use the discourseLevel
 		// router prop to differentiate a landing from a swipe.  On landing, we must set the
 		// discourse level (since this is otherwise set by swiping).
 		if (this.props.discourseLevel) {
-			this.props.setDiscourseLevel(this.discourseLevels.indexOf(this.props.match.params.level), 'up');
+			this.props.setDiscourseLevel(this.parameterDiscourseLevel, 'up');
 		}
 
 		this.handleSwipe = this.handleSwipe.bind(this);
@@ -88,6 +90,13 @@ class MainStackComponent extends Component {
 		// If the slugs finish loading before the component has loaded ...
 		if (!this.props.slugs.slugsLoading) {
 			this.loadCardData();
+
+			console.log(this.parameterDiscourseLevel);
+
+			if (this.parameterDiscourseLevel !== 0) {
+				this.loadFeedData();
+				this.loadFeedsData();
+			}
 		}
 	}
 
@@ -127,10 +136,50 @@ class MainStackComponent extends Component {
 			shortSlug = this.props.router.location.pathname.split('/')[1];
 
 		this.props.setCardDataLoading();
-		const card = await invokeApig( {path: '/controversies/' +
+
+		const card = await invokeApig( {base: 'cards', path: '/controversies/' +
 			this.props.slugs.hash[shortSlug]}, this.props.user.token);
 		this.props.setCardData(card);
+
 		this.props.unsetCardDataLoading();
+	}
+
+	async loadFeedData() {
+		const
+			shortSlug = this.props.router.location.pathname.split('/')[1],
+			cardSlug = this.props.slugs.hash[shortSlug],
+			feedSlug = this.props.router.location.pathname.split('/')[4];
+
+		console.log('short slug: ' + shortSlug);
+		console.log('feed slug: ' + feedSlug);
+
+		this.props.setFeedDataLoading();
+
+		const feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
+			cardSlug + '/' + feedSlug }, this.props.user.token);
+
+		console.log(feed);
+
+		this.props.setFeedData(feed);
+		this.props.unsetFeedDataLoading();
+	}
+
+	async loadFeedsData() {
+		const
+			shortSlug = this.props.router.location.pathname.split('/')[1],
+			cardSlug = this.props.slugs.hash[shortSlug];
+
+		console.log('short slug: ' + shortSlug);
+
+		this.props.setFeedsDataLoading();
+
+		const feedsList = await invokeApig( {base: 'feeds', path: '/feeds/' +
+			cardSlug }, this.props.user.token);
+
+		console.log(feedsList);
+
+		this.props.setFeedsData(feedsList);
+		this.props.unsetFeedsDataLoading();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -141,6 +190,13 @@ class MainStackComponent extends Component {
 		// If the slugs finish loading after the component has mounted ...
 		if (this.props.slugs.slugsLoading && !nextProps.slugs.slugsLoading) {
 			this.loadCardData();
+
+			console.log(this.parameterDiscourseLevel);
+
+			if (this.parameterDiscourseLevel !== 0) {
+				this.loadFeedData();
+				this.loadFeedsData();
+			}
 		}
 	}
 

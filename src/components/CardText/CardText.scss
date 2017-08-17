@@ -25,4 +25,10 @@
 		position: relative;
 		top: 50px;
 	}
+
+	// This does not appear to be working (?)
+	// .react-swipeable-view-container {
+	// 	overflow-y: scroll; has to be scroll, not auto
+	// 	-webkit-overflow-scrolling: touch;
+	// }
 }

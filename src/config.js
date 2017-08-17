@@ -6,8 +6,14 @@ export default {
 		REGION: 'us-west-2'
 	},
 	apiGateway: {
-		URL: 'https://1xh0wwfkjf.execute-api.us-west-1.amazonaws.com/prod',
-		REGION: 'us-west-1'
+		cards: {
+			URL: 'https://1xh0wwfkjf.execute-api.us-west-1.amazonaws.com/prod',
+			REGION: 'us-west-1'
+		},
+		feeds: {
+			URL: 'https://wu7nsd6i3a.execute-api.us-west-1.amazonaws.com/prod',
+			REGION: 'us-west-1'	
+		}
 	},
 	s3: {
 		BUCKET: 'controversy-cards-images',

@@ -12,14 +12,14 @@ export async function getSlugs(isHomePage, setCardSlugsHandler, userToken) {
 	let slugs;
 
 	if (isHomePage) {
-		slugs = await invokeApig( {path: '/controversies'}, userToken);
+		slugs = await invokeApig( {base: 'cards', path: '/controversies'}, userToken);
 		storage.save('slugs', slugs);
 	} else {
 		slugs = await storage.read('slugs');
 	}
 
 	if (!isHomePage && !slugs) {
-		slugs = await invokeApig( {path: '/controversies'}, userToken);
+		slugs = await invokeApig( {base: 'cards', path: '/controversies'}, userToken);
 		storage.save('slugs', slugs);
 	}
 

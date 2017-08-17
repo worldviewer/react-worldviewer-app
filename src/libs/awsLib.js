@@ -7,13 +7,31 @@ import { CognitoUserPool, CognitoUser, CognitoUserAttribute, AuthenticationDetai
 // Useful information on API gateway policies here: http://docs.aws.amazon.com/
 // apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
 export async function invokeApig(
-	{ path,
+	{ base,
+		path,
 		method = 'GET',
 		headers = {},
 		queryParams = {},
 		body }, userToken) {
 
 	await getAwsCredentials(userToken);
+
+	console.log('config.apiGateway[base].URL:');
+	console.log(config.apiGateway[base].URL);
+
+	console.log('path: ' + path);
+	console.log('method: ' + method);
+
+	// MYSTERY: When I remove these logging statements, sigV4Client.newClient() fails ...
+
+	console.log('AWS.config.credentials.accessKeyId');
+	console.log(AWS.config.credentials.accessKeyId);
+
+	console.log('AWS.config.credentials.secretAccessKey');
+	console.log(AWS.config.credentials.secretAccessKey);
+
+	console.log('AWS.config.credentials.sessionToken');
+	console.log(AWS.config.credentials.sessionToken);
 
 	// "We are simply following the steps to make a signed request to API
 	// Gateway here. We first get our temporary credentials using getAwsCredentials
@@ -24,8 +42,8 @@ export async function invokeApig(
 			accessKey: AWS.config.credentials.accessKeyId,
 			secretKey: AWS.config.credentials.secretAccessKey,
 			sessionToken: AWS.config.credentials.sessionToken,
-			region: config.apiGateway.REGION,
-			endpoint: config.apiGateway.URL,
+			region: config.apiGateway[base].REGION,
+			endpoint: config.apiGateway[base].URL,
 		})
 		.signRequest({
 			method,
