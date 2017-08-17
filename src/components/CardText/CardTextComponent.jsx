@@ -19,6 +19,8 @@ class CardTextComponent extends Component {
 	}
 
 	constructText() {
+		console.log(this.props.card);
+
 		const
 			h = new HtmlToReactParser(),
 			queryString = qs.parse(this.props.location.search.slice(1)),
@@ -49,6 +51,19 @@ class CardTextComponent extends Component {
 		if (!this.props.card.cardLoading) {
 			this.constructText();
 		}
+
+		if (this.props.cardStack.level === 1) {
+			// const
+			// 	activeParagraphElement = this.paragraphs.querySelector('.ActiveParagraph');
+
+			// console.log(activeParagraphElement);
+
+			// const
+			// 	scrollHeight = activeParagraphElement.offset().top - window.scrollTop();
+
+			// // window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+			// window.scrollTo(0, scrollHeight);
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -58,7 +73,8 @@ class CardTextComponent extends Component {
 	}
 
 	render() {
-		return (<div className="Paragraphs">{ this.state.text }</div>);
+		return (<div className="Paragraphs"
+			ref={ node => this.paragraphs = node }>{ this.state.text }</div>);
 	}
 
 }

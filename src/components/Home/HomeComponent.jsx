@@ -31,6 +31,7 @@ const imageStyles = {
 	display: 'block',
 	margin: '0 auto',
 	maxWidth: '480px',
+	top: '50px',
 	width: '100%'
 };
 
