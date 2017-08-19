@@ -36,9 +36,9 @@ class CardTextComponent extends Component {
 
 		for (let num = 0; num < this.props.card.data.text.length; num++) {
 			if (num === 0) {
-				paragraphTag = "<p className='FirstParagraph'>";
+				paragraphTag = "<p className='FirstCardParagraph'>";
 			} else if (num === activeParagraph + 1) {
-				paragraphTag = "<p id='ActiveParagraph'>";
+				paragraphTag = "<p id='ActiveCardParagraph'>";
 			} else {
 				paragraphTag = "<p>";
 			}
@@ -57,7 +57,7 @@ class CardTextComponent extends Component {
 		setTimeout(() => {
 			const
 				activeParagraphElement =
-					document.getElementById('ActiveParagraph'),
+					document.getElementById('ActiveCardParagraph'),
 
 				// This was a nightmare to locate
 				scrollableElement =
@@ -89,7 +89,7 @@ class CardTextComponent extends Component {
 	}
 
 	render() {
-		return (<div id="Paragraphs"
+		return (<div id="CardParagraphs"
 			ref={ node => this.paragraphs = node }>{ this.state.text }</div>);
 	}
 

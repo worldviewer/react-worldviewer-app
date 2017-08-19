@@ -1,11 +1,11 @@
 .Model .Feedcard {
 	background: #E57373;
 
-	&::before {
-		background: -moz-linear-gradient(top, rgba(229,115,115,0) 75%, rgba(229,115,115,1) 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(229,115,115,0) 75%,rgba(229,115,115,1) 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(229,115,115,0) 75%,rgba(229,115,115,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	}
+	// &::before {
+	// 	background: -moz-linear-gradient(top, rgba(229,115,115,0) 75%, rgba(229,115,115,1) 100%); /* FF3.6-15 */
+	// 	background: -webkit-linear-gradient(top, rgba(229,115,115,0) 75%,rgba(229,115,115,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	// 	background: linear-gradient(to bottom, rgba(229,115,115,0) 75%,rgba(229,115,115,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	// }
 
 	.ratings, .breadcrumbs, .author, .content {
 		color: #1D1D1D;
@@ -15,11 +15,11 @@
 .Propositional .Feedcard {
 	background: #42A5F5;
 
-	&::before {
-		background: -moz-linear-gradient(top, rgba(66,165,245,0) 75%, rgba(66,165,245,1) 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(66,165,245,0) 75%,rgba(66,165,245,1) 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(66,165,245,0) 75%,rgba(66,165,245,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	}
+	// &::before {
+	// 	background: -moz-linear-gradient(top, rgba(66,165,245,0) 75%, rgba(66,165,245,1) 100%); /* FF3.6-15 */
+	// 	background: -webkit-linear-gradient(top, rgba(66,165,245,0) 75%,rgba(66,165,245,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	// 	background: linear-gradient(to bottom, rgba(66,165,245,0) 75%,rgba(66,165,245,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	// }
 
 	.ratings, .breadcrumbs, .author, .content {
 		color: #1D1D1D;
@@ -29,11 +29,11 @@
 .Conceptual .Feedcard {
 	background: #7CB342;
 
-	&::before {
-		background: -moz-linear-gradient(top, rgba(124,179,66,0) 75%, rgba(124,179,66,1) 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(124,179,66,0) 75%,rgba(124,179,66,1) 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(124,179,66,0) 75%,rgba(124,179,66,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	}
+	// &::before {
+	// 	background: -moz-linear-gradient(top, rgba(124,179,66,0) 75%, rgba(124,179,66,1) 100%); /* FF3.6-15 */
+	// 	background: -webkit-linear-gradient(top, rgba(124,179,66,0) 75%,rgba(124,179,66,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	// 	background: linear-gradient(to bottom, rgba(124,179,66,0) 75%,rgba(124,179,66,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	// }
 
 	.ratings, .breadcrumbs, .author, .content {
 		color: #1D1D1D;
@@ -43,11 +43,11 @@
 .Narrative .Feedcard {
 	background: #26A69A;
 
-	&::before {
-		background: -moz-linear-gradient(top, rgba(38,166,154,0) 75%, rgba(38,166,154,1) 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(38,166,154,0) 75%,rgba(38,166,154,1) 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(38,166,154,0) 75%,rgba(38,166,154,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	}
+	// &::before {
+	// 	background: -moz-linear-gradient(top, rgba(38,166,154,0) 75%, rgba(38,166,154,1) 100%); /* FF3.6-15 */
+	// 	background: -webkit-linear-gradient(top, rgba(38,166,154,0) 75%,rgba(38,166,154,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	// 	background: linear-gradient(to bottom, rgba(38,166,154,0) 75%,rgba(38,166,154,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	// }
 
 	.ratings, .breadcrumbs, .author, .content {
 		color: #1D1D1D;
@@ -58,6 +58,10 @@
 	height: 100%;
 	overflow-y: hidden;
 	position: relative;
+
+	a {
+		color: blue;
+	}
 
 	&::before {
 		content: "";
@@ -71,7 +75,6 @@
 	}
 
 	.image {
-		background-image: url(http://ichef.bbci.co.uk/universe/img/ic/640/questions_and_ideas/dark_matter/dark_matter_large.jpg);
 		background-size: cover;
 		border-radius: 0;
 		font-weight: 900;
@@ -198,8 +201,9 @@
 		}
 	}
 
-	.content {
-		padding-top: 15px;
+	#FeedParagraphs {
+		color: black;
+		padding: 30px;
 		pointer-events: none;
 	}
 }

@@ -3,7 +3,7 @@
 	color: #073642;
 	overflow-wrap: break-word;
 
-	.FirstParagraph {
+	.FirstCardParagraph {
 		font-family: LeagueGothic;
 		text-transform: uppercase;
 		font-size: 20px;
@@ -11,7 +11,7 @@
 		line-height: 1.2;
 	}
 
-	#ActiveParagraph {
+	#ActiveCardParagraph {
 		background-color: yellow;
 		padding: 10px;
 	}
@@ -20,7 +20,7 @@
 		color: blue
 	}
 
-	#Paragraphs {
+	#CardParagraphs {
 		padding: 30px;
 		position: relative;
 		top: 50px;

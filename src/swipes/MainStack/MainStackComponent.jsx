@@ -51,13 +51,13 @@ class MainStackComponent extends Component {
 			'/text',
 			'/card',
 			'',
-			'/' + this.props.match.params.feed || '/feed',
+			'/' + this.props.match.params.feed || this.props.feed.data.feedSlug,
 			'/comments'
 		];
 
 		this.feedStackLevels = [
 			'',
-			'/' + (this.props.match.params.feed || 'feed'),
+			'/' + (this.props.match.params.feed || this.props.feed.data.feedSlug),
 			'/comments'			
 		];
 
@@ -109,8 +109,6 @@ class MainStackComponent extends Component {
 		const
 			shortSlug = this.props.router.location.pathname.split('/')[1],
 			cardSlug = this.props.slugs.hash[shortSlug];
-
-		this.props.setFeedsDataLoading();
 
 		const feedsList = await invokeApig( {base: 'feeds', path: '/feeds/' +
 			cardSlug }, this.props.user.token);

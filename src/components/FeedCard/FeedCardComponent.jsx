@@ -9,11 +9,16 @@ import shareHover from '../../images/share-hover.svg';
 import downHover from '../../images/downdown-hover.svg';
 import chris from '../../images/chris.jpg';
 import { Grid, Row, Image } from 'react-bootstrap';
+import zenscroll from 'zenscroll';
+import OpenSeadragon from 'openseadragon';
 // import { Badge } from 'react-bootstrap';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
 import qs from 'qs';
+
+// AWS Dependencies
+import config from '../../config';
 
 // Permits HTML markup encoding in feed text
 import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -24,11 +29,61 @@ class FeedCardComponent extends Component {
 
 		this.state = {
 			isTextExpanded: false,
-			text: ''
+			text: '',
+			pyramidStyle: {
+				width: '100%'
+			}
 		};
 
 		this.handleClick = this.handleClick.bind(this);
 		this.props = props;
+	}
+
+	setupDeepZoom() {
+		const feed = this.props.feed.data;
+
+		this.viewer = OpenSeadragon({
+			id: 'openseadragonfeeds',
+			constrainDuringPan: true,
+			visibilityRatio: 1.0,
+			defaultZoomLevel: 1,
+			minZoomLevel: 1,
+			maxZoomLevel: feed.images.pyramid.maxZoomLevel,
+			autoResize: true,
+			showZoomControl: false,
+			showHomeControl: false,
+			showFullPageControl: false,
+			showSequenceControl: false,
+			tileSources: {
+				Image: {
+					xmlns: 'http://schemas.microsoft.com/deepzoom/2008',
+					Url: config.s3['feeds'].URL + feed.cardSlug + '/' +
+						feed.discourseLevel + '/' + feed.feedSlug +
+						'/pyramid_files/',
+					Format: 'jpg',
+					Overlap: '0',
+					TileSize: feed.images.pyramid.TileSize,
+					Size: {
+						Height: feed.images.large.height,
+						Width: feed.images.large.width
+					}
+				}
+			}
+		});
+
+		console.log(this.viewer);
+
+		// const resize = () => this.setupResizeHandler();
+		// window.addEventListener('resize', resize);
+
+		this.setupZoomHandler(this.viewer);
+	}
+
+	// Use this to react to OpenSeadragon zoom events
+	setupZoomHandler(viewer) {
+		viewer.addHandler('zoom', (data) => {
+			this.props.toggleNavbarState(data.zoom);
+		});
 	}
 
 	handleClick() {
@@ -38,10 +93,6 @@ class FeedCardComponent extends Component {
 	}
 
 	constructText() {
-		console.log('this.props:');
-		console.log(this.props);
-		console.log('');
-
 		const
 			h = new HtmlToReactParser(),
 			queryString = qs.parse(this.props.location.search.slice(1)),
@@ -51,9 +102,13 @@ class FeedCardComponent extends Component {
 
 		let paragraphTag, text = '';
 
+		console.log('this.props:');
+		console.log(this.props);
+		console.log('');
+
 		for (let num = 0; num < this.props.feed.data.text.length; num++) {
 			if (num === 0) {
-				paragraphTag = "<p className='FirstParagraph'>";
+				paragraphTag = "<p className='FirstFeedParagraph'>";
 			} else if (num === activeParagraph + 1) {
 				paragraphTag = "<p id='ActiveFeedParagraph'>";
 			} else {
@@ -61,7 +116,7 @@ class FeedCardComponent extends Component {
 			}
 
 			text = text + paragraphTag + this.props.feed.data.text[num].paragraph +
-				'</p><br/>';
+				'</p>';
 		}
 
 		const
@@ -78,10 +133,12 @@ class FeedCardComponent extends Component {
 
 		// 		// This was a nightmare to locate
 		// 		scrollableElement =
-		// 			document.querySelector('.CardStack .react-swipeable-view-container div:nth-of-type(2)');
+		// 			document.querySelector('.FeedStack .react-swipeable-view-container div:nth-of-type(2)');
 
-		// 	const scroller = zenscroll.createScroller(scrollableElement, 1000, 0);
-		// 	scroller.center(activeParagraphElement);
+		// 	if (activeParagraphElement && scrollableElement) {
+		// 		const scroller = zenscroll.createScroller(scrollableElement, 1000, 0);
+		// 		scroller.center(activeParagraphElement);	
+		// 	}
 		// }, 1000);
 	}
 
@@ -92,18 +149,24 @@ class FeedCardComponent extends Component {
 		if (this.props.discourse.level !== 0 && !this.props.feed.feedLoading) {
 			this.constructText();
 		}
+
+		if (!this.props.feed.feedLoading) {
+			this.setupDeepZoom();
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.discourse.level !== 0 && this.props.feed.feedLoading && !nextProps.feed.feedLoading) {
 			this.constructText();
 		}
+
+		if (this.props.feed.feedLoading && !nextProps.feed.feedLoading) {
+			this.setupDeepZoom();
+		}
 	}
 
 	render() {
 		const
-			// h = new HtmlToReactParser(),
-
 			imageStyles = this.state.isTextExpanded ?
 				{ height: 0 } :
 				{},
@@ -131,12 +194,14 @@ class FeedCardComponent extends Component {
 			<div className="Feedcard">
 				<Grid>
 					<Row>
+						<div
+							ref={node => { this.root = node; }}
+							id="openseadragonfeeds"
+							className="image"
+							style={this.state.pyramidStyle} />
 
-						<div className="image" style={imageStyles}>
-							<Image src={share} style={shareStyles} className="share normal" circle />
-							<Image src={shareHover} style={shareStyles} className="share hover" circle />
-						</div>
-
+					{/*	<Image src={share} style={shareStyles} className="share normal" circle />
+						<Image src={shareHover} style={shareStyles} className="share hover" circle /> */}
 					</Row>
 					<Row>
 
@@ -152,7 +217,7 @@ class FeedCardComponent extends Component {
 								className="updown hover"
 								style={updownStyles}
 								circle />
-							<div className="title">Were dark matter filaments "predicted"?</div>
+							<div className="title">{this.props.feed.data.feedName}</div>
 						</div>
 
 					</Row>
@@ -189,7 +254,7 @@ class FeedCardComponent extends Component {
 					</Row>
 					<Row>
 
-						<div className="content">{ this.state.text }</div>
+						<div id="FeedParagraphs">{ this.state.text }</div>
 
 					</Row>
 				</Grid>

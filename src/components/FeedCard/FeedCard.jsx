@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import FeedCardComponent from './FeedCardComponent.jsx';
 import { withRouter } from 'react-router-dom';
+import { toggleNavbarState } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -11,7 +12,11 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	return {...ownProps}
+	return {
+		toggleNavbarState: (zoom) => {
+			dispatch(toggleNavbarState(zoom));
+		}
+	}
 };
 
 const FeedCard = connect(

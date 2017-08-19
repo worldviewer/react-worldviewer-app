@@ -9,7 +9,7 @@ class CardComponent extends Component {
 		super(props);
 
 		this.state = {
-			cardStyle: {
+			pyramidStyle: {
 				width: '100%'
 			}
 		};
@@ -21,7 +21,7 @@ class CardComponent extends Component {
 		const card = this.props.card.data;
 
 		this.viewer = OpenSeadragon({
-			id: 'openseadragon',
+			id: 'openseadragon-cards',
 			constrainDuringPan: true,
 			visibilityRatio: 1.0,
 			defaultZoomLevel: 1,
@@ -35,7 +35,7 @@ class CardComponent extends Component {
 			tileSources: {
 				Image: {
 					xmlns: 'http://schemas.microsoft.com/deepzoom/2008',
-					Url: config.s3.URL + card.slug + '/pyramid_files/',
+					Url: config.s3['cards'].URL + card.slug + '/pyramid_files/',
 					Format: 'jpg',
 					Overlap: '0',
 					TileSize: card.images.pyramid.TileSize,
@@ -77,8 +77,8 @@ class CardComponent extends Component {
 			<div
 				ref={node => { this.root = node; }}
 				className="Card"
-				id="openseadragon"
-				style={this.state.cardStyle} />
+				id="openseadragon-cards"
+				style={this.state.pyramidStyle} />
 		);
 	}
 }
