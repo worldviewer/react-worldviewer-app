@@ -8,10 +8,12 @@ import down from '../../images/downdown.svg';
 import shareHover from '../../images/share-hover.svg';
 import downHover from '../../images/downdown-hover.svg';
 import chris from '../../images/chris.jpg';
-import { Grid, Row, Badge, Image } from 'react-bootstrap';
+import { Grid, Row, Image } from 'react-bootstrap';
+// import { Badge } from 'react-bootstrap';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
+import qs from 'qs';
 
 // Permits HTML markup encoding in feed text
 import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -21,7 +23,8 @@ class FeedCardComponent extends Component {
 		super(props);
 
 		this.state = {
-			isTextExpanded: false
+			isTextExpanded: false,
+			text: ''
 		};
 
 		this.handleClick = this.handleClick.bind(this);
@@ -34,21 +37,81 @@ class FeedCardComponent extends Component {
 		});
 	}
 
+	constructText() {
+		console.log('this.props:');
+		console.log(this.props);
+		console.log('');
+
+		const
+			h = new HtmlToReactParser(),
+			queryString = qs.parse(this.props.location.search.slice(1)),
+			activeParagraph = queryString['paragraph'] ?
+				parseInt(queryString['paragraph'], 10) :
+				-1;
+
+		let paragraphTag, text = '';
+
+		for (let num = 0; num < this.props.feed.data.text.length; num++) {
+			if (num === 0) {
+				paragraphTag = "<p className='FirstParagraph'>";
+			} else if (num === activeParagraph + 1) {
+				paragraphTag = "<p id='ActiveFeedParagraph'>";
+			} else {
+				paragraphTag = "<p>";
+			}
+
+			text = text + paragraphTag + this.props.feed.data.text[num].paragraph +
+				'</p><br/>';
+		}
+
+		const
+			parsed = h.parse(text);
+
+		this.setState({
+			text: parsed
+		});
+
+		// setTimeout(() => {
+		// 	const
+		// 		activeParagraphElement =
+		// 			document.getElementById('ActiveFeedParagraph'),
+
+		// 		// This was a nightmare to locate
+		// 		scrollableElement =
+		// 			document.querySelector('.CardStack .react-swipeable-view-container div:nth-of-type(2)');
+
+		// 	const scroller = zenscroll.createScroller(scrollableElement, 1000, 0);
+		// 	scroller.center(activeParagraphElement);
+		// }, 1000);
+	}
+
 	componentDidMount() {
+		console.log('this.props.discourse.level: ' + this.props.discourse.level);
+		console.log('this.props.feed.feedLoading: ' + this.props.feed.feedLoading + '\n\n');
+		
+		if (this.props.discourse.level !== 0 && !this.props.feed.feedLoading) {
+			this.constructText();
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.discourse.level !== 0 && this.props.feed.feedLoading && !nextProps.feed.feedLoading) {
+			this.constructText();
+		}
 	}
 
 	render() {
 		const
-			h = new HtmlToReactParser(),
+			// h = new HtmlToReactParser(),
 
 			imageStyles = this.state.isTextExpanded ?
 				{ height: 0 } :
 				{},
 
-			chipStyles = {
-				display: 'flex',
-				flexWrap: 'wrap'
-			},
+			// chipStyles = {
+			// 	display: 'flex',
+			// 	flexWrap: 'wrap'
+			// },
 
 			shareStyles = this.state.isTextExpanded ?
 				{ opacity: 0 } :
@@ -93,9 +156,11 @@ class FeedCardComponent extends Component {
 						</div>
 
 					</Row>
+
+{/*
 					<Row>
 
-						<div className="breadcrumbs">The History of the Birkeland Current > Clash of Worldviews > Noteworthy Online Discussions</div>
+						<div className="breadcrumbs">{this.props.feed.feedName} > Clash of Worldviews > Noteworthy Online Discussions</div>
 
 					</Row>
 					<Row>
@@ -107,6 +172,8 @@ class FeedCardComponent extends Component {
 						</div>
 
 					</Row>
+*/}
+
 					<Row>
 
 						<div className="author">
@@ -115,14 +182,14 @@ class FeedCardComponent extends Component {
 							</div>
 							<div className="author-info">
 								<div className="name">Chris Reeve</div>
-								<div className="role">Master of Controversies</div>
+								<div className="role">Admin</div>
 							</div>
 						</div>
 
 					</Row>
 					<Row>
 
-						<div className="content">{h.parse('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam faucibus tellus dui, sit amet fermentum justo venenatis ut. Cras lacinia nisl bibendum, vehicula mauris sed, mollis nisl. Lorem ipsum dolor sit amet, consectetur adipiscing elit.')}</div>
+						<div className="content">{ this.state.text }</div>
 
 					</Row>
 				</Grid>

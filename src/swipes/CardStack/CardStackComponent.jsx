@@ -17,6 +17,9 @@ import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
 
+// AWS Dependencies
+import { invokeApig } from '../../libs/awsLib';
+
 class CardStackComponent extends Component {
 	constructor(props) {
 		super(props);
@@ -34,6 +37,30 @@ class CardStackComponent extends Component {
 	}
 
 	componentDidMount() {
+		// If the slugs finish loading before the component has loaded ...
+		if (!this.props.slugs.slugsLoading) {
+			this.loadCardData();
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		// If the slugs finish loading after the component has mounted ...
+		if (this.props.slugs.slugsLoading && !nextProps.slugs.slugsLoading) {
+			this.loadCardData();
+		}
+	}
+
+	async loadCardData() {
+		const
+			shortSlug = this.props.router.location.pathname.split('/')[1];
+
+		this.props.setCardDataLoading();
+
+		const card = await invokeApig( {base: 'cards', path: '/controversies/' +
+			this.props.slugs.hash[shortSlug]}, this.props.user.token);
+		this.props.setCardData(card);
+
+		this.props.unsetCardDataLoading();
 	}
 
 	handleSwipe(index, previous) {

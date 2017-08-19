@@ -7,7 +7,11 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		pathname: state.router.location.pathname,
 		feedStack: state.reducer.feedStack,
-		discourse: state.reducer.discourse
+		discourse: state.reducer.discourse,
+		router: state.router,
+		user: state.reducer.user,
+		feeds: state.reducer.feeds,
+		feed: state.reducer.feed
 	};
 };
 

@@ -63,10 +63,17 @@ const types = {
 	ENABLE_MAINSTACK_SWIPEABLE: 'ENABLE_MAINSTACK_SWIPEABLE',
 	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE',
 
-	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE'
+	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE',
+
+	SET_APP_LOADING: 'SET_APP_LOADING',
+	UNSET_APP_LOADING: 'UNSET_APP_LOADING'
 };
 
 const initialState = {
+	app: {
+		loading: true
+	},
+
 	user: {
 		token: null,
 		tokenLoading: true,
@@ -119,7 +126,7 @@ const initialState = {
 
 	card: {
 		data: {},
-		cardLoading: true
+		cardLoading: false
 	},
 
 	feed: {
@@ -403,6 +410,18 @@ export const toggleNavbarState = (zoom) => {
 	return {
 		type: types.TOGGLE_NAVBAR_STATE,
 		zoom
+	};
+};
+
+export const setAppLoading = () => {
+	return {
+		type: types.SET_APP_LOADING
+	};
+};
+
+export const unsetAppLoading = () => {
+	return {
+		type: types.UNSET_APP_LOADING
 	};
 };
 
@@ -780,6 +799,24 @@ export default (state = initialState, action) => {
 				navbar: {
 					...state.navbar,
 					hidden: action.zoom < 1.2
+				}
+			}
+
+		case types.SET_APP_LOADING:
+			return {
+				...state,
+				app: {
+					...state.app,
+					loading: true
+				}
+			}
+
+		case types.UNSET_APP_LOADING:
+			return {
+				...state,
+				app: {
+					...state.app,
+					loading: false
 				}
 			}
 

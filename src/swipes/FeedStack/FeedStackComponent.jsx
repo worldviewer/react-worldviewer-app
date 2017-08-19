@@ -44,6 +44,9 @@ class FeedStackComponent extends Component {
 		}
 	}
 
+	componentDidMount() {
+	}
+
 	handleSwipe(index, previous) {
 		const
 			swipeDirection = index > previous ? 'right' : 'left';

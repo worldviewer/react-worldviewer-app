@@ -21,7 +21,9 @@ class CardTextComponent extends Component {
 	}
 
 	constructText() {
+		console.log('card data:')
 		console.log(this.props.card);
+		console.log('');
 
 		const
 			h = new HtmlToReactParser(),
@@ -61,8 +63,11 @@ class CardTextComponent extends Component {
 				scrollableElement =
 					document.querySelector('.CardStack .react-swipeable-view-container div:nth-of-type(2)');
 
-			const scroller = zenscroll.createScroller(scrollableElement, 1000, 0);
-			scroller.center(activeParagraphElement);
+			// No need to scroll if the URL does not contain a paragraph query parameter
+			if (activeParagraphElement && scrollableElement) {
+				const scroller = zenscroll.createScroller(scrollableElement, 1000, 0);
+				scroller.center(activeParagraphElement);
+			}
 		}, 1000);
 	}
 

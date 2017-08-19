@@ -67,7 +67,8 @@ class MainStackComponent extends Component {
 			this.props.setCardStackLevel(this.props.cardStackLevel, 'right');			
 		}
 
-		this.parameterDiscourseLevel = this.discourseLevels.indexOf(this.props.match.params.level);
+		this.parameterDiscourseLevel =
+			this.discourseLevels.indexOf(this.props.match.params.level);
 
 		// Same sort of situation for discourse level, but we have to also reverse-engineer the
 		// discourse level number from the :level route parameter, and we use the discourseLevel
@@ -79,6 +80,47 @@ class MainStackComponent extends Component {
 
 		this.handleSwipe = this.handleSwipe.bind(this);
 		this.changeRoute = this.changeRoute.bind(this);
+
+		this.props.setFeedDataLoading();
+		this.props.setFeedsDataLoading();
+	}
+
+	async loadFeedData() {
+		const
+			shortSlug = this.props.router.location.pathname.split('/')[1],
+			cardSlug = this.props.slugs.hash[shortSlug],
+			feedSlug = this.props.router.location.pathname.split('/')[4];
+
+		console.log('short slug: ' + shortSlug);
+		console.log('feed slug: ' + feedSlug + '\n\n');
+
+		const feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
+			cardSlug + '/' + feedSlug }, this.props.user.token);
+
+		console.log('feed data:');
+		console.log(feed);
+		console.log('');
+
+		this.props.setFeedData(feed);
+		this.props.unsetFeedDataLoading();
+	}
+
+	async loadFeedsData() {
+		const
+			shortSlug = this.props.router.location.pathname.split('/')[1],
+			cardSlug = this.props.slugs.hash[shortSlug];
+
+		this.props.setFeedsDataLoading();
+
+		const feedsList = await invokeApig( {base: 'feeds', path: '/feeds/' +
+			cardSlug }, this.props.user.token);
+
+		console.log('feeds list:');
+		console.log(feedsList);
+		console.log('');
+
+		this.props.setFeedsData(feedsList);
+		this.props.unsetFeedsDataLoading();
 	}
 
 	componentDidMount() {
@@ -89,14 +131,31 @@ class MainStackComponent extends Component {
 
 		// If the slugs finish loading before the component has loaded ...
 		if (!this.props.slugs.slugsLoading) {
-			this.loadCardData();
-
-			console.log(this.parameterDiscourseLevel);
-
+			// We handle this FeedCard data here because we only
+			// want to run this once, and we are instantiating 4
+			// different instances ...
 			if (this.parameterDiscourseLevel !== 0) {
 				this.loadFeedData();
 				this.loadFeedsData();
 			}
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.discourse.level !== this.props.discourse.level) {
+			this.deactivateMainStackOverlay();
+		}
+
+		// If the slugs finish loading after the component has mounted ...
+		if (this.props.slugs.slugsLoading && !nextProps.slugs.slugsLoading) {
+			if (this.parameterDiscourseLevel !== 0) {
+				this.loadFeedData();
+				this.loadFeedsData();
+			}
+		}
+
+		if (nextProps.feed.feedLoading && !this.props.feed.feedLoading) {
+			this.props.unsetFeedDataLoading();
 		}
 	}
 
@@ -129,75 +188,6 @@ class MainStackComponent extends Component {
 
 	showSettings(event) {
 		event.preventDefault();
-	}
-
-	async loadCardData() {
-		const
-			shortSlug = this.props.router.location.pathname.split('/')[1];
-
-		this.props.setCardDataLoading();
-
-		const card = await invokeApig( {base: 'cards', path: '/controversies/' +
-			this.props.slugs.hash[shortSlug]}, this.props.user.token);
-		this.props.setCardData(card);
-
-		this.props.unsetCardDataLoading();
-	}
-
-	async loadFeedData() {
-		const
-			shortSlug = this.props.router.location.pathname.split('/')[1],
-			cardSlug = this.props.slugs.hash[shortSlug],
-			feedSlug = this.props.router.location.pathname.split('/')[4];
-
-		console.log('short slug: ' + shortSlug);
-		console.log('feed slug: ' + feedSlug);
-
-		this.props.setFeedDataLoading();
-
-		const feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
-			cardSlug + '/' + feedSlug }, this.props.user.token);
-
-		console.log(feed);
-
-		this.props.setFeedData(feed);
-		this.props.unsetFeedDataLoading();
-	}
-
-	async loadFeedsData() {
-		const
-			shortSlug = this.props.router.location.pathname.split('/')[1],
-			cardSlug = this.props.slugs.hash[shortSlug];
-
-		console.log('short slug: ' + shortSlug);
-
-		this.props.setFeedsDataLoading();
-
-		const feedsList = await invokeApig( {base: 'feeds', path: '/feeds/' +
-			cardSlug }, this.props.user.token);
-
-		console.log(feedsList);
-
-		this.props.setFeedsData(feedsList);
-		this.props.unsetFeedsDataLoading();
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.discourse.level !== this.props.discourse.level) {
-			this.deactivateMainStackOverlay();
-		}
-
-		// If the slugs finish loading after the component has mounted ...
-		if (this.props.slugs.slugsLoading && !nextProps.slugs.slugsLoading) {
-			this.loadCardData();
-
-			console.log(this.parameterDiscourseLevel);
-
-			if (this.parameterDiscourseLevel !== 0) {
-				this.loadFeedData();
-				this.loadFeedsData();
-			}
-		}
 	}
 
 	render() {
@@ -248,19 +238,23 @@ class MainStackComponent extends Component {
 							</div>					
 
 							<div className="Model">
-								<FeedStack level="model" />
+								{ !this.props.feed.feedLoading &&
+									<FeedStack level="model" /> }
 							</div>
 
 							<div className="Propositional">
-								<FeedStack level="propositional" />
+								{ !this.props.feed.feedLoading &&
+									<FeedStack level="propositional" /> }
 							</div>
 
 							<div className="Conceptual">
-								<FeedStack level="conceptual" />
+								{ !this.props.feed.feedLoading &&
+									<FeedStack level="conceptual" /> }
 							</div>
 
 							<div className="Narrative">
-								<FeedStack level="narrative" />
+								{ !this.props.feed.feedLoading &&
+									<FeedStack level="narrative" /> }
 							</div>
 						</SwipeableViews>
 

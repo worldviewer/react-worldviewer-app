@@ -16,22 +16,10 @@ export async function invokeApig(
 
 	await getAwsCredentials(userToken);
 
-	console.log('config.apiGateway[base].URL:');
-	console.log(config.apiGateway[base].URL);
-
-	console.log('path: ' + path);
-	console.log('method: ' + method);
-
-	// MYSTERY: When I remove these logging statements, sigV4Client.newClient() fails ...
-
-	console.log('AWS.config.credentials.accessKeyId');
-	console.log(AWS.config.credentials.accessKeyId);
-
-	console.log('AWS.config.credentials.secretAccessKey');
-	console.log(AWS.config.credentials.secretAccessKey);
-
-	console.log('AWS.config.credentials.sessionToken');
-	console.log(AWS.config.credentials.sessionToken);
+	console.log('config.apiGateway[base].URL: ' + config.apiGateway[base].URL);
+	console.log(method + ': ' + path);
+	console.log('AWS.config.credentials.accessKeyId: ' + AWS.config.credentials.accessKeyId);
+	console.log('AWS.config.credentials.secretAccessKey: ' + AWS.config.credentials.secretAccessKey + '\n\n');
 
 	// "We are simply following the steps to make a signed request to API
 	// Gateway here. We first get our temporary credentials using getAwsCredentials

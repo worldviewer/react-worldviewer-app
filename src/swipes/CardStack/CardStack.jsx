@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
 import CardStackComponent from './CardStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setDiscourseLevel, setCardStackLevel, enableMainStackSwipeable, disableMainStackSwipeable } from '../../redux.js';
+import { setDiscourseLevel, setCardStackLevel, enableMainStackSwipeable, disableMainStackSwipeable, setCardData, setCardDataLoading, unsetCardDataLoading } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
 		pathname: state.router.location.pathname,
 		discourse: state.reducer.discourse,
 		cardStack: state.reducer.cardStack,
-		mainStack: state.reducer.mainStack
+		mainStack: state.reducer.mainStack,
+		slugs: state.reducer.slugs,
+		router: state.router,
+		user: state.reducer.user
 	};
 };
 
@@ -25,6 +28,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		disableMainStackSwipeable: () => {
 			return dispatch(disableMainStackSwipeable());
+		},
+		setCardData: (card) => {
+			return dispatch(setCardData(card));
+		},
+		setCardDataLoading: () => {
+			return dispatch(setCardDataLoading());
+		},
+		unsetCardDataLoading: () => {
+			return dispatch(unsetCardDataLoading());
 		}
 	};
 };

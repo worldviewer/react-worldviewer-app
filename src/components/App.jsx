@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setAlert, dismissAlert, setCardSlugs, setSlugsLoading, unsetSlugsLoading } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setAlert, dismissAlert, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -10,7 +10,11 @@ const mapStateToProps = (state, ownProps) => {
 		slugs: state.reducer.slugs,
 		user: state.reducer.user,
 		notification: state.reducer.notification,
-		router: state.router
+		router: state.router,
+		app: state.reducer.app,
+		feeds: state.reducer.feeds,
+		feed: state.reducer.feed,
+		card: state.reducer.card
 	};
 };
 
@@ -42,6 +46,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		unsetSlugsLoading: () => {
 			return dispatch(unsetSlugsLoading());
+		},
+		setAppLoading: () => {
+			return dispatch(setAppLoading());
+		},
+		unsetAppLoading: () => {
+			return dispatch(unsetAppLoading());
 		}
 	}
 };

@@ -59,6 +59,9 @@ class AppComponent extends Component {
 	// we need to ensure that the rest of our app is only ready to go after
 	// this has been loaded.
 	async componentDidMount() {
+		// Unsets when credentials are loaded
+		this.props.setAppLoading();
+
 		// Prevents reflow of mobile navbar on initial render
 		setTimeout(() => {
 			this.setState({
@@ -122,6 +125,9 @@ class AppComponent extends Component {
 			// refresh the credentials using AWS.config.credentials.refresh
 			// so that AWS will use the latest one we just added."
 			AWS.config.credentials.refresh(() => {
+				// Load the app now that we have temporary credentials
+				this.props.unsetAppLoading();
+
 				console.log('credentials have been refreshed ...');
 
 				if (AWS.config.credentials) {
@@ -156,7 +162,7 @@ class AppComponent extends Component {
 				zIndex: 100
 			};
 
-		return !this.props.isLoadingUserToken && (
+		return !this.props.app.loading && (
 			<div className="App">
 
 				{/* Revisit: Notification's onClick / onDismiss handlers appear to be broken */}
