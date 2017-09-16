@@ -32,8 +32,17 @@ class FeedCardComponent extends Component {
 			text: '',
 			pyramidStyle: {
 				width: '100%'
-			}
+			},
+			image: null
 		};
+
+		this.discourseLevels = [
+			'worldview',
+			'model',
+			'propositional',
+			'conceptual',
+			'narrative'
+		];
 
 		this.handleClick = this.handleClick.bind(this);
 		this.props = props;
@@ -142,26 +151,46 @@ class FeedCardComponent extends Component {
 		// }, 1000);
 	}
 
+	fetchImage() {
+		this.feedImage = config.s3['feeds'].URL + this.props.feed.data.cardSlug + '/' +
+			this.props.feed.data.discourseLevel + '/' + this.props.feed.data.feedSlug +
+			'/large.jpg';
+
+		this.setState({
+			image: this.feedImage
+		})
+	}
+
 	componentDidMount() {
 		console.log('this.props.discourse.level: ' + this.props.discourse.level);
-		console.log('this.props.feed.feedLoading: ' + this.props.feed.feedLoading + '\n\n');
+		console.log('this.props.feed.data.discourseLevel: ' + this.props.feed.data.discourseLevel);
 		
 		if (this.props.discourse.level !== 0 && !this.props.feed.feedLoading) {
 			this.constructText();
 		}
 
-		if (!this.props.feed.feedLoading) {
-			this.setupDeepZoom();
+		if (this.props.discourse.level ===
+			this.discourseLevels.indexOf(this.props.feed.data.discourseLevel) &&
+			!this.props.feed.feedLoading) {
+
+			// this.setupDeepZoom();
+			this.fetchImage();
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.discourse.level !== 0 && this.props.feed.feedLoading && !nextProps.feed.feedLoading) {
+		if (nextProps.discourse.level !== 0 && this.props.feed.data.feedLoading &&
+			!nextProps.feed.feedLoading) {
+
 			this.constructText();
 		}
 
-		if (this.props.feed.feedLoading && !nextProps.feed.feedLoading) {
-			this.setupDeepZoom();
+		if (nextProps.discourse.level ===
+			this.discourseLevels.indexOf(nextProps.feed.data.discourseLevel) &&
+			this.props.feed.feedLoading && !nextProps.feed.feedLoading) {
+
+			// this.setupDeepZoom();
+			this.fetchImage();
 		}
 	}
 
@@ -188,15 +217,21 @@ class FeedCardComponent extends Component {
 			avatarStyles = {
 				height: 40,
 				width: 40
-			}
+			};
 
 		return (
 			<div className="Feedcard">
 				<Grid>
 					<Row>
-						<div
+					{/*	<div
 							ref={node => { this.root = node; }}
 							id="openseadragonfeeds"
+							className="image"
+							style={this.state.pyramidStyle} /> */}
+
+						<img
+							alt="feed post"
+							src={this.state.image}
 							className="image"
 							style={this.state.pyramidStyle} />
 

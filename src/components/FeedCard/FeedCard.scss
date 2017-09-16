@@ -54,14 +54,16 @@
 	}
 }
 
+.FeedCard {
+	a {
+		color: blue;
+	}
+}
+
 .Feedcard {
 	height: 100%;
 	overflow-y: hidden;
 	position: relative;
-
-	a {
-		color: blue;
-	}
 
 	&::before {
 		content: "";
