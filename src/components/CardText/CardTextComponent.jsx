@@ -1,13 +1,19 @@
+// React Dependencies
 import React, { Component } from 'react';
-import './CardText.css';
+
+// React Router Dependencies
 import { withRouter } from 'react-router-dom';
-// import { Grid, Row, Col } from 'react-bootstrap';
+
+// UI Dependencies
 import qs from 'qs';
+import zenscroll from 'zenscroll';
+import './CardText.css';
 
 // Permits HTML markup encoding in feed text
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
-import zenscroll from 'zenscroll';
+// Error/Logger Handling
+import { log, logTitle, logObject } from '../../libs/utils';
 
 class CardTextComponent extends Component {
 	constructor(props) {
@@ -21,9 +27,9 @@ class CardTextComponent extends Component {
 	}
 
 	constructText() {
-		console.log('card data:')
-		console.log(this.props.card);
-		console.log('');
+		logTitle('Card data:')
+		logObject(this.props.card);
+		log('');
 
 		const
 			h = new HtmlToReactParser(),

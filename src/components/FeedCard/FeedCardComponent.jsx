@@ -23,6 +23,9 @@ import config from '../../config';
 // Permits HTML markup encoding in feed text
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
+// Error/Logger Handling
+import { log, logTitle } from '../../libs/utils';
+
 class FeedCardComponent extends Component {
 	constructor(props) {
 		super(props);
@@ -162,8 +165,10 @@ class FeedCardComponent extends Component {
 	}
 
 	componentDidMount() {
-		console.log('this.props.discourse.level: ' + this.props.discourse.level);
-		console.log('this.props.feed.data.discourseLevel: ' + this.props.feed.data.discourseLevel);
+		logTitle('Feed card data:');
+		log('this.props.discourse.level: ' + this.props.discourse.level);
+		log('this.props.feed.data.discourseLevel: ' + this.props.feed.data.discourseLevel);
+		log('');
 		
 		if (this.props.discourse.level !== 0 && !this.props.feed.feedLoading) {
 			this.constructText();
