@@ -8,10 +8,13 @@ import './Login.css';
 import elephant from '../../images/elephant.png';
 
 // AWS Dependencies
-import { login } from '../../libs/awsLib';
+import { login } from '../../libs/aws';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
+
+// Error/Logger Handling
+import { log, logError } from '../../libs/utils';
 
 // Much of this code comes from http://serverless-stack.com/chapters/create-a-login-page.html
 class LoginComponent extends Component {
@@ -48,10 +51,11 @@ class LoginComponent extends Component {
 			this.props.setUserToken(token);
 			this.props.unsetUserTokenLoading();
 			this.props.history.push('/');
+
+			log('User ' + this.props.user.username + ' logged in');
 		}
 		catch(e) {
-			this.props.setAlert('Error Logging In: ', e.message);
-			setTimeout(() => this.props.dismissAlert(), 5000);
+			logError(e, 'Error Logging In: ' + e.message, this.props.user.token);
 			this.props.unsetUserTokenLoading();
 		}
 	}

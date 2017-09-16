@@ -12,7 +12,10 @@ import isEmail from 'validate.io-email-address';
 import elephant from '../../images/elephant.png';
 
 // AWS Dependencies
-import { signup, confirm, authenticate } from '../../libs/awsLib';
+import { signup, confirm, authenticate } from '../../libs/aws';
+
+// Error/Logger Handling
+import { logError } from '../../libs/utils';
 
 // From http://serverless-stack.com/chapters/signup-with-aws-cognito.html
 class Signup extends Component {
@@ -82,12 +85,17 @@ class Signup extends Component {
 			this.props.setNewUser(newUser);
 			this.props.unsetUserTokenLoading();
 
-			this.props.setAlert('Success: ', 'Check your email for validation code');
-			setTimeout(() => this.props.dismissAlert(), 5000);
+			// this.props.setAlert('Success: ', 'Check your email for validation code');
+			// setTimeout(() => this.props.dismissAlert(), 5000);
 		}
 		catch(e) {
-			this.props.setAlert('Error Creating Account: ', e.message);
-			setTimeout(() => this.props.dismissAlert(), 5000);
+			let prettyMessage = e.message;
+
+			if (e.message === 'User already exists') {
+				prettyMessage = 'User already exists. Please try another username.';
+			}
+
+			logError(e, 'Error Creating Account: ' + prettyMessage, this.props.user.token);
 
 			this.props.unsetUserTokenLoading();
 		}
@@ -117,10 +125,10 @@ class Signup extends Component {
 			this.props.history.push('/');
 		}
 		catch(e) {
-			this.props.setAlert('Error Confirming Account: ', e.message);
-			setTimeout(() => this.props.dismissAlert(), 5000);
-			this.props.unsetUserTokenLoading();
+			logError(e, 'Error Confirming Account: ' + e.message, this.props.user.token);
 		}
+
+		this.props.unsetUserTokenLoading();
 	}
 
 	componentWillReceiveProps(nextProps) {

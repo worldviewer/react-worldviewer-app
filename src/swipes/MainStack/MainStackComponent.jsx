@@ -21,7 +21,7 @@ import CardStackOverlay from '../../overlays/CardStackOverlay/CardStackOverlay';
 import { withRouter } from 'react-router-dom';
 
 // AWS Dependencies
-import { invokeApig } from '../../libs/awsLib';
+import { invokeApig } from '../../libs/aws';
 
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';

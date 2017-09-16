@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setAlert, dismissAlert, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -32,12 +32,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		setTokenFetchComplete: () => {
 			return dispatch(setTokenFetchComplete());
 		},
-		setAlert: (title, message) => {
-			return dispatch(setAlert(title, message));
-		},
-		dismissAlert: () => {
-			return dispatch(dismissAlert());
-		},
 		setCardSlugs: (slugsHash) => {
 			return dispatch(setCardSlugs(slugsHash));
 		},
@@ -52,6 +46,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		unsetAppLoading: () => {
 			return dispatch(unsetAppLoading());
+		},
+		clearUser: () => {
+			return dispatch(clearUser());
 		}
 	}
 };

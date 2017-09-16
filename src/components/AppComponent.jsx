@@ -4,13 +4,11 @@ import React, { Component } from 'react';
 // UI Dependencies
 import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import RouteNavItem from './RouteNavItem/RouteNavItem';
-import { Notification } from 'react-notification';
-// import mobiscroll from '../libs/mobiscroll.custom-3.2.3.min';
 import './App.css';
 import '../styles/react-instantsearch-algolia-theme.css';
 
 // AWS Dependencies
-import { getUserToken, getCurrentUser, getAwsCredentials } from '../libs/awsLib';
+import { getUserToken, getCurrentUser, getAwsCredentials } from '../libs/aws';
 import AWS from 'aws-sdk';
 
 // React Router / Spinner / Preloader / Code-Splitter Dependencies
@@ -19,6 +17,9 @@ import RouteLoader from './RouteLoader/RouteLoader';
 
 // Data Persistence Dependencies
 import { getSlugs } from '../libs/utils';
+
+// Error/Logger Handling
+import { log, logTitle, logError, logObject, logRoute } from '../libs/utils';
 
 class AppComponent extends Component {
 	constructor(props) {
@@ -38,9 +39,11 @@ class AppComponent extends Component {
 
 	handleLogout = (event) => {
 		const currentUser = getCurrentUser();
+		let username = null;
 
 		if (currentUser !== null) {
 			currentUser.signOut();
+			username = currentUser.username;
 		}
 
 		if (AWS.config.credentials) {
@@ -48,8 +51,38 @@ class AppComponent extends Component {
 		}
 
 		this.props.setUserToken(null);
+		this.props.clearUser();
+
+		log('User ' + username + ' logged out');
 
 		this.props.history.push('/login');
+	}
+
+	getUsername() {
+		logTitle('Auth Step 1: Fetching current user from local storage using the Cognito JS SDK ...');
+
+		const currentUser = getCurrentUser();
+
+		if (currentUser === null) {
+			this.props.unsetUserTokenLoading();
+			log('there is no user saved in local storage, will fetch credentials on first API call ...');
+		} else {
+			// When we have a token in session, we need to save the 
+			// username into Redux, because this is our primary key
+			// for any dynamoDB interaction (like with API calls) 
+			this.props.setUsername(currentUser.username);
+
+			log('The current user is ' + currentUser.username);
+			logObject('cognito user', currentUser);
+		}
+
+		log('');
+
+		return currentUser;
+	}
+
+	componentWillMount() {
+		logRoute(this.props.router.location.pathname);
 	}
 
 	// http://serverless-stack.com/chapters/load-the-state-from-the-session.html
@@ -78,16 +111,30 @@ class AppComponent extends Component {
 		getSlugs(isHomePage, this.props.setCardSlugs, this.props.user.token);
 		this.props.unsetSlugsLoading();
 
-		const currentUser = getCurrentUser();
-		console.log('currentUser: ' + currentUser);
+		const currentUser = this.getUsername();
 
 		try {
-			const userToken = await this.getUserIDToken(currentUser);
-			this.props.setUserToken(userToken);
-			this.getCredentials(currentUser);
-		} catch (e) {
-			this.props.setAlert('User Token Error: ', e.message);
-			setTimeout(() => this.props.dismissAlert(), 5000);
+			if (currentUser) {
+				await this.getUserIDToken(currentUser);
+
+				logTitle('Auth Step 4: Checking credentials for ' +
+					currentUser.username + ' ...');
+				this.getCredentials(currentUser);
+			}
+		} catch(e) {
+			logError(e, 'Authentication Error: ' + e.message, this.props.user.token);
+		}
+
+		if (this.props.user.username && this.props.fetchComplete.credentials) {
+			logTitle('Auth Complete!  The new credentials are ...');
+			log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
+			log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
+			log('');
+
+			this.props.unsetAppLoading();
+
+		} else if (!this.props.user.username) {
+			this.props.unsetAppLoading();
 		}
 
 		this.props.unsetUserTokenLoading();
@@ -96,15 +143,12 @@ class AppComponent extends Component {
 	async getUserIDToken(currentUser) {
 		try {
 			if (currentUser) {
-				const userToken = await getUserToken(currentUser);
-
+				const [userToken,] = await getUserToken(currentUser);
 				this.props.setUserToken(userToken);
 			}
-		}
-		catch(e) {
-			this.props.setAlert("Session Token Error: ",
-				"You might want to try logging back in");
-			setTimeout(() => this.props.dismissAlert(), 5000);
+		} catch(e) {
+			logError(e, 'Session Token Error: You might want to try logging back in',
+				this.props.user.token);
 		}
 
 		this.props.unsetUserTokenLoading();
@@ -115,8 +159,6 @@ class AppComponent extends Component {
 	}
 
 	async getCredentials(currentUser) {
-		// TODO: Save parts of credentials into Redux store.  Also: Re-evaluate
-		// when exactly I should be calling this ...
 		try {
 			await getAwsCredentials(this.props.user.token);
 
@@ -125,22 +167,12 @@ class AppComponent extends Component {
 			// refresh the credentials using AWS.config.credentials.refresh
 			// so that AWS will use the latest one we just added."
 			AWS.config.credentials.refresh(() => {
-				// Load the app now that we have temporary credentials
-				this.props.unsetAppLoading();
+				// this.props.unsetAppLoading();
 
-				console.log('credentials have been refreshed ...');
-
-				if (AWS.config.credentials) {
-					console.log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
-					console.log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey + '\n\n');
-				} else {
-					console.log('No credentials\n\n');
-				}
+				this.props.setCredentialsFetchComplete();
 			});
-		}
-		catch(e) {
-			this.props.setAlert('Error Authorizing User: ', e.message);
-			setTimeout(() => this.props.dismissAlert(), 5000);			
+		} catch(e) {
+			logError(e, 'Error Authorizing User: ' + e.message, this.props.user.token);
 		}
 	}
 
@@ -164,14 +196,6 @@ class AppComponent extends Component {
 
 		return !this.props.app.loading && (
 			<div className="App">
-
-				{/* Revisit: Notification's onClick / onDismiss handlers appear to be broken */}
-				<div onClick={() => this.props.dismissAlert()}>
-					<Notification
-						isActive={this.props.notification.active}
-						message={this.props.notification.message}
-						title={this.props.notification.title} />
-				</div>
 
 				<Navbar fluid collapseOnSelect style={navStyles}>
 

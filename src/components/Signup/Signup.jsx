@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SignupComponent from './SignupComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUsername, setPassword, setNewUser, setAlert, dismissAlert, setPasswordConfirmation, setConfirmationCode, setUserToken, setPasswordValidation, setUsernameValidation, setConfirmPasswordValidation } from '../../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUsername, setPassword, setNewUser, setPasswordConfirmation, setConfirmationCode, setUserToken, setPasswordValidation, setUsernameValidation, setConfirmPasswordValidation } from '../../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -30,12 +30,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setNewUser: (newUser) => {
 			return dispatch(setNewUser(newUser));
-		},
-		setAlert: (title, message) => {
-			return dispatch(setAlert(title, message));
-		},
-		dismissAlert: () => {
-			return dispatch(dismissAlert());
 		},
 		setPasswordConfirmation: (confirmPassword) => {
 			return dispatch(setPasswordConfirmation(confirmPassword));

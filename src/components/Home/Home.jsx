@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import HomeComponent from './HomeComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setAlert, dismissAlert, setCardSlugs } from '../../redux.js';
+import { setCardSlugs } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -12,12 +12,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		setAlert: (title, message) => {
-			return dispatch(setAlert(title, message));
-		},
-		dismissAlert: () => {
-			return dispatch(dismissAlert());
-		},
 		setCardSlugs: (slugsHash) => {
 			return dispatch(setCardSlugs(slugsHash));
 		}

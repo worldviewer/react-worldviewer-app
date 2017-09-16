@@ -9,6 +9,9 @@ import { Route, Switch } from 'react-router';
 import Loadable from 'react-loadable';
 import spinner from '../../images/explosion-spinner.svg';
 
+// Error/Logger Handling
+import { logRoute, logError } from '../../libs/utils';
+
 // See bottom of http://serverless-stack.com/chapters/code-splitting-in-create-react-app.html
 // This is a state handler for the react-loadable code splitter
 const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
@@ -33,16 +36,13 @@ const LoadingComponent = ({isLoading, error, pastDelay, timedOut}) => {
 
 	// What happens if page doesn't load after timeout setting
 	} else if (timedOut) {
-		this.props.setAlert("Timeout: ", "You might want to try refreshing page");
-		setTimeout(() => this.props.dismissAlert(), 5000);
+		logError(null, 'Application timed out: You might want to try refreshing the page. This may be a connectivity issue.',
+			this.props.user.token);
 
 		return null;
 
 	} else if (error) {
-		// this.props.setAlert("Error: ", "Something's not right");
-		// setTimeout(() => this.props.dismissAlert(), 5000);
-
-		console.log(error);
+		logError(error, 'Error: ' + error, this.props.user.token);
 
 		return null;
 
@@ -131,6 +131,15 @@ class RouteLoaderComponent extends Component {
 	async componentDidMount() {
 		// We use the current router pathname to figure out which pages to preload
 		this.preload(this.props.pathname);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		// For debugging purposes
+		if (this.props.router.location.pathname !== nextProps.router.location.pathname) {
+
+			logRoute(this.props.router.location.pathname + ' --> ' +
+				nextProps.router.location.pathname);
+		}
 	}
 
 	render() {

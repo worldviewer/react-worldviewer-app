@@ -1,86 +1,147 @@
 import config from '../config.js';
 import AWS from 'aws-sdk';
 import sigV4Client from './sigV4Client';
+import { log, logTitle, logObject, logError } from './utils';
 import { CognitoUserPool, CognitoUser, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 // http://serverless-stack.com/chapters/connect-to-api-gateway-with-iam-auth.html
-// Useful information on API gateway policies here: http://docs.aws.amazon.com/
-// apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
 export async function invokeApig(
 	{ base,
 		path,
 		method = 'GET',
 		headers = {},
 		queryParams = {},
-		body }, userToken) {
+		body }, userToken, loginCallback) {
 
-	await getAwsCredentials(userToken);
+	logTitle('API ' + method + ': ' + path);
 
-	console.log('config.apiGateway[base].URL: ' + config.apiGateway[base].URL);
-	console.log(method + ': ' + path);
-	console.log('AWS.config.credentials.accessKeyId: ' + AWS.config.credentials.accessKeyId);
-	console.log('AWS.config.credentials.secretAccessKey: ' + AWS.config.credentials.secretAccessKey + '\n\n');
+	// This was just ...
+	// if (AWS.config.credentials) {
+	if (AWS.config.credentials &&
+		AWS.config.credentials.accessKeyId &&
+		AWS.config.credentials.secretAccessKey) {
+
+		log('(credentials already exist)');
+		log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
+		log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
+		log('');
+	} else {
+		log('There are no pre-existing credentials, so they are being fetched ...');
+
+		await getAwsCredentials(userToken);
+
+		logTitle('Auth Complete!  The new credentials are ...');
+		log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
+		log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
+		log('');
+	}
+
+	let region, endpoint;
+
+	if (base === 'cards') {
+		region = config.apiGateway.cards.REGION;
+		endpoint = config.apiGateway.cards.URL;
+	} else if (base === 'feeds') {
+		region = config.apiGateway.feeds.REGION;
+		endpoint = config.apiGateway.feeds.URL;
+	}
 
 	// "We are simply following the steps to make a signed request to API
 	// Gateway here. We first get our temporary credentials using getAwsCredentials
 	// and then using the sigV4Client we sign our request. We then use the signed
 	// headers to make a HTTP fetch request."
-	const signedRequest = sigV4Client
+	const newClient = sigV4Client
 		.newClient({
 			accessKey: AWS.config.credentials.accessKeyId,
 			secretKey: AWS.config.credentials.secretAccessKey,
 			sessionToken: AWS.config.credentials.sessionToken,
-			region: config.apiGateway[base].REGION,
-			endpoint: config.apiGateway[base].URL,
-		})
-		.signRequest({
+			region,
+			endpoint,
+		});
+
+	logTitle('V4 Signature:');
+	logObject('sigV4Client', newClient);
+	log('');
+
+	if (newClient) {
+		const signedRequest = sigV4Client
+			.newClient({
+				accessKey: AWS.config.credentials.accessKeyId,
+				secretKey: AWS.config.credentials.secretAccessKey,
+				sessionToken: AWS.config.credentials.sessionToken,
+				region,
+				endpoint,
+			})		
+			.signRequest({
+				method,
+				path,
+				headers,
+				queryParams,
+				body
+			});
+
+		body = body ? JSON.stringify(body) : body;
+		headers = signedRequest.headers;
+
+		log('Creating a signed API request to ' + signedRequest.url + ' ...');
+		log('');
+
+		logTitle('HTTP headers:');
+		logObject('headers', headers);
+		log('');
+
+		const results = await fetch(signedRequest.url, {
 			method,
-			path,
 			headers,
-			queryParams,
 			body
 		});
 
-	body = body ? JSON.stringify(body) : body;
-	headers = signedRequest.headers;
+		if (results.status !== 200) {
+			throw new Error(await results.text());
+		}
 
-	const results = await fetch(signedRequest.url, {
-		method,
-		headers,
-		body
-	});
+		return results.json();
 
-	if (results.status !== 200) {
-		throw new Error(await results.text());
+	// TODO: I thought that this is where we would end up when the token is expired,
+	// but it's not (so far) working out that way, so I may need to generalize this error ...
+	} else {
+		logError(null, 'Your session has expired, you\'ve been logged out', userToken,
+			true, null, 'Login', () => loginCallback());
 	}
-
-	return results.json();
 }
 
 // http://serverless-stack.com/chapters/upload-a-file-to-s3.html
 export function getAwsCredentials(userToken) {
-	// These credentials are valid till the AWS.config.credentials.expireTime.
-	// So we simply check to ensure our credentials are still valid before requesting
-	// a new set.
-	if (AWS.config.credentials && Date.now() <
-		AWS.config.credentials.expireTime - 60000) {
+	// First check to see if there are already credentials and they have more time to go
+	if (AWS.config.credentials && Date.now() < AWS.config.credentials.expireTime - 60000) {
+
+		log('(credentials should still be valid, will expire in ' +
+			parseInt((AWS.config.credentials.expireTime - Date.now())/60000, 10) +
+			' minutes)');
+		log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
+		log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
+		log('');
 
 		return;
+
+	} else {
+		log('credentials are stale, fetching new credentials ...');
+		log('');
+
+		const authenticator =
+			`cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}`;
+
+		AWS.config.update({ region: config.cognito.REGION });
+
+		AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+			IdentityPoolId: config.cognito.IDENTITY_POOL_ID,
+			Logins: {
+				[authenticator]: userToken
+			}
+		});
+
+		return AWS.config.credentials.getPromise();
 	}
-
-	const authenticator =
-		`cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}`;
-
-	AWS.config.update({ region: config.cognito.REGION });
-
-	AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-		IdentityPoolId: config.cognito.IDENTITY_POOL_ID,
-		Logins: {
-			[authenticator]: userToken
-		}
-	});
-
-	return AWS.config.credentials.getPromise();
 }
 
 // http://serverless-stack.com/chapters/upload-a-file-to-s3.html
@@ -126,65 +187,42 @@ export function getCurrentUser() {
 // https://medium.com/@rajaraodv/securing-react-redux-apps-with-jwt-tokens-fcfe81356ea0
 export function getUserToken(currentUser) {
 	return new Promise((resolve, reject) => {
+		logTitle('Auth Step 2: Fetching user session and user token, and refreshing the user\'s Cognito session in case it has expired ...');
+
 		currentUser.getSession((err, session) => {
 			if (err) {
 				reject(err);
 				return;
 			}
 
+			if (session.isValid()) {
+				log('session is valid');
+			} else {
+				log('session is not valid!');
+			}
+
+			log('');
+			logTitle('Auth Step 3: Now fetching user attributes from Cognito ...');
+
 			// getSession must be called to authenticate
 			// user before calling getUserAttributes
 			currentUser.getUserAttributes((err, attributes) => {
 				if (err) {
-					alert(err);
+					reject(err);
 					return;
 				}
 
-				resolve(session.getIdToken().getJwtToken());
+				logObject('cognito user attributes', attributes);
+				log('');
+
+				resolve([
+					session.getIdToken().getJwtToken(),
+					attributes
+				]);
 			});
 		});
 	});
 }
-
-// https://github.com/aws/amazon-cognito-identity-js
-// We must update the AWS Cognito User Pool custom:listings attribute
-// when we create a new auction because this is where we are tracking
-// the user's total number of auctions.  This number must never be
-// less than the actual total number of merchant listings; if it is,
-// then auctions will become overwritten when they create new ones.
-
-// export function updateCognitoMerchantListingNumber(currentUser, numAuctions) {
-// 	return new Promise((resolve, reject) => {
-// 		currentUser.getSession((err, session) => {
-// 			if (err) {
-// 				reject(err);
-// 				return;
-// 			}
-
-// 			let attributeList = [];
-
-// 			const customListingsAttribute = {
-// 				Name: 'custom:listings',
-// 				Value: numAuctions.toString()
-// 			};
-
-// 			const attribute = new CognitoUserAttribute(customListingsAttribute);
-
-// 		    attributeList.push(attribute);
-
-// 			// getSession must be called to authenticate
-// 			// user before calling getUserAttributes
-// 			currentUser.updateAttributes(attributeList, (err, result) => {
-// 				if (err) {
-// 					alert(err);
-// 					reject(err);
-// 				}
-
-// 				resolve(result);
-// 			});
-// 		});
-// 	});
-// }
 
 // From http://serverless-stack.com/chapters/login-with-aws-cognito.html
 export function login(username, password) {
@@ -205,6 +243,8 @@ export function login(username, password) {
 
 	const authenticationDetails = new AuthenticationDetails(authenticationData);
 
+	log('Authenticating user ...');
+
 	return new Promise((resolve, reject) => (
 		user.authenticateUser(authenticationDetails, {
 			onSuccess: (result) => resolve(result.getIdToken().getJwtToken()),
@@ -218,6 +258,8 @@ export function signup(username, password) {
 		UserPoolId: config.cognito.USER_POOL_ID,
 		ClientId: config.cognito.APP_CLIENT_ID
 	});
+
+	log('Signing user up ...');
 
 	const attributeEmail = new CognitoUserAttribute({ Name : 'email', Value : username });
 
@@ -242,6 +284,8 @@ export function signup(username, password) {
 export function confirm(user, confirmationCode) {
 	return new Promise((resolve, reject) => (
 		user.confirmRegistration(confirmationCode, true, function(err, result) {
+			log('Confirming registration with Cognito ...');
+
 			if (err) {
 				reject(err);
 				return;
@@ -256,7 +300,10 @@ export function authenticate(user, username, password) {
 		Username: username,
 		Password: password
 	};
+
 	const authenticationDetails = new AuthenticationDetails(authenticationData);
+
+	log('Authenticating user ...');
 
 	return new Promise((resolve, reject) => (
 		user.authenticateUser(authenticationDetails, {

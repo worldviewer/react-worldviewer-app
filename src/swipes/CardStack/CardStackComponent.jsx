@@ -18,7 +18,7 @@ import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
 import { withRouter } from 'react-router-dom';
 
 // AWS Dependencies
-import { invokeApig } from '../../libs/awsLib';
+import { invokeApig } from '../../libs/aws';
 
 class CardStackComponent extends Component {
 	constructor(props) {
