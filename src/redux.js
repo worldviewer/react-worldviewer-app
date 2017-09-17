@@ -754,12 +754,14 @@ export default (state = initialState, action) => {
 				}
 			}
 
+		// Do not toggle navbar state on the larger screens
 		case types.TOGGLE_NAVBAR_STATE:
 			return {
 				...state,
 				navbar: {
 					...state.navbar,
-					hidden: action.zoom < 1.2
+					hidden: window.innerWidth <= 480 ?
+						action.zoom < 1.2 : false
 				}
 			}
 

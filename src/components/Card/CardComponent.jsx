@@ -11,10 +11,40 @@ class CardComponent extends Component {
 		this.state = {
 			pyramidStyle: {
 				width: '100%'
-			}
+			},
+			minZoomLevel: this.calculateMinZoomLevel()
 		};
 
 		this.props = props;
+	}
+
+	// minZoomLevel approaches 1.4 when screen width is 0
+	// minZoomLevel should be 0.95 when screen width is 480px
+	// minZoomLevel should be 0.7 when screen width is 800px
+	// minZoomLevel should be 0.58 when screen width is 1000px
+	// minZoomLevel should be 0.48 when screen width is 1200px
+	// minZoomLevel should be 0.40 when screen width is 1400px
+	// minZoomLevel should be 0.34 when screen width is 1600px
+	// minZoomLevel should be 0.26 when screen width is 2000px
+	// minZoomLevel should be 0.14 when screen width is 3000px
+
+	// 3rd-order polynomial cubic regression at https://www.mycurvefit.com/
+	// y = 1.40601 - 0.000115417x + 3.755247 * 10-7 * x^2
+	//     - 4.377216 * 10-11 * x^3
+
+	// An alternative fit would leave us with a slight border on mobile
+	calculateMinZoomLevel() {
+		const x = window.innerWidth;
+
+		if (window.innerWidth <= 480) {
+			return 1;
+		} else {
+			// return 1.406101 - (0.001154107 * x) + (3.755247 * (10 ** -7) * x * x) -
+			// 	(4.377216 * (10 ** -11) * x * x * x);
+
+			return 1.30329 - (0.000973696 * x) + (2.780705 * (10 ** -7) * x * x) -
+				(2.752571 * (10 ** -11) * x * x * x);
+		}
 	}
 
 	setupDeepZoom() {
@@ -24,8 +54,8 @@ class CardComponent extends Component {
 			id: 'openseadragon-cards',
 			constrainDuringPan: true,
 			visibilityRatio: 1.0,
-			defaultZoomLevel: 1,
-			minZoomLevel: 1,
+			defaultZoomLevel: this.state.minZoomLevel,
+			minZoomLevel: this.state.minZoomLevel,
 			maxZoomLevel: card.images.pyramid.maxZoomLevel,
 			autoResize: true,
 			showZoomControl: false,
@@ -47,10 +77,18 @@ class CardComponent extends Component {
 			}
 		});
 
-		// const resize = () => this.setupResizeHandler();
-		// window.addEventListener('resize', resize);
+		window.addEventListener('resize',
+			() => this.setupResizeHandler());
 
 		this.setupZoomHandler(this.viewer);
+	}
+
+	setupResizeHandler() {
+		console.log('width: ' + window.innerWidth + ', height: ' + window.innerHeight);
+
+		this.setState({
+			minZoomLevel: this.calculateMinZoomLevel()
+		});
 	}
 
 	// Use this to react to OpenSeadragon zoom events
