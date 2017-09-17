@@ -31,8 +31,6 @@ class CardComponent extends Component {
 	// 3rd-order polynomial cubic regression at https://www.mycurvefit.com/
 	// y = 1.40601 - 0.000115417x + 3.755247 * 10-7 * x^2
 	//     - 4.377216 * 10-11 * x^3
-
-	// An alternative fit would leave us with a slight border on mobile
 	calculateMinZoomLevel() {
 		const x = window.innerWidth;
 

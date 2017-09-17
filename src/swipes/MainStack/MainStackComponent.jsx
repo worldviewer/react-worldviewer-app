@@ -23,6 +23,9 @@ import { withRouter } from 'react-router-dom';
 // AWS Dependencies
 import { invokeApig } from '../../libs/aws';
 
+// Error/Logger Handling
+import { log, logTitle, logObject } from '../../libs/utils';
+
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
@@ -91,15 +94,19 @@ class MainStackComponent extends Component {
 			cardSlug = this.props.slugs.hash[shortSlug],
 			feedSlug = this.props.router.location.pathname.split('/')[4];
 
-		console.log('short slug: ' + shortSlug);
-		console.log('feed slug: ' + feedSlug + '\n\n');
+		logTitle('Slug data:');
+		log('Short slug:');
+		logObject(shortSlug);
+		log('Feed slug:');
+		logObject(feedSlug);
+		log('');
 
 		const feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
 			cardSlug + '/' + feedSlug }, this.props.user.token);
 
-		console.log('feed data:');
-		console.log(feed);
-		console.log('');
+		logTitle('Feed data:');
+		logObject(feed);
+		log('');
 
 		this.props.setFeedData(feed);
 		this.props.unsetFeedDataLoading();
@@ -113,9 +120,9 @@ class MainStackComponent extends Component {
 		const feedsList = await invokeApig( {base: 'feeds', path: '/feeds/' +
 			cardSlug }, this.props.user.token);
 
-		console.log('feeds list:');
-		console.log(feedsList);
-		console.log('');
+		logTitle('Feeds list:');
+		logObject(feedsList);
+		log('');
 
 		this.props.setFeedsData(feedsList);
 		this.props.unsetFeedsDataLoading();

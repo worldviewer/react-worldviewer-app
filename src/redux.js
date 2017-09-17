@@ -88,12 +88,6 @@ const initialState = {
 		confirmPassword: null
 	},
 
-	notification: {
-		active: false,
-		title: '',
-		message: ''
-	},
-
 	discourse: {
 		level: 0,
 		overlay: false,
