@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import HomeComponent from './HomeComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setCardSlugs } from '../../redux.js';
+// import { setCardSlugs } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -11,11 +11,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	return {
-		setCardSlugs: (slugsHash) => {
-			return dispatch(setCardSlugs(slugsHash));
-		}
-	}
+	return {...ownProps}
 };
 
 const Home = connect(

@@ -24,7 +24,7 @@ import config from '../../config';
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
 // Error/Logger Handling
-import { log, logTitle } from '../../libs/utils';
+import { log, logObject, logTitle } from '../../libs/utils';
 
 class FeedCardComponent extends Component {
 	constructor(props) {
@@ -114,9 +114,9 @@ class FeedCardComponent extends Component {
 
 		let paragraphTag, text = '';
 
-		console.log('this.props:');
-		console.log(this.props);
-		console.log('');
+		logTitle('Feedcard props:');
+		logObject(this.props);
+		log('');
 
 		for (let num = 0; num < this.props.feed.data.text.length; num++) {
 			if (num === 0) {
@@ -170,13 +170,13 @@ class FeedCardComponent extends Component {
 		log('this.props.feed.data.discourseLevel: ' + this.props.feed.data.discourseLevel);
 		log('');
 		
-		if (this.props.discourse.level !== 0 && !this.props.feed.feedLoading) {
+		if (this.props.discourse.level !== 0 && !this.props.loading.feed) {
 			this.constructText();
 		}
 
 		if (this.props.discourse.level ===
 			this.discourseLevels.indexOf(this.props.feed.data.discourseLevel) &&
-			!this.props.feed.feedLoading) {
+			!this.props.loading.feed) {
 
 			// this.setupDeepZoom();
 			this.fetchImage();
@@ -184,15 +184,15 @@ class FeedCardComponent extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.discourse.level !== 0 && this.props.feed.data.feedLoading &&
-			!nextProps.feed.feedLoading) {
+		if (nextProps.discourse.level !== 0 && this.props.loading.feed &&
+			!nextProps.loading.feed) {
 
 			this.constructText();
 		}
 
 		if (nextProps.discourse.level ===
 			this.discourseLevels.indexOf(nextProps.feed.data.discourseLevel) &&
-			this.props.feed.feedLoading && !nextProps.feed.feedLoading) {
+			this.props.loading.feed && !nextProps.loading.feed) {
 
 			// this.setupDeepZoom();
 			this.fetchImage();

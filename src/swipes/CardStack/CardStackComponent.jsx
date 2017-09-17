@@ -38,14 +38,14 @@ class CardStackComponent extends Component {
 
 	componentDidMount() {
 		// If the slugs finish loading before the component has loaded ...
-		if (!this.props.slugs.slugsLoading) {
+		if (!this.props.loading.slugs) {
 			this.loadCardData();
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		// If the slugs finish loading after the component has mounted ...
-		if (this.props.slugs.slugsLoading && !nextProps.slugs.slugsLoading) {
+		if (this.props.loading.slugs && !nextProps.loading.slugs) {
 			this.loadCardData();
 		}
 	}

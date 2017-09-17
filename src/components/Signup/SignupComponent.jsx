@@ -162,7 +162,7 @@ class Signup extends Component {
 					block
 					disabled={ !this.validateConfirmationForm() }
 					type="submit"
-					isLoading={this.props.user.tokenLoading}
+					isLoading={this.props.loading.token}
 					text="Verify"
 					loadingText="Verifying…" />
 
@@ -219,7 +219,7 @@ class Signup extends Component {
 					block
 					disabled={ !this.validateForm() }
 					type="submit"
-					isLoading={this.props.user.tokenLoading}
+					isLoading={this.props.loading.token}
 					text="Signup"
 					loadingText="Signing up…" />
 			</form>

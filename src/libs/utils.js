@@ -1,8 +1,8 @@
 // Slugs Dependencies
-import DeviceStorage from 'react-device-storage';
+// import DeviceStorage from 'react-device-storage';
 
 // AWS Dependencies
-import { invokeApig } from './aws';
+// import { invokeApig } from './aws';
 
 // Error/Logger Handling
 import mobiscroll from './mobiscroll.custom-3.2.4.min';
@@ -14,24 +14,25 @@ import './mobiscroll.custom-3.2.4.min.css';
 // save them to localStorage each time the user hits the homepage.  Then,
 // we reload them from localStorage whenever the Redux store is cleared out
 // on route change.  If they're not in localStore, then we fetch.
-export async function getSlugs(isHomePage, setCardSlugsHandler, userToken) {
-	const storage = await new DeviceStorage().localStorage();
-	let slugs;
 
-	if (isHomePage) {
-		slugs = await invokeApig( {base: 'cards', path: '/controversies'}, userToken);
-		storage.save('slugs', slugs);
-	} else {
-		slugs = await storage.read('slugs');
-	}
+// export async function getSlugs(isHomePage, setCardSlugsHandler, userToken) {
+// 	const storage = await new DeviceStorage().localStorage();
+// 	let slugs;
 
-	if (!isHomePage && !slugs) {
-		slugs = await invokeApig( {base: 'cards', path: '/controversies'}, userToken);
-		storage.save('slugs', slugs);
-	}
+// 	if (isHomePage) {
+// 		slugs = await invokeApig( {base: 'cards', path: '/controversies'}, userToken);
+// 		storage.save('slugs', slugs);
+// 	} else {
+// 		slugs = await storage.read('slugs');
+// 	}
 
-	setCardSlugsHandler(slugs);
-}
+// 	if (!isHomePage && !slugs) {
+// 		slugs = await invokeApig( {base: 'cards', path: '/controversies'}, userToken);
+// 		storage.save('slugs', slugs);
+// 	}
+
+// 	await setCardSlugsHandler(slugs);
+// }
 
 // When there is an expired token, the very first error message is:
 // Authorization Error: __WEBPACK_IMPORTED_MODULE_4__sigV4Client__.a.newClient(...)

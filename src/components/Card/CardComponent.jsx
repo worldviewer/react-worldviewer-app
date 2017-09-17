@@ -97,13 +97,13 @@ class CardComponent extends Component {
 	}
 
 	componentDidMount() {
-		if (!this.props.card.cardLoading) {
+		if (!this.props.loading.card) {
 			this.setupDeepZoom();
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.card.cardLoading && !nextProps.card.cardLoading) {
+		if (this.props.loading.card && !nextProps.loading.card) {
 			this.setupDeepZoom();
 		}
 	}

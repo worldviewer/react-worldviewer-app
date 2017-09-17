@@ -5,6 +5,7 @@ import { setDiscourseLevel, setCardStackLevel, enableMainStackSwipeable, disable
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		loading: state.reducer.loading,
 		pathname: state.router.location.pathname,
 		discourse: state.reducer.discourse,
 		cardStack: state.reducer.cardStack,

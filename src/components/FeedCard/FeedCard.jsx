@@ -5,6 +5,7 @@ import { toggleNavbarState } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		loading: state.reducer.loading,
 		card: state.reducer.card,
 		feed: state.reducer.feed,
 		discourse: state.reducer.discourse

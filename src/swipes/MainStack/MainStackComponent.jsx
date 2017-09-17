@@ -128,38 +128,38 @@ class MainStackComponent extends Component {
 		this.props.unsetFeedsDataLoading();
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
 			this.props.discourse.isFullScreen ? 3000 : 6000);
 
 		// window.onscroll = function () { window.scrollTo(0, 0); };
 
 		// If the slugs finish loading before the component has loaded ...
-		if (!this.props.slugs.slugsLoading) {
+		if (!this.props.loading.slugs) {
 			// We handle this FeedCard data here because we only
 			// want to run this once, and we are instantiating 4
 			// different instances ...
 			if (this.parameterDiscourseLevel !== 0) {
-				this.loadFeedData();
-				this.loadFeedsData();
+				await this.loadFeedData();
+				await this.loadFeedsData();
 			}
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	async componentWillReceiveProps(nextProps) {
 		if (nextProps.discourse.level !== this.props.discourse.level) {
 			this.deactivateMainStackOverlay();
 		}
 
 		// If the slugs finish loading after the component has mounted ...
-		if (this.props.slugs.slugsLoading && !nextProps.slugs.slugsLoading) {
+		if (this.props.loading.slugs && !nextProps.loading.slugs) {
 			if (this.parameterDiscourseLevel !== 0) {
-				this.loadFeedData();
-				this.loadFeedsData();
+				await this.loadFeedData();
+				await this.loadFeedsData();
 			}
 		}
 
-		if (nextProps.feed.feedLoading && !this.props.feed.feedLoading) {
+		if (nextProps.loading.feed && !this.props.loading.feed) {
 			this.props.unsetFeedDataLoading();
 		}
 	}
@@ -243,22 +243,22 @@ class MainStackComponent extends Component {
 							</div>					
 
 							<div className="Model">
-								{ !this.props.feed.feedLoading &&
+								{ !this.props.loading.feed &&
 									<FeedStack level="model" /> }
 							</div>
 
 							<div className="Propositional">
-								{ !this.props.feed.feedLoading &&
+								{ !this.props.loading.feed &&
 									<FeedStack level="propositional" /> }
 							</div>
 
 							<div className="Conceptual">
-								{ !this.props.feed.feedLoading &&
+								{ !this.props.loading.feed &&
 									<FeedStack level="conceptual" /> }
 							</div>
 
 							<div className="Narrative">
-								{ !this.props.feed.feedLoading &&
+								{ !this.props.loading.feed &&
 									<FeedStack level="narrative" /> }
 							</div>
 						</SwipeableViews>

@@ -1,17 +1,18 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		fetchComplete: state.reducer.fetchComplete,
+		loading: state.reducer.loading,
 		cardStack: state.reducer.cardStack,
 		navbar: state.reducer.navbar,
 		slugs: state.reducer.slugs,
 		user: state.reducer.user,
 		notification: state.reducer.notification,
 		router: state.router,
-		app: state.reducer.app,
 		feeds: state.reducer.feeds,
 		feed: state.reducer.feed,
 		card: state.reducer.card
@@ -31,6 +32,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setTokenFetchComplete: () => {
 			return dispatch(setTokenFetchComplete());
+		},
+		setCredentialsFetchComplete: () => {
+			return dispatch(setCredentialsFetchComplete());
+		},
+		setSlugsFetchComplete: () => {
+			return dispatch(setSlugsFetchComplete());
 		},
 		setCardSlugs: (slugsHash) => {
 			return dispatch(setCardSlugs(slugsHash));

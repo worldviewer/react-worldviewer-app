@@ -99,7 +99,7 @@ class LoginComponent extends Component {
 							block
 							disabled={ !this.validateForm() }
 							type="submit"
-							isLoading={this.props.user.tokenLoading}
+							isLoading={this.props.loading.token}
 							text="Login"
 							loadingText="Logging in…" />
 

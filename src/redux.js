@@ -6,10 +6,24 @@ if (!Object.values) {
 }
 
 const types = {
-	SET_USER_TOKEN: 'SET_USER_TOKEN',
+	SET_TOKEN_FETCH_COMPLETE: 'SET_TOKEN_FETCH_COMPLETE',
+	SET_CREDENTIALS_FETCH_COMPLETE: 'SET_CREDENTIALS_FETCH_COMPLETE',
+	SET_SLUGS_FETCH_COMPLETE: 'SET_SLUGS_FETCH_COMPLETE',
+
+	SET_APP_LOADING: 'SET_APP_LOADING',
+	UNSET_APP_LOADING: 'UNSET_APP_LOADING',
 	SET_USER_TOKEN_LOADING: 'SET_USER_TOKEN_LOADING',
 	UNSET_USER_TOKEN_LOADING: 'UNSET_USER_TOKEN_LOADING',
-	SET_TOKEN_FETCH_COMPLETE: 'SET_TOKEN_FETCH_COMPLETE',
+	SET_SLUGS_LOADING: 'SET_SLUGS_LOADING',
+	UNSET_SLUGS_LOADING: 'UNSET_SLUGS_LOADING',
+	SET_FEED_DATA_LOADING: 'SET_FEED_DATA_LOADING',
+	UNSET_FEED_DATA_LOADING: 'UNSET_FEED_DATA_LOADING',
+	SET_FEEDS_DATA_LOADING: 'SET_FEEDS_DATA_LOADING',
+	UNSET_FEEDS_DATA_LOADING: 'UNSET_FEEDS_DATA_LOADING',
+	SET_CARD_DATA_LOADING: 'SET_CARD_DATA_LOADING',
+	UNSET_CARD_DATA_LOADING: 'UNSET_CARD_DATA_LOADING',
+
+	SET_USER_TOKEN: 'SET_USER_TOKEN',
 
 	SET_USERNAME: 'SET_USERNAME',
 	SET_PASSWORD: 'SET_PASSWORD',
@@ -27,10 +41,6 @@ const types = {
 	OPEN_MENU: 'OPEN_MENU',
 	CLOSE_MENU: 'CLOSE_MENU',
 
-	FETCH_CARD_REQUEST: 'FETCH_CARD_REQUEST',
-	FETCH_CARD_ERROR: 'FETCH_CARD_ERROR',
-	FETCH_CARD_SUCCESS: 'FETCH_CARD_SUCCESS',
-
 	SET_HEIGHT: 'SET_HEIGHT',
 	SET_LOADED: 'SET_LOADED',
 	SET_DISCOURSE_LEVEL: 'SET_DISCOURSE_LEVEL',
@@ -42,39 +52,34 @@ const types = {
 	SET_MAIN_STACK_OVERLAY_SIZE: 'SET_MAIN_STACK_OVERLAY_SIZE',
 
 	SET_CARD_SLUGS: 'SET_CARD_SLUGS',
-	SET_SLUGS_LOADING: 'SET_SLUGS_LOADING',
-	UNSET_SLUGS_LOADING: 'UNSET_SLUGS_LOADING',
-
 	SET_CARD_DATA: 'SET_CARD_DATA',
-	SET_CARD_DATA_LOADING: 'SET_CARD_DATA_LOADING',
-	UNSET_CARD_DATA_LOADING: 'UNSET_CARD_DATA_LOADING',
-
 	SET_FEED_DATA: 'SET_FEED_DATA',
-	SET_FEED_DATA_LOADING: 'SET_FEED_DATA_LOADING',
-	UNSET_FEED_DATA_LOADING: 'UNSET_FEED_DATA_LOADING',
-
 	SET_FEEDS_DATA: 'SET_FEEDS_DATA',
-	SET_FEEDS_DATA_LOADING: 'SET_FEEDS_DATA_LOADING',
-	UNSET_FEEDS_DATA_LOADING: 'UNSET_FEEDS_DATA_LOADING',
 
 	ENABLE_MAINSTACK_SWIPEABLE: 'ENABLE_MAINSTACK_SWIPEABLE',
 	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE',
 
-	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE',
-
-	SET_APP_LOADING: 'SET_APP_LOADING',
-	UNSET_APP_LOADING: 'UNSET_APP_LOADING'
+	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE'
 };
 
 const initialState = {
-	app: {
-		loading: true
+	fetchComplete: {
+		token: false,
+		credentials: false,
+		slugs: false
+	},
+
+	loading: {
+		app: true,
+		token: true,
+		slugs: false,
+		feed: true,
+		feeds: true,
+		card: false
 	},
 
 	user: {
 		token: null,
-		tokenLoading: true,
-		tokenFetchComplete: false,
 		username: '',
 		password: '',
 		confirmPassword: '',
@@ -111,23 +116,19 @@ const initialState = {
 	},
 
 	slugs: {
-		hash: {},
-		slugsLoading: true
+		hash: {}
 	},
 
 	card: {
-		data: {},
-		cardLoading: false
+		data: {}
 	},
 
 	feed: {
-		data: {},
-		feedLoading: true
+		data: {}
 	},
 
 	feeds: {
-		data: [],
-		feedsLoading: true
+		data: []
 	},
 
 	search: {
@@ -139,10 +140,33 @@ const initialState = {
 	}
 };
 
-export const setUserToken = (token) => {
+export const setTokenFetchComplete = () => {
 	return {
-		type: types.SET_USER_TOKEN,
-		token
+		type: types.SET_TOKEN_FETCH_COMPLETE
+	};
+};
+
+export const setCredentialsFetchComplete = () => {
+	return {
+		type: types.SET_CREDENTIALS_FETCH_COMPLETE
+	};
+};
+
+export const setSlugsFetchComplete = () => {
+	return {
+		type: types.SET_SLUGS_FETCH_COMPLETE
+	};
+};
+
+export const setAppLoading = () => {
+	return {
+		type: types.SET_APP_LOADING
+	};
+};
+
+export const unsetAppLoading = () => {
+	return {
+		type: types.UNSET_APP_LOADING
 	};
 };
 
@@ -158,9 +182,58 @@ export const unsetUserTokenLoading = () => {
 	};
 };
 
-export const setTokenFetchComplete = () => {
+export const setSlugsLoading = () => {
 	return {
-		type: types.SET_TOKEN_FETCH_COMPLETE
+		type: types.SET_SLUGS_LOADING
+	};
+};
+
+export const unsetSlugsLoading = () => {
+	return {
+		type: types.UNSET_SLUGS_LOADING
+	};
+};
+
+export const setFeedDataLoading = () => {
+	return {
+		type: types.SET_FEED_DATA_LOADING
+	};
+};
+
+export const unsetFeedDataLoading = () => {
+	return {
+		type: types.UNSET_FEED_DATA_LOADING
+	};
+};
+
+export const setFeedsDataLoading = () => {
+	return {
+		type: types.SET_FEEDS_DATA_LOADING
+	};
+};
+
+export const unsetFeedsDataLoading = () => {
+	return {
+		type: types.UNSET_FEEDS_DATA_LOADING
+	};
+};
+
+export const setCardDataLoading = () => {
+	return {
+		type: types.SET_CARD_DATA_LOADING
+	};
+};
+
+export const unsetCardDataLoading = () => {
+	return {
+		type: types.UNSET_CARD_DATA_LOADING
+	};
+};
+
+export const setUserToken = (token) => {
+	return {
+		type: types.SET_USER_TOKEN,
+		token
 	};
 };
 
@@ -302,34 +375,10 @@ export const setCardSlugs = (slugsHash) => {
 	};
 };
 
-export const setSlugsLoading = () => {
-	return {
-		type: types.SET_SLUGS_LOADING
-	};
-};
-
-export const unsetSlugsLoading = () => {
-	return {
-		type: types.UNSET_SLUGS_LOADING
-	};
-};
-
 export const setCardData = (card) => {
 	return {
 		type: types.SET_CARD_DATA,
 		card
-	};
-};
-
-export const setCardDataLoading = () => {
-	return {
-		type: types.SET_CARD_DATA_LOADING
-	};
-};
-
-export const unsetCardDataLoading = () => {
-	return {
-		type: types.UNSET_CARD_DATA_LOADING
 	};
 };
 
@@ -340,34 +389,10 @@ export const setFeedData = (feed) => {
 	};
 };
 
-export const setFeedDataLoading = () => {
-	return {
-		type: types.SET_FEED_DATA_LOADING
-	};
-};
-
-export const unsetFeedDataLoading = () => {
-	return {
-		type: types.UNSET_FEED_DATA_LOADING
-	};
-};
-
 export const setFeedsData = (feedList) => {
 	return {
 		type: types.SET_FEEDS_DATA,
 		feedList
-	};
-};
-
-export const setFeedsDataLoading = () => {
-	return {
-		type: types.SET_FEEDS_DATA_LOADING
-	};
-};
-
-export const unsetFeedsDataLoading = () => {
-	return {
-		type: types.UNSET_FEEDS_DATA_LOADING
 	};
 };
 
@@ -390,53 +415,149 @@ export const toggleNavbarState = (zoom) => {
 	};
 };
 
-export const setAppLoading = () => {
-	return {
-		type: types.SET_APP_LOADING
-	};
-};
-
-export const unsetAppLoading = () => {
-	return {
-		type: types.UNSET_APP_LOADING
-	};
-};
-
 export default (state = initialState, action) => {
 	switch(action.type) {
-		case types.SET_USER_TOKEN:
+		case types.SET_TOKEN_FETCH_COMPLETE:
 			return {
 				...state,
-				user: {
-					...state.user,
-					token: action.token
+				fetchComplete: {
+					...state.fetchComplete,
+					token: true
 				}
 			};
+
+		case types.SET_CREDENTIALS_FETCH_COMPLETE:
+			return {
+				...state,
+				fetchComplete: {
+					...state.fetchComplete,
+					credentials: true
+				}
+			};
+
+		case types.SET_SLUGS_FETCH_COMPLETE:
+			return {
+				...state,
+				fetchComplete: {
+					...state.fetchComplete,
+					slugs: true
+				}
+			};
+
+		case types.SET_APP_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					app: true
+				}
+			}
+
+		case types.UNSET_APP_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					app: false
+				}
+			}
 
 		case types.SET_USER_TOKEN_LOADING:
 			return {
 				...state,
-				user: {
-					...state.user,
-					tokenLoading: true
+				loading: {
+					...state.loading,
+					token: true
 				}
 			};
 
 		case types.UNSET_USER_TOKEN_LOADING:
 			return {
 				...state,
-				user: {
-					...state.user,
-					tokenLoading: false
+				loading: {
+					...state.loading,
+					token: false
 				}
 			};
 
-		case types.SET_TOKEN_FETCH_COMPLETE:
+		case types.SET_SLUGS_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					slugs: true
+				}
+			}
+
+		case types.UNSET_SLUGS_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					slugs: false
+				}
+			}
+
+		case types.SET_FEED_DATA_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					feed: true
+				}
+			}
+
+		case types.UNSET_FEED_DATA_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					feed: false
+				}
+			}
+
+		case types.SET_FEEDS_DATA_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					feeds: true
+				}
+			}
+
+		case types.UNSET_FEEDS_DATA_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					feeds: false
+				}
+			}
+
+		case types.SET_CARD_DATA_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					card: true
+				}
+			}
+
+		case types.UNSET_CARD_DATA_LOADING:
+			return {
+				...state,
+				loading: {
+					...state.loading,
+					card: false
+				}
+			}
+
+		case types.SET_USER_TOKEN:
 			return {
 				...state,
 				user: {
 					...state.user,
-					tokenFetchComplete: true
+					token: action.token
 				}
 			};
 
@@ -625,24 +746,6 @@ export default (state = initialState, action) => {
 				}
 			}
 
-		case types.SET_SLUGS_LOADING:
-			return {
-				...state,
-				slugs: {
-					...state.slugs,
-					slugsLoading: true
-				}
-			}
-
-		case types.UNSET_SLUGS_LOADING:
-			return {
-				...state,
-				slugs: {
-					...state.slugs,
-					slugsLoading: false
-				}
-			}
-
 		case types.SET_CARD_DATA:
 			return {
 				...state,
@@ -651,24 +754,6 @@ export default (state = initialState, action) => {
 					data: {
 						...action.card
 					}
-				}
-			}
-
-		case types.SET_CARD_DATA_LOADING:
-			return {
-				...state,
-				card: {
-					...state.card,
-					cardLoading: true
-				}
-			}
-
-		case types.UNSET_CARD_DATA_LOADING:
-			return {
-				...state,
-				card: {
-					...state.card,
-					cardLoading: false
 				}
 			}
 
@@ -683,24 +768,6 @@ export default (state = initialState, action) => {
 				}
 			}
 
-		case types.SET_FEED_DATA_LOADING:
-			return {
-				...state,
-				feed: {
-					...state.feed,
-					feedLoading: true
-				}
-			}
-
-		case types.UNSET_FEED_DATA_LOADING:
-			return {
-				...state,
-				feed: {
-					...state.feed,
-					feedLoading: false
-				}
-			}
-
 		case types.SET_FEEDS_DATA:
 			return {
 				...state,
@@ -709,24 +776,6 @@ export default (state = initialState, action) => {
 					data: [
 						...action.feedList
 					]
-				}
-			}
-
-		case types.SET_FEEDS_DATA_LOADING:
-			return {
-				...state,
-				feeds: {
-					...state.feeds,
-					feedsLoading: true
-				}
-			}
-
-		case types.UNSET_FEEDS_DATA_LOADING:
-			return {
-				...state,
-				feeds: {
-					...state.feeds,
-					feedsLoading: false
 				}
 			}
 
@@ -756,24 +805,6 @@ export default (state = initialState, action) => {
 					...state.navbar,
 					hidden: window.innerWidth <= 480 ?
 						action.zoom < 1.2 : false
-				}
-			}
-
-		case types.SET_APP_LOADING:
-			return {
-				...state,
-				app: {
-					...state.app,
-					loading: true
-				}
-			}
-
-		case types.UNSET_APP_LOADING:
-			return {
-				...state,
-				app: {
-					...state.app,
-					loading: false
 				}
 			}
 

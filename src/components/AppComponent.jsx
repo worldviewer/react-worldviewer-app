@@ -8,7 +8,7 @@ import './App.css';
 import '../styles/react-instantsearch-algolia-theme.css';
 
 // AWS Dependencies
-import { getUserToken, getCurrentUser, getAwsCredentials } from '../libs/aws';
+import { getUserToken, getCurrentUser, getAwsCredentials, invokeApig } from '../libs/aws';
 import AWS from 'aws-sdk';
 
 // React Router / Spinner / Preloader / Code-Splitter Dependencies
@@ -16,7 +16,7 @@ import { withRouter, Link } from 'react-router-dom';
 import RouteLoader from './RouteLoader/RouteLoader';
 
 // Data Persistence Dependencies
-import { getSlugs } from '../libs/utils';
+// import { getSlugs } from '../libs/utils';
 
 // Error/Logger Handling
 import { log, logTitle, logError, logObject, logRoute } from '../libs/utils';
@@ -65,7 +65,7 @@ class AppComponent extends Component {
 
 		if (currentUser === null) {
 			this.props.unsetUserTokenLoading();
-			log('there is no user saved in local storage, will fetch credentials on first API call ...');
+			log('there is no user saved in local storage, will fetch credentials for unauthorized user ...');
 		} else {
 			// When we have a token in session, we need to save the 
 			// username into Redux, because this is our primary key
@@ -102,15 +102,7 @@ class AppComponent extends Component {
 			})
 		}, 1000);
 
-		const isHomePage = this.props.router.location.pathname === '/';
-
-		// Fetch the slugs hash table, which gives us a hash table lookup to
-		// convert short slugs into their long slug form.  We use the short slugs
-		// for frontend routes, whereas the long-form slugs are used for backend routes.
-		this.props.setSlugsLoading();
-		getSlugs(isHomePage, this.props.setCardSlugs, this.props.user.token);
-		this.props.unsetSlugsLoading();
-
+		// const isHomePage = this.props.router.location.pathname === '/';
 		const currentUser = this.getUsername();
 
 		try {
@@ -119,25 +111,64 @@ class AppComponent extends Component {
 
 				logTitle('Auth Step 4: Checking credentials for ' +
 					currentUser.username + ' ...');
-				this.getCredentials(currentUser);
+				await this.getCredentials(currentUser);
+			} else {
+				logTitle('Auth Step 2: Fetching credentials for unauthorized user ...')
+				await getAwsCredentials(this.props.user.token);
+				await this.props.setCredentialsFetchComplete();
 			}
 		} catch(e) {
 			logError(e, 'Authentication Error: ' + e.message, this.props.user.token);
 		}
 
-		if (this.props.user.username && this.props.fetchComplete.credentials) {
-			logTitle('Auth Complete!  The new credentials are ...');
+		this.props.unsetUserTokenLoading();
+
+		if (this.props.fetchComplete.credentials &&
+			!this.props.fetchComplete.slugs &&
+			!this.props.loading.slugs) {
+
+			logTitle('Auth Complete (in componentDidMount)!  The new credentials are ...');
 			log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
 			log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
 			log('');
 
-			this.props.unsetAppLoading();
-
-		} else if (!this.props.user.username) {
-			this.props.unsetAppLoading();
+			this.getSlugs();
 		}
+	}
 
-		this.props.unsetUserTokenLoading();
+	async componentWillReceiveProps(nextProps) {
+		// Do not fetch slugs until we have credentials
+		if (!this.props.loading.slugs &&
+			!this.props.fetchComplete.slugs &&
+			!this.props.fetchComplete.credentials &&
+			nextProps.fetchComplete.credentials) {
+
+			logTitle('Auth Complete (in componentWillReceiveProps)!  The new credentials are ...');
+			log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
+			log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
+			log('');
+
+			this.getSlugs();
+		}
+	}
+
+	// Fetch the slugs hash table, which gives us a hash table lookup to
+	// convert short slugs into their long slug form.  We use the short slugs
+	// for frontend routes, whereas the long-form slugs are used for backend routes.
+	async getSlugs() {
+		this.props.setSlugsLoading();
+		const slugs = await invokeApig( {base: 'cards', path: '/controversies'},
+			this.props.user.token);
+		await this.props.setCardSlugs(slugs);
+
+		logTitle('Fetching slugs ...');
+		logObject(this.props.slugs.hash);
+		log('');
+
+		this.props.unsetSlugsLoading();
+		this.props.setSlugsFetchComplete();
+
+		this.props.unsetAppLoading();
 	}
 
 	async getUserIDToken(currentUser) {
@@ -168,7 +199,6 @@ class AppComponent extends Component {
 			// so that AWS will use the latest one we just added."
 			AWS.config.credentials.refresh(() => {
 				// this.props.unsetAppLoading();
-
 				this.props.setCredentialsFetchComplete();
 			});
 		} catch(e) {
@@ -194,7 +224,7 @@ class AppComponent extends Component {
 				zIndex: 100
 			};
 
-		return !this.props.app.loading && (
+		return !this.props.loading.app && (
 			<div className="App">
 
 				<Navbar fluid collapseOnSelect style={navStyles}>
