@@ -1,38 +1,9 @@
 // Slugs Dependencies
 // import DeviceStorage from 'react-device-storage';
 
-// AWS Dependencies
-// import { invokeApig } from './aws';
-
 // Error/Logger Handling
 import mobiscroll from './mobiscroll.custom-3.2.4.min';
 import './mobiscroll.custom-3.2.4.min.css';
-
-// We need to grab the hash to convert the short-form slugs into their longer
-// equivalents, but we don't want to have to ping the API for this every time
-// the user hits a new frontend route.  So, we fetch them from the API and
-// save them to localStorage each time the user hits the homepage.  Then,
-// we reload them from localStorage whenever the Redux store is cleared out
-// on route change.  If they're not in localStore, then we fetch.
-
-// export async function getSlugs(isHomePage, setCardSlugsHandler, userToken) {
-// 	const storage = await new DeviceStorage().localStorage();
-// 	let slugs;
-
-// 	if (isHomePage) {
-// 		slugs = await invokeApig( {base: 'cards', path: '/controversies'}, userToken);
-// 		storage.save('slugs', slugs);
-// 	} else {
-// 		slugs = await storage.read('slugs');
-// 	}
-
-// 	if (!isHomePage && !slugs) {
-// 		slugs = await invokeApig( {base: 'cards', path: '/controversies'}, userToken);
-// 		storage.save('slugs', slugs);
-// 	}
-
-// 	await setCardSlugsHandler(slugs);
-// }
 
 // When there is an expired token, the very first error message is:
 // Authorization Error: __WEBPACK_IMPORTED_MODULE_4__sigV4Client__.a.newClient(...)
@@ -94,7 +65,7 @@ export function logRoute(message) {
 	console.log('%c' + message, consoleRouteStyles);
 }
 
-export function logObject(objType, obj) {
+export function logObject(obj) {
 	console.dir(obj);
 }
 

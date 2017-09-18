@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 const mapStateToProps = (state, ownProps) => {
 	return {
 		loading: state.reducer.loading,
+		fetchComplete: state.reducer.fetchComplete,
 		navbar: state.reducer.navbar,
 		user: state.reducer.user,
 		router: state.router,

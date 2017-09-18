@@ -104,6 +104,12 @@ class FeedCardComponent extends Component {
 		});
 	}
 
+	titleCase(string) {
+		return string.split(' ')
+			.map(w => w[0].toUpperCase() + w.substr(1).toLowerCase())
+			.join(' ');
+	}
+
 	constructText() {
 		const
 			h = new HtmlToReactParser(),
@@ -114,7 +120,7 @@ class FeedCardComponent extends Component {
 
 		let paragraphTag, text = '';
 
-		logTitle('Feedcard props:');
+		logTitle(this.titleCase(this.props.level) + ' Feedcard props:');
 		logObject(this.props);
 		log('');
 
@@ -170,7 +176,7 @@ class FeedCardComponent extends Component {
 		log('this.props.feed.data.discourseLevel: ' + this.props.feed.data.discourseLevel);
 		log('');
 		
-		if (this.props.discourse.level !== 0 && !this.props.loading.feed) {
+		if (!this.props.loading.feed) {
 			this.constructText();
 		}
 
@@ -184,7 +190,7 @@ class FeedCardComponent extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.discourse.level !== 0 && this.props.loading.feed &&
+		if (this.props.loading.feed &&
 			!nextProps.loading.feed) {
 
 			this.constructText();

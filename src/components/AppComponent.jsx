@@ -15,9 +15,6 @@ import AWS from 'aws-sdk';
 import { withRouter, Link } from 'react-router-dom';
 import RouteLoader from './RouteLoader/RouteLoader';
 
-// Data Persistence Dependencies
-// import { getSlugs } from '../libs/utils';
-
 // Error/Logger Handling
 import { log, logTitle, logError, logObject, logRoute } from '../libs/utils';
 
@@ -92,7 +89,7 @@ class AppComponent extends Component {
 	// we need to ensure that the rest of our app is only ready to go after
 	// this has been loaded.
 	async componentDidMount() {
-		// Unsets when credentials are loaded
+		// Unsets when slugs are loaded
 		this.props.setAppLoading();
 
 		// Prevents reflow of mobile navbar on initial render
@@ -102,7 +99,6 @@ class AppComponent extends Component {
 			})
 		}, 1000);
 
-		// const isHomePage = this.props.router.location.pathname === '/';
 		const currentUser = this.getUsername();
 
 		try {
@@ -127,7 +123,8 @@ class AppComponent extends Component {
 			!this.props.fetchComplete.slugs &&
 			!this.props.loading.slugs) {
 
-			logTitle('Auth Complete (in componentDidMount)!  The new credentials are ...');
+			logTitle('Auth Complete!  The new credentials are ...');
+			log('(in componentDidMount)');
 			log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
 			log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
 			log('');
@@ -143,7 +140,8 @@ class AppComponent extends Component {
 			!this.props.fetchComplete.credentials &&
 			nextProps.fetchComplete.credentials) {
 
-			logTitle('Auth Complete (in componentWillReceiveProps)!  The new credentials are ...');
+			logTitle('Auth Complete!  The new credentials are ...');
+			log('(in componentWillReceiveProps)');
 			log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
 			log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
 			log('');
@@ -156,13 +154,13 @@ class AppComponent extends Component {
 	// convert short slugs into their long slug form.  We use the short slugs
 	// for frontend routes, whereas the long-form slugs are used for backend routes.
 	async getSlugs() {
-		this.props.setSlugsLoading();
+		await this.props.setSlugsLoading();
 		const slugs = await invokeApig( {base: 'cards', path: '/controversies'},
 			this.props.user.token);
 		await this.props.setCardSlugs(slugs);
 
-		logTitle('Fetching slugs ...');
-		logObject(this.props.slugs.hash);
+		logTitle('Data Step 1: Fetching controversy card slugs ...');
+		log(slugs);
 		log('');
 
 		this.props.unsetSlugsLoading();
@@ -224,7 +222,7 @@ class AppComponent extends Component {
 				zIndex: 100
 			};
 
-		return !this.props.loading.app && (
+		return !this.props.loading.app && this.props.fetchComplete.slugs && (
 			<div className="App">
 
 				<Navbar fluid collapseOnSelect style={navStyles}>

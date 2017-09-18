@@ -95,16 +95,14 @@ class MainStackComponent extends Component {
 			feedSlug = this.props.router.location.pathname.split('/')[4];
 
 		logTitle('Slug data:');
-		log('Short slug:');
-		logObject(shortSlug);
-		log('Feed slug:');
-		logObject(feedSlug);
+		log('Short slug: ' + shortSlug);
+		log('Feed slug: ' + feedSlug);
 		log('');
 
 		const feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
 			cardSlug + '/' + feedSlug }, this.props.user.token);
 
-		logTitle('Feed data:');
+		logTitle('Data Step 3: Fetching controversy feed data ...');
 		logObject(feed);
 		log('');
 
@@ -135,14 +133,14 @@ class MainStackComponent extends Component {
 		// window.onscroll = function () { window.scrollTo(0, 0); };
 
 		// If the slugs finish loading before the component has loaded ...
-		if (!this.props.loading.slugs) {
+		if (!this.props.loading.slugs &&
+			this.props.fetchComplete.slugs) {
+
 			// We handle this FeedCard data here because we only
 			// want to run this once, and we are instantiating 4
 			// different instances ...
-			if (this.parameterDiscourseLevel !== 0) {
-				await this.loadFeedData();
-				await this.loadFeedsData();
-			}
+			await this.loadFeedData();
+			await this.loadFeedsData();
 		}
 	}
 
@@ -152,11 +150,11 @@ class MainStackComponent extends Component {
 		}
 
 		// If the slugs finish loading after the component has mounted ...
-		if (this.props.loading.slugs && !nextProps.loading.slugs) {
-			if (this.parameterDiscourseLevel !== 0) {
-				await this.loadFeedData();
-				await this.loadFeedsData();
-			}
+		if (!this.props.fetchComplete.slugs &&
+			nextProps.fetchComplete.slugs) {
+
+			await this.loadFeedData();
+			await this.loadFeedsData();
 		}
 
 		if (nextProps.loading.feed && !this.props.loading.feed) {

@@ -20,6 +20,9 @@ import { withRouter } from 'react-router-dom';
 // AWS Dependencies
 import { invokeApig } from '../../libs/aws';
 
+// Error/Logger Handling
+import { log, logTitle, logObject } from '../../libs/utils';
+
 class CardStackComponent extends Component {
 	constructor(props) {
 		super(props);
@@ -38,14 +41,17 @@ class CardStackComponent extends Component {
 
 	componentDidMount() {
 		// If the slugs finish loading before the component has loaded ...
-		if (!this.props.loading.slugs) {
+		if (!this.props.loading.slugs && this.props.fetchComplete.slugs) {
 			this.loadCardData();
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		// If the slugs finish loading after the component has mounted ...
-		if (this.props.loading.slugs && !nextProps.loading.slugs) {
+		if (!nextProps.loading.slugs &&
+			!this.props.fetchComplete.slugs &&
+			nextProps.fetchComplete.slugs) {
+			
 			this.loadCardData();
 		}
 	}
@@ -59,6 +65,10 @@ class CardStackComponent extends Component {
 		const card = await invokeApig( {base: 'cards', path: '/controversies/' +
 			this.props.slugs.hash[shortSlug]}, this.props.user.token);
 		this.props.setCardData(card);
+
+		logTitle('Data Step 2: Fetching controversy card data ...');
+		logObject(card);
+		log('');
 
 		this.props.unsetCardDataLoading();
 	}
