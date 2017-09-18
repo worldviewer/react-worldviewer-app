@@ -82,8 +82,6 @@ class CardComponent extends Component {
 	}
 
 	setupResizeHandler() {
-		console.log('width: ' + window.innerWidth + ', height: ' + window.innerHeight);
-
 		this.setState({
 			minZoomLevel: this.calculateMinZoomLevel()
 		});

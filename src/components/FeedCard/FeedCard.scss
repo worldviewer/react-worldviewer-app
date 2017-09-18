@@ -1,3 +1,12 @@
+@media (min-width: 480px) {
+	.FeedCard .container {
+		overflow-x: hidden;
+		padding-left: 0;
+		padding-right: 0;
+		width: 480px;
+	}
+}
+
 .Model .Feedcard {
 	background: #E57373;
 
