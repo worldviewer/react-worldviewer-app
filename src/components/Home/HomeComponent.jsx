@@ -167,9 +167,9 @@ class HomeComponent extends Component {
 								translations={{placeholder: 'Enter a Controversy'}} />
 						</Grid>
 
-						{ this.state.category ?
-							<p className='CategoryLabel'>Searching {this.state.category}</p> :
-							<p className='CategoryLabel'>Searching All</p> }
+						{ this.state.searchState.query ?
+							<p className='CategoryLabel'>Searching {this.state.category || 'All'}</p> :
+							null }
 
 						<ConditionalHits />
 
