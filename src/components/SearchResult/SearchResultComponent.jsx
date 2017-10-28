@@ -237,6 +237,7 @@ class SearchResultComponent extends Component {
 			isPostHit = (this.getAttributeName(this.props.hit) === 'postName') ||
 				(this.getAttributeName(this.props.hit) === 'postParagraph');
 
+		// If there is no images property, then the result is a quote
 		return this.props.hit ?
 			(<Row
 				className="CardHit"

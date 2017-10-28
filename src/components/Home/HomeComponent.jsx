@@ -129,6 +129,7 @@ class HomeComponent extends Component {
 }
 
 // Only displays search results when there is a query
+// https://community.algolia.com/react-instantsearch/guide/Custom_connectors.html
 const ConditionalHits = createConnector({
 	displayName: "ConditionalQuery",
 	getProvidedProps(props, searchState, searchResults) {
