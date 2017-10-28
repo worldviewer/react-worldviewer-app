@@ -2,8 +2,9 @@
 // import DeviceStorage from 'react-device-storage';
 
 // Error/Logger Handling
-import mobiscroll from './mobiscroll.custom-3.2.4.min';
-import './mobiscroll.custom-3.2.4.min.css';
+// mobiscroll.Image + mobiscroll.Form + 
+import mobiscroll from './mobiscroll.custom-3.2.5.min';
+import './mobiscroll.custom-3.2.5.min.css';
 
 // When there is an expired token, the very first error message is:
 // Authorization Error: __WEBPACK_IMPORTED_MODULE_4__sigV4Client__.a.newClient(...)
