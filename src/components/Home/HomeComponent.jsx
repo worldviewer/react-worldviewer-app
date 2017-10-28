@@ -9,13 +9,15 @@ import { Grid } from 'react-bootstrap';
 import AspectRatio from 'react-aspect-ratio';
 import 'react-aspect-ratio/aspect-ratio.css';
 import FadeIn from 'react-fade-in';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 // Algolia Search / React Router Integration Dependencies
-import { InstantSearch, Hits, SearchBox, Stats, Pagination } from 'react-instantsearch/dom';
+import { InstantSearch, SearchBox, Stats } from 'react-instantsearch/dom';
 import SearchResult from '../SearchResult/SearchResult';
 import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { createConnector } from "react-instantsearch";
+import { connectInfiniteHits } from 'react-instantsearch/connectors';
 
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -128,6 +130,17 @@ class HomeComponent extends Component {
 	}
 }
 
+// https://github.com/algolia/react-instantsearch/blob/master/docgen/src/examples/e-commerce-infinite/App.js
+function CustomHits({ hits, refine, hasMore }) {
+	return (
+		<main id="hits">
+			<InfiniteScroll next={refine} hasMore={hasMore}>
+				{hits.map(hit => <SearchResult hit={hit} key={hit.objectID} />)}
+			</InfiniteScroll>
+		</main>
+	);
+}
+
 // Only displays search results when there is a query
 // https://community.algolia.com/react-instantsearch/guide/Custom_connectors.html
 const ConditionalHits = createConnector({
@@ -144,11 +157,10 @@ const ConditionalHits = createConnector({
 			<Grid>
 
 				<Stats />
-				<Hits hitComponent={SearchResult} />
+				<ConnectedHits />
 
 			</Grid>
 
-			<Pagination showLast />
 		</div>)
 		: null;
 
@@ -157,5 +169,7 @@ const ConditionalHits = createConnector({
 			{hs}
 		</div>);
 });
+
+const ConnectedHits = connectInfiniteHits(CustomHits);
 
 export default withRouter(HomeComponent);

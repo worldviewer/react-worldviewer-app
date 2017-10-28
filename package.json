@@ -29,6 +29,7 @@
     "react-device-storage": "^1.0.0",
     "react-dom": "^15.6.1",
     "react-fade-in": "^0.1.4",
+    "react-infinite-scroll-component": "^2.4.0",
     "react-instantsearch": "^4.0.8",
     "react-loadable": "^4.0.3",
     "react-preload": "^0.5.1",
