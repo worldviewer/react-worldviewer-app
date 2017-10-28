@@ -17,7 +17,7 @@ bias
 nebulae
 truth
 progress
-pseudoskeptics
+pseudoskepticism
 paradigm
 fraud
 philosophy
@@ -25,7 +25,7 @@ cosmology
 hypothesis
 sociology
 math
-professional
+professionals
 peer review
 education
 physicist
@@ -56,13 +56,13 @@ knowledge
 skepticism
 dark matter
 worldviews
-scientist
+scientists
 modeling
 consensus
 journalism
 mavericks
 gravity
-sun ( --> solar )
+solar
 psychology
 moon
 particles
@@ -79,7 +79,7 @@ biology
 empty space
 birkeland
 climate
-black hole
+black holes
 life
 metaphysics
 velikovsky
@@ -90,7 +90,7 @@ civ
 history of science
 comets
 religion
-dissent ( / heresy )
+dissent / heresy
 conspiracy
 facts
 craters
@@ -106,7 +106,7 @@ electric sun
 engineers
 plasma focus
 evolution
-crackpots
+crackpots / cranks
 mammoths
 sand
 epistemology
@@ -135,10 +135,10 @@ wisdom
 witty
 constants
 judgment
-symbols ( / jargon / language )
+symbols / jargon / language
 lightning
 magnetic reconnection
-superstition ( / idealism )
+superstition
 marklund convection
 string theory
 ignorance
@@ -157,7 +157,7 @@ oliver lodge
 charles bruce
 water
 plasma
-uncertainty ( / certainty )
+uncertainty / certainty
 mechanistic worldview
 skeptical inquirer
 statistics
@@ -165,7 +165,7 @@ language
 heat death
 science court
 village venus
-doctors ( / medicine )
+doctors / medicine
 newton
 neutron stars
 sherlock holmes

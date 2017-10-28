@@ -23,6 +23,9 @@ import { withRouter } from 'react-router-dom';
 import { createConnector } from "react-instantsearch";
 import { connectInfiniteHits } from 'react-instantsearch/connectors';
 
+// Config
+import config from '../../config';
+
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
@@ -59,22 +62,30 @@ class HomeComponent extends Component {
 		super(props);
 
 		this.state = {
-			searchState: qs.parse(props.location.search.slice(1))
+			searchState: qs.parse(props.location.search.slice(1)),
+			category: ''
 		};
 
 		this.props = props;
 	}
 
 	refreshForm() {
-		if (this.refs.form != undefined) {
+		if (this.refs.form !== undefined) {
 			this.refs.form.instance.refresh();
 		}
 	}
 
-	// Let's make it so that clicking the elephant triggers the facet selection
-	setFacetedSearch() {
+	// Let's make it so that clicking the elephant triggers the facet selection.
+	// The original input label is hidden.
+	selectFacet() {
 		const domNode = ReactDOM.findDOMNode(this.inputElement);
 		domNode.click();
+	}
+
+	setFacetValue(selection) {
+		this.setState({
+			category: selection.valueText
+		});
 	}
 
 	// This and the other InstantSearch / React Router integration code comes from
@@ -120,7 +131,7 @@ class HomeComponent extends Component {
 
 				<FadeIn>
 					<RatioImage
-						clickHandler={this.setFacetedSearch.bind(this)} />
+						clickHandler={this.selectFacet.bind(this)} />
 
 					<div className="FacetSelect">
 					<mobiscroll.Image
@@ -128,21 +139,14 @@ class HomeComponent extends Component {
 						theme="ios-dark"
 						display="center"
 						enhance={true}
-						placeholder="Please Select..."
-						onInit={this.refreshForm.bind(this)}>
+						onInit={this.refreshForm.bind(this)}
+						onSet={this.setFacetValue.bind(this)}>
 
-						<li data-val="Audi">
-								{/* <img src="/Content/img/demos/Audi_logo.png" /> */}
-								<p>Audi</p>
-						</li>
-						<li data-val="BMW">
-								{/* <img src="/Content/img/BMW_logo.png" /> */}
-								<p>BMW</p>
-						</li>
-						<li data-val="Chevrolet">
-								{/* <img src="/Content/img/demos/Chevrolet_logo.png" /> */}
-								<p>Chevrolet</p>
-						</li>
+						{ config.categories.map((category, i) =>
+							<li data-val={category.text} key={i}>
+								{/* <img src={category.icon} /> */}
+								<p>{category.text}</p>
+							</li>) }
 
 					</mobiscroll.Image>
 					</div>
@@ -162,6 +166,10 @@ class HomeComponent extends Component {
 								focusShortcuts={[' ']}
 								translations={{placeholder: 'Enter a Controversy'}} />
 						</Grid>
+
+						{ this.state.category ?
+							<p className='CategoryLabel'>Searching {this.state.category}</p> :
+							<p className='CategoryLabel'>Searching All</p> }
 
 						<ConditionalHits />
 
