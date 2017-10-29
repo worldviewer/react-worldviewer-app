@@ -16,7 +16,7 @@ import mobiscroll from '../../libs/mobiscroll.custom-3.2.5.min';
 import '../../libs/mobiscroll.custom-3.2.5.min.css';
 
 // Algolia Search / React Router Integration Dependencies
-import { InstantSearch, SearchBox, Stats } from 'react-instantsearch/dom';
+import { InstantSearch, SearchBox, Stats, Configure } from 'react-instantsearch/dom';
 import SearchResult from '../SearchResult/SearchResult';
 import qs from 'qs';
 import { withRouter } from 'react-router-dom';
@@ -25,6 +25,9 @@ import { connectInfiniteHits } from 'react-instantsearch/connectors';
 
 // Config
 import config from '../../config';
+
+// Error/Logger Handling
+import { log, logTitle } from '../../libs/utils';
 
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
@@ -63,7 +66,8 @@ class HomeComponent extends Component {
 
 		this.state = {
 			searchState: qs.parse(props.location.search.slice(1)),
-			category: ''
+			facetCategory: '',
+			facetSubCategory: ''
 		};
 
 		this.props = props;
@@ -83,9 +87,28 @@ class HomeComponent extends Component {
 	}
 
 	setFacetValue(selection) {
-		this.setState({
-			category: selection.valueText
-		});
+		if (selection.valueText) {
+			let facetCategory = '',
+				facetSubCategory = '';
+
+			if (selection.valueText.match(': ')) {
+				[facetCategory, facetSubCategory] = selection.valueText.split(': ');
+			} else {
+				facetCategory = selection.valueText === 'All' ?
+					'' :
+					selection.valueText;
+			}
+
+			this.setState({
+				facetCategory,
+				facetSubCategory
+			});	
+
+			logTitle('Setting New Facet Values:');
+			log('facetCategory: ' + facetCategory);
+			log('facetSubCategory: ' + facetSubCategory);
+			log('');		
+		}
 	}
 
 	// This and the other InstantSearch / React Router integration code comes from
@@ -126,6 +149,46 @@ class HomeComponent extends Component {
 		// 	this.props.router.location.state.query !== '' :
 		// 	false;
 
+		const categoryText = this.state.facetCategory +
+			(this.state.facetSubCategory ?
+				': ' + this.state.facetSubCategory :
+				'');
+
+		let facetArray;
+
+		if (this.state.facetCategory === 'Cards/Feeds') {
+			facetArray = [[`facetCategory:Controversy Cards`, `facetCategory:Feeds`],
+				`facetSubCategory:${this.state.facetSubCategory}`];
+
+		// TODO: Create a type field which I can use to select just card and feed titles
+		// when there is no search query.
+
+		// } else if (this.state.facetCategory === 'Cards/Feeds' &&
+		// 	!this.state.searchState.query) {
+		// 	facetArray = [[`facetCategory:Controversy Cards`, `facetCategory:Feeds`],
+		// 		`facetSubCategory:${this.state.facetSubCategory}`];
+
+		} else if (this.state.facetSubCategory) {
+			if (this.state.facetSubCategory.match(' / ')) {
+				const subCategories = this.state.facetSubCategory.split(' / ');
+
+				facetArray = [`facetCategory:${this.state.facetCategory}`];
+				let facetORArray = [];
+
+				subCategories.forEach(sub => {
+					facetORArray.push(`facetSubCategory:${sub}`);
+				});
+
+				facetArray.push(facetORArray);
+
+			} else {
+				facetArray = [`facetCategory:${this.state.facetCategory}`,
+					`facetSubCategory:${this.state.facetSubCategory}`];
+			}
+		} else {
+			facetArray = [`facetCategory:${this.state.facetCategory}`];			
+		}
+
 		return (
 			<div className="Home" id="fouc">
 
@@ -159,6 +222,8 @@ class HomeComponent extends Component {
 						onSearchStateChange={this.onSearchStateChange.bind(this)}
 						createURL={createURL}>
 
+						<Configure facetFilters={facetArray} />
+
 						<Grid>
 							<SearchBox
 								ref={ input => { this.textInput = input } }
@@ -168,10 +233,12 @@ class HomeComponent extends Component {
 						</Grid>
 
 						{ this.state.searchState.query ?
-							<p className='CategoryLabel'>Searching {this.state.category || 'All'}</p> :
+							<p className='CategoryLabel'>Searching {categoryText || 'All'}</p> :
 							null }
 
-						<ConditionalHits />
+						<ConditionalHits
+							facetCategory={this.state.facetCategory}
+							facetSubCategory={this.state.facetSubCategory} />
 
 					</InstantSearch>
 				</FadeIn>
@@ -196,15 +263,43 @@ function CustomHits({ hits, refine, hasMore }) {
 // https://community.algolia.com/react-instantsearch/guide/Custom_connectors.html
 const ConditionalHits = createConnector({
 	displayName: "ConditionalQuery",
-	getProvidedProps(props, searchState, searchResults) {
-		const { query, hits } = searchResults.results ? searchResults.results : {};
-		return { query, hits };
+	getProvidedProps(props, searchState, searchResults, searchForFacetValuesResults) {
+		const {query, hits} = searchResults.results ? searchResults.results : {};
+
+		// logTitle('Search:');
+		// log('query:');
+		// log(query);
+		// log('hits:');
+		// log(hits);
+		// log('');
+
+		logTitle('searchResults:');
+		log(searchResults);
+		log('');
+
+		logTitle('searchForFacetValuesResults:');
+		log(searchForFacetValuesResults);
+		log('');
+
+		logTitle('searchState:');
+		log(searchState);
+		log('');
+
+		return { query, hits, props };
 	}
-})(({ query, hits }) => {
+
+})(({ query, hits, props }) => {
+
+	logTitle('props:');
+	log(props.facetCategory);
+	log(props.facetSubCategory);
+	log('');
 
 	const hs =
-		hits && query
-		? (<div id="hits">
+		(hits && query && props.facetCategory === '' && props.facetSubCategory === '') ||
+		(hits && (props.facetCategory !== '' || props.facetSubCategory !== '')) ?
+
+		(<div id="hits">
 			<Grid>
 
 				<Stats />
