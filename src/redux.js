@@ -60,6 +60,8 @@ const types = {
 	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE',
 
 	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE',
+
+	SET_SEARCH_QUERY: 'SET_SEARCH_QUERY',
 	SET_SEARCH_FACET: 'SET_SEARCH_FACET',
 	SET_HIT_HAPPENS: 'SET_HIT_HAPPENS',
 	UNSET_HIT_HAPPENS: 'UNSET_HIT_HAPPENS'
@@ -418,6 +420,13 @@ export const toggleNavbarState = (zoom) => {
 	return {
 		type: types.TOGGLE_NAVBAR_STATE,
 		zoom
+	};
+};
+
+export const setSearchQuery = (query) => {
+	return {
+		type: types.SET_SEARCH_QUERY,
+		query
 	};
 };
 
@@ -831,6 +840,15 @@ export default (state = initialState, action) => {
 					...state.navbar,
 					hidden: window.innerWidth <= 480 ?
 						action.zoom < 1.2 : false
+				}
+			}
+
+		case types.SET_SEARCH_QUERY:
+			return {
+				...state,
+				search: {
+					...state.search,
+					query: action.query
 				}
 			}
 

@@ -123,6 +123,8 @@ class HomeComponent extends Component {
 				searchStateToUrl(this.props, searchState),
 				searchState
 			);
+
+			this.props.setSearchQuery(searchState.query);
 		}, updateAfter);
 
 		this.setState({ searchState });
@@ -136,6 +138,17 @@ class HomeComponent extends Component {
 		// the SearchBox component apparently does nothing
 		const searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
 		searchBoxDOMNode.focus();
+
+		// When we load the page with a search term already in the query parameters
+		this.props.setSearchQuery(this.state.searchState.query);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.search.facetCategory !== this.props.search.facetCategory ||
+			nextProps.search.facetSubCategory !== this.props.search.facetSubCategory) {
+
+			this.forceUpdate();
+		}
 	}
 
 	render() {
@@ -155,19 +168,19 @@ class HomeComponent extends Component {
 		// no search query.  This permits browsing of controversy cards and feed post
 		// titles.
 		if (this.props.search.facetCategory === 'Controversy Cards' &&
-			this.props.search.query === '') {
+			!this.props.search.query) {
 			facetArray = [`facetCategory:Controversy Cards`,
 				`facetSubCategory:${this.props.search.facetSubCategory}`,
 				'recordType:cardName'];
 
 		} else if (this.props.search.facetCategory === 'Feed Posts' &&
-			this.props.search.query === '') {
+			!this.props.search.query) {
 			facetArray = [`facetCategory:Feed Posts`,
 				`facetSubCategory:${this.props.search.facetSubCategory}`,
 				'recordType:postName'];
 
 		} else if (this.props.search.facetCategory === 'Cards/Feeds' &&
-			this.props.search.query === '') {
+			!this.props.search.query) {
 			facetArray = [[`facetCategory:Controversy Cards`, `facetCategory:Feeds`],
 				`facetSubCategory:${this.props.search.facetSubCategory}`,
 				['recordType:cardName', 'recordType:postName']];
@@ -243,9 +256,7 @@ class HomeComponent extends Component {
 								focusShortcuts={[' ']}
 								translations={{placeholder: 'Enter a Controversy'}} />
 
-							{ this.state.searchState.hits && this.state.searchState.hits.length > 0 ?
-								<p className='CategoryLabel'>Searching {categoryText || 'All'}</p> :
-								null }
+							<p className='CategoryLabel'>Searching {categoryText || 'All'}</p>
 						</Grid>
 
 						<ConditionalHits
