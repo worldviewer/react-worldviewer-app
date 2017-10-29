@@ -230,11 +230,11 @@ class HomeComponent extends Component {
 								className="SearchBox"
 								focusShortcuts={[' ']}
 								translations={{placeholder: 'Enter a Controversy'}} />
-						</Grid>
 
-						{ this.state.searchState.query ?
-							<p className='CategoryLabel'>Searching {categoryText || 'All'}</p> :
-							null }
+							{ this.state.searchState.hits && this.state.searchState.hits.length > 0 ?
+								<p className='CategoryLabel'>Searching {categoryText || 'All'}</p> :
+								null }
+						</Grid>
 
 						<ConditionalHits
 							facetCategory={this.state.facetCategory}
@@ -266,34 +266,27 @@ const ConditionalHits = createConnector({
 	getProvidedProps(props, searchState, searchResults, searchForFacetValuesResults) {
 		const {query, hits} = searchResults.results ? searchResults.results : {};
 
-		// logTitle('Search:');
-		// log('query:');
-		// log(query);
-		// log('hits:');
-		// log(hits);
+		// logTitle('searchResults:');
+		// log(searchResults);
 		// log('');
 
-		logTitle('searchResults:');
-		log(searchResults);
-		log('');
+		// logTitle('searchForFacetValuesResults:');
+		// log(searchForFacetValuesResults);
+		// log('');
 
-		logTitle('searchForFacetValuesResults:');
-		log(searchForFacetValuesResults);
-		log('');
-
-		logTitle('searchState:');
-		log(searchState);
-		log('');
+		// logTitle('searchState:');
+		// log(searchState);
+		// log('');
 
 		return { query, hits, props };
 	}
 
 })(({ query, hits, props }) => {
 
-	logTitle('props:');
-	log(props.facetCategory);
-	log(props.facetSubCategory);
-	log('');
+	// logTitle('props:');
+	// log(props.facetCategory);
+	// log(props.facetSubCategory);
+	// log('');
 
 	const hs =
 		(hits && query && props.facetCategory === '' && props.facetSubCategory === '') ||
