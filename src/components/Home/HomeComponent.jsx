@@ -65,9 +65,7 @@ class HomeComponent extends Component {
 		super(props);
 
 		this.state = {
-			searchState: qs.parse(props.location.search.slice(1)),
-			facetCategory: '',
-			facetSubCategory: ''
+			searchState: qs.parse(props.location.search.slice(1))
 		};
 
 		this.props = props;
@@ -99,10 +97,7 @@ class HomeComponent extends Component {
 					selection.valueText;
 			}
 
-			this.setState({
-				facetCategory,
-				facetSubCategory
-			});	
+			this.props.setSearchFacet(facetCategory, facetSubCategory);
 
 			logTitle('Setting New Facet Values:');
 			log('facetCategory: ' + facetCategory);
@@ -149,30 +144,30 @@ class HomeComponent extends Component {
 		// 	this.props.router.location.state.query !== '' :
 		// 	false;
 
-		const categoryText = this.state.facetCategory +
-			(this.state.facetSubCategory ?
-				': ' + this.state.facetSubCategory :
+		const categoryText = this.props.search.facetCategory +
+			(this.props.search.facetSubCategory ?
+				': ' + this.props.search.facetSubCategory :
 				'');
 
 		let facetArray;
 
-		if (this.state.facetCategory === 'Cards/Feeds') {
+		if (this.props.search.facetCategory === 'Cards/Feeds') {
 			facetArray = [[`facetCategory:Controversy Cards`, `facetCategory:Feeds`],
-				`facetSubCategory:${this.state.facetSubCategory}`];
+				`facetSubCategory:${this.props.search.facetSubCategory}`];
 
 		// TODO: Create a type field which I can use to select just card and feed titles
 		// when there is no search query.
 
-		// } else if (this.state.facetCategory === 'Cards/Feeds' &&
-		// 	!this.state.searchState.query) {
+		// } else if (this.props.search.facetCategory === 'Cards/Feeds' &&
+		// 	!this.props.search.searchState.query) {
 		// 	facetArray = [[`facetCategory:Controversy Cards`, `facetCategory:Feeds`],
-		// 		`facetSubCategory:${this.state.facetSubCategory}`];
+		// 		`facetSubCategory:${this.props.search.facetSubCategory}`];
 
-		} else if (this.state.facetSubCategory) {
-			if (this.state.facetSubCategory.match(' / ')) {
-				const subCategories = this.state.facetSubCategory.split(' / ');
+		} else if (this.props.search.facetSubCategory) {
+			if (this.props.search.facetSubCategory.match(' / ')) {
+				const subCategories = this.props.search.facetSubCategory.split(' / ');
 
-				facetArray = [`facetCategory:${this.state.facetCategory}`];
+				facetArray = [`facetCategory:${this.props.search.facetCategory}`];
 				let facetORArray = [];
 
 				subCategories.forEach(sub => {
@@ -182,11 +177,11 @@ class HomeComponent extends Component {
 				facetArray.push(facetORArray);
 
 			} else {
-				facetArray = [`facetCategory:${this.state.facetCategory}`,
-					`facetSubCategory:${this.state.facetSubCategory}`];
+				facetArray = [`facetCategory:${this.props.search.facetCategory}`,
+					`facetSubCategory:${this.props.search.facetSubCategory}`];
 			}
 		} else {
-			facetArray = [`facetCategory:${this.state.facetCategory}`];			
+			facetArray = [`facetCategory:${this.props.search.facetCategory}`];			
 		}
 
 		return (
@@ -237,8 +232,8 @@ class HomeComponent extends Component {
 						</Grid>
 
 						<ConditionalHits
-							facetCategory={this.state.facetCategory}
-							facetSubCategory={this.state.facetSubCategory} />
+							facetCategory={this.props.search.facetCategory}
+							facetSubCategory={this.props.search.facetSubCategory} />
 
 					</InstantSearch>
 				</FadeIn>

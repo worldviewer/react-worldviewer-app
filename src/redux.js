@@ -59,7 +59,8 @@ const types = {
 	ENABLE_MAINSTACK_SWIPEABLE: 'ENABLE_MAINSTACK_SWIPEABLE',
 	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE',
 
-	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE'
+	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE',
+	SET_SEARCH_FACET: 'SET_SEARCH_FACET'
 };
 
 const initialState = {
@@ -132,7 +133,9 @@ const initialState = {
 	},
 
 	search: {
-		query: ''
+		query: '',
+		facetCategory: '',
+		facetSubCategory: ''
 	},
 
 	navbar: {
@@ -412,6 +415,14 @@ export const toggleNavbarState = (zoom) => {
 	return {
 		type: types.TOGGLE_NAVBAR_STATE,
 		zoom
+	};
+};
+
+export const setSearchFacet = (facetCategory, facetSubCategory) => {
+	return {
+		type: types.SET_SEARCH_FACET,
+		facetCategory,
+		facetSubCategory
 	};
 };
 
@@ -805,6 +816,16 @@ export default (state = initialState, action) => {
 					...state.navbar,
 					hidden: window.innerWidth <= 480 ?
 						action.zoom < 1.2 : false
+				}
+			}
+
+		case types.SET_SEARCH_FACET:
+			return {
+				...state,
+				search: {
+					...state.search,
+					facetCategory: action.facetCategory,
+					facetSubCategory: action.facetSubCategory
 				}
 			}
 

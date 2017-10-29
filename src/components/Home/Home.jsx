@@ -1,17 +1,22 @@
 import { connect } from 'react-redux';
 import HomeComponent from './HomeComponent.jsx';
 import { withRouter } from 'react-router-dom';
-// import { setCardSlugs } from '../../redux.js';
+import { setSearchFacet } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
 		user: state.reducer.user,
-		slugs: state.reducer.slugs
+		slugs: state.reducer.slugs,
+		search: state.reducer.search
 	};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	return {...ownProps}
+	return {
+		setSearchFacet: (facetCategory, facetSubCategory) => {
+			return dispatch(setSearchFacet(facetCategory, facetSubCategory));
+		}
+	}
 };
 
 const Home = connect(
