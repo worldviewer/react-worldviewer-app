@@ -201,7 +201,7 @@ class HomeComponent extends Component {
 				': ' + this.props.search.facetSubCategory :
 				'');
 
-		let facetArray, customRanking = [];
+		let facetArray;
 
 		// I use the recordType field to select just card and feed titles when there is
 		// no search query.  This permits browsing of controversy cards and feed post
@@ -223,7 +223,6 @@ class HomeComponent extends Component {
 			facetArray = [[`facetCategory:Controversy Cards`, `facetCategory:Feeds`],
 				`facetSubCategory:${this.props.search.facetSubCategory}`,
 				['recordType:cardName', 'recordType:postName']];
-			customRanking = ['asc(sortBy)'];
 
 		} else if (this.props.search.facetCategory === 'Cards/Feeds') {
 			facetArray = [[`facetCategory:Controversy Cards`, `facetCategory:Feeds`],
@@ -283,9 +282,6 @@ class HomeComponent extends Component {
 						onSearchStateChange={this.onSearchStateChange.bind(this)}
 						createURL={createURL}>
 
-						{/* <Configure facetFilters={facetArray}
-						 	customRanking={customRanking} /> */}
-
 						<Configure facetFilters={facetArray} />
 
 						<Grid>
@@ -328,6 +324,8 @@ const ConditionalHits = createConnector({
 	getProvidedProps(props, searchState, searchResults, searchForFacetValuesResults) {
 		const {query, hits} = searchResults.results ? searchResults.results : {};
 
+		// FOR DEBUGGING:
+
 		// logTitle('searchResults:');
 		// log(searchResults);
 		// log('');
@@ -336,25 +334,14 @@ const ConditionalHits = createConnector({
 		// log(searchForFacetValuesResults);
 		// log('');
 
-		logTitle('searchState:');
-		log(searchState);
-		log('');
+		// logTitle('searchState:');
+		// log(searchState);
+		// log('');
 
 		return { query, hits, props };
 	}
 
 })(({ query, hits, props }) => {
-
-	// logTitle('props:');
-	// log(props.facetCategory);
-	// log(props.facetSubCategory);
-	// log('');
-
-	// if (hits) {
-	// 	props.onHitsHandler();
-	// } else {
-	// 	props.onNoHitsHandler();
-	// }
 
 	const hs =
 		(hits && query && props.facetCategory === '' && props.facetSubCategory === '') ||
