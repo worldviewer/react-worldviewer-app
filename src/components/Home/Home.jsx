@@ -16,8 +16,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		setSearchQuery: (query) => {
 			return dispatch(setSearchQuery(query));
 		},
-		setSearchFacet: (facetCategory, facetSubCategory) => {
-			return dispatch(setSearchFacet(facetCategory, facetSubCategory));
+		setSearchFacet: (facetCategory, facetSubCategory, facetString) => {
+			return dispatch(setSearchFacet(facetCategory, facetSubCategory, facetString));
 		},
 		setHitHappens: () => {
 			return dispatch(setHitHappens());

@@ -140,6 +140,7 @@ const initialState = {
 		query: '',
 		facetCategory: '',
 		facetSubCategory: '',
+		facetString: '',
 		hitHappens: false
 	},
 
@@ -430,11 +431,12 @@ export const setSearchQuery = (query) => {
 	};
 };
 
-export const setSearchFacet = (facetCategory, facetSubCategory) => {
+export const setSearchFacet = (facetCategory, facetSubCategory, facetString) => {
 	return {
 		type: types.SET_SEARCH_FACET,
 		facetCategory,
-		facetSubCategory
+		facetSubCategory,
+		facetString
 	};
 };
 
@@ -858,7 +860,8 @@ export default (state = initialState, action) => {
 				search: {
 					...state.search,
 					facetCategory: action.facetCategory,
-					facetSubCategory: action.facetSubCategory
+					facetSubCategory: action.facetSubCategory,
+					facetString: action.facetString
 				}
 			}
 

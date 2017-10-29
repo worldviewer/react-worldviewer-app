@@ -35,9 +35,9 @@ import { log, logTitle } from '../../libs/utils';
 // React Router / Algolia Search integration
 const
 	updateAfter = 700,
-	createURL = state => `?${qs.stringify(state)}`,
+	createURL = (state, facetString) => `?${qs.stringify({query: state.query, page: state.page, facets: facetString})}`,
 	searchStateToUrl = (props, searchState) =>
-		searchState ? `${props.location.pathname}${createURL(searchState)}` : '';
+		searchState ? `${props.location.pathname}${createURL(searchState, props.search.facetString)}` : '';
 
 const imageStyles = {
 	display: 'block',
@@ -84,20 +84,31 @@ class HomeComponent extends Component {
 		domNode.click();
 	}
 
+	getPartsFromFacetString(facetString) {
+		let facetCategory = '',
+			facetSubCategory = '';
+
+		if (facetString.match(': ')) {
+			[facetCategory, facetSubCategory] = facetString.split(': ');
+		} else {
+			facetCategory = facetString === 'All' ?
+				'' :
+				facetString;
+		}
+
+		return [facetCategory, facetSubCategory];
+	}
+
 	setFacetValue(selection) {
 		if (selection.valueText) {
 			let facetCategory = '',
 				facetSubCategory = '';
 
-			if (selection.valueText.match(': ')) {
-				[facetCategory, facetSubCategory] = selection.valueText.split(': ');
-			} else {
-				facetCategory = selection.valueText === 'All' ?
-					'' :
-					selection.valueText;
-			}
+			[facetCategory, facetSubCategory] =
+				this.getPartsFromFacetString(selection.valueText);
 
-			this.props.setSearchFacet(facetCategory, facetSubCategory);
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				selection.valueText);
 
 			logTitle('Setting New Facet Values:');
 			log('facetCategory: ' + facetCategory);
@@ -139,15 +150,43 @@ class HomeComponent extends Component {
 		const searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
 		searchBoxDOMNode.focus();
 
+		logTitle('Setting search and facets based upon URL ...');
+		log('searchState:');
+		log(qs.parse(this.props.location.search.slice(1)));
+		log('');
+
 		// When we load the page with a search term already in the query parameters
 		this.props.setSearchQuery(this.state.searchState.query);
+
+		let facetCategory = '',
+			facetSubCategory = '';
+
+		[facetCategory, facetSubCategory] =
+			this.getPartsFromFacetString(this.state.searchState.facets);
+
+		this.props.setSearchFacet(facetCategory, facetSubCategory,
+			this.state.searchState.facets);
 	}
 
+	// This is meant to resolve an issue that occurs when the facet values are changed, but not the
+	// search query itself.  The search results component in this case does not understand that it
+	// needs to update, even though the Stats component does update -- and it appears to happen
+	// exclusively when the page has scrolled past the first.
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.search.facetCategory !== this.props.search.facetCategory ||
 			nextProps.search.facetSubCategory !== this.props.search.facetSubCategory) {
 
-			this.forceUpdate();
+			logTitle('Forcing search result update ...');
+			log('');
+
+			this.setState(prevState => ({
+				searchState: {
+					...prevState.searchState,
+					page: 1
+				}
+			}));
+
+			// this.forceUpdate();
 		}
 	}
 
@@ -184,7 +223,7 @@ class HomeComponent extends Component {
 			facetArray = [[`facetCategory:Controversy Cards`, `facetCategory:Feeds`],
 				`facetSubCategory:${this.props.search.facetSubCategory}`,
 				['recordType:cardName', 'recordType:postName']];
-			customRanking = ['asc(cardName)', 'asc(postName)'];
+			customRanking = ['asc(sortBy)'];
 
 		} else if (this.props.search.facetCategory === 'Cards/Feeds') {
 			facetArray = [[`facetCategory:Controversy Cards`, `facetCategory:Feeds`],
