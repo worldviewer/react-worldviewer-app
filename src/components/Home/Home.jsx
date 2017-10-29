@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import HomeComponent from './HomeComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setSearchFacet } from '../../redux.js';
+import { setSearchFacet, setHitHappens, unsetHitHappens } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -15,6 +15,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		setSearchFacet: (facetCategory, facetSubCategory) => {
 			return dispatch(setSearchFacet(facetCategory, facetSubCategory));
+		},
+		setHitHappens: () => {
+			return dispatch(setHitHappens());
+		},
+		unsetHitHappens: () => {
+			return dispatch(unsetHitHappens());
 		}
 	}
 };
