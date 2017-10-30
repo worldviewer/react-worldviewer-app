@@ -204,6 +204,14 @@ class AppComponent extends Component {
 		}
 	}
 
+	searchClickHandler(event) {
+		logTitle('Reseting Route ...');
+		log('');
+
+		this.props.setSearchFacet('', '', '');
+		this.props.history.push({pathname: '/', search: ''});
+	}
+
 	render() {
 		const NavTitleStyle = {
 			fontFamily: 'LeagueGothic',
@@ -243,7 +251,7 @@ class AppComponent extends Component {
 									</NavItem>,
 
 									<NavItem key={2}
-										onClick={ () => this.props.history.push('/') }>
+										onClick={this.searchClickHandler.bind(this)}>
 										Search
 									</NavItem> ]
 
@@ -260,7 +268,7 @@ class AppComponent extends Component {
 									</RouteNavItem>,
 
 									<NavItem key={3}
-										onClick={ () => this.props.history.push('/') }>
+										onClick={this.searchClickHandler.bind(this)}>
 										Search
 									</NavItem> ]
 

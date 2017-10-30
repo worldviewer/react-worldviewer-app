@@ -84,7 +84,7 @@ class HomeComponent extends Component {
 		domNode.click();
 	}
 
-	getPartsFromFacetString(facetString) {
+	getPartsFromFacetString(facetString = '') {
 		let facetCategory = '',
 			facetSubCategory = '';
 
