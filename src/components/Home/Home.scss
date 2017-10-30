@@ -52,6 +52,7 @@
 	font-size: 14px;
 	opacity: 0.6;
 	font-stretch: normal;
+	text-align: center;
 	-webkit-margin-before: 0;
 	-webkit-margin-after: 0;
 }
@@ -62,4 +63,12 @@
 
 .Home {
 	margin-bottom: 50px;
+}
+
+.ais-SearchBox__root {
+	margin-bottom: 40px !important;
+}
+
+.Home #hits #hits .container {
+	margin-top: 10px;
 }

@@ -209,6 +209,7 @@ class AppComponent extends Component {
 		log('');
 
 		this.props.setSearchFacet('', '', '');
+		// this.props.setSearchQuery('');
 		this.props.history.push({pathname: '/', search: ''});
 	}
 

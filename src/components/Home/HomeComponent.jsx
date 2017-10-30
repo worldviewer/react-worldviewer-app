@@ -35,7 +35,9 @@ import { log, logTitle } from '../../libs/utils';
 // React Router / Algolia Search integration
 const
 	updateAfter = 700,
-	createURL = (state, facetString) => `?${qs.stringify({query: state.query, page: state.page, facets: facetString})}`,
+	createURL = (state, facetString) => facetString ?
+		`?${qs.stringify({query: state.query, page: state.page, facets: facetString})}` :
+		`?${qs.stringify({query: state.query, page: state.page})}`,
 	searchStateToUrl = (props, searchState) =>
 		searchState ? `${props.location.pathname}${createURL(searchState, props.search.facetString)}` : '';
 
@@ -292,6 +294,7 @@ class HomeComponent extends Component {
 								translations={{placeholder: 'Enter a Controversy'}} />
 
 							<p className='CategoryLabel'>Searching {categoryText || 'All'}</p>
+
 						</Grid>
 
 						<ConditionalHits

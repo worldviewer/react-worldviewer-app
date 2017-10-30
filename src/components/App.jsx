@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -59,6 +59,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setSearchFacet: (facetCategory, facetSubCategory, facetString) => {
 			return dispatch(setSearchFacet(facetCategory, facetSubCategory, facetString));
+		},
+		setSearchQuery: (query) => {
+			return dispatch(setSearchQuery(query));
 		}
 	}
 };
