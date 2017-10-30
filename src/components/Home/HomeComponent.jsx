@@ -35,7 +35,7 @@ import { log, logTitle } from '../../libs/utils';
 // React Router / Algolia Search integration
 const
 	updateAfter = 700,
-	createURL = (state, facetString) => facetString ?
+	createURL = (state, facetString) => facetString && facetString !== 'All' ?
 		`?${qs.stringify({query: state.query, page: state.page, facets: facetString})}` :
 		`?${qs.stringify({query: state.query, page: state.page})}`,
 	searchStateToUrl = (props, searchState) =>
