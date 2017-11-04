@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CategorySearchResultComponent from './CategorySearchResultComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setSearchFacet } from '../../redux.js';
+import { setSearchFacet, setSearchQuery } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -12,7 +12,10 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		setSearchFacet: (facetCategory, facetSubCategory, facetString) => {
-			dispatch(setSearchFacet(facetCategory, facetSubCategory, facetString));
+			return dispatch(setSearchFacet(facetCategory, facetSubCategory, facetString));
+		},
+		setSearchQuery: (query) => {
+			return dispatch(setSearchQuery(query));
 		}
 	}
 };

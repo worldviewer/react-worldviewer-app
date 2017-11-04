@@ -17,6 +17,7 @@ class CategorySearchResultComponent extends Component {
 				getPartsFromFacetString(hashtagText);
 
 		this.props.setSearchFacet(facetCategory, facetSubCategory, hashtagText);
+		this.props.setSearchQuery('');
 	}
 
 	render() {
