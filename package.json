@@ -7,6 +7,7 @@
     "bezier-easing": "^2.0.3",
     "bootstrap": "^3.3.7",
     "bounce.js": "^0.8.2",
+    "clipboard": "^1.7.1",
     "crypto-js": "^3.1.9-1",
     "debounce": "^1.0.2",
     "font-awesome": "^4.7.0",

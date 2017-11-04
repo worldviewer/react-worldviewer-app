@@ -34,6 +34,10 @@ import { log, logTitle } from '../../libs/utils';
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
+// Clipboard and Related Animation Dependencies
+import Clipboard from 'clipboard';
+// import { $, animate } from '../../libs/animatio.min.js';
+
 // React Router / Algolia Search integration
 const
 	updateAfter = 700,
@@ -155,6 +159,9 @@ class HomeComponent extends Component {
 
 		this.props.setSearchFacet(facetCategory, facetSubCategory,
 			this.state.searchState.facets);
+
+    	this.quoteHits = document.querySelectorAll('.QuoteHit');
+    	this.clipboard = new Clipboard(this.quoteHits);
 	}
 
 	// This is meant to resolve an issue that occurs when the facet values are changed, but not the
@@ -260,6 +267,10 @@ class HomeComponent extends Component {
 		} else {
 			facetArray = [`facetCategory:${this.props.search.facetCategory}`];			
 		}
+
+		// Update the click-to-copy feature
+    	this.quoteHits = document.querySelectorAll('.QuoteHit');
+    	this.clipboard = new Clipboard(this.quoteHits);
 
 		return (
 			<div className="Home" id="fouc">

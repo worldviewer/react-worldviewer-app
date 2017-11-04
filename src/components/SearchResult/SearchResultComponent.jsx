@@ -22,6 +22,9 @@ import { connectHighlight } from 'react-instantsearch/connectors';
 // HTML-to-React Parser Dependencies
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
+// Clipboard Dependencies
+// import Clipboard from 'clipboard';
+
 // This is a custom combination of two tools:
 // (1) https://www.npmjs.com/package/html-to-react
 // (2) https://community.algolia.com/react-instantsearch/connectors/connectHighlight.html 
@@ -99,6 +102,9 @@ class SearchResultComponent extends Component {
 				hitHeight: node.clientHeight
 			});
 		}
+
+    	// this.quoteHits = document.querySelectorAll('.QuoteHit');
+    	// this.clipboard = new Clipboard(this.quoteHits);
 	}
 
 	// Notice that we pass attributeName prop into the CustomHighlight component.
@@ -118,7 +124,8 @@ class SearchResultComponent extends Component {
 
 	renderQuote(attributeName, rightQuoteStyle) {
 		return (<div
-			className="QuoteHit" 
+			className="QuoteHit"
+			data-clipboard-text={this.props.hit.quoteParagraph}
 			style={ {overflowWrap: 'break-word'} }>
 
 			<Col xs={2}>
