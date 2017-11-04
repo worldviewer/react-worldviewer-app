@@ -22,14 +22,15 @@ import { connectHighlight } from 'react-instantsearch/connectors';
 // HTML-to-React Parser Dependencies
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
-// Clipboard Dependencies
-// import Clipboard from 'clipboard';
+// Error/Logger Handling
+import { log, logTitle } from '../../libs/utils';
 
 // This is a custom combination of two tools:
 // (1) https://www.npmjs.com/package/html-to-react
 // (2) https://community.algolia.com/react-instantsearch/connectors/connectHighlight.html 
 const CustomHighlight = connectHighlight(
 	({ highlight, attributeName, hit, highlightProperty }) => {
+
 		const
 			h = new HtmlToReactParser(),
 
@@ -57,7 +58,7 @@ const CustomHighlight = connectHighlight(
 		}
 
 		const
-			reactComponent = highlightedHits.reduce((prev, cur) => prev + cur);
+			reactComponent = highlightedHits.reduce((prev, cur) => prev + cur, '');
 
 		return <div>{h.parse(reactComponent)}</div>;
 	}
@@ -102,9 +103,6 @@ class SearchResultComponent extends Component {
 				hitHeight: node.clientHeight
 			});
 		}
-
-    	// this.quoteHits = document.querySelectorAll('.QuoteHit');
-    	// this.clipboard = new Clipboard(this.quoteHits);
 	}
 
 	// Notice that we pass attributeName prop into the CustomHighlight component.
@@ -112,20 +110,23 @@ class SearchResultComponent extends Component {
 	// have to determine which attribute exists in the hit object, and adjust both
 	// the header and attributeName prop accordingly.
 	getAttributeName(hit) {
-		const hitKeys = Object.keys(hit);
+		if (!hit || !hit.recordType) {
+			return '';
+		}
 
-		if (hitKeys.includes('cardName')) return 'cardName';
-		if (hitKeys.includes('cardSummary')) return 'cardSummary';
-		if (hitKeys.includes('postName')) return 'postName';
-		if (hitKeys.includes('cardParagraph')) return 'cardParagraph';
-		if (hitKeys.includes('postParagraph')) return 'postParagraph';
-		if (hitKeys.includes('quoteParagraph')) return 'quoteParagraph';
+		if (hit.recordType === 'cardName') return 'cardName';
+		if (hit.recordType === 'cardSummary') return 'cardSummary';
+		if (hit.recordType === 'postName') return 'postName';
+		if (hit.recordType === 'cardParagraph') return 'cardParagraph';
+		if (hit.recordType === 'postParagraph') return 'postParagraph';
+		if (hit.recordType === 'quote') return 'quoteParagraph';
 	}
 
 	renderQuote(attributeName, rightQuoteStyle) {
 		return (<div
-			className="QuoteHit"
+			onClick={() => this.props.showSnackbar('Copied to clipboard', 3000)}
 			data-clipboard-text={this.props.hit.quoteParagraph}
+			className="QuoteHit"
 			style={ {overflowWrap: 'break-word'} }>
 
 			<Col xs={2}>

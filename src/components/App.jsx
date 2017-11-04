@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -15,7 +15,8 @@ const mapStateToProps = (state, ownProps) => {
 		router: state.router,
 		feeds: state.reducer.feeds,
 		feed: state.reducer.feed,
-		card: state.reducer.card
+		card: state.reducer.card,
+		snackbar: state.reducer.snackbar
 	};
 };
 
@@ -62,6 +63,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setSearchQuery: (query) => {
 			return dispatch(setSearchQuery(query));
+		},
+		showSnackbar: (message, duration) => {
+			return dispatch(showSnackbar(message, duration));
 		}
 	}
 };

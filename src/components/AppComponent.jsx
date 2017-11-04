@@ -15,8 +15,10 @@ import AWS from 'aws-sdk';
 import { withRouter, Link } from 'react-router-dom';
 import RouteLoader from './RouteLoader/RouteLoader';
 
-// Error/Logger Handling
+// Error/Logger/Notifications Handling
 import { log, logTitle, logError, logObject, logRoute } from '../libs/utils';
+import mobiscroll from '../libs/mobiscroll.custom-3.2.5.min';
+import '../libs/mobiscroll.custom-3.2.5.min.css';
 
 class AppComponent extends Component {
 	constructor(props) {
@@ -147,6 +149,16 @@ class AppComponent extends Component {
 			log('');
 
 			this.getSlugs();
+		}
+
+		if (!this.props.snackbar.message && nextProps.snackbar.message) {
+			logTitle('Copied text to clipboard');
+			console.log('');
+
+			mobiscroll.snackbar({
+				message: nextProps.snackbar.message,
+				duration: nextProps.snackbar.duration
+			});
 		}
 	}
 

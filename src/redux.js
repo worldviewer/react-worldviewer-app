@@ -60,6 +60,7 @@ const types = {
 	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE',
 
 	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE',
+	SHOW_SNACKBAR: 'SHOW_SNACKBAR',
 
 	SET_SEARCH_QUERY: 'SET_SEARCH_QUERY',
 	SET_SEARCH_FACET: 'SET_SEARCH_FACET',
@@ -146,6 +147,11 @@ const initialState = {
 
 	navbar: {
 		hidden: false
+	},
+
+	snackbar: {
+		message: '',
+		duration: 0
 	}
 };
 
@@ -421,6 +427,14 @@ export const toggleNavbarState = (zoom) => {
 	return {
 		type: types.TOGGLE_NAVBAR_STATE,
 		zoom
+	};
+};
+
+export const showSnackbar = (message, duration) => {
+	return {
+		type: types.SHOW_SNACKBAR,
+		message,
+		duration
 	};
 };
 
@@ -842,6 +856,16 @@ export default (state = initialState, action) => {
 					...state.navbar,
 					hidden: window.innerWidth <= 480 ?
 						action.zoom < 1.2 : false
+				}
+			}
+			
+		case types.SHOW_SNACKBAR:
+			return {
+				...state,
+				snackbar: {
+					...state.snackbar,
+					message: action.message,
+					duration: action.duration
 				}
 			}
 

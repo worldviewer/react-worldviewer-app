@@ -31,12 +31,11 @@ import config from '../../config';
 // Error/Logger Handling
 import { log, logTitle } from '../../libs/utils';
 
+// Clipboard Dependencies
+import Clipboard from 'clipboard';
+
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
-
-// Clipboard and Related Animation Dependencies
-import Clipboard from 'clipboard';
-// import { $, animate } from '../../libs/animatio.min.js';
 
 // React Router / Algolia Search integration
 const
@@ -169,9 +168,9 @@ class HomeComponent extends Component {
 	// needs to update, even though the Stats component does update -- and it appears to happen
 	// exclusively when the page has scrolled past the first.
 	async componentWillReceiveProps(nextProps) {
-		if (nextProps.search.facetCategory !== this.props.search.facetCategory ||
-			nextProps.search.facetSubCategory !== this.props.search.facetSubCategory ||
-			nextProps.search.query !== this.props.search.query) {
+		if ((nextProps.search.facetCategory !== this.props.search.facetCategory) ||
+			(nextProps.search.facetSubCategory !== this.props.search.facetSubCategory) ||
+			(nextProps.search.query !== this.props.search.query)) {
 
 			let facets = [];
 
@@ -183,14 +182,14 @@ class HomeComponent extends Component {
 				facets = createFacetStringFromParts(nextProps.search.facetCategory,
 					nextProps.search.facetSubCategory);
 
-				await this.setState({
+				await this.setState(prevState => ({
 					searchState: {
-						...this.state.searchState,
+						...prevState.searchState,
 						facets,
 						query: nextProps.search.query || '',
 						page: 1
 					}
-				});
+				}));
 
 			} else {
 				await this.setState(prevState => ({
@@ -220,7 +219,7 @@ class HomeComponent extends Component {
 				': ' + this.props.search.facetSubCategory :
 				'');
 
-		let facetArray;
+		let facetArray = [];
 
 		// I use the recordType field to select just card and feed titles when there is
 		// no search query.  This permits browsing of controversy cards and feed post
@@ -264,7 +263,7 @@ class HomeComponent extends Component {
 				facetArray = [`facetCategory:${this.props.search.facetCategory}`,
 					`facetSubCategory:${this.props.search.facetSubCategory}`];
 			}
-		} else {
+		} else if (this.props.search.facetCategory) {
 			facetArray = [`facetCategory:${this.props.search.facetCategory}`];			
 		}
 
@@ -300,7 +299,7 @@ class HomeComponent extends Component {
 					<InstantSearch
 						appId="HDX7ZDMWE9"
 						apiKey="f9898dbf6ec456d206e59bcbc604419d"
-						indexName="controversy-categories"
+						indexName="controversy-cards"
 						searchState={this.state.searchState}
 						onSearchStateChange={this.onSearchStateChange.bind(this)}
 						createURL={createURL}>
@@ -339,10 +338,14 @@ class HomeComponent extends Component {
 
 // https://github.com/algolia/react-instantsearch/blob/master/docgen/src/examples/e-commerce-infinite/App.js
 function CustomHits({ hits, refine, hasMore }) {
+	// logTitle('hits in CustomHits:');
+	// log(hits);
+	// log('');
+
 	return (
 		<main id="hits">
 			<InfiniteScroll next={refine} hasMore={hasMore}>
-				{hits.map(hit => <SearchResult hit={hit} key={hit.objectID} />)}
+				{hits.map((hit, i) => <SearchResult hit={hit} key={i} />)}
 			</InfiniteScroll>
 		</main>
 	);
@@ -353,9 +356,9 @@ function CustomHits({ hits, refine, hasMore }) {
 const ConditionalHits = createConnector({
 	displayName: "ConditionalQuery",
 	getProvidedProps(props, searchState, searchResults, searchForFacetValuesResults) {
-		// const {query, hits} = searchResults.results ? searchResults.results : {};
+		let {query, hits} = searchResults.results ? searchResults.results : {};
 
-		let {query, hits} = {};
+		// let {query, hits} = {};
 
 		// This is necessary because we have multiple indices -- one for
 		// categories and another for cards
@@ -366,6 +369,10 @@ const ConditionalHits = createConnector({
 
 			query = searchResults.results['controversy-cards'].query;
 			hits = searchResults.results['controversy-cards'].hits;
+		} else {
+			// logTitle('searchResults:');
+			// log(searchResults.results);
+			// log('');
 		}
 
 		// FOR DEBUGGING:
@@ -388,9 +395,11 @@ const ConditionalHits = createConnector({
 	}
 
 })(({ query, hits, props }) => {
-
 	const hs =
+		// do not display results if no hits, query or facets
 		(hits && query && props.facetCategory === '' && props.facetSubCategory === '') ||
+
+		// display (alphabetized) results if one of the facets is specified
 		(hits && (props.facetCategory !== '' || props.facetSubCategory !== '')) ?
 
 		(<div id="hits">

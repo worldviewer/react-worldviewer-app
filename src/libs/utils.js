@@ -22,9 +22,13 @@ export function getPartsFromFacetString(facetString = '') {
 }
 
 export function createFacetStringFromParts(facetCategory, facetSubCategory) {
-	return facetSubCategory === '' ?
-		facetCategory :
-		facetCategory + ': ' + facetSubCategory;
+	if (facetCategory !== '' && facetSubCategory !== '') {
+		return facetCategory + ': ' + facetSubCategory;
+	} else if (facetCategory !== '' && facetSubCategory === '') {
+		return facetCategory;
+	} else {
+		return '';
+	}
 }
 
 // When there is an expired token, the very first error message is:
