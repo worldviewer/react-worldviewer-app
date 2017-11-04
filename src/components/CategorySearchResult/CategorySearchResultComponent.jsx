@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './CategorySearchResult.css';
 import { withRouter } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import hashtag from '../../images/hashtag.svg';
 import { getPartsFromFacetString } from '../../libs/utils';
 
@@ -32,25 +32,27 @@ class CategorySearchResultComponent extends Component {
 
 		return this.props.hit && this.props.search.query &&
 			this.props.search.query.length > 3 ?
-			(<Row
-				className="CategorySearchResult"
-				ref="Hit"
-				key={this.props.hit.objectID}>
+			(<Grid>
+				<Row
+					className="CategorySearchResult"
+					ref="Hit"
+					key={this.props.hit.objectID}>
 
-				<Col xs={12} className="Hashtag" style={textStyles}
-					onClick={this.clickHashtag.bind(this, this.props.hit.text)}>
+					<Col xs={12} className="Hashtag" style={textStyles}
+						onClick={this.clickHashtag.bind(this, this.props.hit.text)}>
 
-					<img
-						alt="hashtag"
-						src={hashtag}
-						className="HashtagIcon" />
+						<img
+							alt="hashtag"
+							src={hashtag}
+							className="HashtagIcon" />
 
-					<span className="HashtagText">
-						<i>{this.props.hit.text}</i>
-					</span>
-				</Col>
-		
-			</Row>) :
+						<span className="HashtagText">
+							<i>{this.props.hit.text}</i>
+						</span>
+					</Col>
+			
+				</Row>
+			</Grid>) :
 			null;
 	}
 }
