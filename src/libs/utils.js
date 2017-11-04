@@ -6,6 +6,21 @@
 import mobiscroll from './mobiscroll.custom-3.2.5.min';
 import './mobiscroll.custom-3.2.5.min.css';
 
+export function getPartsFromFacetString(facetString = '') {
+	let facetCategory = '',
+		facetSubCategory = '';
+
+	if (facetString.match(': ')) {
+		[facetCategory, facetSubCategory] = facetString.split(': ');
+	} else {
+		facetCategory = facetString === 'All' ?
+			'' :
+			facetString;
+	}
+
+	return [facetCategory, facetSubCategory];
+}
+
 // When there is an expired token, the very first error message is:
 // Authorization Error: __WEBPACK_IMPORTED_MODULE_4__sigV4Client__.a.newClient(...)
 // .signRequest is not a function.  Subsequent messages will then warn that

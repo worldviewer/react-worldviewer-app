@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import './CategorySearchResult.css';
 import { withRouter } from 'react-router-dom';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import hashtag from '../../images/hashtag.svg';
+import { getPartsFromFacetString } from '../../libs/utils';
 
 class CategorySearchResultComponent extends Component {
 	constructor(props) {
 		super(props);
 
 		this.props = props;
+	}
+
+	clickHashtag(hashtagText) {
+		const [facetCategory, facetSubCategory] =
+				getPartsFromFacetString(hashtagText);
+
+		this.props.setSearchFacet(facetCategory, facetSubCategory, hashtagText);
 	}
 
 	render() {
@@ -29,20 +37,18 @@ class CategorySearchResultComponent extends Component {
 				ref="Hit"
 				key={this.props.hit.objectID}>
 
-				<div
-					className="CategoryHit" 
-					style={ {overflowWrap: 'break-word'} }>
+				<Col xs={12} className="Hashtag" style={textStyles}
+					onClick={this.clickHashtag.bind(this, this.props.hit.text)}>
 
-					<Col xs={2} xsOffset={2}>
-						<img
-							alt="hashtag"
-							src={hashtag}
-							className="Hashtag" />
-					</Col>
-					<Col xs={8}>
-						<p style={textStyles}><i>{this.props.hit.text}</i></p>
-					</Col>
-				</div>
+					<img
+						alt="hashtag"
+						src={hashtag}
+						className="HashtagIcon" />
+
+					<span className="HashtagText">
+						<i>{this.props.hit.text}</i>
+					</span>
+				</Col>
 		
 			</Row>) :
 			null;

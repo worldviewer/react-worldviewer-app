@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 // UI Dependencies
 import './Home.css';
 import elephant from '../../images/elephant.png';
-import { Grid, Row } from 'react-bootstrap';
+import { Grid } from 'react-bootstrap';
 import AspectRatio from 'react-aspect-ratio';
 import 'react-aspect-ratio/aspect-ratio.css';
 import FadeIn from 'react-fade-in';
@@ -23,6 +23,7 @@ import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { createConnector } from "react-instantsearch";
 import { connectInfiniteHits } from 'react-instantsearch/connectors';
+import { getPartsFromFacetString } from '../../libs/utils';
 
 // Config
 import config from '../../config';
@@ -87,28 +88,13 @@ class HomeComponent extends Component {
 		domNode.click();
 	}
 
-	getPartsFromFacetString(facetString = '') {
-		let facetCategory = '',
-			facetSubCategory = '';
-
-		if (facetString.match(': ')) {
-			[facetCategory, facetSubCategory] = facetString.split(': ');
-		} else {
-			facetCategory = facetString === 'All' ?
-				'' :
-				facetString;
-		}
-
-		return [facetCategory, facetSubCategory];
-	}
-
 	setFacetValue(selection) {
 		if (selection.valueText) {
 			let facetCategory = '',
 				facetSubCategory = '';
 
 			[facetCategory, facetSubCategory] =
-				this.getPartsFromFacetString(selection.valueText);
+				getPartsFromFacetString(selection.valueText);
 
 			this.props.setSearchFacet(facetCategory, facetSubCategory,
 				selection.valueText);
@@ -165,7 +151,7 @@ class HomeComponent extends Component {
 			facetSubCategory = '';
 
 		[facetCategory, facetSubCategory] =
-			this.getPartsFromFacetString(this.state.searchState.facets);
+			getPartsFromFacetString(this.state.searchState.facets);
 
 		this.props.setSearchFacet(facetCategory, facetSubCategory,
 			this.state.searchState.facets);

@@ -1,17 +1,21 @@
 .CategorySearchResult {
-	margin-top: 5px;
+	margin-left: 35px;
 
 	.Hashtag {
 		display: block;
-		margin: 0 auto;
-		width: 50px;
+		padding: 0 !important;
 	}
 
-	.col-xs-8 {
-		padding-left: 0;
+	.HashtagIcon {
+		cursor: pointer;
+		display: inline;
+		width: 27px;
 	}
 
-	.col-xs-2 {
-		padding-right: 0;
+	.HashtagText {
+		cursor: pointer;
+		margin-left: 5px;
+		position: relative;
+		top: 2px;
 	}
 }
