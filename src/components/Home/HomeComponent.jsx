@@ -283,10 +283,10 @@ class HomeComponent extends Component {
 
 						<br />
 
-						<Index indexName="controversy-categories">
+						{ this.state.searchState.query && <Index indexName="controversy-categories">
 							<Configure hitsPerPage={3} />
 							<Hits hitComponent={CategorySearchResult} />
-						</Index>
+						</Index> }
 
 						<Index indexName="controversy-cards">
 							<Configure facetFilters={facetArray} />
