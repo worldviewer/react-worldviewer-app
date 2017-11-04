@@ -23,7 +23,7 @@ import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { createConnector } from "react-instantsearch";
 import { connectInfiniteHits } from 'react-instantsearch/connectors';
-import { getPartsFromFacetString } from '../../libs/utils';
+import { getPartsFromFacetString, createFacetStringFromParts } from '../../libs/utils';
 
 // Config
 import config from '../../config';
@@ -161,21 +161,44 @@ class HomeComponent extends Component {
 	// search query itself.  The search results component in this case does not understand that it
 	// needs to update, even though the Stats component does update -- and it appears to happen
 	// exclusively when the page has scrolled past the first.
-	componentWillReceiveProps(nextProps) {
+	async componentWillReceiveProps(nextProps) {
 		if (nextProps.search.facetCategory !== this.props.search.facetCategory ||
-			nextProps.search.facetSubCategory !== this.props.search.facetSubCategory) {
+			nextProps.search.facetSubCategory !== this.props.search.facetSubCategory ||
+			nextProps.search.query !== this.props.search.query) {
+
+			let facets = [];
+
+			if (this.state.searchState.indices &&
+				this.state.searchState.indices['controversy-cards'] &&
+				this.state.searchState.indices['controversy-cards'].configure &&
+				this.state.searchState.indices['controversy-cards'].configure.facetFilters) {
+
+				facets = createFacetStringFromParts(nextProps.search.facetCategory,
+					nextProps.search.facetSubCategory);
+
+				await this.setState({
+					searchState: {
+						...this.state.searchState,
+						facets,
+						query: nextProps.search.query || '',
+						page: 1
+					}
+				});
+
+			} else {
+				await this.setState(prevState => ({
+					searchState: {
+						...prevState.searchState,
+						page: 1
+					}
+				}));				
+			}
 
 			logTitle('Forcing search result update ...');
+			log(this.state.searchState);
 			log('');
 
-			this.setState(prevState => ({
-				searchState: {
-					...prevState.searchState,
-					page: 1
-				}
-			}));
-
-			// this.forceUpdate();
+			this.forceUpdate();
 		}
 	}
 
