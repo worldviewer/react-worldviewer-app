@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 // UI Dependencies
 import './Home.css';
 import elephant from '../../images/elephant.png';
-import { Grid } from 'react-bootstrap';
+import { Grid, Row } from 'react-bootstrap';
 import AspectRatio from 'react-aspect-ratio';
 import 'react-aspect-ratio/aspect-ratio.css';
 import FadeIn from 'react-fade-in';
@@ -16,8 +16,9 @@ import mobiscroll from '../../libs/mobiscroll.custom-3.2.5.min';
 import '../../libs/mobiscroll.custom-3.2.5.min.css';
 
 // Algolia Search / React Router Integration Dependencies
-import { InstantSearch, SearchBox, Stats, Configure } from 'react-instantsearch/dom';
+import { InstantSearch, SearchBox, Stats, Configure, Index, Hits } from 'react-instantsearch/dom';
 import SearchResult from '../SearchResult/SearchResult';
+import CategorySearchResult from '../CategorySearchResult/CategorySearchResult';
 import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { createConnector } from "react-instantsearch";
@@ -279,12 +280,10 @@ class HomeComponent extends Component {
 					<InstantSearch
 						appId="HDX7ZDMWE9"
 						apiKey="f9898dbf6ec456d206e59bcbc604419d"
-						indexName="controversy-cards"
+						indexName="controversy-categories"
 						searchState={this.state.searchState}
 						onSearchStateChange={this.onSearchStateChange.bind(this)}
 						createURL={createURL}>
-
-						<Configure facetFilters={facetArray} />
 
 						<Grid>
 							<SearchBox
@@ -294,12 +293,21 @@ class HomeComponent extends Component {
 								translations={{placeholder: 'Enter a Controversy'}} />
 
 							<p className='CategoryLabel'>Searching {categoryText || 'All'}</p>
-
 						</Grid>
 
-						<ConditionalHits
-							facetCategory={this.props.search.facetCategory}
-							facetSubCategory={this.props.search.facetSubCategory} />
+						<br />
+
+						<Index indexName="controversy-categories">
+							<Configure hitsPerPage={3} />
+							<Hits hitComponent={CategorySearchResult} />
+						</Index>
+
+						<Index indexName="controversy-cards">
+							<Configure facetFilters={facetArray} />
+							<ConditionalHits
+								facetCategory={this.props.search.facetCategory}
+								facetSubCategory={this.props.search.facetSubCategory} />
+						</Index>
 
 					</InstantSearch>
 				</FadeIn>
@@ -325,13 +333,22 @@ function CustomHits({ hits, refine, hasMore }) {
 const ConditionalHits = createConnector({
 	displayName: "ConditionalQuery",
 	getProvidedProps(props, searchState, searchResults, searchForFacetValuesResults) {
-		const {query, hits} = searchResults.results ? searchResults.results : {};
+		// const {query, hits} = searchResults.results ? searchResults.results : {};
+
+		let {query, hits} = {};
+
+		// This is necessary because we have multiple indices -- one for
+		// categories and another for cards
+		if (searchResults.results && searchResults.results['controversy-cards']) {
+			// logTitle('searchResults:');
+			// log(searchResults.results['controversy-cards']);
+			// log('');
+
+			query = searchResults.results['controversy-cards'].query;
+			hits = searchResults.results['controversy-cards'].hits;
+		}
 
 		// FOR DEBUGGING:
-
-		// logTitle('searchResults:');
-		// log(searchResults);
-		// log('');
 
 		// logTitle('searchForFacetValuesResults:');
 		// log(searchForFacetValuesResults);
@@ -339,6 +356,12 @@ const ConditionalHits = createConnector({
 
 		// logTitle('searchState:');
 		// log(searchState);
+		// log('');
+
+		// logTitle('query, hits, props:');
+		// log(query);
+		// log(hits);
+		// log(props);
 		// log('');
 
 		return { query, hits, props };
