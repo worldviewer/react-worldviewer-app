@@ -58,8 +58,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		clearUser: () => {
 			return dispatch(clearUser());
 		},
-		setSearchFacet: (facetCategory, facetSubCategory, facetString) => {
-			return dispatch(setSearchFacet(facetCategory, facetSubCategory, facetString));
+		setSearchFacet: (facetCategory, facetSubCategory, facets) => {
+			return dispatch(setSearchFacet(facetCategory, facetSubCategory, facets));
 		},
 		setSearchQuery: (query) => {
 			return dispatch(setSearchQuery(query));

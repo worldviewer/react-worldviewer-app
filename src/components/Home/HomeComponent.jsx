@@ -40,11 +40,11 @@ import Clipboard from 'clipboard';
 // React Router / Algolia Search integration
 const
 	updateAfter = 700,
-	createURL = (state, facetString) => facetString && facetString !== 'All' ?
-		`?${qs.stringify({query: state.query, page: state.page, facets: facetString})}` :
+	createURL = (state, facets) => facets && facets !== 'All' ?
+		`?${qs.stringify({query: state.query, page: state.page, facets})}` :
 		`?${qs.stringify({query: state.query, page: state.page})}`,
 	searchStateToUrl = (props, searchState) =>
-		searchState ? `${props.location.pathname}${createURL(searchState, props.search.facetString)}` : '';
+		searchState ? `${props.location.pathname}${createURL(searchState, props.search.facets)}` : '';
 
 const imageStyles = {
 	display: 'block',
@@ -131,6 +131,7 @@ class HomeComponent extends Component {
 		}, updateAfter);
 
 		this.setState({ searchState });
+		this.props.setSearchState(...searchState);
 	};
 
 	async componentDidMount() {
@@ -146,6 +147,8 @@ class HomeComponent extends Component {
 		log('searchState:');
 		log(qs.parse(this.props.location.search.slice(1)));
 		log('');
+
+		this.props.setSearchState(qs.parse(this.props.location.search.slice(1)));
 
 		// When we load the page with a search term already in the query parameters
 		this.props.setSearchQuery(this.state.searchState.query);
@@ -187,9 +190,22 @@ class HomeComponent extends Component {
 						...prevState.searchState,
 						facets,
 						query: nextProps.search.query || '',
-						page: 1
+						indices: {
+							...prevState.searchState.indices,
+							'controversy-cards': {
+								...prevState.searchState.indices['controversy-cards'],
+								page: 1
+							}
+						}
 					}
 				}));
+
+				await nextProps.setSearchState({
+					...nextProps.searchState,
+					facets,
+					query: nextProps.search.query || '',
+					page: 1
+				});
 
 			} else {
 				await this.setState(prevState => ({
@@ -197,7 +213,12 @@ class HomeComponent extends Component {
 						...prevState.searchState,
 						page: 1
 					}
-				}));				
+				}));
+
+				await nextProps.setSearchState({
+					...this.props.searchState,
+					page: 1
+				})
 			}
 
 			logTitle('Forcing search result update ...');
@@ -271,6 +292,10 @@ class HomeComponent extends Component {
     	this.quoteHits = document.querySelectorAll('.QuoteHit');
     	this.clipboard = new Clipboard(this.quoteHits);
 
+    	// logTitle('InstantSearch searchState:');
+    	// log(this.state.searchState);
+    	// log('');
+
 		return (
 			<div className="Home" id="fouc">
 
@@ -296,6 +321,7 @@ class HomeComponent extends Component {
 					</mobiscroll.Image>
 					</div>
 
+					{/* searchState={this.state.searchState} */}
 					<InstantSearch
 						appId="HDX7ZDMWE9"
 						apiKey="f9898dbf6ec456d206e59bcbc604419d"
@@ -316,10 +342,10 @@ class HomeComponent extends Component {
 
 						<br />
 
-						{ this.state.searchState.query && <Index indexName="controversy-categories">
+						<Index indexName="controversy-categories">
 							<Configure hitsPerPage={3} />
 							<Hits hitComponent={CategorySearchResult} />
-						</Index> }
+						</Index>
 
 						<Index indexName="controversy-cards">
 							<Configure facetFilters={facetArray} />

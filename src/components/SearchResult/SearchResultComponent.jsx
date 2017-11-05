@@ -96,7 +96,7 @@ class SearchResultComponent extends Component {
 	}
 	
 	componentDidMount() {
-		const node = ReactDOM.findDOMNode(this.refs['Hit']);
+		const node = ReactDOM.findDOMNode(this.hitdiv);
 
 		if (node) {
 			this.setState({
@@ -122,33 +122,50 @@ class SearchResultComponent extends Component {
 		if (hit.recordType === 'quote') return 'quoteParagraph';
 	}
 
-	renderQuote(attributeName, rightQuoteStyle) {
-		return (<div
-			onClick={() => this.props.showSnackbar('Copied to clipboard', 3000)}
-			data-clipboard-text={this.props.hit.quoteParagraph}
-			className="QuoteHit"
-			style={ {overflowWrap: 'break-word'} }>
+	renderQuote(attributeName) {
+		const rightQuoteStyles = {
+			position: 'relative',
+			bottom: '40px',
+			right: '20px'
+		};
 
-			<Col xs={2}>
-				<img
-					alt="left quote"
-					src={quote}
-					className="LeftQuote" />
-			</Col>
-			<Col xs={8}>
-				<p>{this.props.hit.quoteName}</p>
+		return (<div>
+			<Row
+				className="CardHit"
+				ref={c => this.hitdiv = c}
+				key={this.props.hit.objectID}>
 
-				<CustomHighlight
-					attributeName={attributeName}
-					hit={this.props.hit} />
-			</Col>
-			<Col xs={2}>
-				<img
-					alt="right quote"
-					src={quote}
-					className="RightQuote"
-					style={rightQuoteStyle} />
-			</Col>
+				<div
+					onClick={() => this.props.showSnackbar('Copied to clipboard', 3000)}
+					data-clipboard-text={this.props.hit.quoteParagraph}
+					className="QuoteHit"
+					style={ {overflowWrap: 'break-word'} }>
+
+					<Col xs={2}>
+						<img
+							alt="left quote"
+							src={quote}
+							className="LeftQuote" />
+					</Col>
+					<Col xs={8}>
+						<p>{this.props.hit.quoteName}</p>
+
+						<CustomHighlight
+							attributeName={attributeName}
+							hit={this.props.hit} />
+					</Col>
+				</div>
+			</Row>
+			<Row>
+				<Col xs={2} xsOffset={10}
+					style={rightQuoteStyles}>
+
+					<img
+						alt="right quote"
+						src={quote}
+						className="RightQuote" />
+				</Col>
+			</Row>
 		</div>);
 	}
 
@@ -177,35 +194,46 @@ class SearchResultComponent extends Component {
 				href={href}
 				style={ {overflowWrap: 'break-word'} }>
 
-			<Col xs={3} className="hit-image">
-				<img
-					ref="loaded"
-					alt="controversy card"
-					src={this.props.hit.images.thumbnail.url}
-					className="CardThumbnail"
-					onError={ e => e.target.src = notFoundImage } />
+			<Row
+				className="CardHit"
+				ref={c => this.hitdiv = c}
+				key={this.props.hit.objectID}>
 
-				{ this.state.hitHeight > 147 && <img
-					className="hit-level Left"
-					src={discourseLevel}
-					alt="the level of discussion" /> }
-			</Col>
-			<Col xs={9}>
-				<span
-					className="hit-text"
-					style={hitTextStyle}>
+				<Col xs={3} className="hit-image">
+					<img
+						ref="loaded"
+						alt="controversy card"
+						src={this.props.hit.images.thumbnail.url}
+						className="CardThumbnail"
+						onError={ e => e.target.src = notFoundImage } />
 
-					{isTitleOrSummary ? null : attributeHeader}
-					<CustomHighlight
-						attributeName={attributeName}
-						hit={this.props.hit} />
+					{ (this.props.hit.recordType === 'cardParagraph' ||
+						this.props.hit.recordType === 'postParagraph' ||
+						this.props.hit.recordType === 'cardSummary') && <img
+						className="hit-level Left"
+						src={discourseLevel}
+						alt="the level of discussion" /> }
+				</Col>
+				<Col xs={9}>
+					<span
+						className="hit-text"
+						style={hitTextStyle}>
 
-				</span>
-				{ this.state.hitHeight <= 147 && <img
-					className="hit-level Right"
-					src={discourseLevel}
-					alt="the level of discussion" /> }
-			</Col>
+						{isTitleOrSummary ? null : attributeHeader}
+						<CustomHighlight
+							attributeName={attributeName}
+							hit={this.props.hit} />
+
+					</span>
+
+					{ (this.props.hit.recordType !== 'cardParagraph' &&
+						this.props.hit.recordType !== 'postParagraph' &&
+						this.props.hit.recordType !== 'cardSummary') && <img
+						className="hit-level Right"
+						src={discourseLevel}
+						alt="the level of discussion" /> }
+				</Col>
+			</Row>
 		</a>)
 	}
 
@@ -237,27 +265,19 @@ class SearchResultComponent extends Component {
 				this.discourseLevelGraphics[this.props.hit.discourseLevel] :
 				worldview,
 
-			rightQuoteStyle = {
-				position: 'relative',
-				top: this.state.hitHeight - 50
-			},
-
 			isPostHit = (this.getAttributeName(this.props.hit) === 'postName') ||
 				(this.getAttributeName(this.props.hit) === 'postParagraph');
 
 		// If there is no images property, then the result is a quote
 		return this.props.hit ?
-			(<Row
-				className="CardHit"
-				ref="Hit"
-				key={this.props.hit.objectID}>
+			(<div>
 
 				{ this.props.hit.images ?
 					this.renderCard(discourseLevel, hitTextStyle, isTitleOrSummary,
 						attributeHeader, attributeName, isPostHit) :
-					this.renderQuote(attributeName, rightQuoteStyle) }
+					this.renderQuote(attributeName) }
 		
-			</Row>) :
+			</div>) :
 			null;
 	}
 }

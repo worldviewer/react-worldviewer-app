@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import HomeComponent from './HomeComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setSearchQuery, setSearchFacet, setHitHappens, unsetHitHappens } from '../../redux.js';
+import { setSearchQuery, setSearchFacet, setSearchState } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
 		user: state.reducer.user,
 		slugs: state.reducer.slugs,
-		search: state.reducer.search
+		search: state.reducer.search,
+		searchState: state.reducer.searchState
 	};
 };
 
@@ -16,14 +17,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		setSearchQuery: (query) => {
 			return dispatch(setSearchQuery(query));
 		},
-		setSearchFacet: (facetCategory, facetSubCategory, facetString) => {
-			return dispatch(setSearchFacet(facetCategory, facetSubCategory, facetString));
+		setSearchFacet: (facetCategory, facetSubCategory, facets) => {
+			return dispatch(setSearchFacet(facetCategory, facetSubCategory, facets));
 		},
-		setHitHappens: () => {
-			return dispatch(setHitHappens());
-		},
-		unsetHitHappens: () => {
-			return dispatch(unsetHitHappens());
+		setSearchState: (searchState) => {
+			return dispatch(setSearchState(searchState));
 		}
 	}
 };

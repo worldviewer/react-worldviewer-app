@@ -64,8 +64,7 @@ const types = {
 
 	SET_SEARCH_QUERY: 'SET_SEARCH_QUERY',
 	SET_SEARCH_FACET: 'SET_SEARCH_FACET',
-	SET_HIT_HAPPENS: 'SET_HIT_HAPPENS',
-	UNSET_HIT_HAPPENS: 'UNSET_HIT_HAPPENS'
+	SET_SEARCH_STATE: 'SET_SEARCH_STATE'
 };
 
 const initialState = {
@@ -141,9 +140,10 @@ const initialState = {
 		query: '',
 		facetCategory: '',
 		facetSubCategory: '',
-		facetString: '',
-		hitHappens: false
+		facets: ''
 	},
+
+	searchState: {},
 
 	navbar: {
 		hidden: false
@@ -445,26 +445,22 @@ export const setSearchQuery = (query) => {
 	};
 };
 
-export const setSearchFacet = (facetCategory, facetSubCategory, facetString) => {
+// facets is the string version of the other two combined
+export const setSearchFacet = (facetCategory, facetSubCategory, facets) => {
 	return {
 		type: types.SET_SEARCH_FACET,
 		facetCategory,
 		facetSubCategory,
-		facetString
+		facets
 	};
 };
 
-export const setHitHappens = () => {
+export const setSearchState = (searchState) => {
 	return {
-		type: types.SET_HIT_HAPPENS
+		type: types.SET_SEARCH_STATE,
+		searchState
 	};
-};
-
-export const unsetHitHappens = () => {
-	return {
-		type: types.UNSET_HIT_HAPPENS
-	};
-};
+}
 
 export default (state = initialState, action) => {
 	switch(action.type) {
@@ -885,26 +881,14 @@ export default (state = initialState, action) => {
 					...state.search,
 					facetCategory: action.facetCategory,
 					facetSubCategory: action.facetSubCategory,
-					facetString: action.facetString
+					facets: action.facets
 				}
 			}
 
-		case types.SET_HIT_HAPPENS:
+		case types.SET_SEARCH_STATE:
 			return {
 				...state,
-				search: {
-					...state.search,
-					hitHappens: true
-				}
-			}
-
-		case types.UNSET_HIT_HAPPENS:
-			return {
-				...state,
-				search: {
-					...state.search,
-					hitHappens: false
-				}
+				searchState: action.searchState
 			}
 
 		default:
