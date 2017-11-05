@@ -124,6 +124,7 @@ class SearchResultComponent extends Component {
 
 	renderQuote(attributeName) {
 		const rightQuoteStyles = {
+			height: '15px',
 			position: 'relative',
 			bottom: '40px',
 			right: '20px'
