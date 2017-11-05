@@ -296,6 +296,12 @@ class HomeComponent extends Component {
     	// log(this.state.searchState);
     	// log('');
 
+    	const
+    		s = this.props.search.query,
+    		hitsPerPage =
+    			(s === 'cards' || s === 'feeds' || s === 'card' || s === 'feed') ?
+    			7 : 3;
+
 		return (
 			<div className="Home" id="fouc">
 
@@ -343,7 +349,7 @@ class HomeComponent extends Component {
 						<br />
 
 						<Index indexName="controversy-categories">
-							<Configure hitsPerPage={3} />
+							<Configure hitsPerPage={hitsPerPage} />
 							<Hits hitComponent={CategorySearchResult} />
 						</Index>
 

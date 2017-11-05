@@ -22,9 +22,6 @@ import { connectHighlight } from 'react-instantsearch/connectors';
 // HTML-to-React Parser Dependencies
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
-// Error/Logger Handling
-import { log, logTitle } from '../../libs/utils';
-
 // This is a custom combination of two tools:
 // (1) https://www.npmjs.com/package/html-to-react
 // (2) https://community.algolia.com/react-instantsearch/connectors/connectHighlight.html 
