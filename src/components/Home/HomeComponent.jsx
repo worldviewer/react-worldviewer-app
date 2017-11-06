@@ -34,6 +34,10 @@ import { log, logTitle } from '../../libs/utils';
 // Clipboard Dependencies
 import Clipboard from 'clipboard';
 
+// Keyboard Dependencies
+import Mousetrap from 'mousetrap';
+import throttle from 'lodash.throttle';
+
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
@@ -72,10 +76,13 @@ class HomeComponent extends Component {
 		super(props);
 
 		this.state = {
-			searchState: qs.parse(props.location.search.slice(1))
+			searchState: qs.parse(props.location.search.slice(1)),
+			sequence: null
 		};
 
 		this.props = props;
+
+		this.handleKeyDown = this.handleKeyDown.bind(this);
 	}
 
 	refreshForm() {
@@ -84,9 +91,25 @@ class HomeComponent extends Component {
 		}
 	}
 
+	getFacetIndexFromCharCode(charSequence) {
+		const index = config.categories.findIndex(category =>
+			category.keys === charSequence);
+
+    	if (index !== -1) {
+	    	logTitle('Changing facet value based on keystroke:');
+	    	log('character(s): ' + charSequence);
+	    	log('index: ' + index);
+	    	log('value: ' + config.categories[index].text);
+	    	log('');
+    	}
+
+    	return index;
+	}
+
 	// Let's make it so that clicking the elephant triggers the facet selection.
-	// The original input label is hidden.
-	selectFacet() {
+	// The original input label is hidden.  If a keyCode is provided, then we
+	// should use the key to spin the wheel.
+	async selectFacet() {
 		const domNode = ReactDOM.findDOMNode(this.inputElement);
 		domNode.click();
 	}
@@ -105,7 +128,7 @@ class HomeComponent extends Component {
 			logTitle('Setting New Facet Values:');
 			log('facetCategory: ' + facetCategory);
 			log('facetSubCategory: ' + facetSubCategory);
-			log('');		
+			log('');
 		}
 	}
 
@@ -132,7 +155,244 @@ class HomeComponent extends Component {
 
 		this.setState({ searchState });
 		this.props.setSearchState(...searchState);
-	};
+	}
+
+	getCurrentFacetIndex(value) {
+		return config.categories.findIndex(category =>
+			category.text === value);
+	}
+
+	// We need to handle both single character events as well as multi-character
+	// sequences
+	handleKeyDown(event) {
+		const
+			character = String.fromCharCode(event.keyCode);
+
+		const detectSequence = throttle(() => {
+			this.setState({ sequence: null });
+		}, 500);
+
+		logTitle('Keypress detected:');
+		log(event.keyCode);
+		log('');
+
+		// up: 38, right: 39
+		if (document.activeElement !== this.searchBoxDOMNode &&
+			(event.keyCode === 38 || event.keyCode === 39)) {
+
+			event.preventDefault();
+
+			const
+				facets = this.props.search.facets ? this.props.search.facets : 'All',
+				currentFacetIndex = this.getCurrentFacetIndex(facets),
+				moddedIncrement = currentFacetIndex === config.categories.length - 1 ?
+					0 : currentFacetIndex + 1,
+				newFacetValue = config.categories[moddedIncrement].text,
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString(newFacetValue);
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				newFacetValue);
+		}
+
+		// down: 40, left: 37
+		if (document.activeElement !== this.searchBoxDOMNode &&
+			(event.keyCode === 37 || event.keyCode === 40)) {
+
+			event.preventDefault();
+
+			const
+				facets = this.props.search.facets ? this.props.search.facets : 'All',
+				currentFacetIndex = this.getCurrentFacetIndex(facets),
+				moddedDecrement = currentFacetIndex === 0 ?
+					config.categories.length - 1 : currentFacetIndex - 1,
+				newFacetValue = config.categories[moddedDecrement].text,
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString(newFacetValue);
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				newFacetValue);
+		}
+
+		// Only capture a-z when the search box is not being used
+		if (document.activeElement !== this.searchBoxDOMNode &&
+			event.keyCode >= 65 && event.keyCode <= 90) {
+
+			setTimeout(() => {
+				if (!this.state.sequence) {
+					const
+						facetIndex = this.getFacetIndexFromCharCode(character);
+
+					if (facetIndex !== -1) {
+						const
+							newFacetValue = config.categories[facetIndex].text,
+							[facetCategory, facetSubCategory] =
+								getPartsFromFacetString(newFacetValue);
+
+						this.props.setSearchFacet(facetCategory, facetSubCategory,
+							newFacetValue);
+					}
+				}
+			}, 500);					
+
+			detectSequence();
+		}
+	}
+
+	setupKeySequenceHandlers() {
+		Mousetrap.bind('a l l', () => {
+			this.setState({ sequence: 'all' });
+
+			logTitle('Character sequence detected for All');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory, '');
+		});
+
+		Mousetrap.bind('c o n', () => {
+			this.setState({ sequence: 'con' });
+
+			logTitle('Character sequence detected for Controversy Cards');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Controversy Cards');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Controversy Cards');
+		});
+
+		Mousetrap.bind('q u o', () => {
+			this.setState({ sequence: 'quo' });
+
+			logTitle('Character sequence detected for Quotes');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Quotes');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Quotes');
+		});
+
+		Mousetrap.bind('f e e', () => {
+			this.setState({ sequence: 'fee' });
+
+			logTitle('Character sequence detected for Feed Posts');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Feed Posts');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Feed Posts');
+		});
+
+		Mousetrap.bind('c o m', () => {
+			this.setState({ sequence: 'com' });
+
+			logTitle('Character sequence detected for Comments');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Comments');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Comments');
+		});
+
+		Mousetrap.bind('c r i', () => {
+			this.setState({ sequence: 'cri' });
+
+			logTitle('Character sequence detected for Cards/Feeds: critique');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Cards/Feeds: critique');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Cards/Feeds: critique');
+		});
+
+		Mousetrap.bind('h i s', () => {
+			this.setState({ sequence: 'his' });
+
+			logTitle('Character sequence detected for Cards/Feeds: historical');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Cards/Feeds: historical');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Cards/Feeds: historical');
+		});
+
+		Mousetrap.bind('o n g', () => {
+			this.setState({ sequence: 'ong' });
+
+			logTitle('Character sequence detected for Cards/Feeds: ongoing');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Cards/Feeds: ongoing');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Cards/Feeds: ongoing');
+		});
+
+		Mousetrap.bind('p e r', () => {
+			this.setState({ sequence: 'per' });
+
+			logTitle('Character sequence detected for Cards/Feeds: person');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Cards/Feeds: person');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Cards/Feeds: person');
+		});
+
+		Mousetrap.bind('r e f', () => {
+			this.setState({ sequence: 'ref' });
+
+			logTitle('Character sequence detected for Cards/Feeds: reform');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Cards/Feeds: reform');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Cards/Feeds: reform');
+		});
+
+		Mousetrap.bind('t h i', () => {
+			this.setState({ sequence: 'thi' });
+
+			logTitle('Character sequence detected for Cards/Feeds: thinking');
+			log('');
+
+			const
+				[facetCategory, facetSubCategory] =
+					getPartsFromFacetString('Cards/Feeds: thinking');
+
+			this.props.setSearchFacet(facetCategory, facetSubCategory,
+				'Cards/Feeds: thinking');
+		});
+	}
 
 	async componentDidMount() {
 		// To prevent flash of unstyled content
@@ -140,8 +400,8 @@ class HomeComponent extends Component {
 
 		// This is necessary because the autoFocus={true} prop which is supposedly on
 		// the SearchBox component apparently does nothing
-		const searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
-		searchBoxDOMNode.focus();
+		this.searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
+		this.searchBoxDOMNode.focus();
 
 		logTitle('Setting search and facets based upon URL ...');
 		log('searchState:');
@@ -164,6 +424,9 @@ class HomeComponent extends Component {
 
     	this.quoteHits = document.querySelectorAll('.QuoteHit');
     	this.clipboard = new Clipboard(this.quoteHits);
+
+		document.addEventListener("keydown", this.handleKeyDown);
+		this.setupKeySequenceHandlers();
 	}
 
 	// This is meant to resolve an issue that occurs when the facet values are changed, but not the
