@@ -176,7 +176,21 @@ class HomeComponent extends Component {
 		log(event.keyCode);
 		log('');
 
-		// up: 38, right: 39
+		// esc: 27 - defocus the search box
+		if (document.activeElement === this.searchBoxDOMNode &&
+			event.keyCode === 27) {
+
+			this.searchBoxDOMNode.blur();
+		}
+
+		// spacebar: 32 - focus the search box
+		if (document.activeElement === this.searchBoxDOMNode &&
+			event.keyCode === 32) {
+
+			this.searchBoxDOMNode.focus();
+		}
+
+		// up: 38, right: 39 - increment the facet category
 		if (document.activeElement !== this.searchBoxDOMNode &&
 			(event.keyCode === 38 || event.keyCode === 39)) {
 
@@ -195,7 +209,7 @@ class HomeComponent extends Component {
 				newFacetValue);
 		}
 
-		// down: 40, left: 37
+		// down: 40, left: 37 - decrement the facet category
 		if (document.activeElement !== this.searchBoxDOMNode &&
 			(event.keyCode === 37 || event.keyCode === 40)) {
 
