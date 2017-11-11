@@ -51,11 +51,11 @@ const
 			.replace(/\s/, '-')
 			.replace(/\//, '~');
 
-		if (facets && facets !== 'All') {
+		if (state.quote) {
+			return `?${qs.stringify({query: state.query, quote: state.quote})}`;
+		} else if (facets && facets !== 'All') {
 			return `?${qs.stringify({query: state.query, page: state.page,
 				facets: encodedFacet})}`;
-		// } else if (state.quote) {
-		// 	return `?${qs.stringify({query: state.query, quote: state.quote})}`;
 		} else {
 			return `?${qs.stringify({query: state.query, page: state.page})}`;
 		}
@@ -129,6 +129,22 @@ class HomeComponent extends Component {
 		domNode.click();
 	}
 
+	// We need to call this when we land on the app with a quote URL, but then
+	// want to do something else
+	clearQuote() {
+		if (this.state.searchState.quote) {
+			this.setState(prevState => ({
+				searchState: {
+					...prevState.searchState,
+					quote: '',
+					query: ''
+				}
+			}));
+
+			this.props.setSearchQuery('');
+		}
+	}
+
 	setFacetValue(selection) {
 		if (selection.valueText) {
 			let facetCategory = '',
@@ -139,6 +155,8 @@ class HomeComponent extends Component {
 
 			this.props.setSearchFacet(facetCategory, facetSubCategory,
 				selection.valueText);
+
+			this.clearQuote();
 
 			logTitle('Setting New Facet Values:');
 			log('facetCategory: ' + facetCategory);
@@ -247,6 +265,8 @@ class HomeComponent extends Component {
 		if (document.activeElement !== this.searchBoxDOMNode &&
 			event.keyCode >= 65 && event.keyCode <= 90) {
 
+			this.clearQuote();
+
 			setTimeout(() => {
 				if (!this.state.sequence) {
 					const
@@ -271,6 +291,7 @@ class HomeComponent extends Component {
 	setupKeySequenceHandlers() {
 		Mousetrap.bind('a l l', () => {
 			this.setState({ sequence: 'all' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for All');
 			log('');
@@ -284,6 +305,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('c o n', () => {
 			this.setState({ sequence: 'con' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Controversy Cards');
 			log('');
@@ -298,6 +320,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('q u o', () => {
 			this.setState({ sequence: 'quo' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Quotes');
 			log('');
@@ -312,6 +335,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('f e e', () => {
 			this.setState({ sequence: 'fee' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Feed Posts');
 			log('');
@@ -326,6 +350,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('c o m', () => {
 			this.setState({ sequence: 'com' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Comments');
 			log('');
@@ -340,6 +365,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('c r i', () => {
 			this.setState({ sequence: 'cri' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Cards/Feeds: critique');
 			log('');
@@ -354,6 +380,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('h i s', () => {
 			this.setState({ sequence: 'his' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Cards/Feeds: historical');
 			log('');
@@ -368,6 +395,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('o n g', () => {
 			this.setState({ sequence: 'ong' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Cards/Feeds: ongoing');
 			log('');
@@ -382,6 +410,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('p e r', () => {
 			this.setState({ sequence: 'per' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Cards/Feeds: person');
 			log('');
@@ -396,6 +425,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('r e f', () => {
 			this.setState({ sequence: 'ref' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Cards/Feeds: reform');
 			log('');
@@ -410,6 +440,7 @@ class HomeComponent extends Component {
 
 		Mousetrap.bind('t h i', () => {
 			this.setState({ sequence: 'thi' });
+			this.clearQuote();
 
 			logTitle('Character sequence detected for Cards/Feeds: thinking');
 			log('');
@@ -437,10 +468,20 @@ class HomeComponent extends Component {
 		log(qs.parse(this.props.location.search.slice(1)));
 		log('');
 
-		this.props.setSearchState(qs.parse(this.props.location.search.slice(1)));
+		if (this.state.searchState.quote) {
+			const newSearchState = {
+				...qs.parse(this.props.location.search.slice(1)),
+				query: this.state.searchState.quote
+			}
 
-		// When we load the page with a search term already in the query parameters
-		this.props.setSearchQuery(this.state.searchState.query);
+			this.props.setSearchState(newSearchState);
+			this.props.setSearchQuery(this.state.searchState.quote);
+
+		} else {
+			this.props.setSearchState(qs.parse(this.props.location.search.slice(1)));
+			// When we load the page with a search term already in the query parameters
+			this.props.setSearchQuery(this.state.searchState.query);
+		}
 
 		let facetCategory = '',
 			facetSubCategory = '';
@@ -546,7 +587,10 @@ class HomeComponent extends Component {
 		// I use the recordType field to select just card and feed titles when there is
 		// no search query.  This permits browsing of controversy cards and feed post
 		// titles.
-		if (this.props.search.facetCategory === 'Controversy Cards' &&
+		if (this.state.searchState.quote) {
+			facetArray = [`quoteSeriesHash:${this.state.searchState.quote}`];
+
+		} else if (this.props.search.facetCategory === 'Controversy Cards' &&
 			!this.props.search.query) {
 			facetArray = [`facetCategory:Controversy Cards`,
 				`facetSubCategory:${this.props.search.facetSubCategory}`,
@@ -597,11 +641,14 @@ class HomeComponent extends Component {
     	// log(this.state.searchState);
     	// log('');
 
-    	const
-    		s = this.props.search.query,
+    	let s, hitsPerPage = 0;
+
+    	if (!this.state.searchState.quote) {
+    		s = this.props.search.query;
     		hitsPerPage =
     			(s === 'cards' || s === 'feeds' || s === 'card' || s === 'feed') ?
     			7 : 3;
+    	}
 
 		return (
 			<div className="Home" id="fouc">
@@ -691,6 +738,8 @@ const ConditionalHits = createConnector({
 	getProvidedProps(props, searchState, searchResults, searchForFacetValuesResults) {
 		let {query, hits} = searchResults.results ? searchResults.results : {};
 
+		const quote = searchState && searchState.quote;
+
 		// let {query, hits} = {};
 
 		// This is necessary because we have multiple indices -- one for
@@ -724,16 +773,19 @@ const ConditionalHits = createConnector({
 		// log(props);
 		// log('');
 
-		return { query, hits, props };
+		return { query, hits, props, quote };
 	}
 
-})(({ query, hits, props }) => {
+})(({ query, hits, props, quote }) => {
 	const hs =
 		// do not display results if no hits, query or facets
-		(hits && query && props.facetCategory === '' && props.facetSubCategory === '') ||
+		((hits && query && props.facetCategory === '' && props.facetSubCategory === '') ||
 
 		// display (alphabetized) results if one of the facets is specified
-		(hits && (props.facetCategory !== '' || props.facetSubCategory !== '')) ?
+		(hits && (props.facetCategory !== '' || props.facetSubCategory !== '')) ||
+
+		// display if a short quote hash has been provided 
+		quote) ?
 
 		(<div id="hits">
 			<Grid>

@@ -154,7 +154,7 @@ class SearchResultComponent extends Component {
 					</Col>
 					<Col xs={8}>
 						<a className="QuoteName"
-							href={`${this.props.location.pathname}?query=${quoteHome}`}>
+							href={`${this.props.location.pathname}?quote=${quoteHome}`}>
 
 							<p>{this.props.hit.quoteName}</p>
 						</a>

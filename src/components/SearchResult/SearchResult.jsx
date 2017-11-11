@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import SearchResultComponent from './SearchResultComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { showSnackbar } from '../../redux.js';
+import { showSnackbar, setSearchQuery, setSearchState } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -14,6 +14,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		showSnackbar: (message, duration) => {
 			return dispatch(showSnackbar(message, duration));
+		},
+		setSearchQuery: (query) => {
+			return dispatch(setSearchQuery(query));
+		},
+		setSearchState: (searchState) => {
+			return dispatch(setSearchState(searchState));
 		}
 	}
 };
