@@ -44,9 +44,18 @@ import throttle from 'lodash.throttle';
 // React Router / Algolia Search integration
 const
 	updateAfter = 700,
-	createURL = (state, facets) => facets && facets !== 'All' ?
-		`?${qs.stringify({query: state.query, page: state.page, facets})}` :
-		`?${qs.stringify({query: state.query, page: state.page})}`,
+
+	createURL = (state, facets) => {
+		const encodedFacet = facets
+			.replace(/:\s/, '.')
+			.replace(/\s/, '-')
+			.replace(/\//, '~');
+
+		return facets && facets !== 'All' ?
+			`?${qs.stringify({query: state.query, page: state.page, facets: encodedFacet})}` :
+			`?${qs.stringify({query: state.query, page: state.page})}`
+	},
+
 	searchStateToUrl = (props, searchState) =>
 		searchState ? `${props.location.pathname}${createURL(searchState, props.search.facets)}` : '';
 
@@ -430,11 +439,16 @@ class HomeComponent extends Component {
 		let facetCategory = '',
 			facetSubCategory = '';
 
+		const decodedFacet = this.state.searchState.facets
+			.replace('.', ': ')
+			.replace('~', '/')
+			.replace('-', ' ');
+
 		[facetCategory, facetSubCategory] =
-			getPartsFromFacetString(this.state.searchState.facets);
+			getPartsFromFacetString(decodedFacet);
 
 		this.props.setSearchFacet(facetCategory, facetSubCategory,
-			this.state.searchState.facets);
+			decodedFacet);
 
     	this.quoteHits = document.querySelectorAll('.QuoteHit');
     	this.clipboard = new Clipboard(this.quoteHits);
