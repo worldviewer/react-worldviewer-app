@@ -577,10 +577,16 @@ class HomeComponent extends Component {
 		// 	this.props.router.location.state.query !== '' :
 		// 	false;
 
-		const categoryText = this.props.search.facetCategory +
-			(this.props.search.facetSubCategory ?
-				': ' + this.props.search.facetSubCategory :
-				'');
+		let categoryText;
+
+		if (this.state.searchState.quote) {
+			categoryText = 'this particular quote series';
+		} else {
+			categoryText = this.props.search.facetCategory +
+				(this.props.search.facetSubCategory ?
+					': ' + this.props.search.facetSubCategory :
+					'');			
+		}
 
 		let facetArray = [];
 
