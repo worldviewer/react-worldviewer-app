@@ -51,13 +51,19 @@ const
 			.replace(/\s/, '-')
 			.replace(/\//, '~');
 
-		return facets && facets !== 'All' ?
-			`?${qs.stringify({query: state.query, page: state.page, facets: encodedFacet})}` :
-			`?${qs.stringify({query: state.query, page: state.page})}`
+		if (facets && facets !== 'All') {
+			return `?${qs.stringify({query: state.query, page: state.page,
+				facets: encodedFacet})}`;
+		// } else if (state.quote) {
+		// 	return `?${qs.stringify({query: state.query, quote: state.quote})}`;
+		} else {
+			return `?${qs.stringify({query: state.query, page: state.page})}`;
+		}
 	},
 
 	searchStateToUrl = (props, searchState) =>
-		searchState ? `${props.location.pathname}${createURL(searchState, props.search.facets)}` : '';
+		searchState ? `${props.location.pathname}${createURL(searchState,
+			props.search.facets)}` : '';
 
 const imageStyles = {
 	display: 'block',
@@ -439,10 +445,14 @@ class HomeComponent extends Component {
 		let facetCategory = '',
 			facetSubCategory = '';
 
-		const decodedFacet = this.state.searchState.facets
+		const decodedFacet = this.state.searchState.facets ?
+
+			this.state.searchState.facets
 			.replace('.', ': ')
 			.replace('~', '/')
-			.replace('-', ' ');
+			.replace('-', ' ') :
+
+			'';
 
 		[facetCategory, facetSubCategory] =
 			getPartsFromFacetString(decodedFacet);

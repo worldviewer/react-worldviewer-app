@@ -120,12 +120,19 @@ class SearchResultComponent extends Component {
 	}
 
 	renderQuote(attributeName) {
-		const rightQuoteStyles = {
-			height: '15px',
-			position: 'relative',
-			bottom: '40px',
-			right: '20px'
-		};
+		const
+			rightQuoteStyles = {
+				height: '15px',
+				position: 'relative',
+				bottom: '40px',
+				right: '20px'
+			},
+
+			// quoteHome = this.props.hit.quoteSeriesItem ?
+			// 	`${this.props.hit.quoteSeriesHash}.${this.props.hit.quoteSeriesItem}` :
+			// 	`${this.props.hit.quoteSeriesHash}`;
+
+			quoteHome = `${this.props.hit.quoteSeriesHash}`;
 
 		return (<div>
 			<Row
@@ -146,7 +153,11 @@ class SearchResultComponent extends Component {
 							className="LeftQuote" />
 					</Col>
 					<Col xs={8}>
-						<p>{this.props.hit.quoteName}</p>
+						<a className="QuoteName"
+							href={`${this.props.location.pathname}?query=${quoteHome}`}>
+
+							<p>{this.props.hit.quoteName}</p>
+						</a>
 
 						<CustomHighlight
 							attributeName={attributeName}
