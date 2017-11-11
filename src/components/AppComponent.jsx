@@ -152,13 +152,20 @@ class AppComponent extends Component {
 		}
 
 		if (!this.props.snackbar.message && nextProps.snackbar.message) {
+			const
+				message = nextProps.snackbar.message,
+				duration = nextProps.snackbar.duration;
+
 			logTitle('Copied text to clipboard');
 			console.log('');
 
 			mobiscroll.snackbar({
-				message: nextProps.snackbar.message,
-				duration: nextProps.snackbar.duration
+				message,
+				duration
 			});
+
+			// Reset
+			this.props.showSnackbar('', 0);
 		}
 	}
 
