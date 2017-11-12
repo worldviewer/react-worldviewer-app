@@ -14,6 +14,7 @@ import reducer from './redux.js';
 // to resolve an error; update this version number when a stable release appears
 import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import { withRouter } from 'react-router-dom';
 
 import App from './components/App.jsx';
 
@@ -26,6 +27,8 @@ import './styles/bootstrap-solar.css';
 
 // Fonts
 import './styles/league-gothic-font.css';
+
+const NonBlockingApp = withRouter(App);
 
 // Middleware
 const middlewareStoreEnhancer = applyMiddleware(
@@ -56,7 +59,7 @@ const store = createStore(
 ReactDOM.render(
 	<Provider store={store}>
 		<ConnectedRouter history={history}>
-			<App />
+			<NonBlockingApp />
 		</ConnectedRouter>
 	</Provider>,
 	document.getElementById('root')

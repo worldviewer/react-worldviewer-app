@@ -464,6 +464,17 @@ export const setSearchState = (searchState) => {
 
 export default (state = initialState, action) => {
 	switch(action.type) {
+
+		// https://github.com/reactjs/react-router-redux
+		// https://stackoverflow.com/questions/38801601/reducer-not-catching-location-change-action
+		// "An action type that you can listen for in your reducers to be 
+		// notified of route updates. Fires after any changes to history."
+
+		// case '@@router/LOCATION_CHANGE':
+		// 	console.warn('LOCATION_CHANGE from your reducer', action);
+		// 	console.log('');
+		// 	return state;
+
 		case types.SET_TOKEN_FETCH_COMPLETE:
 			return {
 				...state,

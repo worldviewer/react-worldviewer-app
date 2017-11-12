@@ -148,17 +148,21 @@ class RouteLoaderComponent extends Component {
 				<Route
 					exact
 					path="/"
+					location={this.props.location}
 					component={AsyncHome} />
 				<Route
 					exact
 					path="/login"
+					location={this.props.location}
 					component={AsyncLogin} />
 				<Route
 					exact
 					path="/signup"
+					location={this.props.location}
 					component={AsyncSignup} />
 				<Route
 					path="/news"
+					location={this.props.location}
 					component={AsyncNews} />
 
 				{/* https://stackoverflow.com/questions/27864720/react-router-pass-props-to-handler-component */}
@@ -166,6 +170,7 @@ class RouteLoaderComponent extends Component {
 					path="/:controversy/:level(worldview)/card"
 					render={ (props) =>
 						<AsyncMainStack
+							location={this.props.location}
 							cardStackLevel={2}
 							discourseLevel={true}
 							{...props}/> } />
@@ -174,6 +179,7 @@ class RouteLoaderComponent extends Component {
 					path="/:controversy/:level(worldview)/text"
 					render={ (props) =>
 						<AsyncMainStack
+							location={this.props.location}
 							cardStackLevel={1}
 							discourseLevel={true}
 							{...props}/> } />
@@ -181,6 +187,7 @@ class RouteLoaderComponent extends Component {
 				<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/comments"
 					render={ (props) =>
 						<AsyncMainStack
+							location={this.props.location}
 							cardStackLevel={5}
 							discourseLevel={true}
 							{...props}/> } />
@@ -191,6 +198,7 @@ class RouteLoaderComponent extends Component {
 					path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed"
 					render={ (props) =>
 						<AsyncMainStack
+							location={this.props.location}
 							cardStackLevel={4}
 							discourseLevel={true}
 							{...props}/> } />
@@ -199,6 +207,7 @@ class RouteLoaderComponent extends Component {
 					path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)"
 					render={ (props) =>
 						<AsyncMainStack
+							location={this.props.location}
 							cardStackLevel={3}
 							discourseLevel={true}
 							{...props}/> } />

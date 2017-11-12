@@ -29,7 +29,7 @@ import { getPartsFromFacetString, createFacetStringFromParts } from '../../libs/
 import config from '../../config';
 
 // Error/Logger Handling
-import { log, logTitle } from '../../libs/utils';
+import { log, logTitle, logQuery } from '../../libs/utils';
 
 // Clipboard Dependencies
 import Clipboard from 'clipboard';
@@ -98,6 +98,30 @@ class HomeComponent extends Component {
 		this.props = props;
 
 		this.handleKeyDown = this.handleKeyDown.bind(this);
+	}
+
+	// This is how we make sure that the back button alters the page content
+	onBackOrForwardButtonEvent(event) {
+		const
+			newSearchState = qs.parse(this.props.location.search.slice(1)),
+
+			newFacets = newSearchState.facets
+				.replace('.', ': ')
+				.replace('~', '/')
+				.replace('-', ' '),
+
+			[facetCategory, facetSubCategory] =
+				getPartsFromFacetString(newFacets);
+
+		this.setState({
+			searchState: {
+				...newSearchState,
+				facets: newFacets
+			}
+		});
+
+		this.props.setSearchFacet(facetCategory, facetSubCategory,
+			newFacets);
 	}
 
 	refreshForm() {
@@ -506,6 +530,8 @@ class HomeComponent extends Component {
 
 		document.addEventListener("keydown", this.handleKeyDown);
 		this.setupKeySequenceHandlers();
+
+		window.onpopstate = this.onBackOrForwardButtonEvent.bind(this);
 	}
 
 	// This is meant to resolve an issue that occurs when the facet values are changed, but not the
@@ -568,6 +594,11 @@ class HomeComponent extends Component {
 			log('');
 
 			this.forceUpdate();
+		}
+
+		if (nextProps.location.search !== this.props.location.search) {
+			logQuery(this.props.location.search);
+			logQuery('--> ' + nextProps.location.search);
 		}
 	}
 

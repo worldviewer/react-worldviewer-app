@@ -70,6 +70,16 @@ export const consoleRouteStyles = [
 	'font-size: 25px'
 ].join(';');
 
+export const consoleQueryStyles = [
+	'background: green',
+	'color: white',
+	'line-height: 60px',
+	'text-align: center',
+	'font-weight: bold',
+	'padding: 10px',
+	'font-size: 25px'
+].join(';');
+
 // When we log something, we should save it to both the console and
 // log4javascript, which we use to upload to our server
 export function log(message) {
@@ -89,6 +99,11 @@ export function logTitle(message) {
 // For logging route changes
 export function logRoute(message) {
 	console.log('%c' + message, consoleRouteStyles);
+}
+
+// For logging route changes
+export function logQuery(message) {
+	console.log('%c' + message, consoleQueryStyles);
 }
 
 export function logObject(obj) {
