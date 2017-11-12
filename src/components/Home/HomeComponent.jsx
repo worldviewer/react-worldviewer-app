@@ -23,7 +23,7 @@ import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { createConnector } from "react-instantsearch";
 import { connectInfiniteHits } from 'react-instantsearch/connectors';
-import { getPartsFromFacetString, createFacetStringFromParts } from '../../libs/utils';
+import { getPartsFromFacetString, createFacetStringFromParts, getFacetStringFromURL } from '../../libs/utils';
 
 // Config
 import config from '../../config';
@@ -46,16 +46,20 @@ const
 	updateAfter = 700,
 
 	createURL = (state, facets) => {
-		const encodedFacet = facets
+		const encodedFacets = facets
 			.replace(/:\s/, '.')
 			.replace(/\s/, '-')
 			.replace(/\//, '~');
+
+		logTitle('Updating URL with state:');
+		log(state);
+		log('');
 
 		if (state.quote) {
 			return `?${qs.stringify({query: state.query, quote: state.quote})}`;
 		} else if (facets && facets !== 'All') {
 			return `?${qs.stringify({query: state.query, page: state.page,
-				facets: encodedFacet})}`;
+				facets: encodedFacets})}`;
 		} else {
 			return `?${qs.stringify({query: state.query, page: state.page})}`;
 		}
@@ -101,27 +105,27 @@ class HomeComponent extends Component {
 	}
 
 	// This is how we make sure that the back button alters the page content
-	onBackOrForwardButtonEvent(event) {
+	async onBackOrForwardButtonEvent(event) {
 		const
-			newSearchState = qs.parse(this.props.location.search.slice(1)),
+			newSearchState = qs.parse(this.props.location.search.slice(1));
 
-			newFacets = newSearchState.facets
-				.replace('.', ': ')
-				.replace('~', '/')
-				.replace('-', ' '),
+		let [newFacets, facetCategory, facetSubCategory] =
+			getFacetStringFromURL(newSearchState.facets);
 
-			[facetCategory, facetSubCategory] =
-				getPartsFromFacetString(newFacets);
-
-		this.setState({
+		await this.setState({
 			searchState: {
 				...newSearchState,
 				facets: newFacets
 			}
 		});
 
-		this.props.setSearchFacet(facetCategory, facetSubCategory,
+		await this.props.setSearchFacet(facetCategory, facetSubCategory,
 			newFacets);
+
+		logTitle('Setting search and facets based upon URL ...');
+		log('searchState:');
+		log(this.state.searchState);
+		log('');
 	}
 
 	refreshForm() {
@@ -507,20 +511,8 @@ class HomeComponent extends Component {
 			this.props.setSearchQuery(this.state.searchState.query);
 		}
 
-		let facetCategory = '',
-			facetSubCategory = '';
-
-		const decodedFacet = this.state.searchState.facets ?
-
-			this.state.searchState.facets
-			.replace('.', ': ')
-			.replace('~', '/')
-			.replace('-', ' ') :
-
-			'';
-
-		[facetCategory, facetSubCategory] =
-			getPartsFromFacetString(decodedFacet);
+		const [decodedFacet, facetCategory, facetSubCategory] =
+			getFacetStringFromURL(this.state.searchState.facets);
 
 		this.props.setSearchFacet(facetCategory, facetSubCategory,
 			decodedFacet);
@@ -534,8 +526,8 @@ class HomeComponent extends Component {
 		window.onpopstate = this.onBackOrForwardButtonEvent.bind(this);
 	}
 
-	// This is meant to resolve an issue that occurs when the facet values are changed, but not the
-	// search query itself.  The search results component in this case does not understand that it
+	// This is meant to resolve an issue that occurs when the search has changed in some sort
+	// of manner.  The search results component does not always understand that it
 	// needs to update, even though the Stats component does update -- and it appears to happen
 	// exclusively when the page has scrolled past the first.
 	async componentWillReceiveProps(nextProps) {
@@ -589,7 +581,7 @@ class HomeComponent extends Component {
 				})
 			}
 
-			logTitle('Forcing search result update ...');
+			logTitle('Forcing search result update back to page 1 ...');
 			log(this.state.searchState);
 			log('');
 
@@ -599,6 +591,45 @@ class HomeComponent extends Component {
 		if (nextProps.location.search !== this.props.location.search) {
 			logQuery(this.props.location.search);
 			logQuery('--> ' + nextProps.location.search);
+		}
+	}
+
+	// This is how we will force the page to appear in the URL
+	async componentDidUpdate(prevProps, prevState) {
+		if (this.state.searchState && prevState.searchState) {
+			const
+				cur = this.state.searchState,
+				prev = prevState.searchState;
+
+			if (cur.indices && prev.indices) {
+				const
+					curIndices = cur.indices,
+					prevIndices = prev.indices;
+
+				if (curIndices['controversy-cards'] &&
+					prevIndices['controversy-cards']) {
+
+					const
+						curCards = curIndices['controversy-cards'],
+						prevCards = prevIndices['controversy-cards'];
+
+					if (curCards.page !== prevCards.page) {
+						await this.setState(prevState => ({
+							searchState: {
+								...prevState.searchState,
+								page: curCards.page
+							}
+						}));
+
+						logTitle('Pagination event:');
+						log(prevCards.page + ' --> ' + curCards.page);
+						log(this.state.searchState);
+						log('');
+
+						this.props.setSearchState(this.state.searchState);
+					}
+				}
+			}
 		}
 	}
 
@@ -712,7 +743,6 @@ class HomeComponent extends Component {
 					</mobiscroll.Image>
 					</div>
 
-					{/* searchState={this.state.searchState} */}
 					<InstantSearch
 						appId="HDX7ZDMWE9"
 						apiKey="f9898dbf6ec456d206e59bcbc604419d"
@@ -775,9 +805,8 @@ const ConditionalHits = createConnector({
 	getProvidedProps(props, searchState, searchResults, searchForFacetValuesResults) {
 		let {query, hits} = searchResults.results ? searchResults.results : {};
 
+		// We use this to detect if we are displaying a quote series
 		const quote = searchState && searchState.quote;
-
-		// let {query, hits} = {};
 
 		// This is necessary because we have multiple indices -- one for
 		// categories and another for cards
@@ -786,8 +815,12 @@ const ConditionalHits = createConnector({
 			// log(searchResults.results['controversy-cards']);
 			// log('');
 
-			query = searchResults.results['controversy-cards'].query;
-			hits = searchResults.results['controversy-cards'].hits;
+			const
+				controResults = searchResults.results['controversy-cards'];
+
+			query = controResults.query;
+			hits = controResults.hits;
+
 		} else {
 			// logTitle('searchResults:');
 			// log(searchResults.results);

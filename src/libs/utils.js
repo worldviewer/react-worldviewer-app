@@ -31,6 +31,24 @@ export function createFacetStringFromParts(facetCategory, facetSubCategory) {
 	}
 }
 
+export function getFacetStringFromURL(rawFacetString) {
+	let decodedFacetString = '',
+		facetCategory = '',
+		facetSubCategory = '';
+
+	if (rawFacetString) {
+		decodedFacetString = rawFacetString
+			.replace('.', ': ')
+			.replace('~', '/')
+			.replace('-', ' ');
+
+		[facetCategory, facetSubCategory] =
+			getPartsFromFacetString(decodedFacetString);
+	}
+
+	return [decodedFacetString, facetCategory, facetSubCategory];
+}
+
 // When there is an expired token, the very first error message is:
 // Authorization Error: __WEBPACK_IMPORTED_MODULE_4__sigV4Client__.a.newClient(...)
 // .signRequest is not a function.  Subsequent messages will then warn that
