@@ -150,16 +150,19 @@ class RouteLoaderComponent extends Component {
 					path="/"
 					location={this.props.location}
 					component={AsyncHome} />
+
 				<Route
 					exact
 					path="/login"
 					location={this.props.location}
 					component={AsyncLogin} />
+
 				<Route
 					exact
 					path="/signup"
 					location={this.props.location}
 					component={AsyncSignup} />
+					
 				<Route
 					path="/news"
 					location={this.props.location}

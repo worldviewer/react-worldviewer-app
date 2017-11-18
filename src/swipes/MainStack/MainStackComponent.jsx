@@ -58,11 +58,19 @@ class MainStackComponent extends Component {
 			'/comments'
 		];
 
+		logTitle('this.cardStackLevels:');
+		log(this.cardStackLevels);
+		log('');
+
 		this.feedStackLevels = [
 			'',
 			'/' + (this.props.match.params.feed || this.props.feed.data.feedSlug),
 			'/comments'			
 		];
+
+		logTitle('this.feedStackLevels:');
+		log(this.feedStackLevels);
+		log('');
 
 		// When we land on this page without swiping, we determine and set the horizontal swipe
 		// position according to the cardStackLevel prop passed on by the router
@@ -88,15 +96,18 @@ class MainStackComponent extends Component {
 		this.props.setFeedsDataLoading();
 	}
 
+	// This fetches data for a specific feed
 	async loadFeedData() {
 		const
 			shortSlug = this.props.router.location.pathname.split('/')[1],
 			cardSlug = this.props.slugs.hash[shortSlug],
-			feedSlug = this.props.router.location.pathname.split('/')[4];
+			feedSlug = this.props.router.location.pathname.split('/')[4] || '';
 
 		logTitle('Slug data:');
 		log('Short slug: ' + shortSlug);
 		log('Feed slug: ' + feedSlug);
+		log('this.props.router.location:');
+		log(this.props.router.location);
 		log('');
 
 		const feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
@@ -110,6 +121,7 @@ class MainStackComponent extends Component {
 		this.props.unsetFeedDataLoading();
 	}
 
+	// This fetches the feed list data for this particular controversy
 	async loadFeedsData() {
 		const
 			shortSlug = this.props.router.location.pathname.split('/')[1],

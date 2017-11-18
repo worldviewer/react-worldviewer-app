@@ -176,7 +176,7 @@ class FeedCardComponent extends Component {
 		log('this.props.feed.data.discourseLevel: ' + this.props.feed.data.discourseLevel);
 		log('');
 		
-		if (!this.props.loading.feed) {
+		if (!this.props.loading.feed && this.props.feed.data.text) {
 			this.constructText();
 		}
 
@@ -191,7 +191,7 @@ class FeedCardComponent extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.loading.feed &&
-			!nextProps.loading.feed) {
+			!nextProps.loading.feed && this.props.feed.data.text) {
 
 			this.constructText();
 		}
