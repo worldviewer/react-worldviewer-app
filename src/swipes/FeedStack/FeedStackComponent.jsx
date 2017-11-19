@@ -9,7 +9,7 @@ import './FeedStack.css';
 import SwipeableViews from 'react-swipeable-views';
 import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
 import FeedCard from '../../components/FeedCard/FeedCard.jsx';
-import Comments from '../../components/Comments/Comments.jsx';
+import Feed from '../../components/Feed/Feed.jsx';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
@@ -86,8 +86,8 @@ class FeedStackComponent extends Component {
 								<FeedCard level={currentLevel} />
 							</div>
 
-							<div className="Comments">
-								<Comments level={currentLevel} />
+							<div className="Feed">
+								<Feed level={currentLevel} />
 							</div>
 						</SwipeableViews>
 					</Row>

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import './Comments.css';
+import './Feed.css';
 import { withRouter } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
-class CommentsComponent extends Component {
+class FeedComponent extends Component {
 	constructor(props) {
 		super(props);
 
@@ -19,11 +19,11 @@ class CommentsComponent extends Component {
 
 	render() {
 		return (
-			<div className="Comments">
+			<div className="Feed">
 				<Grid>
 					<Row>
 						<Col>
-							<h3><code>Comments</code></h3>
+							<h3><code>Feed</code></h3>
 						</Col>
 					</Row>
 				</Grid>
@@ -33,4 +33,4 @@ class CommentsComponent extends Component {
 
 }
 
-export default withRouter(CommentsComponent);
+export default withRouter(FeedComponent);

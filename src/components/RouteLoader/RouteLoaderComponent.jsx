@@ -101,6 +101,11 @@ const AsyncNews = Loadable({
 	loader: () => import('../News/News.jsx')
 });
 
+const AsyncFeed = Loadable({
+	...settings,
+	loader: () => import('../Feed/Feed.jsx')
+});
+
 const AsyncMainStack = Loadable({
 	...settings,
 	loader: () => import('../../swipes/MainStack/MainStack.jsx')
@@ -162,11 +167,16 @@ class RouteLoaderComponent extends Component {
 					path="/signup"
 					location={this.props.location}
 					component={AsyncSignup} />
-					
+
 				<Route
 					path="/news"
 					location={this.props.location}
 					component={AsyncNews} />
+					
+				<Route
+					path="/feed"
+					location={this.props.location}
+					component={AsyncFeed} />
 
 				{/* https://stackoverflow.com/questions/27864720/react-router-pass-props-to-handler-component */}
 				<Route

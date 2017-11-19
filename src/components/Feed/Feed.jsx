@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import CommentsComponent from './CommentsComponent.jsx';
+import FeedComponent from './FeedComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -12,9 +12,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {...ownProps}
 };
 
-const Comments = connect(
+const Feed = connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(CommentsComponent);
+)(FeedComponent);
 
-export default withRouter(Comments);
+export default withRouter(Feed);
