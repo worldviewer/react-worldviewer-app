@@ -1,7 +1,7 @@
 import config from '../config.js';
 import AWS from 'aws-sdk';
 import sigV4Client from './sigV4Client';
-import { log, logTitle, logObject, logError } from './utils';
+import { log, logTitle, logObject, logError, encode } from './utils';
 import { CognitoUserPool, CognitoUser, CognitoUserAttribute, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 // http://serverless-stack.com/chapters/connect-to-api-gateway-with-iam-auth.html
@@ -144,6 +144,37 @@ export function getAwsCredentials(userToken) {
 	}
 }
 
+export function tokenExpired() {
+	return AWS.config && AWS.config.credentials ?
+		Date.now() > AWS.config.credentials.expireTime - 60000 :
+		true;
+}
+
+export async function refreshToken(userToken, username) {
+	if (AWS.config.credentials &&
+		AWS.config.credentials.accessKeyId &&
+		AWS.config.credentials.secretAccessKey &&
+		!tokenExpired()) {
+
+		const minutes = parseInt((AWS.config.credentials.expireTime - Date.now())/60000, 10);
+
+		log('(credentials should still be valid, will expire in ' + minutes +
+			' minutes');
+		log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
+		log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
+		log('');
+	} else {
+		log('There are no pre-existing credentials, so they are being fetched ...');
+
+		await getAwsCredentials(userToken, username);
+
+		logTitle('Auth Complete!  The new credentials are ...');
+		log('accessKeyId: ' + AWS.config.credentials.accessKeyId);
+		log('secretAccessKey: ' + AWS.config.credentials.secretAccessKey);
+		log('');
+	}
+}
+
 // http://serverless-stack.com/chapters/upload-a-file-to-s3.html
 // 1. It takes a file object and the user token as parameters.
 export async function s3Upload(file, userToken) {
@@ -168,6 +199,46 @@ export async function s3Upload(file, userToken) {
 		ContentType: file.type,
 		ACL: 'public-read',
 	}).promise();
+}
+
+export async function s3Download(s3Key, fileType, source, userToken) {
+	// await refreshToken(userToken, username);
+
+	logTitle('s3Download from Bucket:');
+	log('source: ' + source);
+	log(config.s3[source].BUCKET);
+	log('');
+
+	const bucket = new AWS.S3({
+		params: {
+			Bucket: config.s3[source].BUCKET
+		},
+
+		region: config.s3[source].REGION
+	});
+
+	return new Promise((resolve, reject) => {
+		bucket.getObject({ Key: s3Key },
+			(err, data) => {
+
+			if (err) {
+				logError( err, 'Image Download Error: Could not fetch the image',
+					userToken );
+
+				reject(err);
+				return;
+			}
+
+			log('... S3 image received: ' + s3Key);
+
+			let image = new Image();
+			image.src = "data:" + fileType + ";base64," + encode(data.Body);
+
+			image.onload = () => {
+				resolve(image);
+			}
+		});
+	});
 }
 
 // getCurrentUser() and getUserToken() come from http://serverless-stack.com

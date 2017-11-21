@@ -6,6 +6,17 @@
 import mobiscroll from './mobiscroll.custom-3.2.5.min';
 import './mobiscroll.custom-3.2.5.min.css';
 
+// https://stackoverflow.com/questions/32702431/display-images-fetched-from-s3
+export function encode(data) {
+	let str = '';
+	for (let i = 0; i < data.length; i++) {
+		str = str + String.fromCharCode(data[i]);
+	}
+
+	// const str = data.reduce((a,b) => a + String.fromCharCode(b), '');
+    return btoa(str).replace(/.{76}(?=.)/g,'$&\n');
+}
+
 export function getPartsFromFacetString(facetString = '') {
 	let facetCategory = '',
 		facetSubCategory = '';
@@ -54,6 +65,12 @@ export function getFacetStringFromURL(rawFacetString) {
 // .signRequest is not a function.  Subsequent messages will then warn that
 // the token is expired.
 export function isExpiredToken(exceptionMessage) {
+	console.log(exceptionMessage);
+
+	if (!exceptionMessage) {
+		return false;
+	}
+
 	return exceptionMessage.match('signRequest is not a function') ||
 		exceptionMessage.match('Token expired');
 }
