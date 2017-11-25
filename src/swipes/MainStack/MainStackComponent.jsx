@@ -33,10 +33,6 @@ class MainStackComponent extends Component {
 
 		injectTapEventPlugin();
 
-		this.state = {
-			id: null
-		}
-
 		this.props = props;
 
 		this.discourseLevels = [
@@ -63,7 +59,7 @@ class MainStackComponent extends Component {
 			this.props.setCardStackLevel(this.props.cardStackLevel, 'right');			
 		}
 
-		this.parameterDiscourseLevel =
+		this.initialDiscourseLevel =
 			this.discourseLevels.indexOf(this.props.match.params.level);
 
 		// Same sort of situation for discourse level, but we have to also reverse-engineer the
@@ -71,7 +67,7 @@ class MainStackComponent extends Component {
 		// router prop to differentiate a landing from a swipe.  On landing, we must set the
 		// discourse level (since this is otherwise set by swiping).
 		if (this.props.discourseLevel) {
-			this.props.setDiscourseLevel(this.parameterDiscourseLevel, 'up');
+			this.props.setDiscourseLevel(this.initialDiscourseLevel, 'up');
 		}
 
 		this.handleSwipe = this.handleSwipe.bind(this);
@@ -120,6 +116,23 @@ class MainStackComponent extends Component {
 		this.props.unsetFeedsDataLoading();
 	}
 
+	async loadCardData() {
+		const
+			shortSlug = this.props.router.location.pathname.split('/')[1];
+
+		this.props.setCardDataLoading();
+
+		const card = await invokeApig( {base: 'cards', path: '/controversies/' +
+			this.props.slugs.hash[shortSlug]}, this.props.user.token);
+		this.props.setCardData(card);
+
+		logTitle('Data Step 2: Fetching controversy card data ...');
+		logObject(card);
+		log('');
+
+		this.props.unsetCardDataLoading();
+	}
+
 	async componentDidMount() {
 		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
 			this.props.discourse.isFullScreen ? 3000 : 6000);
@@ -133,6 +146,7 @@ class MainStackComponent extends Component {
 			// We handle this FeedCard data here because we only
 			// want to run this once, and we are instantiating 4
 			// different instances ...
+			await this.loadCardData();
 			await this.loadFeedData();
 			await this.loadFeedsData();
 		}
@@ -188,22 +202,13 @@ class MainStackComponent extends Component {
 		this.deactivateMainStackOverlay();
 	}
 
-	showSettings(event) {
-		event.preventDefault();
-	}
-
 	render() {
 		const
-			// h = new HtmlToReactParser(),
-
 			containerStyles = {
 				height: '100vh'
 			},
 
-			mainStackStyles = this.props.navbar.hidden
-				&& this.props.cardStack.level === 2 ?
-				{ top: '-55px' } :
-				{ top: '50px' };
+			mainStackStyles = { top: '50px' };
 
 		return (
 			<div

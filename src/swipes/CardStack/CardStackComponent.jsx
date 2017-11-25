@@ -36,40 +36,6 @@ class CardStackComponent extends Component {
 		];
 	}
 
-	componentDidMount() {
-		// If the slugs finish loading before the component has loaded ...
-		if (!this.props.loading.slugs && this.props.fetchComplete.slugs) {
-			this.loadCardData();
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		// If the slugs finish loading after the component has mounted ...
-		if (!nextProps.loading.slugs &&
-			!this.props.fetchComplete.slugs &&
-			nextProps.fetchComplete.slugs) {
-			
-			this.loadCardData();
-		}
-	}
-
-	async loadCardData() {
-		const
-			shortSlug = this.props.router.location.pathname.split('/')[1];
-
-		this.props.setCardDataLoading();
-
-		const card = await invokeApig( {base: 'cards', path: '/controversies/' +
-			this.props.slugs.hash[shortSlug]}, this.props.user.token);
-		this.props.setCardData(card);
-
-		logTitle('Data Step 2: Fetching controversy card data ...');
-		logObject(card);
-		log('');
-
-		this.props.unsetCardDataLoading();
-	}
-
 	handleSwipe(index, previous) {
 		const
 			swipeDirection = index > previous ? 'right' : 'left';

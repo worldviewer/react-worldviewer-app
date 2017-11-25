@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CardStackComponent from './CardStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setDiscourseLevel, setCardStackLevel, enableMainStackSwipeable, disableMainStackSwipeable, setCardData, setCardDataLoading, unsetCardDataLoading } from '../../redux.js';
+import { setDiscourseLevel, setCardStackLevel, enableMainStackSwipeable, disableMainStackSwipeable } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -30,15 +30,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		disableMainStackSwipeable: () => {
 			return dispatch(disableMainStackSwipeable());
-		},
-		setCardData: (card) => {
-			return dispatch(setCardData(card));
-		},
-		setCardDataLoading: () => {
-			return dispatch(setCardDataLoading());
-		},
-		unsetCardDataLoading: () => {
-			return dispatch(unsetCardDataLoading());
 		}
 	};
 };
