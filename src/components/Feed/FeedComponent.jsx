@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // UI Dependencies
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row } from 'react-bootstrap';
 import './Feed.css';
 
 // Image Manipulation Dependencies
@@ -14,10 +14,10 @@ import convert from 'color-convert';
 
 // AWS Dependencies
 import { s3Download } from '../../libs/aws';
-import config from '../../config';
+// import config from '../../config';
 
 // Error/Logger/Notifications Handling
-import { log, logTitle, logError } from '../../libs/utils';
+import { log, logTitle } from '../../libs/utils';
 
 class FeedComponent extends Component {
 	constructor(props) {
@@ -147,8 +147,6 @@ class FeedComponent extends Component {
 				return (<div className='CaptionedImage' style={captionedImageStyles}>
 						<img src={src} alt='feed post' style={imageStyles} />
 					</div>);
-
-				break;
 		}
 	}
 

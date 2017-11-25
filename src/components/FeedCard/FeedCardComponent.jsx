@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 
 // UI Dependencies
 import './FeedCard.css';
-import share from '../../images/share.svg';
-import down from '../../images/downdown.svg';
-import shareHover from '../../images/share-hover.svg';
-import downHover from '../../images/downdown-hover.svg';
-import chris from '../../images/chris.jpg';
-import { Grid, Row, Image } from 'react-bootstrap';
-import zenscroll from 'zenscroll';
+// import share from '../../images/share.svg';
+// import down from '../../images/downdown.svg';
+// import shareHover from '../../images/share-hover.svg';
+// import downHover from '../../images/downdown-hover.svg';
+// import chris from '../../images/chris.jpg';
+import { Grid } from 'react-bootstrap';
+// import zenscroll from 'zenscroll';
 import OpenSeadragon from 'openseadragon';
 // import { Badge } from 'react-bootstrap';
 
@@ -171,11 +171,6 @@ class FeedCardComponent extends Component {
 	}
 
 	componentDidMount() {
-		logTitle('Feed card data:');
-		log('this.props.discourse.level: ' + this.props.discourse.level);
-		log('this.props.feed.data.discourseLevel: ' + this.props.feed.data.discourseLevel);
-		log('');
-
 		this.props.setFeedStackLevel(1);
 		
 		if (!this.props.loading.feed && this.props.feed.data.text) {

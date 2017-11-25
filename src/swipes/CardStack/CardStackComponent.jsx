@@ -14,12 +14,6 @@ import FeedCard from '../../components/FeedCard/FeedCard.jsx';
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
 
-// AWS Dependencies
-import { invokeApig } from '../../libs/aws';
-
-// Error/Logger Handling
-import { log, logTitle, logObject } from '../../libs/utils';
-
 class CardStackComponent extends Component {
 	constructor(props) {
 		super(props);
