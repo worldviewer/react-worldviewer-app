@@ -9,7 +9,7 @@ import './CardStack.css';
 import SwipeableViews from 'react-swipeable-views';
 import Browser from '../../components/Browser/Browser.jsx';
 import CardText from '../../components/CardText/CardText.jsx';
-import Feed from '../../components/Feed/Feed.jsx';
+// import Feed from '../../components/Feed/Feed.jsx';
 import Card from '../../components/Card/Card.jsx';
 import FeedCard from '../../components/FeedCard/FeedCard.jsx';
 import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
@@ -136,10 +136,6 @@ class CardStackComponent extends Component {
 
 							<div className="FeedCard">
 								<FeedCard level="worldview" />
-							</div>
-
-							<div className="Feed">
-								<Feed />
 							</div>
 						</SwipeableViews>
 					</Row>
