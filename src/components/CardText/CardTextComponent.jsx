@@ -78,13 +78,13 @@ class CardTextComponent extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.discourse.level === 0 && !this.props.loading.card) {
+		if (!this.props.loading.card) {
 			this.constructText();
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.discourse.level === 0 && this.props.loading.card && !nextProps.loading.card) {
+		if (this.props.loading.card && !nextProps.loading.card) {
 			this.constructText();
 		}
 

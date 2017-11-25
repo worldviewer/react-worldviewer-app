@@ -275,19 +275,7 @@ class AppComponent extends Component {
 										Search
 									</NavItem> ]
 
-								: [ <RouteNavItem key={1}
-										onClick={this.handleNavLink}
-										href="/signup">
-										Signup
-									</RouteNavItem>,
-
-									<RouteNavItem key={2}
-										onClick={this.handleNavLink}
-										href="/login">
-										Login
-									</RouteNavItem>,
-
-									<NavItem key={3}
+								: [ <NavItem key={1}
 										onClick={this.searchClickHandler.bind(this)}>
 										Search
 									</NavItem> ]
