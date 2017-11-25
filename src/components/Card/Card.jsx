@@ -14,7 +14,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		toggleNavbarState: (zoom) => {
-			dispatch(toggleNavbarState(zoom));
+			return dispatch(toggleNavbarState(zoom));
 		}
 	};
 };

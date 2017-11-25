@@ -175,6 +175,8 @@ class FeedCardComponent extends Component {
 		log('this.props.discourse.level: ' + this.props.discourse.level);
 		log('this.props.feed.data.discourseLevel: ' + this.props.feed.data.discourseLevel);
 		log('');
+
+		this.props.setFeedStackLevel(1);
 		
 		if (!this.props.loading.feed && this.props.feed.data.text) {
 			this.constructText();

@@ -9,13 +9,11 @@ import './MainStack.css';
 // Components
 import SwipeableViews from 'react-swipeable-views';
 import CardStack from '../CardStack/CardStack';
-import FeedStack from '../FeedStack/FeedStack';
+import FeedCard from '../../components/FeedCard/FeedCard';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // Overlays
 import MainStackOverlay from '../../overlays/MainStackOverlay/MainStackOverlay';
-import FeedStackOverlay from '../../overlays/FeedStackOverlay/FeedStackOverlay';
-import CardStackOverlay from '../../overlays/CardStackOverlay/CardStackOverlay';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
@@ -224,10 +222,6 @@ class MainStackComponent extends Component {
 				ref={c => this.container = c}
 				className="MainStack">
 
-				{ this.props.discourse.level === 0 ?
-					<CardStackOverlay /> :
-					<FeedStackOverlay /> }
-
 				<Grid>
 					<Row>
 					
@@ -254,22 +248,22 @@ class MainStackComponent extends Component {
 
 							<div className="Model">
 								{ !this.props.loading.feed &&
-									<FeedStack level="model" /> }
+									<FeedCard level="model" /> }
 							</div>
 
 							<div className="Propositional">
 								{ !this.props.loading.feed &&
-									<FeedStack level="propositional" /> }
+									<FeedCard level="propositional" /> }
 							</div>
 
 							<div className="Conceptual">
 								{ !this.props.loading.feed &&
-									<FeedStack level="conceptual" /> }
+									<FeedCard level="conceptual" /> }
 							</div>
 
 							<div className="Narrative">
 								{ !this.props.loading.feed &&
-									<FeedStack level="narrative" /> }
+									<FeedCard level="narrative" /> }
 							</div>
 						</SwipeableViews>
 
