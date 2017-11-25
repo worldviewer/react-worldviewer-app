@@ -107,7 +107,7 @@ const initialState = {
 	},
 
 	cardStack: {
-		level: 2,
+		level: 1,
 		swipeDirection: 'right'
 	},
 

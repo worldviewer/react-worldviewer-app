@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CardComponent from './CardComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { toggleNavbarState } from '../../redux';
+// import { toggleNavbarState } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -12,11 +12,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	return {
-		toggleNavbarState: (zoom) => {
-			return dispatch(toggleNavbarState(zoom));
-		}
-	};
+	return {...ownProps};
 };
 
 const Card = connect(

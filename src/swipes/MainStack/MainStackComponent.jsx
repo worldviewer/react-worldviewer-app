@@ -48,12 +48,9 @@ class MainStackComponent extends Component {
 		];
 
 		this.cardStackLevels = [
-			'/browser',
 			'/text',
 			'/card',
-			'',
-			'/' + this.props.match.params.feed || this.props.feed.data.feedSlug,
-			'/comments'
+			'/feed'
 		];
 
 		logTitle('this.cardStackLevels:');
@@ -89,9 +86,6 @@ class MainStackComponent extends Component {
 
 		this.handleSwipe = this.handleSwipe.bind(this);
 		this.changeRoute = this.changeRoute.bind(this);
-
-		this.props.setFeedDataLoading();
-		this.props.setFeedsDataLoading();
 	}
 
 	// This fetches data for a specific feed
@@ -170,6 +164,12 @@ class MainStackComponent extends Component {
 		if (nextProps.loading.feed && !this.props.loading.feed) {
 			this.props.unsetFeedDataLoading();
 		}
+	}
+
+	componentWillMount() {
+		this.props.setCardDataLoading();
+		this.props.setFeedDataLoading();
+		this.props.setFeedsDataLoading();
 	}
 
 	handleSwipe(index, previous) {

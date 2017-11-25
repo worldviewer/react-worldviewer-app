@@ -7,12 +7,9 @@ import './CardStack.css';
 
 // Components
 import SwipeableViews from 'react-swipeable-views';
-import Browser from '../../components/Browser/Browser.jsx';
 import CardText from '../../components/CardText/CardText.jsx';
-// import Feed from '../../components/Feed/Feed.jsx';
 import Card from '../../components/Card/Card.jsx';
 import FeedCard from '../../components/FeedCard/FeedCard.jsx';
-import FeedCardList from '../../components/FeedCardList/FeedCardList.jsx';
 
 // React Router Dependencies
 import { withRouter } from 'react-router-dom';
@@ -111,10 +108,6 @@ class CardStackComponent extends Component {
 							index={this.props.cardStack.level}
 							onChangeIndex={this.handleSwipe}>
 
-							<div className="Browser">
-								<Browser />
-							</div>
-
 							{/* We have to do this because there app needs help differentiating
 							    swipes from scrolls ... */}
 							<div className="CardText">
@@ -128,10 +121,6 @@ class CardStackComponent extends Component {
 
 							<div className="CardStackParent">
 								<Card />
-							</div>
-
-							<div className="FeedCardList">
-								<FeedCardList level="worldview" />
 							</div>
 
 							<div className="FeedCard">

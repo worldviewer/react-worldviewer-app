@@ -184,7 +184,7 @@ class RouteLoaderComponent extends Component {
 					render={ (props) =>
 						<AsyncMainStack
 							location={this.props.location}
-							cardStackLevel={2}
+							cardStackLevel={1}
 							discourseLevel={true}
 							{...props}/> } />
 
@@ -193,26 +193,15 @@ class RouteLoaderComponent extends Component {
 					render={ (props) =>
 						<AsyncMainStack
 							location={this.props.location}
-							cardStackLevel={1}
+							cardStackLevel={0}
 							discourseLevel={true}
 							{...props}/> } />
 
-				<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/comments"
+				<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/feed"
 					render={ (props) =>
 						<AsyncMainStack
 							location={this.props.location}
-							cardStackLevel={5}
-							discourseLevel={true}
-							{...props}/> } />
-
-				{/* This route will only work if :feed is valid, otherwise should dump user onto FeedCardList.
-				    Swiping right from FeedCardList should be disabled, and will be triggered by selection. */}
-				<Route
-					path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/:feed"
-					render={ (props) =>
-						<AsyncMainStack
-							location={this.props.location}
-							cardStackLevel={4}
+							cardStackLevel={2}
 							discourseLevel={true}
 							{...props}/> } />
 

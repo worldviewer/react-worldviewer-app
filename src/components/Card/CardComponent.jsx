@@ -90,7 +90,7 @@ class CardComponent extends Component {
 	// Use this to react to OpenSeadragon zoom events
 	setupZoomHandler(viewer) {
 		viewer.addHandler('zoom', (data) => {
-			this.props.toggleNavbarState(data.zoom);
+
 		});
 	}
 

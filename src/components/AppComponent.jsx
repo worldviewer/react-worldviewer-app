@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 
 // UI Dependencies
 import { Nav, NavItem, Navbar } from 'react-bootstrap';
-import RouteNavItem from './RouteNavItem/RouteNavItem';
 import './App.css';
 import '../styles/react-instantsearch-algolia-theme.css';
 

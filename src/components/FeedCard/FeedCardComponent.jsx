@@ -94,7 +94,7 @@ class FeedCardComponent extends Component {
 	// Use this to react to OpenSeadragon zoom events
 	setupZoomHandler(viewer) {
 		viewer.addHandler('zoom', (data) => {
-			this.props.toggleNavbarState(data.zoom);
+
 		});
 	}
 
@@ -208,103 +208,11 @@ class FeedCardComponent extends Component {
 	}
 
 	render() {
-		const
-			imageStyles = this.state.isTextExpanded ?
-				{ height: 0 } :
-				{},
-
-			// chipStyles = {
-			// 	display: 'flex',
-			// 	flexWrap: 'wrap'
-			// },
-
-			shareStyles = this.state.isTextExpanded ?
-				{ opacity: 0 } :
-				{},
-
-			updownStyles = this.state.isTextExpanded ?
-				{ transform: 'scaleY(1)' } :
-				{},
-
-			// Avatar images must be a minimum of 40 x 40 pixels
-			avatarStyles = {
-				height: 40,
-				width: 40
-			};
 
 		return (
 			<div className="Feedcard">
 				<Grid>
-					<Row>
-					{/*	<div
-							ref={node => { this.root = node; }}
-							id="openseadragonfeeds"
-							className="image"
-							style={this.state.pyramidStyle} /> */}
 
-						<img
-							alt="feed post"
-							src={this.state.image}
-							className="image"
-							style={this.state.pyramidStyle} />
-
-					{/*	<Image src={share} style={shareStyles} className="share normal" circle />
-						<Image src={shareHover} style={shareStyles} className="share hover" circle /> */}
-					</Row>
-					<Row>
-
-						<div className="info">
-							<Image
-								src={down}
-								className="updown normal"
-								style={updownStyles}
-								onClick={this.handleClick}
-								circle />
-							<Image
-								src={downHover}
-								className="updown hover"
-								style={updownStyles}
-								circle />
-							<div className="title">{this.props.feed.data.feedName}</div>
-						</div>
-
-					</Row>
-
-{/*
-					<Row>
-
-						<div className="breadcrumbs">{this.props.feed.feedName} > Clash of Worldviews > Noteworthy Online Discussions</div>
-
-					</Row>
-					<Row>
-
-						<div className="ratings">
-							<div style={chipStyles}>
-								<p>Testing  <Badge>9</Badge></p>
-							</div>
-						</div>
-
-					</Row>
-*/}
-
-					<Row>
-
-						<div className="author">
-							<div className="avatar">
-								<Image src={chris} style={avatarStyles} circle />
-							</div>
-							<div className="author-info">
-								<div className="name">Chris Reeve</div>
-								<div className="role">Admin</div>
-							</div>
-						</div>
-
-					</Row>
-					<Row>
-
-						<div id="FeedParagraphs">{ this.state.text }</div>
-
-					</Row>
 				</Grid>
 			</div>
 		);
