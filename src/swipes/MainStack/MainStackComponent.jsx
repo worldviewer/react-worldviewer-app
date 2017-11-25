@@ -57,16 +57,6 @@ class MainStackComponent extends Component {
 		log(this.cardStackLevels);
 		log('');
 
-		this.feedStackLevels = [
-			'',
-			'/' + (this.props.match.params.feed || this.props.feed.data.feedSlug),
-			'/comments'			
-		];
-
-		logTitle('this.feedStackLevels:');
-		log(this.feedStackLevels);
-		log('');
-
 		// When we land on this page without swiping, we determine and set the horizontal swipe
 		// position according to the cardStackLevel prop passed on by the router
 		if (this.props.cardStackLevel) {
@@ -188,8 +178,7 @@ class MainStackComponent extends Component {
 			route = '/' + this.props.match.params.controversy +
 				'/' + this.discourseLevels[this.props.discourse.level] +
 				(this.props.discourse.level === 0 ?
-					this.cardStackLevels[this.props.cardStack.level] :
-					this.feedStackLevels[this.props.feedStack.level]);
+					this.cardStackLevels[this.props.cardStack.level] : '');
 
 		this.props.history.push(route);
 	}
