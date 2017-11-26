@@ -208,9 +208,12 @@ class FeedCardComponent extends Component {
 	}
 
 	render() {
+		const feeds = !this.props.loading.feeds ?
+			this.props.feeds[this.discourseLevels[this.props.discourse.level]] :
+			[];
 
 		return (
-			<div className="Feedcard">
+			<div className="FeedCard">
 				<Grid>
 					<mobiscroll.Select
 						ref="select"
@@ -219,20 +222,7 @@ class FeedCardComponent extends Component {
 						multiline={3}
 						height={50}>
 
-						<option value="1">Percentage of assets covered by systematic risk assessments (99)</option>
-						<option value="2">Number of personal vacancies in the security roles required for ISMS (Nil)</option>
-						<option value="3">Time taken to grant, change and remove access privileges (Max. 2 hours)</option>
-						<option value="4">Percentage of agents covered by an effective security awareness program (100%)</option>
-						<option value="5">Number of security access violations (2)</option>
-						<option value="6">Number of emergency changes (5)</option>
-						<option value="7">Number of security incidents involving malicious code (Max. 2)</option>
-						<option value="8">Number of systems where security requirements are not met (Max. 2)</option>
-						<option value="9">Average turnaround time of incidents (Max. 2 hours)</option>
-						<option value="10">Number of pending actions to meet response and recovery requirements (Max. 5)</option>
-						<option value="11">Number of scheduled internal audits not done (Max. 1)</option>
-						<option value="12">Number of scheduled penetration tests not done (Max. 1)</option>
-						<option value="13">Number of overdue actions arising out of audit reports (Max. 5)</option>
-						<option value="14">Number of changes not carried out as per change control procedure (Max. 1)</option>
+						{ feeds.map((post, i) => <option value={i} key={i}>{post.title}</option>) }
 
 					</mobiscroll.Select>
 

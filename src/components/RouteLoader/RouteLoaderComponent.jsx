@@ -210,7 +210,7 @@ class RouteLoaderComponent extends Component {
 					render={ (props) =>
 						<AsyncMainStack
 							location={this.props.location}
-							cardStackLevel={3}
+							cardStackLevel={2}
 							discourseLevel={true}
 							{...props}/> } />
 				

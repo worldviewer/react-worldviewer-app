@@ -8,6 +8,7 @@ const mapStateToProps = (state, ownProps) => {
 		loading: state.reducer.loading,
 		card: state.reducer.card,
 		feed: state.reducer.feed,
+		feeds: state.reducer.feeds,
 		discourse: state.reducer.discourse
 	};
 };
