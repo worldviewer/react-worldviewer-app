@@ -3489,6 +3489,8 @@ tr.collapse.in {
 tbody.collapse.in {
   display: table-row-group;
 }
+
+// 0.35s --> 0.1s
 .collapsing {
   position: relative;
   height: 0;
@@ -3496,9 +3498,9 @@ tbody.collapse.in {
   -webkit-transition-property: height, visibility;
   -o-transition-property: height, visibility;
      transition-property: height, visibility;
-  -webkit-transition-duration: 0.35s;
-  -o-transition-duration: 0.35s;
-     transition-duration: 0.35s;
+  -webkit-transition-duration: 0.1s;
+  -o-transition-duration: 0.1s;
+     transition-duration: 0.1s;
   -webkit-transition-timing-function: ease;
   -o-transition-timing-function: ease;
      transition-timing-function: ease;
