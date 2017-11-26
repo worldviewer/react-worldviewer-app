@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -16,7 +16,8 @@ const mapStateToProps = (state, ownProps) => {
 		feeds: state.reducer.feeds,
 		feed: state.reducer.feed,
 		card: state.reducer.card,
-		snackbar: state.reducer.snackbar
+		snackbar: state.reducer.snackbar,
+		discourse: state.reducer.discourse
 	};
 };
 
@@ -66,6 +67,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		showSnackbar: (message, duration) => {
 			return dispatch(showSnackbar(message, duration));
+		},
+		selectFeed: (level) => {
+			return dispatch(selectFeed(level));
+		},
+		unselectFeed: () => {
+			return dispatch(unselectFeed());
 		}
 	}
 };

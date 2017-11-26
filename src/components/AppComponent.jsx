@@ -232,7 +232,7 @@ class AppComponent extends Component {
 	}
 
 	selectFeedHandler(event) {
-		console.log('select feed');
+		this.props.selectFeed(this.props.discourse.level);
 	}
 
 	renderFeedMenuOption() {

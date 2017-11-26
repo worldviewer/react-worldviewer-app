@@ -726,21 +726,21 @@ class HomeComponent extends Component {
 						clickHandler={this.selectFacet.bind(this)} />
 
 					<div className="FacetSelect">
-					<mobiscroll.Image
-						ref={input => this.inputElement = input}
-						theme="ios-dark"
-						display="center"
-						enhance={true}
-						onInit={this.refreshForm.bind(this)}
-						onSet={this.setFacetValue.bind(this)}>
+						<mobiscroll.Image
+							ref={input => this.inputElement = input}
+							theme="ios-dark"
+							display="center"
+							enhance={true}
+							onInit={this.refreshForm.bind(this)}
+							onSet={this.setFacetValue.bind(this)}>
 
-						{ config.categories.map((category, i) =>
-							<li data-val={category.text} key={i}>
-								{/* <img src={category.icon} /> */}
-								<p>{category.text}</p>
-							</li>) }
+							{ config.categories.map((category, i) =>
+								<li data-val={category.text} key={i}>
+									{/* <img src={category.icon} /> */}
+									<p>{category.text}</p>
+								</li>) }
 
-					</mobiscroll.Image>
+						</mobiscroll.Image>
 					</div>
 
 					<InstantSearch

@@ -64,7 +64,10 @@ const types = {
 
 	SET_SEARCH_QUERY: 'SET_SEARCH_QUERY',
 	SET_SEARCH_FACET: 'SET_SEARCH_FACET',
-	SET_SEARCH_STATE: 'SET_SEARCH_STATE'
+	SET_SEARCH_STATE: 'SET_SEARCH_STATE',
+
+	SELECT_FEED: 'SELECT_FEED',
+	UNSELECT_FEED: 'UNSELECT_FEED'
 };
 
 const initialState = {
@@ -117,7 +120,11 @@ const initialState = {
 	},
 
 	mainStack: {
-		swipeable: true
+		swipeable: true,
+
+		// -1 --> 0, 1, 2, 3, 4 activates this
+		// numbers represent discourse level
+		selectFeedPopup: -1
 	},
 
 	slugs: {
@@ -467,6 +474,19 @@ export const setSearchState = (searchState) => {
 	return {
 		type: types.SET_SEARCH_STATE,
 		searchState
+	};
+}
+
+export const selectFeed = (discourseLevel) => {
+	return {
+		type: types.SELECT_FEED,
+		discourseLevel
+	};
+}
+
+export const unselectFeed = () => {
+	return {
+		type: types.UNSELECT_FEED
 	};
 }
 
@@ -910,6 +930,24 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				searchState: action.searchState
+			}
+
+		case types.SELECT_FEED:
+			return {
+				...state,
+				mainStack: {
+					...state.mainStack,
+					selectFeedPopup: action.discourseLevel
+				}
+			}
+
+		case types.UNSELECT_FEED:
+			return {
+				...state,
+				mainStack: {
+					...state.mainStack,
+					selectFeedPopup: -1
+				}
 			}
 
 		default:

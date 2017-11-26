@@ -1,5 +1,6 @@
 // React Dependencies
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 // UI Dependencies
 import { Grid } from 'react-bootstrap';
@@ -175,6 +176,17 @@ class FeedCardComponent extends Component {
 		});
 	}
 
+	selectFeedHandler() {
+		const domNode = ReactDOM.findDOMNode(document.querySelector('.FeedSelect input'));
+		console.log('selectFeedHandler');
+		console.log(this.inputElement);
+		console.log(domNode);
+
+		domNode.click();
+
+		this.props.unselectFeed();
+	}
+
 	componentDidMount() {
 		this.props.setFeedStackLevel(1);
 		
@@ -205,6 +217,13 @@ class FeedCardComponent extends Component {
 			// this.setupDeepZoom();
 			this.fetchImage();
 		}
+
+		if (this.props.mainStack.selectFeedPopup === -1 &&
+			nextProps.mainStack.selectFeedPopup ===
+			this.discourseLevels.indexOf(nextProps.level)) {
+
+			this.selectFeedHandler();
+		}
 	}
 
 	render() {
@@ -215,16 +234,19 @@ class FeedCardComponent extends Component {
 		return (
 			<div className="FeedCard">
 				<Grid>
-					<mobiscroll.Select
-						ref="select"
-						theme="ios-dark"
-						display="bottom"
-						multiline={3}
-						height={50}>
 
-						{ feeds.map((post, i) => <option value={i} key={i}>{post.title}</option>) }
+					<div className="FeedSelect">
+						<mobiscroll.Select
+							ref={input => this.inputElement = input}
+							theme="ios-dark"
+							display="bottom"
+							multiline={3}
+							height={50}>
 
-					</mobiscroll.Select>
+							{ feeds.map((post, i) => <option value={i} key={i}>{post.title}</option>) }
+
+						</mobiscroll.Select>
+					</div>
 
 				</Grid>
 			</div>

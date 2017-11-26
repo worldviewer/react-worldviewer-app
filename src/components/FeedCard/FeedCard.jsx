@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import FeedCardComponent from './FeedCardComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setFeedStackLevel } from '../../redux';
+import { setFeedStackLevel, unselectFeed } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -9,7 +9,8 @@ const mapStateToProps = (state, ownProps) => {
 		card: state.reducer.card,
 		feed: state.reducer.feed,
 		feeds: state.reducer.feeds,
-		discourse: state.reducer.discourse
+		discourse: state.reducer.discourse,
+		mainStack: state.reducer.mainStack
 	};
 };
 
@@ -17,6 +18,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		setFeedStackLevel: (level) => {
 			return dispatch(setFeedStackLevel(level));
+		},
+		unselectFeed: () => {
+			return dispatch(unselectFeed());
 		}
 	}
 };
