@@ -88,8 +88,9 @@ class MainStackComponent extends Component {
 		log(this.props.router.location);
 		log('');
 
-		const feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
-			cardSlug + '/' + feedSlug }, this.props.user.token);
+		const
+			feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
+				cardSlug + '/' + feedSlug }, this.props.user.token);
 
 		logTitle('Data Step 3: Fetching controversy feed data ...');
 		logObject(feed);
@@ -106,13 +107,19 @@ class MainStackComponent extends Component {
 			cardSlug = this.props.slugs.hash[shortSlug];
 
 		const feedsList = await invokeApig( {base: 'feeds', path: '/feeds/' +
-			cardSlug }, this.props.user.token);
+			cardSlug }, this.props.user.token),
+
+			worldview = feedsList.filter(post => post.level === 'worldview'),
+			model = feedsList.filter(post => post.level === 'model'),
+			propositional = feedsList.filter(post => post.level === 'propositional'),
+			conceptual = feedsList.filter(post => post.level === 'conceptual'),
+			narrative = feedsList.filter(post => post.level === 'narrative');
 
 		logTitle('Feeds list:');
 		logObject(feedsList);
 		log('');
 
-		this.props.setFeedsData(feedsList);
+		this.props.setFeedsData(worldview, model, propositional, conceptual, narrative);
 		this.props.unsetFeedsDataLoading();
 	}
 

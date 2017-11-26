@@ -52,8 +52,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		unsetFeedDataLoading: () => {
 			return dispatch(unsetFeedDataLoading());
 		},
-		setFeedsData: (feedsList) => {
-			return dispatch(setFeedsData(feedsList));
+		setFeedsData: (worldview, model, propositional, conceptual, narrative) => {
+			return dispatch(setFeedsData(worldview, model, propositional, conceptual, narrative));
 		},
 		setFeedsDataLoading: () => {
 			return dispatch(setFeedsDataLoading());

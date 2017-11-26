@@ -133,7 +133,6 @@ const initialState = {
 	},
 
 	feeds: {
-		data: [],
 		worldview: [],
 		model: [],
 		propositional: [],
@@ -409,10 +408,14 @@ export const setFeedData = (feed) => {
 	};
 };
 
-export const setFeedsData = (feedList) => {
+export const setFeedsData = (worldview, model, propositional, conceptual, narrative) => {
 	return {
 		type: types.SET_FEEDS_DATA,
-		feedList
+		worldview,
+		model,
+		propositional,
+		conceptual,
+		narrative
 	};
 };
 
@@ -836,9 +839,11 @@ export default (state = initialState, action) => {
 				...state,
 				feeds: {
 					...state.feeds,
-					data: [
-						...action.feedList
-					]
+					worldview: action.worldview,
+					model: action.model,
+					propositional: action.propositional,
+					conceptual: action.conceptual,
+					narrative: action.narrative
 				}
 			}
 
