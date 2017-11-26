@@ -231,13 +231,25 @@ class AppComponent extends Component {
 		this.props.history.push({pathname: '/', search: ''});
 	}
 
+	selectFeedHandler(event) {
+		console.log('select feed');
+	}
+
+	renderFeedMenuOption() {
+		return this.props.cardStack.level === 2 ?
+			<NavItem key={3}
+				onClick={this.selectFeedHandler.bind(this)}>
+				Select Feed
+			</NavItem> : null;
+	}
+
 	render() {
 		const NavTitleStyle = {
 			fontFamily: 'LeagueGothic',
 			textTransform: 'uppercase',
 			fontSize: '20px',
 			letterSpacing: '1px'
-		}
+		};
 
 		let navStyles = this.props.navbar.hidden
 			&& this.props.cardStack.level === 2 ?
@@ -248,6 +260,33 @@ class AppComponent extends Component {
 				width: '100%',
 				zIndex: 100
 			};
+
+		// Dynamically build menu options based upon cardStack level
+		const feedMenuOption =
+			<NavItem key={3}
+				onClick={this.selectFeedHandler.bind(this)}>
+				Select Feed
+			</NavItem>;
+
+		const menuOptions = this.props.user.token ?
+			[ <NavItem key={1}
+				onClick={this.handleLogout}>
+				Logout
+			</NavItem>,
+
+			<NavItem key={2}
+				onClick={this.searchClickHandler.bind(this)}>
+				Search
+			</NavItem> ]
+
+		: [ <NavItem key={1}
+				onClick={this.searchClickHandler.bind(this)}>
+				Search
+			</NavItem> ]
+
+		if (this.props.cardStack.level === 2) {
+			menuOptions.push(feedMenuOption);
+		}
 
 		return !this.props.loading.app && this.props.fetchComplete.slugs && (
 			<div className="App">
@@ -263,23 +302,7 @@ class AppComponent extends Component {
 
 					<Navbar.Collapse>
 						<Nav pullRight>
-							{ this.props.user.token
-								? [ <NavItem key={1}
-										onClick={this.handleLogout}>
-										Logout
-									</NavItem>,
-
-									<NavItem key={2}
-										onClick={this.searchClickHandler.bind(this)}>
-										Search
-									</NavItem> ]
-
-								: [ <NavItem key={1}
-										onClick={this.searchClickHandler.bind(this)}>
-										Search
-									</NavItem> ]
-
-							}
+							{ menuOptions }
 						</Nav>
 					</Navbar.Collapse>
 
