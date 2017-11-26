@@ -3,8 +3,8 @@
 
 // Error/Logger Handling
 // mobiscroll.Image + mobiscroll.Form + 
-import mobiscroll from './mobiscroll.custom-3.2.5.min';
-import './mobiscroll.custom-3.2.5.min.css';
+import mobiscroll from './mobiscroll.custom-4.0.0-beta.min';
+import './mobiscroll.custom-4.0.0-beta.min.css';
 
 // https://stackoverflow.com/questions/32702431/display-images-fetched-from-s3
 export function encode(data) {

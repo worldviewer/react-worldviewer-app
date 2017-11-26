@@ -11,9 +11,9 @@ import 'react-aspect-ratio/aspect-ratio.css';
 import FadeIn from 'react-fade-in';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-// mobiscroll.Image + mobiscroll.Form + 
-import mobiscroll from '../../libs/mobiscroll.custom-3.2.5.min';
-import '../../libs/mobiscroll.custom-3.2.5.min.css';
+// mobiscroll.Image + mobiscroll.Form
+import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta.min';
+import '../../libs/mobiscroll.custom-4.0.0-beta.min.css';
 
 // Algolia Search / React Router Integration Dependencies
 import { InstantSearch, SearchBox, Stats, Configure, Index, Hits } from 'react-instantsearch/dom';

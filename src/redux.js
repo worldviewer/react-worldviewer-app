@@ -133,7 +133,12 @@ const initialState = {
 	},
 
 	feeds: {
-		data: []
+		data: [],
+		worldview: [],
+		model: [],
+		propositional: [],
+		conceptual: [],
+		narrative: []
 	},
 
 	search: {
