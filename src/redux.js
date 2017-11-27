@@ -81,7 +81,13 @@ const initialState = {
 		app: true,
 		token: true,
 		slugs: false,
-		feed: true,
+		feed: {
+			worldview: true,
+			model: true,
+			propositional: true,
+			conceptual: true,
+			narrative: true
+		},
 		feeds: true,
 		card: false
 	},
@@ -136,7 +142,11 @@ const initialState = {
 	},
 
 	feed: {
-		data: {}
+		worldview: {},
+		model: {},
+		propositional: {},
+		conceptual: {},
+		narrative: {}
 	},
 
 	feeds: {
@@ -220,15 +230,17 @@ export const unsetSlugsLoading = () => {
 	};
 };
 
-export const setFeedDataLoading = () => {
+export const setFeedDataLoading = (level) => {
 	return {
-		type: types.SET_FEED_DATA_LOADING
+		type: types.SET_FEED_DATA_LOADING,
+		level
 	};
 };
 
-export const unsetFeedDataLoading = () => {
+export const unsetFeedDataLoading = (level) => {
 	return {
-		type: types.UNSET_FEED_DATA_LOADING
+		type: types.UNSET_FEED_DATA_LOADING,
+		level
 	};
 };
 
@@ -408,10 +420,11 @@ export const setCardData = (card) => {
 	};
 };
 
-export const setFeedData = (feed) => {
+export const setFeedData = (feed, level) => {
 	return {
 		type: types.SET_FEED_DATA,
-		feed
+		feed,
+		level
 	};
 };
 
@@ -589,7 +602,10 @@ export default (state = initialState, action) => {
 				...state,
 				loading: {
 					...state.loading,
-					feed: true
+					feed: {
+						...state.loading.feed,
+						[action.level]: true
+					}
 				}
 			}
 
@@ -598,7 +614,10 @@ export default (state = initialState, action) => {
 				...state,
 				loading: {
 					...state.loading,
-					feed: false
+					feed: {
+						...state.loading.feed,
+						[action.level]: false
+					}
 				}
 			}
 
@@ -848,9 +867,7 @@ export default (state = initialState, action) => {
 				...state,
 				feed: {
 					...state.feed,
-					data: {
-						...action.feed
-					}
+					[action.level]: action.feed
 				}
 			}
 

@@ -43,14 +43,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		setCardStackLevel: (level, direction) => {
 			return dispatch(setCardStackLevel(level, direction));
 		},
-		setFeedData: (feed) => {
-			return dispatch(setFeedData(feed));
+		setFeedData: (feed, level) => {
+			return dispatch(setFeedData(feed, level));
 		},
-		setFeedDataLoading: () => {
-			return dispatch(setFeedDataLoading());
+		setFeedDataLoading: (level) => {
+			return dispatch(setFeedDataLoading(level));
 		},
-		unsetFeedDataLoading: () => {
-			return dispatch(unsetFeedDataLoading());
+		unsetFeedDataLoading: (level) => {
+			return dispatch(unsetFeedDataLoading(level));
 		},
 		setFeedsData: (worldview, model, propositional, conceptual, narrative) => {
 			return dispatch(setFeedsData(worldview, model, propositional, conceptual, narrative));

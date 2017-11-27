@@ -24,13 +24,14 @@ import { withRouter } from 'react-router-dom';
 import qs from 'qs';
 
 // AWS Dependencies
+import { invokeApig } from '../../libs/aws';
 import config from '../../config';
 
 // Permits HTML markup encoding in feed text
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
 // Error/Logger Handling
-import { log, logObject, logTitle } from '../../libs/utils';
+import { log, logObject, logTitle, logError } from '../../libs/utils';
 
 class FeedCardComponent extends Component {
 	constructor(props) {
@@ -45,7 +46,7 @@ class FeedCardComponent extends Component {
 			image: null
 		};
 
-		this.discourseLevels = [
+		this.levels = [
 			'worldview',
 			'model',
 			'propositional',
@@ -167,8 +168,10 @@ class FeedCardComponent extends Component {
 	}
 
 	fetchImage() {
-		this.feedImage = config.s3['feeds'].URL + this.props.feed.data.cardSlug + '/' +
-			this.props.feed.data.discourseLevel + '/' + this.props.feed.data.feedSlug +
+		const level = this.props.level;
+
+		this.feedImage = config.s3['feeds'].URL + this.props.feed[level].cardSlug + '/' +
+			this.props.feed[level].discourseLevel + '/' + this.props.feed[level].feedSlug +
 			'/large.jpg';
 
 		this.setState({
@@ -177,14 +180,47 @@ class FeedCardComponent extends Component {
 	}
 
 	selectFeedHandler() {
-		const domNode = ReactDOM.findDOMNode(document.querySelector('.FeedSelect input'));
-		console.log('selectFeedHandler');
-		console.log(this.inputElement);
-		console.log(domNode);
-
+		const domNode = ReactDOM.findDOMNode(this.feedCard).querySelector('.FeedSelect input');
 		domNode.click();
 
 		this.props.unselectFeed();
+	}
+
+	async getFeedPostFromFeedString(feedString) {
+		const
+			posts = this.props.feeds[this.props.level],
+			feedSlug = posts.filter(post => feedString === post.title)[0].slug,
+			shortSlug = this.props.router.location.pathname.split('/')[1],
+			cardSlug = this.props.slugs.hash[shortSlug];
+
+		logTitle('Slug data:');
+		log('Short slug: ' + shortSlug);
+		log('Feed slug: ' + feedSlug);
+		log('');
+
+		let feedPost = null;
+
+		this.props.setFeedDataLoading(this.props.level);
+
+		try {
+			feedPost = await invokeApig( {base: 'feeds', path: '/feeds/' +
+				cardSlug + '/' + feedSlug }, this.props.user.token);
+		} catch(e) {
+			logError(e, 'Error Fetching Feed Post: ' + e.message, this.props.user.token);
+		}
+
+		logTitle('Fetching controversy feed data for level ' + this.props.level + ' ...');
+		logObject(feedPost);
+		log('');
+
+		this.props.setFeedData(feedPost, this.props.level);
+		this.props.unsetFeedDataLoading(this.props.level);
+	}
+
+	setFeedPost(selection) {
+		if (selection.valueText) {
+			this.getFeedPostFromFeedString(selection.valueText);
+		}
 	}
 
 	componentDidMount() {
@@ -194,9 +230,7 @@ class FeedCardComponent extends Component {
 			this.constructText();
 		}
 
-		if (this.props.discourse.level ===
-			this.discourseLevels.indexOf(this.props.feed.data.discourseLevel) &&
-			!this.props.loading.feed) {
+		if (!this.props.loading.feed[this.props.level]) {
 
 			// this.setupDeepZoom();
 			this.fetchImage();
@@ -210,9 +244,8 @@ class FeedCardComponent extends Component {
 			this.constructText();
 		}
 
-		if (nextProps.discourse.level ===
-			this.discourseLevels.indexOf(nextProps.feed.data.discourseLevel) &&
-			this.props.loading.feed && !nextProps.loading.feed) {
+		if (this.props.loading.feed[this.props.level] &&
+			!nextProps.loading.feed[this.props.level]) {
 
 			// this.setupDeepZoom();
 			this.fetchImage();
@@ -220,7 +253,7 @@ class FeedCardComponent extends Component {
 
 		if (this.props.mainStack.selectFeedPopup === -1 &&
 			nextProps.mainStack.selectFeedPopup ===
-			this.discourseLevels.indexOf(nextProps.level)) {
+			this.levels.indexOf(nextProps.level)) {
 
 			this.selectFeedHandler();
 		}
@@ -228,22 +261,25 @@ class FeedCardComponent extends Component {
 
 	render() {
 		const feeds = !this.props.loading.feeds ?
-			this.props.feeds[this.discourseLevels[this.props.discourse.level]] :
+			this.props.feeds[this.props.level] :
 			[];
 
 		return (
-			<div className="FeedCard">
+			<div className="FeedCard"
+				ref={input => this.feedCard = input}>
+
 				<Grid>
 
 					<div className="FeedSelect">
 						<mobiscroll.Select
-							ref={input => this.inputElement = input}
 							theme="ios-dark"
 							display="bottom"
 							multiline={3}
-							height={50}>
+							height={50}
+							onSet={this.setFeedPost.bind(this)}>
 
-							{ feeds.map((post, i) => <option value={i} key={i}>{post.title}</option>) }
+							{ feeds.map((post, i) => <option value={i}
+								key={i}>{post.title}</option>) }
 
 						</mobiscroll.Select>
 					</div>

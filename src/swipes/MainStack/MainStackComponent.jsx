@@ -35,7 +35,7 @@ class MainStackComponent extends Component {
 
 		this.props = props;
 
-		this.discourseLevels = [
+		this.levels = [
 			'worldview',
 			'model',
 			'propositional',
@@ -60,7 +60,7 @@ class MainStackComponent extends Component {
 		}
 
 		this.initialDiscourseLevel =
-			this.discourseLevels.indexOf(this.props.match.params.level);
+			this.levels.indexOf(this.props.match.params.level);
 
 		// Same sort of situation for discourse level, but we have to also reverse-engineer the
 		// discourse level number from the :level route parameter, and we use the discourseLevel
@@ -96,8 +96,8 @@ class MainStackComponent extends Component {
 		logObject(feed);
 		log('');
 
-		this.props.setFeedData(feed);
-		this.props.unsetFeedDataLoading();
+		this.props.setFeedData(feed, this.levels[this.props.discourse.level]);
+		this.props.unsetFeedDataLoading(this.levels[this.props.discourse.level]);
 	}
 
 	// This fetches the feed list data for this particular controversy
@@ -154,7 +154,7 @@ class MainStackComponent extends Component {
 			// want to run this once, and we are instantiating 4
 			// different instances ...
 			await this.loadCardData();
-			await this.loadFeedData();
+			// await this.loadFeedData();
 			await this.loadFeedsData();
 		}
 	}
@@ -168,18 +168,18 @@ class MainStackComponent extends Component {
 		if (!this.props.fetchComplete.slugs &&
 			nextProps.fetchComplete.slugs) {
 
-			await this.loadFeedData();
+			// await this.loadFeedData();
 			await this.loadFeedsData();
 		}
 
-		if (nextProps.loading.feed && !this.props.loading.feed) {
-			this.props.unsetFeedDataLoading();
-		}
+		// if (nextProps.loading.feed && !this.props.loading.feed) {
+		// 	this.props.unsetFeedDataLoading();
+		// }
 	}
 
 	componentWillMount() {
 		this.props.setCardDataLoading();
-		this.props.setFeedDataLoading();
+		this.props.setFeedDataLoading(this.levels[this.props.discourse.level]);
 		this.props.setFeedsDataLoading();
 	}
 
@@ -197,7 +197,7 @@ class MainStackComponent extends Component {
 	changeRoute() {
 		const
 			route = '/' + this.props.match.params.controversy +
-				'/' + this.discourseLevels[this.props.discourse.level] +
+				'/' + this.levels[this.props.discourse.level] +
 				(this.props.discourse.level === 0 ?
 					this.cardStackLevels[this.props.cardStack.level] : '');
 
@@ -248,23 +248,19 @@ class MainStackComponent extends Component {
 							</div>					
 
 							<div className="Model">
-								{ !this.props.loading.feed &&
-									<FeedCard level="model" /> }
+								<FeedCard level="model" />
 							</div>
 
 							<div className="Propositional">
-								{ !this.props.loading.feed &&
-									<FeedCard level="propositional" /> }
+								<FeedCard level="propositional" />
 							</div>
 
 							<div className="Conceptual">
-								{ !this.props.loading.feed &&
-									<FeedCard level="conceptual" /> }
+								<FeedCard level="conceptual" />
 							</div>
 
 							<div className="Narrative">
-								{ !this.props.loading.feed &&
-									<FeedCard level="narrative" /> }
+								<FeedCard level="narrative" />
 							</div>
 						</SwipeableViews>
 
