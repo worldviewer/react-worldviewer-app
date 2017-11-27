@@ -15,7 +15,6 @@ const mapStateToProps = (state, ownProps) => {
 		base: state.reducer.base,
 		discourse: state.reducer.discourse,
 		cardStack: state.reducer.cardStack,
-		feedStack: state.reducer.feedStack,
 		mainStack: state.reducer.mainStack,
 		slugs: state.reducer.slugs,
 		feed: state.reducer.feed,

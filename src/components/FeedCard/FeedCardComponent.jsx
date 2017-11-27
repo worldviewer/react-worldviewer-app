@@ -223,9 +223,7 @@ class FeedCardComponent extends Component {
 		}
 	}
 
-	componentDidMount() {
-		this.props.setFeedStackLevel(1);
-		
+	componentDidMount() {		
 		if (!this.props.loading.feed && this.props.feed.data.text) {
 			this.constructText();
 		}
