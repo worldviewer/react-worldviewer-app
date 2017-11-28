@@ -101,6 +101,31 @@ const AsyncNews = Loadable({
 	loader: () => import('../News/News.jsx')
 });
 
+const AsyncHelp = Loadable({
+	...settings,
+	loader: () => import('../Help/Help.jsx')
+});
+
+const AsyncHow = Loadable({
+	...settings,
+	loader: () => import('../How/How.jsx')
+});
+
+const AsyncSubmitControversy = Loadable({
+	...settings,
+	loader: () => import('../SubmitControversy/SubmitControversy.jsx')
+});
+
+const AsyncWhat = Loadable({
+	...settings,
+	loader: () => import('../What/What.jsx')
+});
+
+const AsyncContact = Loadable({
+	...settings,
+	loader: () => import('../Contact/Contact.jsx')
+});
+
 const AsyncFeed = Loadable({
 	...settings,
 	loader: () => import('../Feed/Feed.jsx')
@@ -172,6 +197,31 @@ class RouteLoaderComponent extends Component {
 					path="/news"
 					location={this.props.location}
 					component={AsyncNews} />
+
+				<Route
+					path="/contact"
+					location={this.props.location}
+					component={AsyncContact} />
+
+				<Route
+					path="/help"
+					location={this.props.location}
+					component={AsyncHelp} />
+
+				<Route
+					path="/how"
+					location={this.props.location}
+					component={AsyncHow} />
+
+				<Route
+					path="/what"
+					location={this.props.location}
+					component={AsyncWhat} />
+
+				<Route
+					path="/submit"
+					location={this.props.location}
+					component={AsyncSubmitControversy} />
 					
 				<Route
 					path="/feed"

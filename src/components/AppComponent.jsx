@@ -11,7 +11,7 @@ import { getUserToken, getCurrentUser, getAwsCredentials, invokeApig } from '../
 import AWS from 'aws-sdk';
 
 // React Router / Spinner / Preloader / Code-Splitter Dependencies
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import RouteLoader from './RouteLoader/RouteLoader';
 
 // Error/Logger/Notifications Handling
@@ -238,6 +238,10 @@ class AppComponent extends Component {
 		this.props.selectFeed(this.props.discourse.level);
 	}
 
+	viewKeyboardShortcuts(event) {
+		console.log('shortcut popup');
+	}
+
 	renderFeedMenuOption() {
 		return this.props.cardStack.level === 2 ?
 			<NavItem key={3}
@@ -254,12 +258,9 @@ class AppComponent extends Component {
 			letterSpacing: '1px'
 		};
 
-		let navStyles = this.props.navbar.hidden
-			&& this.props.cardStack.level === 2 ?
-			{ display: 'none' } :
-			{
+		let navStyles = {
+				cursor: 'pointer',
 				position: 'fixed',
-				visibility: this.state.navVisibility,
 				width: '100%',
 				zIndex: 100
 			};
@@ -272,13 +273,43 @@ class AppComponent extends Component {
 			</NavItem>;
 
 		// Dynamically build menu options for homepage
-		const homeMenuOption =
-			<NavItem key={3}
+		const homeMenuOptions =
+			[ <NavItem key={3}
 				onClick={() => this.props.selectFacet()}>
 				Select Search Category
-			</NavItem>;
+			</NavItem>,
 
-		const menuOptions = this.props.user.token ?
+			<NavItem key={4}
+				onClick={() => this.props.history.push('/what')}>
+				What is this Thing?
+			</NavItem>,
+
+			<NavItem key={5}
+				onClick={() => this.props.history.push('/how')}>
+				How to Use the App
+			</NavItem>,
+
+			<NavItem key={6}
+				onClick={this.viewKeyboardShortcuts.bind(this)}>
+				View Keyboard Shortcuts
+			</NavItem>,
+
+			<NavItem key={7}
+				onClick={() => this.props.history.push('/submit')}>
+				Submit a New Controversy
+			</NavItem>,
+
+			<NavItem key={8}
+				onClick={() => this.props.history.push('/help')}>
+				Help Wanted
+			</NavItem>,
+
+			<NavItem key={9}
+				onClick={() => this.props.history.push('/contact')}>
+				Contact
+			</NavItem> ];
+
+		let menuOptions = this.props.user.token ?
 			[ <NavItem key={1}
 				onClick={this.handleLogout}>
 				Logout
@@ -299,7 +330,7 @@ class AppComponent extends Component {
 		}
 
 		if (this.props.router.location.pathname === '/') {
-			menuOptions.push(homeMenuOption);
+			menuOptions = menuOptions.concat(homeMenuOptions);
 		}
 
 		return !this.props.loading.app && this.props.fetchComplete.slugs && (
@@ -309,7 +340,8 @@ class AppComponent extends Component {
 
 					<Navbar.Header>
 						<Navbar.Brand>
-							<Link to="/" style={NavTitleStyle}>Controversies of Science</Link>
+							<span onClick={this.searchClickHandler.bind(this)}
+								style={NavTitleStyle}>Controversies of Science</span>
 						</Navbar.Brand>
 						<Navbar.Toggle />
 					</Navbar.Header>
