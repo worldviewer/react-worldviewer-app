@@ -243,13 +243,25 @@ class HomeComponent extends Component {
 			event.keyCode === 27) {
 
 			this.searchBoxDOMNode.blur();
+
+			setTimeout(() => {
+				mobiscroll.toast({
+					message: 'ESC - defocus search box'
+				});
+			}, 500);
 		}
 
 		// spacebar: 32 - focus the search box
 		if (document.activeElement === this.searchBoxDOMNode &&
 			event.keyCode === 32) {
 
-			this.searchBoxDOMNode.focus();
+			setTimeout(() => {
+				mobiscroll.toast({
+					message: 'SPACE - focus search box'
+				});
+
+				this.searchBoxDOMNode.focus();
+			}, 500);
 		}
 
 		// up: 38, right: 39 - increment the facet category
@@ -269,6 +281,10 @@ class HomeComponent extends Component {
 
 			this.props.setSearchFacet(facetCategory, facetSubCategory,
 				newFacetValue);
+
+			mobiscroll.toast({
+				message: 'RIGHT/UP - move category up'
+			});
 		}
 
 		// down: 40, left: 37 - decrement the facet category
@@ -288,6 +304,10 @@ class HomeComponent extends Component {
 
 			this.props.setSearchFacet(facetCategory, facetSubCategory,
 				newFacetValue);
+
+			mobiscroll.toast({
+				message: 'LEFT/DOWN - move category down'
+			});
 		}
 
 		// Only capture a-z when the search box is not being used
@@ -309,6 +329,10 @@ class HomeComponent extends Component {
 
 						this.props.setSearchFacet(facetCategory, facetSubCategory,
 							newFacetValue);
+
+						mobiscroll.toast({
+							message: 'A-Z - jump to quote category letter'
+						});
 					}
 				}
 			}, 500);					
@@ -321,6 +345,10 @@ class HomeComponent extends Component {
 		Mousetrap.bind('a l l', () => {
 			this.setState({ sequence: 'all' });
 			this.clearQuote();
+
+			mobiscroll.toast({
+				message: 'ALL - search all'
+			});
 
 			logTitle('Character sequence detected for All');
 			log('');
@@ -335,6 +363,10 @@ class HomeComponent extends Component {
 		Mousetrap.bind('c o n', () => {
 			this.setState({ sequence: 'con' });
 			this.clearQuote();
+
+			mobiscroll.toast({
+				message: 'CON - search controversy cards'
+			});
 
 			logTitle('Character sequence detected for Controversy Cards');
 			log('');
@@ -351,6 +383,10 @@ class HomeComponent extends Component {
 			this.setState({ sequence: 'quo' });
 			this.clearQuote();
 
+			mobiscroll.toast({
+				message: 'QUO - search quotes'
+			});
+
 			logTitle('Character sequence detected for Quotes');
 			log('');
 
@@ -365,6 +401,10 @@ class HomeComponent extends Component {
 		Mousetrap.bind('f e e', () => {
 			this.setState({ sequence: 'fee' });
 			this.clearQuote();
+
+			mobiscroll.toast({
+				message: 'FEE - search feed posts'
+			});
 
 			logTitle('Character sequence detected for Feed Posts');
 			log('');
@@ -381,6 +421,10 @@ class HomeComponent extends Component {
 			this.setState({ sequence: 'com' });
 			this.clearQuote();
 
+			mobiscroll.toast({
+				message: 'COM - search user comments'
+			});
+
 			logTitle('Character sequence detected for Comments');
 			log('');
 
@@ -395,6 +439,10 @@ class HomeComponent extends Component {
 		Mousetrap.bind('c r i', () => {
 			this.setState({ sequence: 'cri' });
 			this.clearQuote();
+
+			mobiscroll.toast({
+				message: 'CRI - search critique cards/feeds'
+			});
 
 			logTitle('Character sequence detected for Cards/Feeds: critique');
 			log('');
@@ -411,6 +459,10 @@ class HomeComponent extends Component {
 			this.setState({ sequence: 'his' });
 			this.clearQuote();
 
+			mobiscroll.toast({
+				message: 'HIS - search historical controversies (cards/feeds)'
+			});
+
 			logTitle('Character sequence detected for Cards/Feeds: historical');
 			log('');
 
@@ -425,6 +477,10 @@ class HomeComponent extends Component {
 		Mousetrap.bind('o n g', () => {
 			this.setState({ sequence: 'ong' });
 			this.clearQuote();
+
+			mobiscroll.toast({
+				message: 'ONG - search ongoing controversies (cards/feeds)'
+			});
 
 			logTitle('Character sequence detected for Cards/Feeds: ongoing');
 			log('');
@@ -441,6 +497,10 @@ class HomeComponent extends Component {
 			this.setState({ sequence: 'per' });
 			this.clearQuote();
 
+			mobiscroll.toast({
+				message: 'PER - search people cards/feeds'
+			});
+
 			logTitle('Character sequence detected for Cards/Feeds: person');
 			log('');
 
@@ -456,6 +516,10 @@ class HomeComponent extends Component {
 			this.setState({ sequence: 'ref' });
 			this.clearQuote();
 
+			mobiscroll.toast({
+				message: 'REF - search reform cards/feeds'
+			});
+
 			logTitle('Character sequence detected for Cards/Feeds: reform');
 			log('');
 
@@ -470,6 +534,10 @@ class HomeComponent extends Component {
 		Mousetrap.bind('t h i', () => {
 			this.setState({ sequence: 'thi' });
 			this.clearQuote();
+
+			mobiscroll.toast({
+				message: 'THI - search thinking cards/feeds'
+			});
 
 			logTitle('Character sequence detected for Cards/Feeds: thinking');
 			log('');
