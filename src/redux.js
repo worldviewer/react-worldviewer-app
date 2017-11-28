@@ -71,23 +71,22 @@ const types = {
 
 const initialState = {
 	fetchComplete: {
-		token: false,
 		credentials: false,
 		slugs: false
 	},
 
 	loading: {
-		app: true,
-		token: true,
+		app: false,
+		token: false,
 		slugs: false,
 		feed: {
-			worldview: true,
-			model: true,
-			propositional: true,
-			conceptual: true,
-			narrative: true
+			worldview: false,
+			model: false,
+			propositional: false,
+			conceptual: false,
+			narrative: false
 		},
-		feeds: true,
+		feeds: false,
 		card: false
 	},
 

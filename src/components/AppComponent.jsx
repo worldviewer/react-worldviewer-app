@@ -81,6 +81,9 @@ class AppComponent extends Component {
 
 	componentWillMount() {
 		logRoute(this.props.router.location.pathname);
+
+		this.props.setUserTokenLoading();
+		this.props.setAppLoading();
 	}
 
 	// http://serverless-stack.com/chapters/load-the-state-from-the-session.html
