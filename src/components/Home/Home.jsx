@@ -1,14 +1,15 @@
 import { connect } from 'react-redux';
 import HomeComponent from './HomeComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setSearchQuery, setSearchFacet, setSearchState } from '../../redux.js';
+import { setSearchQuery, setSearchFacet, setSearchState, unselectFacet } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
 		user: state.reducer.user,
 		slugs: state.reducer.slugs,
 		search: state.reducer.search,
-		searchState: state.reducer.searchState
+		searchState: state.reducer.searchState,
+		navbar: state.reducer.navbar
 	};
 };
 
@@ -22,6 +23,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setSearchState: (searchState) => {
 			return dispatch(setSearchState(searchState));
+		},
+		unselectFacet: () => {
+			return dispatch(unselectFacet());
 		}
 	}
 };

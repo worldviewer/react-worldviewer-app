@@ -271,6 +271,13 @@ class AppComponent extends Component {
 				Select Feed
 			</NavItem>;
 
+		// Dynamically build menu options for homepage
+		const homeMenuOption =
+			<NavItem key={3}
+				onClick={() => this.props.selectFacet()}>
+				Select Search Category
+			</NavItem>;
+
 		const menuOptions = this.props.user.token ?
 			[ <NavItem key={1}
 				onClick={this.handleLogout}>
@@ -289,6 +296,10 @@ class AppComponent extends Component {
 
 		if (this.props.cardStack.level === 2) {
 			menuOptions.push(feedMenuOption);
+		}
+
+		if (this.props.router.location.pathname === '/') {
+			menuOptions.push(homeMenuOption);
 		}
 
 		return !this.props.loading.app && this.props.fetchComplete.slugs && (

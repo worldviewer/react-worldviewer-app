@@ -66,7 +66,9 @@ const types = {
 	SET_SEARCH_STATE: 'SET_SEARCH_STATE',
 
 	SELECT_FEED: 'SELECT_FEED',
-	UNSELECT_FEED: 'UNSELECT_FEED'
+	UNSELECT_FEED: 'UNSELECT_FEED',
+	SELECT_FACET: 'SELECT_FACET',
+	UNSELECT_FACET: 'UNSELECT_FACET'
 };
 
 const initialState = {
@@ -160,7 +162,8 @@ const initialState = {
 	searchState: {},
 
 	navbar: {
-		hidden: false
+		hidden: false,
+		facetTrigger: false
 	},
 
 	snackbar: {
@@ -485,6 +488,18 @@ export const selectFeed = (discourseLevel) => {
 export const unselectFeed = () => {
 	return {
 		type: types.UNSELECT_FEED
+	};
+}
+
+export const selectFacet = () => {
+	return {
+		type: types.SELECT_FACET
+	};
+}
+
+export const unselectFacet = () => {
+	return {
+		type: types.UNSELECT_FACET
 	};
 }
 
@@ -939,6 +954,24 @@ export default (state = initialState, action) => {
 				mainStack: {
 					...state.mainStack,
 					selectFeedPopup: -1
+				}
+			}
+
+		case types.SELECT_FACET:
+			return {
+				...state,
+				navbar: {
+					...state.navbar,
+					facetTrigger: true
+				}
+			}
+
+		case types.UNSELECT_FACET:
+			return {
+				...state,
+				navbar: {
+					...state.navbar,
+					facetTrigger: false
 				}
 			}
 

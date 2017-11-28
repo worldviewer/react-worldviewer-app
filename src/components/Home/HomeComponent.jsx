@@ -152,8 +152,7 @@ class HomeComponent extends Component {
 	}
 
 	// Let's make it so that clicking the elephant triggers the facet selection.
-	// The original input label is hidden.  If a keyCode is provided, then we
-	// should use the key to spin the wheel.
+	// The original input label is hidden.
 	async selectFacet() {
 		const domNode = ReactDOM.findDOMNode(this.inputElement);
 		domNode.click();
@@ -530,6 +529,11 @@ class HomeComponent extends Component {
 	// needs to update, even though the Stats component does update -- and it appears to happen
 	// exclusively when the page has scrolled past the first.
 	async componentWillReceiveProps(nextProps) {
+		if (!this.props.navbar.facetTrigger && nextProps.navbar.facetTrigger) {
+			this.selectFacet();
+			this.props.unselectFacet();
+		}
+
 		if ((nextProps.search.facetCategory !== this.props.search.facetCategory) ||
 			(nextProps.search.facetSubCategory !== this.props.search.facetSubCategory) ||
 			(nextProps.search.query !== this.props.search.query)) {
