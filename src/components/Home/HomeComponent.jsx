@@ -33,6 +33,7 @@ import { log, logTitle, logQuery } from '../../libs/utils';
 
 // Clipboard Dependencies
 import Clipboard from 'clipboard';
+import debounce from 'debounce';
 
 // Keyboard Dependencies
 import Mousetrap from 'mousetrap';
@@ -102,6 +103,7 @@ class HomeComponent extends Component {
 		this.props = props;
 
 		this.handleKeyDown = this.handleKeyDown.bind(this);
+		this.debouncedUpdateClickToCopy = debounce(this.updateClickToCopy, 2000);
 	}
 
 	// This is how we make sure that the back button alters the page content
@@ -517,9 +519,6 @@ class HomeComponent extends Component {
 		this.props.setSearchFacet(facetCategory, facetSubCategory,
 			decodedFacet);
 
-    	this.quoteHits = document.querySelectorAll('.QuoteHit');
-    	this.clipboard = new Clipboard(this.quoteHits);
-
 		document.addEventListener("keydown", this.handleKeyDown);
 		this.setupKeySequenceHandlers();
 
@@ -578,7 +577,7 @@ class HomeComponent extends Component {
 				await nextProps.setSearchState({
 					...this.props.searchState,
 					page: 1
-				})
+				});
 			}
 
 			logTitle('Forcing search result update back to page 1 ...');
@@ -596,6 +595,8 @@ class HomeComponent extends Component {
 
 	// This is how we will force the page to appear in the URL
 	async componentDidUpdate(prevProps, prevState) {
+		this.debouncedUpdateClickToCopy();
+
 		if (this.state.searchState && prevState.searchState) {
 			const
 				cur = this.state.searchState,
@@ -631,6 +632,16 @@ class HomeComponent extends Component {
 				}
 			}
 		}
+	}
+
+	async updateClickToCopy() {
+    	this.quoteHits = await document.querySelectorAll('.QuoteHit');
+    	this.clipboard = new Clipboard(this.quoteHits);
+
+    	logTitle('Setting up click-to-copy:');
+    	log('.QuoteHit:');
+    	log(this.quoteHits);
+    	log('');
 	}
 
 	render() {
@@ -700,10 +711,6 @@ class HomeComponent extends Component {
 		} else if (this.props.search.facetCategory) {
 			facetArray = [`facetCategory:${this.props.search.facetCategory}`];			
 		}
-
-		// Update the click-to-copy feature
-    	this.quoteHits = document.querySelectorAll('.QuoteHit');
-    	this.clipboard = new Clipboard(this.quoteHits);
 
     	// logTitle('InstantSearch searchState:');
     	// log(this.state.searchState);

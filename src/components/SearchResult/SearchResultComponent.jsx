@@ -154,7 +154,8 @@ class SearchResultComponent extends Component {
 					</Col>
 					<Col xs={8}>
 						<a className="QuoteName"
-							href={`${this.props.location.pathname}?quote=${quoteHome}`}>
+							href={`${this.props.location.pathname}?quote=${quoteHome}`}
+							onClick={(event) => {event.stopPropagation()}}>
 
 							<p>{this.props.hit.quoteName}</p>
 						</a>
