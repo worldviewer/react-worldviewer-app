@@ -29,6 +29,7 @@ const types = {
 	SET_PASSWORD: 'SET_PASSWORD',
 	SET_PASSWORD_CONFIRMATION: 'SET_PASSWORD_CONFIRMATION',
 	SET_CONFIRMATION_CODE: 'SET_CONFIRMATION_CODE',
+	DISABLE_NEW_USER_INSTRUCTIONS: 'DISABLE_NEW_USER_INSTRUCTIONS',
 
 	SET_USERNAME_VALIDATION: 'SET_USERNAME_VALIDATION',
 	SET_PASSWORD_VALIDATION: 'SET_PASSWORD_VALIDATION',
@@ -98,7 +99,8 @@ const initialState = {
 		password: '',
 		confirmPassword: '',
 		confirmationCode: '',
-		newUser: null
+		newUser: null,
+		instructions: true
 	},
 
 	validations: {
@@ -296,6 +298,12 @@ export const setConfirmationCode = (confirmationCode) => {
 	return {
 		type: types.SET_CONFIRMATION_CODE,
 		confirmationCode
+	};
+};
+
+export const disableNewUserInstructions = () => {
+	return {
+		type: types.DISABLE_NEW_USER_INSTRUCTIONS
 	};
 };
 
@@ -699,6 +707,15 @@ export default (state = initialState, action) => {
 				user: {
 					...state.user,
 					confirmationCode: action.confirmationCode
+				}
+			};
+
+		case types.DISABLE_NEW_USER_INSTRUCTIONS:
+			return {
+				...state,
+				user: {
+					...state.user,
+					instructions: false
 				}
 			};
 
