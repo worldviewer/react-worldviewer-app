@@ -246,7 +246,8 @@ class HomeComponent extends Component {
 
 			setTimeout(() => {
 				mobiscroll.toast({
-					message: 'ESC - defocus search box'
+					message: 'ESC - defocus search box',
+					duration: 500
 				});
 			}, 500);
 		}
@@ -255,13 +256,12 @@ class HomeComponent extends Component {
 		if (document.activeElement === this.searchBoxDOMNode &&
 			event.keyCode === 32) {
 
-			setTimeout(() => {
-				mobiscroll.toast({
-					message: 'SPACE - focus search box'
-				});
+			mobiscroll.toast({
+				message: 'SPACE - focus search box',
+				duration: 500
+			});
 
-				this.searchBoxDOMNode.focus();
-			}, 500);
+			this.searchBoxDOMNode.focus();
 		}
 
 		// up: 38, right: 39 - increment the facet category
@@ -283,7 +283,8 @@ class HomeComponent extends Component {
 				newFacetValue);
 
 			mobiscroll.toast({
-				message: 'RIGHT/UP - move category up'
+				message: 'RIGHT/UP - move category up',
+				duration: 1000
 			});
 		}
 
@@ -306,7 +307,8 @@ class HomeComponent extends Component {
 				newFacetValue);
 
 			mobiscroll.toast({
-				message: 'LEFT/DOWN - move category down'
+				message: 'LEFT/DOWN - move category down',
+				duration: 1000
 			});
 		}
 
@@ -331,7 +333,8 @@ class HomeComponent extends Component {
 							newFacetValue);
 
 						mobiscroll.toast({
-							message: 'A-Z - jump to quote category letter'
+							message: 'A-Z - jump to quote category letter',
+							duration: 1000
 						});
 					}
 				}
@@ -347,7 +350,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'ALL - search all'
+				message: 'ALL - search all',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for All');
@@ -365,7 +369,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'CON - search controversy cards'
+				message: 'CON - search controversy cards',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Controversy Cards');
@@ -384,7 +389,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'QUO - search quotes'
+				message: 'QUO - search quotes',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Quotes');
@@ -403,7 +409,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'FEE - search feed posts'
+				message: 'FEE - search feed posts',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Feed Posts');
@@ -422,7 +429,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'COM - search user comments'
+				message: 'COM - search user comments',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Comments');
@@ -441,7 +449,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'CRI - search critique cards/feeds'
+				message: 'CRI - search critique cards/feeds',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Cards/Feeds: critique');
@@ -460,7 +469,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'HIS - search historical controversies (cards/feeds)'
+				message: 'HIS - search historical controversies (cards/feeds)',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Cards/Feeds: historical');
@@ -479,7 +489,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'ONG - search ongoing controversies (cards/feeds)'
+				message: 'ONG - search ongoing controversies (cards/feeds)',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Cards/Feeds: ongoing');
@@ -498,7 +509,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'PER - search people cards/feeds'
+				message: 'PER - search people cards/feeds',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Cards/Feeds: person');
@@ -517,7 +529,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'REF - search reform cards/feeds'
+				message: 'REF - search reform cards/feeds',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Cards/Feeds: reform');
@@ -536,7 +549,8 @@ class HomeComponent extends Component {
 			this.clearQuote();
 
 			mobiscroll.toast({
-				message: 'THI - search thinking cards/feeds'
+				message: 'THI - search thinking cards/feeds',
+				duration: 1000
 			});
 
 			logTitle('Character sequence detected for Cards/Feeds: thinking');
