@@ -276,7 +276,10 @@ class AppComponent extends Component {
 				'<b>HIS:</b> historical controversies<br />' + '<b>PER:</b> persons of interet<br />' +
 
 				// eslint-disable-next-line
-				'<b>REF:</b> modern science reform<br />' + '<b>THI:</b> thinking process',
+				'<b>REF:</b> modern science reform<br />' + '<b>THI:</b> thinking process<hr />' +
+
+				// eslint-disable-next-line
+				'<b>[A-Z]:</b> jumps to quote category<br />' + '<b>ARROWS:</b> move through categories',
 			theme: 'ios-dark'
 		});
 	}
