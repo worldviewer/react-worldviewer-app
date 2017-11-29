@@ -1,5 +1,5 @@
-// Slugs Dependencies
-// import DeviceStorage from 'react-device-storage';
+// New User Instructions
+import DeviceStorage from 'react-device-storage';
 
 // Error/Logger Handling
 // mobiscroll.Image + mobiscroll.Form + 
@@ -193,4 +193,42 @@ export function logError(e, message, userToken, reloadPage, reloadCallback,
 			duration: snackbarDuration
 		});
 	}
+}
+
+export async function setDiskInstructions(instructions) {
+	try {
+		const storage = new DeviceStorage().localStorage();
+		storage.save('instructions', JSON.stringify(instructions));
+	} catch(e) {
+		// no op if we can't do this
+	}
+}
+
+export function fetchDiskInstructions() {
+	const storage = new DeviceStorage().localStorage();
+
+	// defaults
+	let instructionsFromDisk = null,
+		defaults = {
+			all: true,
+			firstHomepageLanding: true,
+			firstQuoteResult: true,
+			firstControversyCardResult: true,
+			firstControversyCard: true,
+			firstQuoteClick: true
+		};
+
+	try {
+		instructionsFromDisk = storage.read('instructions');
+	} catch(e) {
+		// no op if it's not there
+	}
+
+	if (!instructionsFromDisk) {
+		storage.save('instructions', JSON.stringify(defaults));
+	}
+
+	return instructionsFromDisk ?
+		JSON.parse(instructionsFromDisk) :
+		defaults;
 }

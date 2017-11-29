@@ -29,7 +29,8 @@ const types = {
 	SET_PASSWORD: 'SET_PASSWORD',
 	SET_PASSWORD_CONFIRMATION: 'SET_PASSWORD_CONFIRMATION',
 	SET_CONFIRMATION_CODE: 'SET_CONFIRMATION_CODE',
-	DISABLE_NEW_USER_INSTRUCTIONS: 'DISABLE_NEW_USER_INSTRUCTIONS',
+
+	SET_NEW_USER_INSTRUCTIONS_STATE: 'SET_NEW_USER_INSTRUCTIONS_STATE',
 
 	SET_USERNAME_VALIDATION: 'SET_USERNAME_VALIDATION',
 	SET_PASSWORD_VALIDATION: 'SET_PASSWORD_VALIDATION',
@@ -99,8 +100,16 @@ const initialState = {
 		password: '',
 		confirmPassword: '',
 		confirmationCode: '',
-		newUser: null,
-		instructions: true
+		newUser: null
+	},
+
+	instructions: {
+		all: true,
+		firstHomepageLanding: true,
+		firstQuoteResult: true,
+		firstControversyCardResult: true,
+		firstControversyCard: true,
+		firstQuoteClick: true
 	},
 
 	validations: {
@@ -301,9 +310,10 @@ export const setConfirmationCode = (confirmationCode) => {
 	};
 };
 
-export const disableNewUserInstructions = () => {
+export const setNewUserInstructionsState = (instructions) => {
 	return {
-		type: types.DISABLE_NEW_USER_INSTRUCTIONS
+		type: types.SET_NEW_USER_INSTRUCTIONS_STATE,
+		instructions
 	};
 };
 
@@ -710,13 +720,10 @@ export default (state = initialState, action) => {
 				}
 			};
 
-		case types.DISABLE_NEW_USER_INSTRUCTIONS:
+		case types.SET_NEW_USER_INSTRUCTIONS_STATE:
 			return {
 				...state,
-				user: {
-					...state.user,
-					instructions: false
-				}
+				instructions: action.instructions
 			};
 
 		case types.SET_USERNAME_VALIDATION:

@@ -19,6 +19,9 @@ import { log, logTitle, logError, logObject, logRoute } from '../libs/utils';
 import mobiscroll from '../libs/mobiscroll.custom-4.0.0-beta.min';
 import '../libs/mobiscroll.custom-4.0.0-beta.min.css';
 
+// LocalStorage / New User Instructions
+import { setDiskInstructions, fetchDiskInstructions } from '../libs/utils';
+
 class AppComponent extends Component {
 	constructor(props) {
 		super(props);
@@ -135,6 +138,15 @@ class AppComponent extends Component {
 
 			this.getSlugs();
 		}
+
+		const instructionState = fetchDiskInstructions();
+
+		logTitle('Fetching new user instruction state from device storage:');
+		log('instructionState:');
+		log(instructionState);
+		log('');
+
+		this.props.setNewUserInstructionsState(instructionState);
 	}
 
 	async componentWillReceiveProps(nextProps) {

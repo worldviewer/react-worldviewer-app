@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, disableNewUserInstructions } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, setNewUserInstructionsState } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -17,7 +17,8 @@ const mapStateToProps = (state, ownProps) => {
 		feed: state.reducer.feed,
 		card: state.reducer.card,
 		snackbar: state.reducer.snackbar,
-		discourse: state.reducer.discourse
+		discourse: state.reducer.discourse,
+		instructions: state.reducer.instructions
 	};
 };
 
@@ -77,8 +78,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		selectFacet: () => {
 			return dispatch(selectFacet());
 		},
-		disableNewUserInstructions: () => {
-			return dispatch(disableNewUserInstructions());
+		setNewUserInstructionsState: (instructions) => {
+			return dispatch(setNewUserInstructionsState(instructions));
 		}
 	}
 };
