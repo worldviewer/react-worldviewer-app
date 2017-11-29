@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { setLoaded, setDiscourseLevel, activateMainStackOverlay,
-	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setFeedData, setFeedDataLoading, unsetFeedDataLoading, setFeedsData, setFeedsDataLoading, unsetFeedsDataLoading, setCardData, setCardDataLoading, unsetCardDataLoading } from '../../redux';
+	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setFeedData, setFeedDataLoading, unsetFeedDataLoading, setFeedsData, setFeedsDataLoading, unsetFeedsDataLoading, setCardData, setCardDataLoading, unsetCardDataLoading, setNewUserInstructionsState } from '../../redux';
 import MainStackComponent from './MainStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
@@ -18,7 +18,8 @@ const mapStateToProps = (state, ownProps) => {
 		mainStack: state.reducer.mainStack,
 		slugs: state.reducer.slugs,
 		feed: state.reducer.feed,
-		feeds: state.reducer.feeds
+		feeds: state.reducer.feeds,
+		instructions: state.reducer.instructions
 	};
 };
 
@@ -68,6 +69,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		unsetCardDataLoading: () => {
 			return dispatch(unsetCardDataLoading());
+		},
+		setNewUserInstructionsState: (instructions) => {
+			return dispatch(setNewUserInstructionsState(instructions));
 		}
 	};
 };

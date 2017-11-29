@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import HomeComponent from './HomeComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setSearchQuery, setSearchFacet, setSearchState, unselectFacet } from '../../redux.js';
+import { setSearchQuery, setSearchFacet, setSearchState, unselectFacet, setNewUserInstructionsState } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -9,7 +9,8 @@ const mapStateToProps = (state, ownProps) => {
 		slugs: state.reducer.slugs,
 		search: state.reducer.search,
 		searchState: state.reducer.searchState,
-		navbar: state.reducer.navbar
+		navbar: state.reducer.navbar,
+		instructions: state.reducer.instructions
 	};
 };
 
@@ -26,6 +27,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		unselectFacet: () => {
 			return dispatch(unselectFacet());
+		},
+		setNewUserInstructionsState: (instructions) => {
+			return dispatch(setNewUserInstructionsState(instructions));
 		}
 	}
 };

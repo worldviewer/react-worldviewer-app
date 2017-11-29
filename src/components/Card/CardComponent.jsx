@@ -1,6 +1,11 @@
+// React Dependencies
 import React, { Component } from 'react';
-import './Card.css';
+
+// React Router Dependences
 import { withRouter } from 'react-router-dom';
+
+// UI Dependencies
+import './Card.css';
 import OpenSeadragon from 'openseadragon';
 import config from '../../config';
 

@@ -20,7 +20,7 @@ import mobiscroll from '../libs/mobiscroll.custom-4.0.0-beta.min';
 import '../libs/mobiscroll.custom-4.0.0-beta.min.css';
 
 // LocalStorage / New User Instructions
-import { setDiskInstructions, fetchDiskInstructions } from '../libs/utils';
+import { fetchDiskInstructions, setDiskInstructions } from '../libs/utils';
 
 class AppComponent extends Component {
 	constructor(props) {
@@ -284,6 +284,16 @@ class AppComponent extends Component {
 		});
 	}
 
+	killInstructions(event) {
+		const newInstructionState = {
+			...this.props.instructions,
+			all: false
+		};
+
+		this.props.setNewUserInstructionsState(newInstructionState);
+		setDiskInstructions(newInstructionState);
+	}
+
 	renderFeedMenuOption() {
 		return this.props.cardStack.level === 2 ?
 			<NavItem key={3}
@@ -337,16 +347,21 @@ class AppComponent extends Component {
 			</NavItem>,
 
 			<NavItem key={7}
+				onClick={this.killInstructions.bind(this)}>
+				Kill New User Instructions
+			</NavItem>,
+
+			<NavItem key={8}
 				onClick={() => this.props.history.push('/submit')}>
 				Submit a New Controversy
 			</NavItem>,
 
-			<NavItem key={8}
+			<NavItem key={9}
 				onClick={() => this.props.history.push('/help')}>
 				Help Wanted
 			</NavItem>,
 
-			<NavItem key={9}
+			<NavItem key={10}
 				onClick={() => this.props.history.push('/contact')}>
 				Contact
 			</NavItem> ];

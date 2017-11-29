@@ -24,6 +24,13 @@ import { invokeApig } from '../../libs/aws';
 // Error/Logger Handling
 import { log, logTitle, logObject } from '../../libs/utils';
 
+// LocalStorage / New User Instructions
+import { setDiskInstructions } from '../../libs/utils';
+
+// mobiscroll.Image + mobiscroll.Form
+import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta.min';
+import '../../libs/mobiscroll.custom-4.0.0-beta.min.css';
+
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
@@ -72,6 +79,10 @@ class MainStackComponent extends Component {
 
 		this.handleSwipe = this.handleSwipe.bind(this);
 		this.changeRoute = this.changeRoute.bind(this);
+
+
+		this.debouncedInstructionHandler = debounce(() => this.handleInstructionState('firstControversyCard',
+			'Click the controversy card to zoom into it. The URL is sharable. Swipe left to read the text, right to more information about the controversy (search on "Halton Arp" for a full example).'), 500);
 	}
 
 	// This fetches data for a specific feed
@@ -140,6 +151,25 @@ class MainStackComponent extends Component {
 		this.props.unsetCardDataLoading();
 	}
 
+	handleInstructionState(type, message) {
+		if (this.props.instructions.all &&
+			this.props.instructions[type]) {
+
+			mobiscroll.snackbar({
+				message,
+				duration: 50000
+			});
+
+			const newInstructionState = {
+				...this.props.instructions,
+				[type]: false
+			};
+
+			this.props.setNewUserInstructionsState(newInstructionState);
+			setDiskInstructions(newInstructionState);
+		}
+	}
+
 	async componentDidMount() {
 		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
 			this.props.discourse.isFullScreen ? 3000 : 6000);
@@ -170,6 +200,14 @@ class MainStackComponent extends Component {
 
 			// await this.loadFeedData();
 			await this.loadFeedsData();
+		}
+
+		console.log(nextProps.router.location.pathname);
+
+		if (nextProps.router.location.pathname.match(/worldview\/card$/) &&
+			nextProps.instructions.firstControversyCard) {
+
+			this.debouncedInstructionHandler();
 		}
 
 		// if (nextProps.loading.feed && !this.props.loading.feed) {

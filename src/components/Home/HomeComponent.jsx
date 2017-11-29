@@ -39,6 +39,9 @@ import debounce from 'debounce';
 import Mousetrap from 'mousetrap';
 import throttle from 'lodash.throttle';
 
+// LocalStorage / New User Instructions
+import { setDiskInstructions } from '../../libs/utils';
+
 // Permits HTML markup encoding in feed text
 // import { Parser as HtmlToReactParser } from 'html-to-react';
 
@@ -239,7 +242,7 @@ class HomeComponent extends Component {
 		log('');
 
 		// esc: 27 - defocus the search box
-		if (document.activeElement === this.searchBoxDOMNode &&
+		if ((document.activeElement === this.searchBoxDOMNode) &&
 			event.keyCode === 27) {
 
 			this.searchBoxDOMNode.blur();
@@ -253,16 +256,21 @@ class HomeComponent extends Component {
 		}
 
 		// spacebar: 32 - focus the search box
-		if (document.activeElement === this.searchBoxDOMNode &&
-			event.keyCode === 32) {
+		// This does not work and is not really necessary.  Spacebar will return
+		// the user to the search box input w/o it. And when this is used, the
+		// trouble is that it can actually de-focus the search box and cause
+		// chaos as characters intended for the search box become commands for
+		// setting search category.
 
-			mobiscroll.toast({
-				message: 'SPACE - focus search box',
-				duration: 500
-			});
+		// if ((document.activeElement !== this.searchBoxDOMNode) &&
+		// 	event.keyCode === 32) {
 
-			this.searchBoxDOMNode.focus();
-		}
+		// 	mobiscroll.toast({
+		// 		message: 'SPACE - focus search box',
+		// 		duration: 500,
+		// 		callback: () => this.searchBoxDOMNode.focus()
+		// 	});
+		// }
 
 		// up: 38, right: 39 - increment the facet category
 		if (document.activeElement !== this.searchBoxDOMNode &&
@@ -565,6 +573,25 @@ class HomeComponent extends Component {
 		});
 	}
 
+	handleInstructionState(type, message) {
+		if (this.props.instructions.all &&
+			this.props.instructions[type]) {
+
+			mobiscroll.snackbar({
+				message,
+				duration: 50000
+			});
+
+			const newInstructionState = {
+				...this.props.instructions,
+				[type]: false
+			};
+
+			this.props.setNewUserInstructionsState(newInstructionState);
+			setDiskInstructions(newInstructionState);
+		}
+	}
+
 	async componentDidMount() {
 		// To prevent flash of unstyled content
 		document.getElementById('fouc').style.display = 'block';
@@ -580,6 +607,11 @@ class HomeComponent extends Component {
 		log('');
 
 		if (this.state.searchState.quote) {
+			logTitle('Detected quote homepage');
+			log('');
+
+			this.handleInstructionState('firstQuoteClick', 'As you\'ve observed, you can click quote titles to go to a sharable quote page');
+
 			const newSearchState = {
 				...qs.parse(this.props.location.search.slice(1)),
 				query: this.state.searchState.quote
@@ -604,6 +636,8 @@ class HomeComponent extends Component {
 		this.setupKeySequenceHandlers();
 
 		window.onpopstate = this.onBackOrForwardButtonEvent.bind(this);
+
+		this.handleInstructionState('firstHomepageLanding', 'Fellow heretic,<br /><br />This site is designed to create higher-order thinking. Use the menu if you are confused about how to make that happen.');
 	}
 
 	// This is meant to resolve an issue that occurs when the search has changed in some sort
