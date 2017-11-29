@@ -239,7 +239,34 @@ class AppComponent extends Component {
 	}
 
 	viewKeyboardShortcuts(event) {
-		console.log('shortcut popup');
+		mobiscroll.alert({
+			title: 'Keyboard Shortcuts',
+
+			// eslint-disable-next-line
+			message: '<br /><b>ESC/SPACE:</b> de/focus the search box<hr />' +
+
+				// eslint-disable-next-line
+				'type keys in quick succession while search box is defocused:<br /><br />' +
+
+				// eslint-disable-next-line
+				'<b>ALL:</b> search all<br />' + '<b>CON:</b> just the controversy cards<br />' +
+
+				// eslint-disable-next-line
+				'<b>FEE:</b> only the feed posts<br />' + '<b>COM:</b> user comments (WIP)<br />' +
+
+				// eslint-disable-next-line
+				'<b>QUO:</b> search quotes<hr />' + 'search feed posts and controversy cards by category:<br /><br />' +
+
+				// eslint-disable-next-line
+				'<b>ONG:</b> ongoing controversies<br />' + '<b>CRI:</b> modern science critiques</br />' +
+
+				// eslint-disable-next-line
+				'<b>HIS:</b> historical controversies<br />' + '<b>PER:</b> persons of interet<br />' +
+
+				// eslint-disable-next-line
+				'<b>REF:</b> modern science reform<br />' + '<b>THI:</b> thinking process',
+			theme: 'ios-dark'
+		});
 	}
 
 	renderFeedMenuOption() {

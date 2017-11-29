@@ -2,6 +2,15 @@
 	overflow: hidden;
 }
 
+.mbsc-fr-w, .mbsc-fr-popup.mbsc-ltr {
+	width: 300px !important;
+
+	hr {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+}
+
 @media (min-width: 480px) {
 	.container {
 		overflow-x: hidden;
