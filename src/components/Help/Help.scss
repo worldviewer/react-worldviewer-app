@@ -1,3 +1,22 @@
-.Help {
+@media (min-width: 480px) {
+	.Help .container {
+		overflow-x: hidden;
+		padding-left: 0;
+		padding-right: 0;
+		width: 480px;
+	}
+}
 
+.Help {
+	h3 {
+		background-color: red;
+		color: white;
+		display: inline-block;
+		padding: 5px 10px;
+	}
+
+	a {
+		text-decoration: underline;
+		color: white;							
+	}
 }
