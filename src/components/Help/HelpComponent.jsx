@@ -70,7 +70,9 @@ class HelpComponent extends Component {
 
 								If this is your interest, then please read all of the controversy cards and get back to me. My library of controversial science is always quite a bit larger than my ability to read it, and my list of scientific controversies is at all times growing.<br /><br />
 
-								<h3>Thinkers</h3></p><br />
+								<h3>Thinkers</h3><br />
+
+								We are tracking all 182 controversy cards in the comments of each card in the <a href="https://plus.google.com/collection/Yhn4Y">G+ collection</a>.  Join us.</p><br />
 
 								<img src={emailMeImage} alt='stuff' style={{width: '100%'}} />
 							</div>
