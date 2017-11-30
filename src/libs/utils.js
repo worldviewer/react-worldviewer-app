@@ -215,6 +215,7 @@ export function fetchDiskInstructions() {
 			firstQuoteResult: true,
 			firstControversyCardResult: true,
 			firstControversyCard: true,
+			firstFeed: true,
 			firstQuoteClick: true
 		};
 
@@ -231,4 +232,17 @@ export function fetchDiskInstructions() {
 	return instructionsFromDisk ?
 		JSON.parse(instructionsFromDisk) :
 		defaults;
+}
+
+export function isScrolledIntoView(el) {
+    var elemTop = el.getBoundingClientRect().top;
+    var elemBottom = el.getBoundingClientRect().bottom;
+
+    // Only completely visible elements return true:
+    var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
+
+    // Partially visible elements return true:
+    //isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+    
+    return isVisible;
 }

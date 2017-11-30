@@ -81,8 +81,11 @@ class MainStackComponent extends Component {
 		this.changeRoute = this.changeRoute.bind(this);
 
 
-		this.debouncedInstructionHandler = debounce(() => this.handleInstructionState('firstControversyCard',
+		this.debouncedCardInstructionHandler = debounce(() => this.handleInstructionState('firstControversyCard',
 			'Click the controversy card to zoom into it. The URL is sharable. Swipe left to read the text, right to more information about the controversy (search on "Halton Arp" for a full example).'), 500);
+
+		this.debouncedFeedInstructionHandler = debounce(() => this.handleInstructionState('firstFeed',
+			'Feeds are like subtopics for controversy cards. Swipe vertically to adjust your "level" of discussion. Scroll horizontally to view more feed content. Click the menu to select feed posts by title.'), 500);
 	}
 
 	// This fetches data for a specific feed
@@ -202,12 +205,18 @@ class MainStackComponent extends Component {
 			await this.loadFeedsData();
 		}
 
-		console.log(nextProps.router.location.pathname);
+		if (nextProps.instructions.firstControversyCard &&
+			nextProps.instructions.all &&
+			nextProps.router.location.pathname.match(/worldview\/card$/)) {
 
-		if (nextProps.router.location.pathname.match(/worldview\/card$/) &&
-			nextProps.instructions.firstControversyCard) {
+			this.debouncedCardInstructionHandler();
+		}
 
-			this.debouncedInstructionHandler();
+		if (nextProps.instructions.firstFeed &&
+			nextProps.instructions.all &&
+			nextProps.router.location.pathname.match(/\/feed/)) {
+
+			this.debouncedFeedInstructionHandler();
 		}
 
 		// if (nextProps.loading.feed && !this.props.loading.feed) {

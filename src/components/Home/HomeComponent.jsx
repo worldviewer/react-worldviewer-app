@@ -23,7 +23,7 @@ import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { createConnector } from "react-instantsearch";
 import { connectInfiniteHits } from 'react-instantsearch/connectors';
-import { getPartsFromFacetString, createFacetStringFromParts, getFacetStringFromURL } from '../../libs/utils';
+import { getPartsFromFacetString, createFacetStringFromParts, getFacetStringFromURL, isScrolledIntoView } from '../../libs/utils';
 
 // Config
 import config from '../../config';
@@ -106,7 +106,10 @@ class HomeComponent extends Component {
 		this.props = props;
 
 		this.handleKeyDown = this.handleKeyDown.bind(this);
+
 		this.debouncedUpdateClickToCopy = debounce(this.updateClickToCopy, 2000);
+		this.throttledHandleInstructionScroll = throttle(this.handleInstructionScroll, 500);
+		this.debouncedSetupInstructionScrollers = debounce(this.setupInstructionScrollers, 500);
 	}
 
 	// This is how we make sure that the back button alters the page content
@@ -220,11 +223,44 @@ class HomeComponent extends Component {
 
 		this.setState({ searchState });
 		this.props.setSearchState(...searchState);
+
+		this.debouncedSetupInstructionScrollers();
 	}
 
 	getCurrentFacetIndex(value) {
 		return config.categories.findIndex(category =>
 			category.text === value);
+	}
+
+	// We're going to set up some scroll handlers, but we don't want to
+	// do this if the user is not a new user
+	setupInstructionScrollers() {
+		if ((this.props.instructions.firstQuoteResult ||
+			this.props.instructions.firstControversyCardResult) &&
+			this.props.instructions.all) {
+
+			// Give the DOM a chance to render
+			setTimeout(() => {
+				this.firstQuoteHitDOMNode =
+					ReactDOM.findDOMNode(this.index).querySelector('.QuoteHit');
+				this.firstCardHitDOMNode =
+					ReactDOM.findDOMNode(this.index).querySelector('.CardHit');
+
+				logTitle('Setting up Instruction Scroll Detector:');
+				log('this.index:');
+				log(this.index);
+				log('this.firstQuoteHitDOMNode:');
+				log(this.firstQuoteHitDOMNode);
+				log('this.firstCardHitDOMNode:');
+				log(this.firstCardHitDOMNode);
+				log('');
+
+				if (this.firstQuoteHitDOMNode || this.firstCardHitDOMNode) {
+					document.addEventListener("scroll",
+						this.throttledHandleInstructionScroll.bind(this));
+				}
+			}, 2000);
+		}		
 	}
 
 	// We need to handle both single character events as well as multi-character
@@ -592,6 +628,26 @@ class HomeComponent extends Component {
 		}
 	}
 
+	handleInstructionScroll() {
+		if (this.props.instructions.firstQuoteResult &&
+			this.props.instructions.all &&
+			this.firstQuoteHitDOMNode &&
+			isScrolledIntoView(this.firstQuoteHitDOMNode)) {
+
+			this.handleInstructionState('firstQuoteResult',
+				'Click quotes to copy them to the clipboard');
+		};
+
+		if (this.props.instructions.firstControversyCardResult &&
+			this.props.instructions.all &&
+			this.firstCardHitDOMNode &&
+			isScrolledIntoView(this.firstCardHitDOMNode)) {
+
+			this.handleInstructionState('firstControversyCardResult',
+				'The point of a controversy card is to get you to understanding something controversial or some lesson about scientific controversies as quickly as possible.');
+		};
+	}
+
 	async componentDidMount() {
 		// To prevent flash of unstyled content
 		document.getElementById('fouc').style.display = 'block';
@@ -610,7 +666,8 @@ class HomeComponent extends Component {
 			logTitle('Detected quote homepage');
 			log('');
 
-			this.handleInstructionState('firstQuoteClick', 'As you\'ve observed, you can click quote titles to go to a sharable quote page');
+			this.handleInstructionState('firstQuoteClick',
+				'As you\'ve observed, you can click quote titles to go to a sharable quote page');
 
 			const newSearchState = {
 				...qs.parse(this.props.location.search.slice(1)),
@@ -637,7 +694,8 @@ class HomeComponent extends Component {
 
 		window.onpopstate = this.onBackOrForwardButtonEvent.bind(this);
 
-		this.handleInstructionState('firstHomepageLanding', 'Fellow heretic,<br /><br />This site is designed to create higher-order thinking. Use the menu if you are confused about how to make that happen.');
+		this.handleInstructionState('firstHomepageLanding',
+			'Fellow heretic,<br /><br />This site is designed to create higher-order thinking. Use the menu if you are confused about how to make that happen.');
 	}
 
 	// This is meant to resolve an issue that occurs when the search has changed in some sort
@@ -895,7 +953,7 @@ class HomeComponent extends Component {
 							<Hits hitComponent={CategorySearchResult} />
 						</Index>
 
-						<Index indexName="controversy-cards">
+						<Index indexName="controversy-cards" ref={index => this.index = index}>
 							<Configure facetFilters={facetArray} />
 							<ConditionalHits
 								facetCategory={this.props.search.facetCategory}

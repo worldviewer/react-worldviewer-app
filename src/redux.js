@@ -109,6 +109,7 @@ const initialState = {
 		firstQuoteResult: true,
 		firstControversyCardResult: true,
 		firstControversyCard: true,
+		firstFeed: true,
 		firstQuoteClick: true
 	},
 

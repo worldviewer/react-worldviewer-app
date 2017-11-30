@@ -242,7 +242,7 @@ class AppComponent extends Component {
 		log('');
 
 		this.props.setSearchFacet('', '', '');
-		// this.props.setSearchQuery('');
+		this.props.setSearchQuery('');
 		this.props.history.push({pathname: '/', search: ''});
 	}
 
@@ -319,7 +319,7 @@ class AppComponent extends Component {
 
 		// Dynamically build menu options based upon cardStack level
 		const feedMenuOption =
-			<NavItem key={3}
+			<NavItem key={20}
 				onClick={this.selectFeedHandler.bind(this)}>
 				Select Feed
 			</NavItem>;
