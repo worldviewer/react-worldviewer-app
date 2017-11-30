@@ -698,6 +698,10 @@ class HomeComponent extends Component {
 			'Fellow heretic,<br /><br />This site is designed to create higher-order thinking. Use the menu if you are confused about how to make that happen.');
 	}
 
+	componentWillUnmount() {
+		document.removeEventListener("keydown", this.handleKeyDown);
+	}
+
 	// This is meant to resolve an issue that occurs when the search has changed in some sort
 	// of manner.  The search results component does not always understand that it
 	// needs to update, even though the Stats component does update -- and it appears to happen

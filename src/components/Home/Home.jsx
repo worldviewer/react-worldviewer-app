@@ -10,7 +10,8 @@ const mapStateToProps = (state, ownProps) => {
 		search: state.reducer.search,
 		searchState: state.reducer.searchState,
 		navbar: state.reducer.navbar,
-		instructions: state.reducer.instructions
+		instructions: state.reducer.instructions,
+		router: state.router
 	};
 };
 

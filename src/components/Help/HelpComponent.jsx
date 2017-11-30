@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Help.css';
 import { withRouter } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-bootstrap';
+import getBigThingsDoneImage from '../../images/get-big-things-done.jpg';
 
 class HelpComponent extends Component {
 	constructor(props) {
@@ -20,7 +21,9 @@ class HelpComponent extends Component {
 				<Grid>
 					<Row>
 						<Col>
-							<h3><code>Help</code></h3>
+							<img src={getBigThingsDoneImage}
+								style={{width: '100%'}}
+								alt='the future' />
 						</Col>
 					</Row>
 				</Grid>
