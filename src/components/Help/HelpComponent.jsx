@@ -3,7 +3,6 @@ import './Help.css';
 import { withRouter } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-bootstrap';
 import getBigThingsDoneImage from '../../images/get-big-things-done.jpg';
-import emailMeImage from '../../images/email-me.png';
 
 class HelpComponent extends Component {
 	constructor(props) {
@@ -44,13 +43,13 @@ class HelpComponent extends Component {
 
 								<h1>Help Wanted to<br />Get Big Stuff Done</h1>
 
-								<h3>Current (or Former) Specialist<br />Scientists or Graduate Students</h3><br />
+								<h3>Current (or Former)<br />Specialist Scientists<br />or Graduate Students</h3><br />
 
-								<p>I'm less interested in your CV than in your grasp for the context of your specialization: Do you have a feel for what types of papers get through peer review? Are you aware of problems with the accepted theory? Have you witnessed a defensive posture amongst those who dominate the domain? Have you become disillusioned with academic science? This is your chance to put it back onto a productive track, and to finally experience science as a generalist.  If requested, we can establish a secured line of communication and keep your identity undisclosed if the information you provide can be validated.</p>
+								<p>I'm less interested in your CV than in your grasp for the context of your specialization: Do you have a feel for what types of papers get through peer review? Are you aware of problems with the accepted theory? Have you witnessed a defensive posture amongst those who dominate the domain? Have you become disillusioned with academic science? This is your chance to put your domain back onto a productive track, and to personally experience science as a generalist.  If requested, we can establish a secured line of communication and keep your identity undisclosed if the information you provide is sensitive (and can be validated).</p>
 
 								<h3>Online Science Agitators</h3><br />
 
-								<p>This is not to be confused for people who troll others in order to elicit an emotional response. The point of online agitation is to repeatedly "poke the system" to learn and study over time how it responds. I am seeking out specialists, journalists or just informed laypeople who have an established track record at getting experts and other debunkers to go on the record on the various forums. We will use <i>Controversies of Science</i> as the center of this new network, and I will over time be building out site features to suit <b>your</b> needs, so that the site can keep a steady stream of interaction snapshots building out the controversy map.</p>
+								<p>This is not to be confused for people who troll others in order to elicit an emotional response. The point of online agitation is to repeatedly "poke the system" to learn and study over time how it responds. I am seeking out specialists, journalists or just informed laypeople who have an established track record at getting experts and other debunkers to go on the record on the various forums. We will use <i>Controversies of Science</i> as the center of this new network, and I will over time be building out site features to suit <b>your</b> needs, so that the site can keep a steady incoming stream of online interaction snapshots building out the controversy map.</p>
 
 								<h3>Artists and Graphic Designers</h3><br />
 
@@ -76,7 +75,7 @@ class HelpComponent extends Component {
 
 								<p>We are tracking all 182 controversy cards in the comments of each card of the <a href="https://plus.google.com/collection/Yhn4Y">G+ collection</a>.  Join us.</p><br />
 
-								<img src={emailMeImage} alt='stuff' style={{width: '100%'}} />
+								<p>You can email me <a href='/contact'>here</a></p>
 							</div>
 						</Col>
 					</Row>
