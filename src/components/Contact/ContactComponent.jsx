@@ -16,6 +16,8 @@ import './Contact.css';
 import emailMeImage from '../../images/email-me.png';
 import cmu from '../../images/carnegie-mellon.jpg';
 import slashdotStory from '../../images/slashdot-story-large.png';
+import facebookWall1 from '../../images/facebook-wall-1.png';
+import facebookWall2 from '../../images/facebook-wall-2.png';
 
 // Logging
 import { log, logTitle } from '../../libs/utils';
@@ -66,6 +68,8 @@ class ContactComponent extends Component {
 		this.setState({
 			selectedMenuIndex: index
 		});
+
+		this.props.history.push('/contact/' + this.state.menus[index]);
 	}
 
 	componentDidMount() {
@@ -202,7 +206,11 @@ class ContactComponent extends Component {
 								</div>
 
 								<div style={containerStyles}>
-									These experiences would prove crucial in 2012, when I realized that that there was a need for a more scientific social network. I began the creative process of defining the problem, talking with others and writing ideas down. Although I had dabbled in HTML and some ASP by this point, I lacked a comprehensive web development education.
+									<img src={facebookWall1} alt='writing on the Facebook wall' style={{width: '100%'}} /><br /><br />
+
+									<p>These experiences would prove crucial in 2012, when I realized that that there was a need for a more scientific social network. I began the creative process of defining the problem, talking with others and writing ideas down. Although I had dabbled in HTML and some ASP by this point, I lacked a comprehensive web development education.</p><br />
+
+									<img src={facebookWall2} alt='Facebook graffiti' style={{width: '100%'}} />
 								</div>
 
 								<div style={containerStyles}>
