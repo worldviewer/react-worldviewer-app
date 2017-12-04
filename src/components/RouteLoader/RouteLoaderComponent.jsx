@@ -199,7 +199,12 @@ class RouteLoaderComponent extends Component {
 					component={AsyncNews} />
 
 				<Route
-					path="/contact/:date"
+					path="/contact/:year/:month"
+					location={this.props.location}
+					component={AsyncContact} />
+
+				<Route
+					path="/contact/:year"
 					location={this.props.location}
 					component={AsyncContact} />
 

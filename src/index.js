@@ -4,9 +4,8 @@ import ReactDOM from 'react-dom';
 // import registerServiceWorker from './registerServiceWorker';
 
 // Redux Dependencies
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
 import reducer from './redux.js';
 
 // React Router Dependencies
@@ -31,11 +30,11 @@ import './styles/league-gothic-font.css';
 const NonBlockingApp = withRouter(App);
 
 // Middleware
-const middlewareStoreEnhancer = applyMiddleware(
-	thunkMiddleware.withExtraArgument({
-		localStorage
-	})
-);
+// const middlewareStoreEnhancer = applyMiddleware(
+// 	thunkMiddleware.withExtraArgument({
+// 		localStorage
+// 	})
+// );
 
 // Redux DevTools
 const devToolStoreEnhancer =
@@ -52,7 +51,7 @@ const store = createStore(
 		reducer,
 		router: routerReducer
 	}),
-	compose(middlewareStoreEnhancer, devToolStoreEnhancer),
+	devToolStoreEnhancer,
 	applyMiddleware(routeMiddleware)
 );
 
