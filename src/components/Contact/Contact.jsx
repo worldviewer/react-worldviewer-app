@@ -1,14 +1,21 @@
 import { connect } from 'react-redux';
 import ContactComponent from './ContactComponent.jsx';
 import { withRouter } from 'react-router-dom';
-// import { setUserToken } from '../redux.js';
+import { setPyramidStyles } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
-	return {...ownProps};
+	return {
+		router: state.router,
+		pyramid: state.reducer.pyramid
+	};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	return {...ownProps}
+	return {
+		setPyramidStyles: (styles) => {
+			return dispatch(setPyramidStyles(styles));
+		}
+	}
 };
 
 const Contact = connect(

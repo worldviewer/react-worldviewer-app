@@ -70,7 +70,9 @@ const types = {
 	SELECT_FEED: 'SELECT_FEED',
 	UNSELECT_FEED: 'UNSELECT_FEED',
 	SELECT_FACET: 'SELECT_FACET',
-	UNSELECT_FACET: 'UNSELECT_FACET'
+	UNSELECT_FACET: 'UNSELECT_FACET',
+
+	SET_PYRAMID_STYLES: 'SET_PYRAMID_STYLES'
 };
 
 const initialState = {
@@ -181,6 +183,20 @@ const initialState = {
 	snackbar: {
 		message: '',
 		duration: 0
+	},
+
+	pyramid: {
+		styles: {
+			backgroundColor: 'black',
+			display: 'none',
+			width: '100%',
+			height: '100vh',
+			top: 0,
+			bottom: 0,
+			left: 0,
+			position: 'fixed',
+			right: 0
+		}
 	}
 };
 
@@ -519,6 +535,13 @@ export const selectFacet = () => {
 export const unselectFacet = () => {
 	return {
 		type: types.UNSELECT_FACET
+	};
+}
+
+export const setPyramidStyles = (styles) => {
+	return {
+		type: types.SET_PYRAMID_STYLES,
+		styles
 	};
 }
 
@@ -997,6 +1020,15 @@ export default (state = initialState, action) => {
 				navbar: {
 					...state.navbar,
 					facetTrigger: false
+				}
+			}
+
+		case types.SET_PYRAMID_STYLES:
+			return {
+				...state,
+				pyramid: {
+					...state.pyramid,
+					styles: action.styles
 				}
 			}
 

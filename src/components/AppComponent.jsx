@@ -250,6 +250,13 @@ class AppComponent extends Component {
 		this.props.selectFeed(this.props.discourse.level);
 	}
 
+	exitThreadViewer(event) {
+		this.props.setPyramidStyles({
+			...this.props.pyramid.styles,
+			display: 'none'
+		});
+	}
+
 	viewKeyboardShortcuts(event) {
 		mobiscroll.alert({
 			title: 'Keyboard Shortcuts',
@@ -324,6 +331,14 @@ class AppComponent extends Component {
 				Select Feed
 			</NavItem>;
 
+		const contactMenuOption = this.props.pyramid.styles.display !== 'none' ?
+			<NavItem key={20}
+				onClick={this.exitThreadViewer.bind(this)}>
+				Exit Thread Viewer
+			</NavItem> :
+
+			null;
+
 		// Dynamically build menu options for homepage
 		const homeMenuOptions =
 			[ <NavItem key={3}
@@ -388,6 +403,10 @@ class AppComponent extends Component {
 
 		if (this.props.router.location.pathname === '/') {
 			menuOptions = menuOptions.concat(homeMenuOptions);
+		}
+
+		if (this.props.router.location.pathname.match(/^\/contact/)) {
+			menuOptions = menuOptions.concat(contactMenuOption);
 		}
 
 		return !this.props.loading.app && this.props.fetchComplete.slugs && (

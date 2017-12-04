@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, setNewUserInstructionsState } from '../redux.js';
+import { setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, setNewUserInstructionsState, setPyramidStyles } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -18,7 +18,8 @@ const mapStateToProps = (state, ownProps) => {
 		card: state.reducer.card,
 		snackbar: state.reducer.snackbar,
 		discourse: state.reducer.discourse,
-		instructions: state.reducer.instructions
+		instructions: state.reducer.instructions,
+		pyramid: state.reducer.pyramid
 	};
 };
 
@@ -80,6 +81,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setNewUserInstructionsState: (instructions) => {
 			return dispatch(setNewUserInstructionsState(instructions));
+		},
+		setPyramidStyles: (styles) => {
+			return dispatch(setPyramidStyles(styles));
 		}
 	}
 };
