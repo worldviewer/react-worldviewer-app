@@ -165,6 +165,12 @@ class ContactComponent extends Component {
 		this.props.showSnackbar('Zoom into the thread.  Use menu to exit.', 20000);
 	}
 
+	becomePatron(event) {
+		event.preventDefault();
+
+		window.open('https://www.patreon.com/bePatron?c=1240068', '_blank');
+	}
+
 	render() {
 		const
 			containerStyles = {
@@ -326,9 +332,17 @@ class ContactComponent extends Component {
 
 									<p>I also continue to maintain my immersion within the Thunderbolts Project<sup>TM</sup>, and am committed to bringing my most valuable learnings from those experiences to the public with my new platform.</p>
 
-									<p>I believe that if we create a space where quality thinking is identified according to the values of each individual component of the larger scientific machine, that great things can happen. Academia can be reformed, but we should expect that this reform will have to come from the outside. And what I am proposing is that this reform will be a reaction to observing that the public can think at a very high level on complex issues of scientific importance. Once academia witnesses this in an undeniable manner, the relationship between layperson and specialist experts will be forever changed.</p><br />
+									<p>I believe that if we create a space where quality thinking is identified according to the values of each individual component of the larger scientific machine, that great things can happen. Academia can be reformed, but we should expect that this reform will have to come from the outside. And what I am proposing is that this reform will be a reaction to observing that the public can think at a very high level on complex issues of scientific importance. Once academia witnesses this in an undeniable manner, the relationship between layperson and specialist experts will be forever changed.</p>
 
 									<img src={emailMeImage} alt='stuff' style={{width: '100%'}} />
+
+									<mobiscroll.Form theme="ios-dark" onSubmit={this.becomePatron.bind(this)}>
+										<div className="mbsc-btn-group mbsc-btn-group-block">
+											<button style={{marginTop: '13px'}}>
+												Become a Patron
+											</button>
+										</div>
+									</mobiscroll.Form>									
 								</div>
 							</SwipeableViews>
 						</Col>
