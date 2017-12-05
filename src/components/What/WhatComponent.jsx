@@ -74,7 +74,7 @@ class WhatComponent extends Component {
 
 							<h2>The Decline in<br />Conceptual Revolutions</h2>
 
-							<p>In its July 1, 2005, issue, Science charted the milestones of modern science. The University of Washington’s Gerald Pollack has pointed to the unintended observable trend revealed by the article in his efforts to reform the funding of academic science. <sup>8</sup> Science's list of milestones reveals a serious problem not commonly discussed: a comparison of two eras—1865-1905 with 1965-2005—plainly reveals that the number of conceptual scientific revolutions is in a state of serious decline.</p>
+							<p>In its July 1, 2005, issue, Science charted the milestones of modern science. The University of Washington’s Gerald Pollack has pointed to the unintended observable trend revealed by the article in his efforts to reform the funding of academic science. <sup>8</sup> Science's list of milestones reveals a serious problem not commonly discussed: a comparison of two eras -- 1865-1905 with 1965-2005 -- plainly reveals that the number of conceptual scientific revolutions is in a state of serious decline.</p>
 
 							<p>If the issue is raised with an actual scientist, their response will probably look a bit like this example found online:</p>
 
@@ -82,9 +82,9 @@ class WhatComponent extends Component {
 								
 							<p>The rebuttal sounds reasonable on its surface—but there is a fatal flaw: it requires us to completely ignore the possibility that the original hypothesis was simply wrong. Theorist and science critic Don Scott explains the problem:</p>
 
-							<div className='QuotedText'><p>In this process, one starts with a presumed law of nature—an obviously correct (accepted) generalization about the way things work—and deduces (works out, derives) its logical consequences.</p>
+							<div className='QuotedText'><p>In this process, one starts with a presumed law of nature -- an obviously correct (accepted) generalization about the way things work -- and deduces (works out, derives) its logical consequences.</p>
 
-							<p>A hypothesis arrived at via this deductive method is promoted to the status of being a theory when and if a large enough body of experts accepts it. This is an application of the Socratic Method, also sometimes called the “dialectic method.” Socrates (469-399 B.C.) believed that truth was discovered through intense conversations with other informed people. Thus, in this method, a vote of the experts determines when and if a theory is correct. Once such a theory has been accepted, it is not easily rejected in light of conflicting evidence. It is, however, often modified—made more complicated. When over time a theory becomes officially accepted, the essence of the matter has been settled and fixed. Modifications to the fine points of the theory can then be proposed and debated, but the backbone structure of the theory is set. That framework has already been firmly established.</p>
+							<p>A hypothesis arrived at via this deductive method is promoted to the status of being a theory when and if a large enough body of experts accepts it. This is an application of the Socratic Method, also sometimes called the “dialectic method.” Socrates (469-399 B.C.) believed that truth was discovered through intense conversations with other informed people. Thus, in this method, a vote of the experts determines when and if a theory is correct. Once such a theory has been accepted, it is not easily rejected in light of conflicting evidence. It is, however, often modified -- made more complicated. When over time a theory becomes officially accepted, the essence of the matter has been settled and fixed. Modifications to the fine points of the theory can then be proposed and debated, but the backbone structure of the theory is set. That framework has already been firmly established.</p>
 
 							<p>An inherent flaw lurking in this method is: What if your “obviously correct,” basic, starting-point presumption is wrong?<sup>10</sup></p></div>
 
