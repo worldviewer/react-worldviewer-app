@@ -191,7 +191,7 @@ const initialState = {
 			display: 'none',
 			width: '100%',
 			height: '100vh',
-			top: 0,
+			top: '52px',
 			bottom: 0,
 			left: 0,
 			position: 'fixed',

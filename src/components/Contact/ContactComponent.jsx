@@ -161,7 +161,7 @@ class ContactComponent extends Component {
 			display: 'block'
 		});
 
-		this.setupDeepZoom('physorg-comments', '', '');
+		this.setupDeepZoom('physorg-comments', '18523', '1024');
 		this.props.showSnackbar('Zoom into the thread.  Use menu to exit.', 20000);
 	}
 
@@ -302,27 +302,31 @@ class ContactComponent extends Component {
 								</div>
 
 								<div style={containerStyles}>
-									I would next explain the origin of the scientific social network idea in the December 2017 Edge issue (which releases on December 15th).
+									<p>I would next explain the origin of the scientific social network idea in the December 2017 Edge issue (which releases on December 15th).</p>
 								</div>
 
 								<div style={containerStyles}>
-									By this point -- after 5 years of ruminating on a scientific social network and 10 years of immersion in running claims online -- I have become very clear on what I think needs to be built. All of the design features for this social network are reactions to my many online experiences observing people respond to controversial science claims.<br /><br />
+									<p>By this point -- after 5 years of ruminating on a scientific social network and 10 years of immersion in running claims online -- I have become very clear on what I think needs to be built. All of the design features for this social network are reactions to my many online experiences observing people respond to controversial science claims.</p>
 
-									Although I have over time frequented a variety of online platforms under a variety of pseudonyms (including Digg, BoingBoing, Slashdot and Parlio), my current daily interactions are on phys.org, where I now post under my real name. You can replicate my own experience by opening up this controversy app in one browser and phys.org in another.<br />
+									<p>Although I have over time frequented a variety of online platforms under a variety of pseudonyms (including Digg, BoingBoing, Slashdot and Parlio), my current daily interactions are on phys.org, where I now post under my real name. You can replicate my own experience by opening up this controversy app in one browser and phys.org in another.</p>
 
-									<mobiscroll.Form theme="ios-dark" onSubmit={this.viewPhysOrgComments.bind(this)}>
+									<mobiscroll.Form theme="ios-dark"
+										onSubmit={this.viewPhysOrgComments.bind(this)}>
+
 										<div className="mbsc-btn-group mbsc-btn-group-block">
-											<button>View a recent phys.org thread</button>
+											<button style={{marginBottom: '18px'}}>
+												View a recent phys.org thread
+											</button>
 										</div>
 									</mobiscroll.Form>
 
-									My daily routine involves checking online science articles and published papers for new information that is relevant to any of the 182 controversy cards (link) which have already been published. When I encounter something of value, I post it into the comments of those cards. Unfortunately, many of the images associated with these posts have apparently been destroyed by Google. When the crowdsourcing features are added to the app, I will transfer all of the best comments to it.<br /><br />
+									<p>My daily routine involves checking online science articles and published papers for new information that is relevant to any of the <a href='https://plus.google.com/collection/Yhn4Y'>182 controversy cards</a> which have already been published. When I encounter something of value, I post it into the comments of those cards. Unfortunately, many of the images associated with these posts have apparently been destroyed by Google. When the crowdsourcing features are added to the app, I will transfer all of the best comments to it.</p>
 
-									Another crucial part of my daily routine is the search for new controversies and daily organization of what I've found. This is a very important part of the process because I don't publish a controversy card until some (subjective) threshold is achieved that a coherent argument can be put forward.<br /><br />
+									<p>Another crucial part of my daily routine is the search for new controversies and daily organization of what I've found. This is a very important part of the process because I don't publish a controversy card until some (subjective) threshold is achieved that a coherent argument can be put forward.</p>
 
-									I also continue to maintain my immersion within the Thunderbolts Project<sup>TM</sup>, and am committed to bringing my most valuable learnings from those experiences to the public with my new platform.<br /><br />
+									<p>I also continue to maintain my immersion within the Thunderbolts Project<sup>TM</sup>, and am committed to bringing my most valuable learnings from those experiences to the public with my new platform.</p>
 
-									I believe that if we create a space where quality thinking is identified according to the values of each individual component of the larger scientific machine, that great things can happen. Academia can be reformed, but we should expect that this reform will have to come from the outside. And what I am proposing is that this reform will be a reaction to observing that the public can think at a very high level on complex issues of scientific importance. Once academia witnesses this in an undeniable manner, the relationship between layperson and specialist experts will be forever changed.<br /><br />
+									<p>I believe that if we create a space where quality thinking is identified according to the values of each individual component of the larger scientific machine, that great things can happen. Academia can be reformed, but we should expect that this reform will have to come from the outside. And what I am proposing is that this reform will be a reaction to observing that the public can think at a very high level on complex issues of scientific importance. Once academia witnesses this in an undeniable manner, the relationship between layperson and specialist experts will be forever changed.</p><br />
 
 									<img src={emailMeImage} alt='stuff' style={{width: '100%'}} />
 								</div>
