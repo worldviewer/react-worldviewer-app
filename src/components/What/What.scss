@@ -1,3 +1,59 @@
-.What {
+@media (min-width: 480px) {
+	.What .container {
+		overflow-x: hidden;
+		width: 480px;
+	}
+}
 
+.What {
+	margin: 52px 25px 25px 25px;
+
+	 ol {
+		list-style: none;
+		counter-reset: item;
+		-webkit-padding-start: 0;
+	 }
+
+	li {
+		counter-increment: item;
+		margin-bottom: 10px;
+		word-wrap: break-word;
+	}
+
+	li:before {
+		background-color: #FD8324;
+		color: white;
+		content: counter(item);
+		display: inline-block;
+		margin-right: 10px;
+		padding: 1px 4px;
+	}
+
+	sup {
+		background-color: #FD8324;
+		color: white;
+		font-style: normal;
+		padding: 1px 4px;
+	}
+
+	a {
+		text-decoration: underline;
+		color: #FD8324;							
+	}
+
+	h2 {
+		background-color: #FD8324;
+		color: #022B36;
+		display: inline-block;
+		padding: 5px 10px;
+	}
+
+	.QuotedText {
+		background-color: #50C6C3;
+		color: #022B36;
+		font-style: italic;
+		margin-top: 5px;
+		margin-bottom: 10px;
+		padding: 15px;
+	}
 }
