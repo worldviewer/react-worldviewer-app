@@ -673,7 +673,7 @@ class WhatComponent extends Component {
 								<li>Controversies of Science website: <a href='https://www.controversiesofscience.com' target='_blank' rel='noopener noreferrer'>https://www.controversiesofscience.com</a></li>
 							</ol>
 
-							<p><i>CHRIS REEVE has a Bachelor's of Science in Electrical and Computer Engineering from Carnegie Mellon. He has worked and lived around Silicon Valley for much of his adult working life. He's recently begun work on a stealth-mode startup, but continues to build out controversiesofscience.com on weekends. His preferred tech stack is React, Redux, Node, AWS, Serverless and Algolia Search.  The site is under active development and is expected to take another 6-9 months to complete.</i></p>
+							<div className='QuotedText'><i>CHRIS REEVE has a Bachelor's of Science in Electrical and Computer Engineering from Carnegie Mellon. He has worked and lived around Silicon Valley for much of his adult working life. He's recently begun work on a stealth-mode startup, but continues to build out controversiesofscience.com on weekends. His preferred tech stack is React, Redux, Node, AWS, Serverless and Algolia Search.  The site is under active development and is expected to take another 6-9 months to complete.</i></div>
 
 						</Col>
 					</Row>
