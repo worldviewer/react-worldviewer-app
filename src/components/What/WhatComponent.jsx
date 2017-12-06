@@ -258,6 +258,10 @@ class WhatComponent extends Component {
 				<Grid>
 					<Row>
 						<Col>
+							<div className='QuotedText'>
+								The following essay was accepted by EdgeScience for publication in its December 2017 issue (Issue 32).  The editor made significant changes to the Robert Goddard story and the selection of images in order to fit the long article into their slim magazine format.  I am told that they even expanded the typical issue length from 20 to 24 pages to make this happen.  I am extremely grateful that Patrick contacted me to do this article, and I trust his decisions about what to print for his magazine's audience.  That said, I want to also publish here the original longer version with my own selected images and original title, because it leverages the work which has already gone into the Controversies of Science G+ collection as a way of teaching what this site is about.
+							</div>
+
 							<h1>Universities Have Yet to Systematically Track Scientific Controversies and the Public Should Do It For Them</h1>
 
 							<h2>A proposal for the<br />creation of a scientific<br />social network where<br />the public crowdsources<br />information about<br />scientific controversies</h2>
@@ -671,7 +675,7 @@ class WhatComponent extends Component {
 								<li>The Controversies of Science G+ Collection is at <a href='https://plus.google.com/collection/Yhn4Y' target='_blank' rel='noopener noreferrer'>https://plus.google.com/collection/Yhn4Y</a></li>
 
 								<li>Controversies of Science website: <a href='https://www.controversiesofscience.com' target='_blank' rel='noopener noreferrer'>https://www.controversiesofscience.com</a></li>
-							</ol>
+							</ol><br />
 
 							<div className='QuotedText'><i>CHRIS REEVE has a Bachelor's of Science in Electrical and Computer Engineering from Carnegie Mellon. He has worked and lived around Silicon Valley for much of his adult working life. He's recently begun work on a stealth-mode startup, but continues to build out controversiesofscience.com on weekends. His preferred tech stack is React, Redux, Node, AWS, Serverless and Algolia Search.  The site is under active development and is expected to take another 6-9 months to complete.</i></div>
 
