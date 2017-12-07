@@ -1,3 +1,45 @@
+@media (min-width: 480px) {
+	.How .container {
+		overflow-x: hidden;
+		width: 480px;
+	}
+}
+
 .How {
+	margin: 77px 25px 25px 25px;
 	
+	a {
+		text-decoration: underline;
+		color: #FD8324;							
+	}
+
+	h2 {
+		background-color: #FD8324;
+		color: #022B36;
+		display: inline-block;
+		padding: 5px 10px;
+	}
+
+	.PullQuote {
+		background-color: #50C6C3;
+		color: #022B36;
+		float: right;
+		font-style: italic;
+		margin: 20px 5px 20px 20px;
+		padding: 20px;
+		text-align: right;
+	}
+
+	.QuotedText {
+		background-color: #50C6C3;
+		color: #022B36;
+		font-style: italic;
+		margin-top: 5px;
+		margin-bottom: 25px;
+		padding: 15px;
+	}
+
+	.BulletedPoints li {
+		margin-bottom: 15px;
+	}
 }
