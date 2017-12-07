@@ -52,7 +52,7 @@ class HowComponent extends Component {
 
 							<p>Every day of your life, you are being invited to rush to accept the judgment of experts by science journalists. The never-ending fanfare of bold announcements that ten problems before breakfast have been solved can leave us in a sort of mindless euphoria that if we can just manage to stick around for another 50 years, even death -- and eventually taxes -- will be a thing of the past. Over time, you may have unknowingly constructed a personal worldview upon this premise that science will make steady, predictable advances towards a better future if all you do is place faith in the specialist experts.</p>
 
-							<p>This is a problem on so many levels -- for our culture, for our future and especially for your own personal development.</p>
+							<p>This is a problem on so many levels -- for our culture, for our future and especially for <a href='https://www.thunderbolts.info/wp/2017/10/03/science-as-a-personal-journey/'>your own personal development</a>.</p>
 
 							<ul className='BulletedPoints'>
 								<li>With such an approach, <a href='https://www.controversiesofscience.com/bandwagon-research/worldview/card'>those few who develop the courage to point out serious fundamental flaws</a> in either theory or process are more likely to be attacked, <a href='https://www.controversiesofscience.com/schmidt/worldview/card'>and their warnings are more likely to go ignored.</a></li>
