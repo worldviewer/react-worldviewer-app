@@ -242,14 +242,16 @@ class FeedCardComponent extends Component {
 		log('');
 
 		this.props.setFeedData(feedPost, this.props.level);
-		this.props.activateFeed(this.props.level);
+		this.props.activateFeedImage(this.props.level);
+		this.props.activateFeedText(this.props.level);
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
 
 	setFeedPost(selection) {
 		if (selection.valueText) {
 			this.getFeedPostFromFeedString(selection.valueText);
-			this.props.activateFeed(this.props.level);
+			this.props.activateFeedImage(this.props.level);
+			this.props.activateFeedText(this.props.level);
 		}
 	}
 

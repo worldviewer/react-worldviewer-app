@@ -72,8 +72,8 @@ const types = {
 	SELECT_FACET: 'SELECT_FACET',
 	UNSELECT_FACET: 'UNSELECT_FACET',
 
-	ACTIVATE_FEED: 'ACTIVATE_FEED',
-	DEACTIVATE_FEED: 'DEACTIVATE_FEED',
+	ACTIVATE_FEED_IMAGE: 'ACTIVATE_FEED_IMAGE',
+	DEACTIVATE_FEED_IMAGE: 'DEACTIVATE_FEED_IMAGE',
 	ACTIVATE_FEED_TEXT: 'ACTIVATE_FEED_TEXT',
 	DEACTIVATE_FEED_TEXT: 'DEACTIVATE_FEED_TEXT',
 
@@ -141,23 +141,23 @@ const initialState = {
 
 	feedStack: {
 		worldview: {
-			active: false,
+			image: false,
 			text: false
 		},
 		model: {
-			active: false,
+			image: false,
 			text: false
 		},
 		propositional: {
-			active: false,
+			image: false,
 			text: false
 		},
 		conceptual: {
-			active: false,
+			image: false,
 			text: false
 		},
 		narrative: {
-			active: false,
+			image: false,
 			text: false
 		}
 	},
@@ -566,16 +566,16 @@ export const unselectFacet = () => {
 	};
 }
 
-export const activateFeed = (levelName) => {
+export const activateFeedImage = (levelName) => {
 	return {
-		type: types.ACTIVATE_FEED,
+		type: types.ACTIVATE_FEED_IMAGE,
 		levelName
 	};
 }
 
-export const deactivateFeed = (levelName) => {
+export const deactivateFeedImage = (levelName) => {
 	return {
-		type: types.DEACTIVATE_FEED,
+		type: types.DEACTIVATE_FEED_IMAGE,
 		levelName
 	};
 }
@@ -1079,26 +1079,26 @@ export default (state = initialState, action) => {
 				}
 			}
 
-		case types.ACTIVATE_FEED:
+		case types.ACTIVATE_FEED_IMAGE:
 			return {
 				...state,
 				feedStack: {
 					...state.feedStack,
 					[action.levelName]: {
 						...state.feedStack[action.levelName],
-						active: true
+						image: true
 					}
 				}
 			}
 
-		case types.DEACTIVATE_FEED:
+		case types.DEACTIVATE_FEED_IMAGE:
 			return {
 				...state,
 				feedStack: {
 					...state.feedStack,
 					[action.levelName]: {
 						...state.feedStack[action.levelName],
-						active: false
+						image: false
 					}
 				}
 			}
