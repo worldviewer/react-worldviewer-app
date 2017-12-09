@@ -83,7 +83,7 @@ class CardStackComponent extends Component {
 								<Card />
 							</div>
 
-							<div className="FeedCard">
+							<div>
 								<FeedCard level="worldview" />
 							</div>
 						</SwipeableViews>

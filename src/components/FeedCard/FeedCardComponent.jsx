@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import { Grid } from 'react-bootstrap';
 import OpenSeadragon from 'openseadragon';
 import './FeedCard.css';
+// import '../../libs/gridlex-classes.css';
 
 // import share from '../../images/share.svg';
 // import down from '../../images/downdown.svg';
@@ -186,6 +187,7 @@ class FeedCardComponent extends Component {
 		this.props.unselectFeed();
 	}
 
+	// Selection of feed post by wheel
 	async getFeedPostFromFeedString(feedString) {
 		const
 			posts = this.props.feeds[this.props.level],
@@ -217,9 +219,37 @@ class FeedCardComponent extends Component {
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
 
+	async clickFeedPost(index) {
+		const
+			posts = this.props.feeds[this.props.level],
+			feedSlug = posts[index].slug,
+			shortSlug = this.props.router.location.pathname.split('/')[1],
+			cardSlug = this.props.slugs.hash[shortSlug];
+
+		let feedPost = null;
+
+		this.props.setFeedDataLoading(this.props.level);
+
+		try {
+			feedPost = await invokeApig( {base: 'feeds', path: '/feeds/' +
+				cardSlug + '/' + feedSlug }, this.props.user.token);
+		} catch(e) {
+			logError(e, 'Error Fetching Feed Post: ' + e.message, this.props.user.token);
+		}
+
+		logTitle('Fetching controversy feed data for level ' + this.props.level + ' ...');
+		logObject(feedPost);
+		log('');
+
+		this.props.setFeedData(feedPost, this.props.level);
+		this.props.activateFeed(this.props.level);
+		this.props.unsetFeedDataLoading(this.props.level);
+	}
+
 	setFeedPost(selection) {
 		if (selection.valueText) {
 			this.getFeedPostFromFeedString(selection.valueText);
+			this.props.activateFeed(this.props.level);
 		}
 	}
 
@@ -257,10 +287,28 @@ class FeedCardComponent extends Component {
 		}
 	}
 
+	// https://s3-us-west-2.amazonaws.com/controversy-cards-feeds/
+	// halton-arp-the-modern-galileo/worldview/10-times-quasar-superluminal-motion/small.jpg
 	render() {
 		const feeds = !this.props.loading.feeds ?
 			this.props.feeds[this.props.level] :
 			[];
+
+		const base = config.s3.feeds.URL +
+			this.props.card.data.slug + '/' +
+			this.props.level + '/';
+
+		const imgStyles = {
+			width: '150px',
+			height: '150px'
+		};
+
+		const
+			windowHeight = window.innerHeight,
+			rows = Math.floor(windowHeight / 150);
+
+		const gridWidth = !this.props.loading.feeds ?
+			Math.ceil(190 * this.props.feeds[this.props.level].length / rows) : 0;
 
 		return (
 			<div className="FeedCard"
@@ -281,6 +329,15 @@ class FeedCardComponent extends Component {
 
 						</mobiscroll.Select>
 					</div>
+
+					{ !this.props.loading.feeds && <div className='GridContainer' style={{width: gridWidth}}>
+
+						{ feeds.map((feed, index) =>
+							<img src={base + feed.slug + '/small.jpg'} alt={feed.title}
+								style={imgStyles} className='GridItem' key={index}
+								onClick={this.clickFeedPost.bind(this, index)} /> ) }
+
+					</div> }
 
 				</Grid>
 			</div>

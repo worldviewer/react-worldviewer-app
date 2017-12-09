@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import FeedCardComponent from './FeedCardComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { unselectFeed, setFeedDataLoading, unsetFeedDataLoading, setFeedData } from '../../redux';
+import { unselectFeed, setFeedDataLoading, unsetFeedDataLoading, setFeedData, activateFeed, deactivateFeed, activateFeedText, deactivateFeedText } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -13,7 +13,8 @@ const mapStateToProps = (state, ownProps) => {
 		discourse: state.reducer.discourse,
 		mainStack: state.reducer.mainStack,
 		user: state.reducer.user,
-		router: state.router
+		router: state.router,
+		feedStack: state.reducer.feedStack
 	};
 };
 
@@ -30,6 +31,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setFeedData: (feed, level) => {
 			return dispatch(setFeedData(feed, level));
+		},
+		activateFeed: (levelName) => {
+			return dispatch(activateFeed(levelName));
+		},
+		deactivateFeed: (levelName) => {
+			return dispatch(deactivateFeed(levelName));
+		},
+		activateFeedText: (levelName) => {
+			return dispatch(activateFeedText(levelName));
+		},
+		deactivateFeedText: (levelName) => {
+			return dispatch(deactivateFeedText(levelName));
 		}
 	}
 };

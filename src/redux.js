@@ -72,6 +72,11 @@ const types = {
 	SELECT_FACET: 'SELECT_FACET',
 	UNSELECT_FACET: 'UNSELECT_FACET',
 
+	ACTIVATE_FEED: 'ACTIVATE_FEED',
+	DEACTIVATE_FEED: 'DEACTIVATE_FEED',
+	ACTIVATE_FEED_TEXT: 'ACTIVATE_FEED_TEXT',
+	DEACTIVATE_FEED_TEXT: 'DEACTIVATE_FEED_TEXT',
+
 	SET_PYRAMID_STYLES: 'SET_PYRAMID_STYLES'
 };
 
@@ -132,6 +137,29 @@ const initialState = {
 	cardStack: {
 		level: 1,
 		swipeDirection: 'right'
+	},
+
+	feedStack: {
+		worldview: {
+			active: false,
+			text: false
+		},
+		model: {
+			active: false,
+			text: false
+		},
+		propositional: {
+			active: false,
+			text: false
+		},
+		conceptual: {
+			active: false,
+			text: false
+		},
+		narrative: {
+			active: false,
+			text: false
+		}
 	},
 
 	mainStack: {
@@ -535,6 +563,34 @@ export const selectFacet = () => {
 export const unselectFacet = () => {
 	return {
 		type: types.UNSELECT_FACET
+	};
+}
+
+export const activateFeed = (levelName) => {
+	return {
+		type: types.ACTIVATE_FEED,
+		levelName
+	};
+}
+
+export const deactivateFeed = (levelName) => {
+	return {
+		type: types.DEACTIVATE_FEED,
+		levelName
+	};
+}
+
+export const activateFeedText = (levelName) => {
+	return {
+		type: types.ACTIVATE_FEED_TEXT,
+		levelName
+	};
+}
+
+export const deactivateFeedText = (levelName) => {
+	return {
+		type: types.DEACTIVATE_FEED_TEXT,
+		levelName
 	};
 }
 
@@ -1020,6 +1076,54 @@ export default (state = initialState, action) => {
 				navbar: {
 					...state.navbar,
 					facetTrigger: false
+				}
+			}
+
+		case types.ACTIVATE_FEED:
+			return {
+				...state,
+				feedStack: {
+					...state.feedStack,
+					[action.levelName]: {
+						...state.feedStack[action.levelName],
+						active: true
+					}
+				}
+			}
+
+		case types.DEACTIVATE_FEED:
+			return {
+				...state,
+				feedStack: {
+					...state.feedStack,
+					[action.levelName]: {
+						...state.feedStack[action.levelName],
+						active: false
+					}
+				}
+			}
+
+		case types.ACTIVATE_FEED_TEXT:
+			return {
+				...state,
+				feedStack: {
+					...state.feedStack,
+					[action.levelName]: {
+						...state.feedStack[action.levelName],
+						text: true
+					}
+				}
+			}
+
+		case types.DEACTIVATE_FEED_TEXT:
+			return {
+				...state,
+				feedStack: {
+					...state.feedStack,
+					[action.levelName]: {
+						...state.feedStack[action.levelName],
+						text: false
+					}
 				}
 			}
 

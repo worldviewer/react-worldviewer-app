@@ -10,3 +10,14 @@
 .FeedSelect {
 	display: none;
 }
+
+.GridContainer {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.GridItem {
+	margin-right: 2px;
+	margin-bottom: 2px;
+}
