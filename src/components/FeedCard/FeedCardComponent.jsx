@@ -366,6 +366,7 @@ class FeedCardComponent extends Component {
 									this.viewer = null;
 
 									inst.hide();
+									this.props.enableMainStackSwipeable();
 								}},
 								{ text: 'View Text', handler: (event, inst) => {
 									logTitle('Feed Image --> Feed Text ...');
@@ -376,6 +377,7 @@ class FeedCardComponent extends Component {
 
 							onShow={(event, inst) => {
 								this.setupDeepZoom();
+								this.props.disableMainStackSwipeable();
 							}}>
 
 							<div className="md-dialog-image" style={{top: '51px'}}>
@@ -405,6 +407,7 @@ class FeedCardComponent extends Component {
 									this.viewer = null;
 
 									inst.hide();
+									this.props.enableMainStackSwipeable();
 								}},
 								{ text: 'View Image', handler: (event, inst) => {
 									logTitle('Feed Text --> Feed Image ...');
@@ -418,6 +421,7 @@ class FeedCardComponent extends Component {
 								log('');
 
 								this.constructText();
+								this.props.disableMainStackSwipeable();
 							}}>
 
 							<div className="md-dialog-text" style={{height: windowWidth,
