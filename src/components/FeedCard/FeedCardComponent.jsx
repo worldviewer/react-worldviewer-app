@@ -218,8 +218,6 @@ class FeedCardComponent extends Component {
 		log('');
 
 		await this.props.setFeedData(feedPost, this.props.level);
-		// await this.setupDeepZoom();
-
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
 
@@ -246,8 +244,6 @@ class FeedCardComponent extends Component {
 		log('');
 
 		await this.props.setFeedData(feedPost, this.props.level);
-		// await this.setupDeepZoom();
-
 		this.props.activateFeedImageAndText(this.props.level);
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
@@ -288,7 +284,8 @@ class FeedCardComponent extends Component {
 				log('');
 
 				this.deepZoomWidget.instance.show();
-				// this.textWidget.instance.show();
+				this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+					nextFeed.discourseLevel + '/feed/' + nextFeed.feedSlug);
 			}
 		}
 	}
@@ -367,6 +364,9 @@ class FeedCardComponent extends Component {
 
 									inst.hide();
 									this.props.enableMainStackSwipeable();
+
+									this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+										this.props.feed[this.props.level].discourseLevel + '/feed');
 								}},
 								{ text: 'View Text', handler: (event, inst) => {
 									logTitle('Feed Image --> Feed Text ...');
@@ -378,6 +378,10 @@ class FeedCardComponent extends Component {
 							onShow={(event, inst) => {
 								this.setupDeepZoom();
 								this.props.disableMainStackSwipeable();
+
+								this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+									this.props.feed[this.props.level].discourseLevel + '/feed/' +
+									this.props.feed[this.props.level].feedSlug);
 							}}>
 
 							<div className="md-dialog-image" style={{top: '51px'}}>
@@ -408,6 +412,9 @@ class FeedCardComponent extends Component {
 
 									inst.hide();
 									this.props.enableMainStackSwipeable();
+
+									this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+										this.props.feed[this.props.level].discourseLevel + '/feed');
 								}},
 								{ text: 'View Image', handler: (event, inst) => {
 									logTitle('Feed Text --> Feed Image ...');
@@ -422,6 +429,10 @@ class FeedCardComponent extends Component {
 
 								this.constructText();
 								this.props.disableMainStackSwipeable();
+
+								this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+									this.props.feed[this.props.level].discourseLevel + '/feed/' +
+									this.props.feed[this.props.level].feedSlug + '/text');
 							}}>
 
 							<div className="md-dialog-text" style={{height: windowWidth,

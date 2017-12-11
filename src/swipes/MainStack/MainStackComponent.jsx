@@ -245,7 +245,7 @@ class MainStackComponent extends Component {
 			route = '/' + this.props.match.params.controversy +
 				'/' + this.levels[this.props.discourse.level] +
 				(this.props.discourse.level === 0 ?
-					this.cardStackLevels[this.props.cardStack.level] : '');
+					this.cardStackLevels[this.props.cardStack.level] : '/feed');
 
 		this.props.history.push(route);
 	}
