@@ -56,10 +56,6 @@ class MainStackComponent extends Component {
 			'/feed'
 		];
 
-		logTitle('this.cardStackLevels:');
-		log(this.cardStackLevels);
-		log('');
-
 		// When we land on this page without swiping, we determine and set the horizontal swipe
 		// position according to the cardStackLevel prop passed on by the router
 		if (this.props.cardStackLevel) {
@@ -187,7 +183,6 @@ class MainStackComponent extends Component {
 			// want to run this once, and we are instantiating 4
 			// different instances ...
 			await this.loadCardData();
-			// await this.loadFeedData();
 			await this.loadFeedsData();
 		}
 	}
@@ -201,7 +196,6 @@ class MainStackComponent extends Component {
 		if (!this.props.fetchComplete.slugs &&
 			nextProps.fetchComplete.slugs) {
 
-			// await this.loadFeedData();
 			await this.loadFeedsData();
 		}
 
@@ -218,10 +212,6 @@ class MainStackComponent extends Component {
 
 			this.debouncedFeedInstructionHandler();
 		}
-
-		// if (nextProps.loading.feed && !this.props.loading.feed) {
-		// 	this.props.unsetFeedDataLoading();
-		// }
 	}
 
 	componentWillMount() {

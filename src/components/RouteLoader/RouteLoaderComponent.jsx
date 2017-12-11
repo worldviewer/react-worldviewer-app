@@ -257,6 +257,22 @@ class RouteLoaderComponent extends Component {
 							discourseLevel={true}
 							{...props}/> } />
 
+				<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/feed/:feedSlug/text"
+					render={ (props) =>
+						<AsyncMainStack
+							location={this.props.location}
+							cardStackLevel={2}
+							discourseLevel={true}
+							{...props}/> } />
+
+				<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/feed/:feedSlug"
+					render={ (props) =>
+						<AsyncMainStack
+							location={this.props.location}
+							cardStackLevel={2}
+							discourseLevel={true}
+							{...props}/> } />
+
 				<Route path="/:controversy/:level(worldview|model|propositional|conceptual|narrative)/feed"
 					render={ (props) =>
 						<AsyncMainStack

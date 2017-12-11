@@ -130,10 +130,6 @@ class FeedCardComponent extends Component {
 
 		let paragraphTag, text = '';
 
-		logTitle(this.titleCase(this.props.level) + ' Feedcard props:');
-		logObject(this.props);
-		log('');
-
 		for (let num = 0; num < feed.text.length; num++) {
 			if (num === 0) {
 				paragraphTag = "<p className='FirstFeedParagraph'>";
@@ -189,11 +185,14 @@ class FeedCardComponent extends Component {
 		this.props.unselectFeed();
 	}
 
-	// Selection of feed post by wheel
-	async getFeedPostFromFeedString(feedString) {
+	// Selection of feed post by wheel (feedString) or route (feedSlug)
+	async getFeedPostFromFeedString(feedString, feedSlug) {
+		if (!feedSlug) {
+			const posts = this.props.feeds[this.props.level];
+			feedSlug = posts.filter(post => feedString === post.title)[0].slug;
+		}
+
 		const
-			posts = this.props.feeds[this.props.level],
-			feedSlug = posts.filter(post => feedString === post.title)[0].slug,
 			shortSlug = this.props.router.location.pathname.split('/')[1],
 			cardSlug = this.props.slugs.hash[shortSlug];
 
@@ -221,6 +220,15 @@ class FeedCardComponent extends Component {
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
 
+	// Selection of feed post by wheel (callback)
+	setFeedPost(selection) {
+		if (selection.valueText) {
+			this.getFeedPostFromFeedString(selection.valueText);
+			this.props.activateFeedImage(this.props.level);
+		}
+	}
+
+	// Selection of feed post by clicking thumbnail
 	async clickFeedPost(index) {
 		const
 			posts = this.props.feeds[this.props.level],
@@ -244,24 +252,17 @@ class FeedCardComponent extends Component {
 		log('');
 
 		await this.props.setFeedData(feedPost, this.props.level);
-		this.props.activateFeedImageAndText(this.props.level);
+		this.props.activateFeedImage(this.props.level);
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
 
-	setFeedPost(selection) {
-		if (selection.valueText) {
-			this.getFeedPostFromFeedString(selection.valueText);
-			this.props.activateFeedImageAndText(this.props.level);
-		}
-	}
-
 	componentWillReceiveProps(nextProps) {
+		// We don't care unless the current feed post level is the active one
 		if (this.props.discourse.level === this.levels.indexOf(this.props.level)) {
 			const
 				thisFeedLoading = this.props.loading.feed[this.props.level],
 				nextFeedLoading = nextProps.loading.feed[this.props.level],
 				nextFeed = nextProps.feed[this.props.level],
-				thisFeedStack = this.props.feedStack[this.props.level],
 				nextFeedStack = nextProps.feedStack[this.props.level];
 
 			if (this.props.mainStack.selectFeedPopup === -1 &&
@@ -271,16 +272,18 @@ class FeedCardComponent extends Component {
 				this.selectFeedHandler();
 			}
 
-			logTitle('componentWillReceiveProps for level ' + this.props.level + ':');
-			log('thisFeedLoading: ' + thisFeedLoading);
-			log('!nextFeedLoading: ' + !nextFeedLoading);
-			log('nextFeedStack.image: ' + nextFeedStack.image);
-			log(this.deepZoomWidget);
-			log(this.textWidget);
-			log('');
+			// logTitle('componentWillReceiveProps for level ' + this.props.level + ':');
+			// log('thisFeedLoading: ' + thisFeedLoading);
+			// log('!nextFeedLoading: ' + !nextFeedLoading);
+			// log('nextFeedStack.image: ' + nextFeedStack.image);
+			// log(this.deepZoomWidget);
+			// log(this.textWidget);
+			// log('');
 
+			// Triggers when component finishes loading before the feed
 			if (thisFeedLoading && !nextFeedLoading && nextFeedStack.image) {
-				logTitle('Detected deep zoom widget activation');
+				logTitle('Detected deep zoom widget activation (feedLoading change)');
+				log('path: ' + this.props.router.location.pathname);
 				log('');
 
 				this.deepZoomWidget.instance.show();
@@ -290,6 +293,37 @@ class FeedCardComponent extends Component {
 		}
 	}
 
+	async componentDidMount() {
+		// We don't care unless the current feed post level is the active one
+		if (this.props.discourse.level === this.levels.indexOf(this.props.level)) {
+			const [, shortSlug, discourseLevel,, feedSlug, isText] =
+				this.props.router.location.pathname.split('/');
+
+			logTitle('Determining feed post state from route ...');
+			log('full path: ' + this.props.router.location.pathname);
+			log('shortSlug: ' + shortSlug);
+			log('discourseLevel: ' + discourseLevel);
+			log('feedSlug: ' + feedSlug);
+			log('isText route:');
+			log(isText === 'text');
+			log('');
+
+			if (feedSlug && isText) {
+				await this.getFeedPostFromFeedString(null, feedSlug);
+				await this.props.activateFeedText(this.props.level);
+
+				this.textWidget.instance.show();
+
+			} else if (feedSlug) {
+				await this.getFeedPostFromFeedString(null, feedSlug);
+				await this.props.activateFeedImage(this.props.level);
+
+				this.deepZoomWidget.instance.show();
+			}
+		}
+	}
+
+	// Example of a small image URL:
 	// https://s3-us-west-2.amazonaws.com/controversy-cards-feeds/
 	// halton-arp-the-modern-galileo/worldview/10-times-quasar-superluminal-motion/small.jpg
 	render() {
@@ -379,7 +413,11 @@ class FeedCardComponent extends Component {
 								this.setupDeepZoom();
 								this.props.disableMainStackSwipeable();
 
-								this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+								logTitle('Feed Image onShow() ...');
+								log('');
+
+								this.props.history.push('/' +
+									this.props.router.location.pathname.split('/')[1] + '/' +
 									this.props.feed[this.props.level].discourseLevel + '/feed/' +
 									this.props.feed[this.props.level].feedSlug);
 							}}>
@@ -430,7 +468,11 @@ class FeedCardComponent extends Component {
 								this.constructText();
 								this.props.disableMainStackSwipeable();
 
-								this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+								logTitle('Feed Text onShow() ...');
+								log('');
+
+								this.props.history.push('/' +
+									this.props.router.location.pathname.split('/')[1] + '/' +
 									this.props.feed[this.props.level].discourseLevel + '/feed/' +
 									this.props.feed[this.props.level].feedSlug + '/text');
 							}}>
