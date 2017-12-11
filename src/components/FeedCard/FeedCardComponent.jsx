@@ -55,15 +55,17 @@ class FeedCardComponent extends Component {
 			'narrative'
 		];
 
-		this.handleClick = this.handleClick.bind(this);
 		this.props = props;
 	}
 
 	setupDeepZoom() {
-		const feed = this.props.feed.data;
+		const feed = this.props.feed[this.props.level];
+
+		logTitle('Deep Zoom for level ' + this.props.level);
+		log('');
 
 		this.viewer = OpenSeadragon({
-			id: 'openseadragonfeeds',
+			id: 'openseadragonfeed' + this.props.level,
 			constrainDuringPan: true,
 			visibilityRatio: 1.0,
 			defaultZoomLevel: 1,
@@ -78,8 +80,8 @@ class FeedCardComponent extends Component {
 				Image: {
 					xmlns: 'http://schemas.microsoft.com/deepzoom/2008',
 					Url: config.s3['feeds'].URL + feed.cardSlug + '/' +
-						feed.discourseLevel + '/' + feed.feedSlug +
-						'/pyramid_files/',
+						feed.discourseLevel + '/' +
+						feed.feedSlug + '/pyramid_files/',
 					Format: 'jpg',
 					Overlap: '0',
 					TileSize: feed.images.pyramid.TileSize,
@@ -91,24 +93,23 @@ class FeedCardComponent extends Component {
 			}
 		});
 
-		console.log(this.viewer);
+		logTitle('Setting up Deep Zoom ...');
+		log('feed:');
+		log(feed);
+		log('viewer:');
+		log(this.viewer);
+		log('');
 
 		// const resize = () => this.setupResizeHandler();
 		// window.addEventListener('resize', resize);
 
-		this.setupZoomHandler(this.viewer);
+		// this.setupZoomHandler(this.viewer);
 	}
 
 	// Use this to react to OpenSeadragon zoom events
 	setupZoomHandler(viewer) {
 		viewer.addHandler('zoom', (data) => {
 
-		});
-	}
-
-	handleClick() {
-		this.setState({
-			isTextExpanded: !this.state.isTextExpanded
 		});
 	}
 
@@ -120,6 +121,7 @@ class FeedCardComponent extends Component {
 
 	constructText() {
 		const
+			feed = this.props.feed[this.props.level],
 			h = new HtmlToReactParser(),
 			queryString = qs.parse(this.props.location.search.slice(1)),
 			activeParagraph = queryString['paragraph'] ?
@@ -132,7 +134,7 @@ class FeedCardComponent extends Component {
 		logObject(this.props);
 		log('');
 
-		for (let num = 0; num < this.props.feed.data.text.length; num++) {
+		for (let num = 0; num < feed.text.length; num++) {
 			if (num === 0) {
 				paragraphTag = "<p className='FirstFeedParagraph'>";
 			} else if (num === activeParagraph + 1) {
@@ -141,7 +143,7 @@ class FeedCardComponent extends Component {
 				paragraphTag = "<p>";
 			}
 
-			text = text + paragraphTag + this.props.feed.data.text[num].paragraph +
+			text = text + paragraphTag + feed.text[num].paragraph +
 				'</p>';
 		}
 
@@ -215,7 +217,9 @@ class FeedCardComponent extends Component {
 		logObject(feedPost);
 		log('');
 
-		this.props.setFeedData(feedPost, this.props.level);
+		await this.props.setFeedData(feedPost, this.props.level);
+		// await this.setupDeepZoom();
+
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
 
@@ -241,51 +245,51 @@ class FeedCardComponent extends Component {
 		logObject(feedPost);
 		log('');
 
-		this.props.setFeedData(feedPost, this.props.level);
-		this.props.activateFeedImage(this.props.level);
-		this.props.activateFeedText(this.props.level);
+		await this.props.setFeedData(feedPost, this.props.level);
+		// await this.setupDeepZoom();
+
+		this.props.activateFeedImageAndText(this.props.level);
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
 
 	setFeedPost(selection) {
 		if (selection.valueText) {
 			this.getFeedPostFromFeedString(selection.valueText);
-			this.props.activateFeedImage(this.props.level);
-			this.props.activateFeedText(this.props.level);
-		}
-	}
-
-	componentDidMount() {		
-		if (!this.props.loading.feed && this.props.feed.data.text) {
-			this.constructText();
-		}
-
-		if (!this.props.loading.feed[this.props.level]) {
-
-			// this.setupDeepZoom();
-			this.fetchImage();
+			this.props.activateFeedImageAndText(this.props.level);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.loading.feed &&
-			!nextProps.loading.feed && this.props.feed.data.text) {
+		if (this.props.discourse.level === this.levels.indexOf(this.props.level)) {
+			const
+				thisFeedLoading = this.props.loading.feed[this.props.level],
+				nextFeedLoading = nextProps.loading.feed[this.props.level],
+				nextFeed = nextProps.feed[this.props.level],
+				thisFeedStack = this.props.feedStack[this.props.level],
+				nextFeedStack = nextProps.feedStack[this.props.level];
 
-			this.constructText();
-		}
+			if (this.props.mainStack.selectFeedPopup === -1 &&
+				nextProps.mainStack.selectFeedPopup ===
+				this.levels.indexOf(nextProps.level)) {
 
-		if (this.props.loading.feed[this.props.level] &&
-			!nextProps.loading.feed[this.props.level]) {
+				this.selectFeedHandler();
+			}
 
-			// this.setupDeepZoom();
-			this.fetchImage();
-		}
+			logTitle('componentWillReceiveProps for level ' + this.props.level + ':');
+			log('thisFeedLoading: ' + thisFeedLoading);
+			log('!nextFeedLoading: ' + !nextFeedLoading);
+			log('nextFeedStack.image: ' + nextFeedStack.image);
+			log(this.deepZoomWidget);
+			log(this.textWidget);
+			log('');
 
-		if (this.props.mainStack.selectFeedPopup === -1 &&
-			nextProps.mainStack.selectFeedPopup ===
-			this.levels.indexOf(nextProps.level)) {
+			if (thisFeedLoading && !nextFeedLoading && nextFeedStack.image) {
+				logTitle('Detected deep zoom widget activation');
+				log('');
 
-			this.selectFeedHandler();
+				this.deepZoomWidget.instance.show();
+				// this.textWidget.instance.show();
+			}
 		}
 	}
 
@@ -307,14 +311,25 @@ class FeedCardComponent extends Component {
 
 		const
 			windowHeight = window.innerHeight,
+			windowWidth = window.innerWidth,
 			rows = Math.floor(windowHeight / 150);
 
 		const gridWidth = !this.props.loading.feeds ?
 			Math.ceil(190 * this.props.feeds[this.props.level].length / rows) : 0;
 
+		const level = this.props.level;
+
 		return (
 			<div className="FeedCard"
 				ref={input => this.feedCard = input}>
+
+				<div style={{position: 'fixed', width: '100%'}}
+					ref={node => this.topOverlay = node}>
+				</div>
+
+				<div style={{position: 'fixed', width: '100%'}}
+					ref={node => this.bottomOverlay = node}>
+				</div>
 
 				<Grid>
 
@@ -330,6 +345,92 @@ class FeedCardComponent extends Component {
 								key={i}>{post.title}</option>) }
 
 						</mobiscroll.Select>
+					</div>
+
+					<div className="FeedDeepZoom" style={{top: '51px'}}>
+						<mobiscroll.Widget
+							ref={widget => this.deepZoomWidget = widget}
+							theme="ios-dark"
+							display="top"
+							context={this.topOverlay}
+
+							buttons={[{ text: 'Exit', cssClass: 'mbsc-fr-btn0 mbsc-fr-btn-e mbsc-fr-btn',
+								handler: (event, inst) => {
+									logTitle('Exit the Image Viewer ...');
+									log(this.viewer);
+									log('');
+
+									// If you don't do this, the first clicked viewer
+									// image will appear
+									this.viewer.destroy();
+									this.viewer = null;
+
+									inst.hide();
+								}},
+								{ text: 'View Text', handler: (event, inst) => {
+									logTitle('Feed Image --> Feed Text ...');
+									log('');
+
+									this.textWidget.instance.show();
+								}}]}
+
+							onShow={(event, inst) => {
+								this.setupDeepZoom();
+							}}>
+
+							<div className="md-dialog-image" style={{top: '51px'}}>
+								<div id={'openseadragonfeed' + level} style={{width: '100%', height: windowWidth,
+								top: 0, bottom: 0, left: 0, right: 0}}></div>
+							</div>
+
+						</mobiscroll.Widget>
+					</div>
+
+					<div className="FeedText">
+						<mobiscroll.Widget
+							ref={widget => this.textWidget = widget}
+							theme="ios"
+							display="bottom"
+							context={this.bottomOverlay}
+
+							buttons={[{ text: 'Exit', cssClass: 'mbsc-fr-btn0 mbsc-fr-btn-e mbsc-fr-btn',
+								handler: (event, inst) => {
+									logTitle('Exit the Image Viewer ...');
+									log(this.viewer);
+									log('');
+
+									// If you don't do this, the first clicked viewer
+									// image will appear
+									this.viewer.destroy();
+									this.viewer = null;
+
+									inst.hide();
+								}},
+								{ text: 'View Image', handler: (event, inst) => {
+									logTitle('Feed Text --> Feed Image ...');
+									log('');
+
+									this.deepZoomWidget.instance.show();
+								}}]}
+
+							onShow={(event, inst) => {
+								logTitle('Constructing text ...');
+								log('');
+
+								this.constructText();
+							}}>
+
+							<div className="md-dialog-text" style={{height: windowWidth,
+								top: 0, bottom: 0, left: 0, right: 0}}>
+
+								<h3 style={{marginTop: 0, marginBottom: '20px'}}>
+									{this.props.feed[this.props.level].feedName}
+								</h3>
+
+								{this.state.text}
+							</div>
+
+						</mobiscroll.Widget>
 					</div>
 
 					{ !this.props.loading.feeds && <div className='GridContainer' style={{width: gridWidth}}>

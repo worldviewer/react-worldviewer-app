@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import FeedCardComponent from './FeedCardComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { unselectFeed, setFeedDataLoading, unsetFeedDataLoading, setFeedData, activateFeedImage, deactivateFeedImage, activateFeedText, deactivateFeedText } from '../../redux';
+import { unselectFeed, setFeedDataLoading, unsetFeedDataLoading, setFeedData, activateFeedImage, deactivateFeedImage, activateFeedText, deactivateFeedText, activateFeedImageAndText } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -43,6 +43,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		deactivateFeedText: (levelName) => {
 			return dispatch(deactivateFeedText(levelName));
+		},
+		activateFeedImageAndText: (levelName) => {
+			return dispatch(activateFeedImageAndText(levelName));
 		}
 	}
 };

@@ -226,7 +226,6 @@ class MainStackComponent extends Component {
 
 	componentWillMount() {
 		this.props.setCardDataLoading();
-		this.props.setFeedDataLoading(this.levels[this.props.discourse.level]);
 		this.props.setFeedsDataLoading();
 	}
 

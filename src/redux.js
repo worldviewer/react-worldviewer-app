@@ -76,6 +76,7 @@ const types = {
 	DEACTIVATE_FEED_IMAGE: 'DEACTIVATE_FEED_IMAGE',
 	ACTIVATE_FEED_TEXT: 'ACTIVATE_FEED_TEXT',
 	DEACTIVATE_FEED_TEXT: 'DEACTIVATE_FEED_TEXT',
+	ACTIVATE_FEED_IMAGE_AND_TEXT: 'ACTIVATE_FEED_IMAGE_AND_TEXT',
 
 	SET_PYRAMID_STYLES: 'SET_PYRAMID_STYLES'
 };
@@ -590,6 +591,13 @@ export const activateFeedText = (levelName) => {
 export const deactivateFeedText = (levelName) => {
 	return {
 		type: types.DEACTIVATE_FEED_TEXT,
+		levelName
+	};
+}
+
+export const activateFeedImageAndText = (levelName) => {
+	return {
+		type: types.ACTIVATE_FEED_IMAGE_AND_TEXT,
 		levelName
 	};
 }
@@ -1123,6 +1131,19 @@ export default (state = initialState, action) => {
 					[action.levelName]: {
 						...state.feedStack[action.levelName],
 						text: false
+					}
+				}
+			}
+
+		case types.ACTIVATE_FEED_IMAGE_AND_TEXT:
+			return {
+				...state,
+				feedStack: {
+					...state.feedStack,
+					[action.levelName]: {
+						...state.feedStack[action.levelName],
+						text: true,
+						image: true
 					}
 				}
 			}
