@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import { setLoaded, setDiscourseLevel, activateMainStackOverlay,
-	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setFeedData, setFeedDataLoading, unsetFeedDataLoading, setFeedsData, setFeedsDataLoading, unsetFeedsDataLoading, setCardData, setCardDataLoading, unsetCardDataLoading, setNewUserInstructionsState } from '../../redux';
+	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setFeedData, setFeedDataLoading, unsetFeedDataLoading, setFeedsData, setFeedsDataLoading, unsetFeedsDataLoading, setCardData, setCardDataLoading, unsetCardDataLoading, setNewUserInstructionsState, setAppInterface } from '../../redux';
 import MainStackComponent from './MainStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		app: state.reducer.app,
 		loading: state.reducer.loading,
 		fetchComplete: state.reducer.fetchComplete,
 		navbar: state.reducer.navbar,
@@ -25,6 +26,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
+		setAppInterface: (screenWidth) => {
+			return dispatch(setAppInterface(screenWidth));
+		},
 		setLoaded: () => {
 			return dispatch(setLoaded());
 		},

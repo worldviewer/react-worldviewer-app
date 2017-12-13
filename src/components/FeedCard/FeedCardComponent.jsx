@@ -58,6 +58,10 @@ class FeedCardComponent extends Component {
 		this.props = props;
 	}
 
+	setupResizeHandler(event) {
+		log(event);
+	}
+
 	setupDeepZoom() {
 		const feed = this.props.feed[this.props.level];
 
@@ -99,9 +103,6 @@ class FeedCardComponent extends Component {
 		log('viewer:');
 		log(this.viewer);
 		log('');
-
-		// const resize = () => this.setupResizeHandler();
-		// window.addEventListener('resize', resize);
 
 		// this.setupZoomHandler(this.viewer);
 	}
@@ -321,6 +322,8 @@ class FeedCardComponent extends Component {
 				this.deepZoomWidget.instance.show();
 			}
 		}
+
+		window.addEventListener('resize', this.setupResizeHandler.bind(this));
 	}
 
 	// Example of a small image URL:
@@ -355,10 +358,12 @@ class FeedCardComponent extends Component {
 				ref={input => this.feedCard = input}>
 
 				<div style={{position: 'fixed', width: '100%'}}
+					className='FeedDeepZoomHome'
 					ref={node => this.topOverlay = node}>
 				</div>
 
 				<div style={{position: 'fixed', width: '100%'}}
+					className='FeedTextHome'
 					ref={node => this.bottomOverlay = node}>
 				</div>
 

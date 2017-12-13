@@ -1,11 +1,14 @@
 // ES7 shim for Object.values
 import values from 'object.values';
+import config from './config';
 
 if (!Object.values) {
     values.shim();
 }
 
 const types = {
+	SET_APP_INTERFACE: 'SET_APP_INTERFACE',
+
 	SET_TOKEN_FETCH_COMPLETE: 'SET_TOKEN_FETCH_COMPLETE',
 	SET_CREDENTIALS_FETCH_COMPLETE: 'SET_CREDENTIALS_FETCH_COMPLETE',
 	SET_SLUGS_FETCH_COMPLETE: 'SET_SLUGS_FETCH_COMPLETE',
@@ -39,10 +42,6 @@ const types = {
 	CLEAR_USER: 'CLEAR_USER',
 	SET_NEW_USER: 'SET_NEW_USER',
 
-	CLICK_ICON: 'CLICK_ICON',
-	OPEN_MENU: 'OPEN_MENU',
-	CLOSE_MENU: 'CLOSE_MENU',
-
 	SET_HEIGHT: 'SET_HEIGHT',
 	SET_LOADED: 'SET_LOADED',
 	SET_DISCOURSE_LEVEL: 'SET_DISCOURSE_LEVEL',
@@ -60,7 +59,6 @@ const types = {
 	ENABLE_MAINSTACK_SWIPEABLE: 'ENABLE_MAINSTACK_SWIPEABLE',
 	DISABLE_MAINSTACK_SWIPEABLE: 'DISABLE_MAINSTACK_SWIPEABLE',
 
-	TOGGLE_NAVBAR_STATE: 'TOGGLE_NAVBAR_STATE',
 	SHOW_SNACKBAR: 'SHOW_SNACKBAR',
 
 	SET_SEARCH_QUERY: 'SET_SEARCH_QUERY',
@@ -205,7 +203,6 @@ const initialState = {
 	searchState: {},
 
 	navbar: {
-		hidden: false,
 		facetTrigger: false
 	},
 
@@ -226,7 +223,20 @@ const initialState = {
 			position: 'fixed',
 			right: 0
 		}
+	},
+
+	app: {
+		isMobile: true,
+		isDesktop: false,
+		isTablet: false
 	}
+};
+
+export const setAppInterface = (screenWidth) => {
+	return {
+		type: types.SET_APP_INTERFACE,
+		screenWidth
+	};
 };
 
 export const setTokenFetchComplete = () => {
@@ -397,18 +407,6 @@ export const setNewUser = (newUser) => {
 	};
 };
 
-export const openMenu = () => {
-	return {
-		type: types.OPEN_MENU
-	};
-};
-
-export const closeMenu = () => {
-	return {
-		type: types.CLOSE_MENU
-	};
-};
-
 export const setHeight = (height) => {
 	return {
 		type: types.SET_HEIGHT,
@@ -500,13 +498,6 @@ export const enableMainStackSwipeable = () => {
 export const disableMainStackSwipeable = () => {
 	return {
 		type: types.DISABLE_MAINSTACK_SWIPEABLE
-	};
-};
-
-export const toggleNavbarState = (zoom) => {
-	return {
-		type: types.TOGGLE_NAVBAR_STATE,
-		zoom
 	};
 };
 
@@ -612,15 +603,16 @@ export const setPyramidStyles = (styles) => {
 export default (state = initialState, action) => {
 	switch(action.type) {
 
-		// https://github.com/reactjs/react-router-redux
-		// https://stackoverflow.com/questions/38801601/reducer-not-catching-location-change-action
-		// "An action type that you can listen for in your reducers to be 
-		// notified of route updates. Fires after any changes to history."
-
-		// case '@@router/LOCATION_CHANGE':
-		// 	console.warn('LOCATION_CHANGE from your reducer', action);
-		// 	console.log('');
-		// 	return state;
+		case types.SET_APP_INTERFACE:
+			return {
+				...state,
+				app: {
+					...state.app,
+					isMobile: action.screenWidth < config.breakpoint.MOBILE,
+					isTablet: action.screenWidth < config.breakpoint.TABLET,
+					isDesktop: action.screenWidth > config.breakpoint.TABLET
+				}
+			};
 
 		case types.SET_TOKEN_FETCH_COMPLETE:
 			return {
@@ -860,24 +852,6 @@ export default (state = initialState, action) => {
 				}
 			};
 
-		case types.OPEN_MENU:
-			return {
-				...state,
-				menu: {
-					...state.menu,
-					open: true
-				}
-			};
-
-		case types.CLOSE_MENU:
-			return {
-				...state,
-				menu: {
-					...state.menu,
-					open: false
-				}
-			};
-
 		case types.SET_HEIGHT:
 			return {
 				...state,
@@ -1001,17 +975,6 @@ export default (state = initialState, action) => {
 				mainStack: {
 					...state.mainStack,
 					swipeable: false
-				}
-			}
-
-		// Do not toggle navbar state on the larger screens
-		case types.TOGGLE_NAVBAR_STATE:
-			return {
-				...state,
-				navbar: {
-					...state.navbar,
-					hidden: window.innerWidth <= 480 ?
-						action.zoom < 1.2 : false
 				}
 			}
 			

@@ -1,4 +1,9 @@
 export default {
+	breakpoint: {
+		MOBILE: 767,
+		TABLET: 1023 // DESKTOP everything greater
+	},
+
 	cognito: {
 		USER_POOL_ID : 'us-west-2_0qaUPcZji',
 		APP_CLIENT_ID : '5ipfum8vk70ueoek214ftrmm90',
