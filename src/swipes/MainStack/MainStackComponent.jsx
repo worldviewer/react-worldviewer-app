@@ -265,23 +265,11 @@ class MainStackComponent extends Component {
 		this.deactivateMainStackOverlay();
 	}
 
-	render() {
-		const
-			containerStyles = {
-				height: '100vh'
-			},
+	renderMobile() {
+		const containerStyles = {height: '100vh'};
 
-			mainStackStyles = { top: '50px' };
-
-		return (
-			<div
-				style={mainStackStyles}
-				ref={c => this.container = c}
-				className="MainStack">
-
-				<Grid>
+		return (<Grid>
 					<Row>
-					
 						<MainStackOverlay
 							isFullScreen={this.props.discourse.isFullScreen}
 							discourseLevel={this.props.discourse.level}
@@ -319,9 +307,25 @@ class MainStackComponent extends Component {
 								<FeedCard level="narrative" />
 							</div>
 						</SwipeableViews>
-
 					</Row>
-				</Grid>
+				</Grid>);
+	}
+
+	renderDesktop() {
+		return (<Grid></Grid>);
+	}
+
+	render() {
+		const mainStackStyles = {top: '50px'};
+
+		return (
+			<div
+				style={mainStackStyles}
+				ref={c => this.container = c}
+				className="MainStack">
+
+				{ this.props.app.isMobile && this.renderMobile() }
+				{ this.props.app.isDesktop && this.renderDesktop() }
 			</div>
 		);
 	}
