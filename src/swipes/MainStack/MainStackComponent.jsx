@@ -82,6 +82,8 @@ class MainStackComponent extends Component {
 
 		this.debouncedFeedInstructionHandler = debounce(() => this.handleInstructionState('firstFeed',
 			'Feeds are like subtopics for controversy cards. Swipe vertically to adjust your "level" of discussion. Scroll horizontally to view more feed content. Click the menu to select feed posts by title.'), 500);
+
+		this.debouncedResizeHandler = debounce((event) => this.resizeHandler(event), 2000);
 	}
 
 	// This fetches data for a specific feed
@@ -169,7 +171,24 @@ class MainStackComponent extends Component {
 		}
 	}
 
+	getWindowWidth() {
+		const width = window.innerWidth;
+		this.props.setAppInterface(width);
+
+		return width;
+	}
+
+	resizeHandler(event) {
+		const width = this.getWindowWidth();
+
+		logTitle('Window resize event');
+		log('window width: ' + width);
+		log('');
+	}
+
 	async componentDidMount() {
+		window.addEventListener('resize', this.debouncedResizeHandler);
+
 		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
 			this.props.discourse.isFullScreen ? 3000 : 6000);
 
@@ -215,6 +234,7 @@ class MainStackComponent extends Component {
 	}
 
 	componentWillMount() {
+		this.getWindowWidth();
 		this.props.setCardDataLoading();
 		this.props.setFeedsDataLoading();
 	}

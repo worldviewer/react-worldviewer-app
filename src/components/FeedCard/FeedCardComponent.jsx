@@ -58,10 +58,6 @@ class FeedCardComponent extends Component {
 		this.props = props;
 	}
 
-	setupResizeHandler(event) {
-		log(event);
-	}
-
 	setupDeepZoom() {
 		const feed = this.props.feed[this.props.level];
 
@@ -322,8 +318,6 @@ class FeedCardComponent extends Component {
 				this.deepZoomWidget.instance.show();
 			}
 		}
-
-		window.addEventListener('resize', this.setupResizeHandler.bind(this));
 	}
 
 	// Example of a small image URL:
