@@ -33,7 +33,7 @@ import config from '../../config';
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
 // Error/Logger Handling
-import { log, logObject, logTitle, logError } from '../../libs/utils';
+import { log, logObject, logTitle, logError, isEmptyObject } from '../../libs/utils';
 
 class FeedCardComponent extends Component {
 	constructor(props) {
@@ -266,69 +266,115 @@ class FeedCardComponent extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// We don't care unless the current feed post level is the active one
-		if (this.props.discourse.level === this.levels.indexOf(this.props.level)) {
-			const
-				thisFeedLoading = this.props.loading.feed[this.props.level],
-				nextFeedLoading = nextProps.loading.feed[this.props.level],
-				nextFeed = nextProps.feed[this.props.level],
-				nextFeedStack = nextProps.feedStack[this.props.level];
+		if (nextProps.app.isMobile) {
+			// We don't care unless the current feed post level is the active one
+			if (this.props.discourse.level === this.levels.indexOf(this.props.level)) {
+				const
+					thisFeedLoading = this.props.loading.feed[this.props.level],
+					nextFeedLoading = nextProps.loading.feed[this.props.level],
+					nextFeed = nextProps.feed[this.props.level],
+					nextFeedStack = nextProps.feedStack[this.props.level];
 
-			if (this.props.mainStack.selectFeedPopup === -1 &&
-				nextProps.mainStack.selectFeedPopup ===
-				this.levels.indexOf(nextProps.level)) {
+				if (this.props.mainStack.selectFeedPopup === -1 &&
+					nextProps.mainStack.selectFeedPopup ===
+					this.levels.indexOf(nextProps.level)) {
 
-				this.selectFeedHandler();
+					this.selectFeedHandler();
+				}
+
+				// logTitle('componentWillReceiveProps for level ' + this.props.level + ':');
+				// log('thisFeedLoading: ' + thisFeedLoading);
+				// log('!nextFeedLoading: ' + !nextFeedLoading);
+				// log('nextFeedStack.image: ' + nextFeedStack.image);
+				// log(this.deepZoomWidget);
+				// log(this.textWidget);
+				// log('');
+
+				// Triggers when component finishes loading before the feed
+				if (thisFeedLoading && !nextFeedLoading && nextFeedStack.image) {
+					logTitle('Detected deep zoom widget activation (feedLoading change)');
+					log('path: ' + this.props.router.location.pathname);
+					log('');
+
+					this.deepZoomWidget.instance.show();
+					this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+						nextFeed.discourseLevel + '/feed/' + nextFeed.feedSlug);
+				}
 			}
 
-			// logTitle('componentWillReceiveProps for level ' + this.props.level + ':');
-			// log('thisFeedLoading: ' + thisFeedLoading);
-			// log('!nextFeedLoading: ' + !nextFeedLoading);
-			// log('nextFeedStack.image: ' + nextFeedStack.image);
-			// log(this.deepZoomWidget);
-			// log(this.textWidget);
-			// log('');
+		} else {
+			logTitle('FeedCard componentWillReceiveProps:');
+			log('this.props.app.isDesktop: ' + this.props.app.isDesktop);
+			log('this.props.level: ' + this.props.level);
+			log('this.props.loading.feed[this.props.level]: ' +
+				this.props.loading.feed[this.props.level]);
 
-			// Triggers when component finishes loading before the feed
-			if (thisFeedLoading && !nextFeedLoading && nextFeedStack.image) {
-				logTitle('Detected deep zoom widget activation (feedLoading change)');
-				log('path: ' + this.props.router.location.pathname);
-				log('');
+			log('this.props.loading.feeds: ' + this.props.loading.feeds);
+			log('nextProps.loading.feeds: ' + nextProps.loading.feeds);
 
-				this.deepZoomWidget.instance.show();
-				this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
-					nextFeed.discourseLevel + '/feed/' + nextFeed.feedSlug);
+			log('this.props.loading.feed[this.props.level]: ' +
+				this.props.loading.feed[this.props.level]);
+			log('nextProps.loading.feed[nextProps.level]: ' +
+				nextProps.loading.feed[nextProps.level]);			
+
+			log('feed exists: ' + !isEmptyObject(this.props.feed[this.props.level]));
+			log('');
+
+			if (!nextProps.loading.feeds &&
+				this.props.loading.feed[this.props.level] &&
+				!nextProps.loading.feed[nextProps.level]) {
+
+				this.setupDeepZoom(false);
 			}
 		}
 	}
 
 	async componentDidMount() {
-		// We don't care unless the current feed post level is the active one
-		if (this.props.discourse.level === this.levels.indexOf(this.props.level)) {
-			const [, shortSlug, discourseLevel,, feedSlug, isText] =
-				this.props.router.location.pathname.split('/');
+		if (this.props.app.isMobile) {
+			// We don't care unless the current feed post level is the active one
+			if (this.props.discourse.level === this.levels.indexOf(this.props.level)) {
+				const [, shortSlug, discourseLevel,, feedSlug, isText] =
+					this.props.router.location.pathname.split('/');
 
-			logTitle('Determining feed post state from route ...');
-			log('full path: ' + this.props.router.location.pathname);
-			log('shortSlug: ' + shortSlug);
-			log('discourseLevel: ' + discourseLevel);
-			log('feedSlug: ' + feedSlug);
-			log('isText route:');
-			log(isText === 'text');
+				logTitle('Determining feed post state from route ...');
+				log('full path: ' + this.props.router.location.pathname);
+				log('shortSlug: ' + shortSlug);
+				log('discourseLevel: ' + discourseLevel);
+				log('feedSlug: ' + feedSlug);
+				log('isText route:');
+				log(isText === 'text');
+				log('');
+
+				if (feedSlug && isText) {
+					await this.getFeedPostFromFeedString(null, feedSlug);
+					await this.props.activateFeedText(this.props.level);
+
+					this.textWidget.instance.show();
+
+				} else if (feedSlug) {
+					await this.getFeedPostFromFeedString(null, feedSlug);
+					await this.props.activateFeedImage(this.props.level);
+
+					this.deepZoomWidget.instance.show();
+				}
+			}
+
+		} else {
+			logTitle('FeedCard componentDidMount:');
+			log('this.props.app.isDesktop: ' + this.props.app.isDesktop);
+			log('this.props.level: ' + this.props.level);
+			log('this.props.loading.feed[this.props.level]: ' +
+				this.props.loading.feed[this.props.level]);
+			log('this.props.loading.feeds: ' + this.props.loading.feeds);
+			log('feed exists: ' + !isEmptyObject(this.props.feed[this.props.level]));
 			log('');
 
-			if (feedSlug && isText) {
-				await this.getFeedPostFromFeedString(null, feedSlug);
-				await this.props.activateFeedText(this.props.level);
+			if (this.props.app.isDesktop && !this.props.loading.feeds &&
+				!this.props.loading.feed[this.props.level] &&
+				!isEmptyObject(this.props.feed[this.props.level])) {
 
-				this.textWidget.instance.show();
-
-			} else if (feedSlug) {
-				await this.getFeedPostFromFeedString(null, feedSlug);
-				await this.props.activateFeedImage(this.props.level);
-
-				this.deepZoomWidget.instance.show();
-			}
+				this.setupDeepZoom(false);
+			}	
 		}
 	}
 
@@ -509,7 +555,9 @@ class FeedCardComponent extends Component {
 	}
 
 	renderDesktop() {
-		return (<Grid></Grid>);
+		return (<div className="Canvas"
+			id={'openseadragonfeed' + this.props.level}
+			style={{width: '100%', height: '100vh'}} />);
 	}
 
 	// Example of a small image URL:

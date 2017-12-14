@@ -93,7 +93,7 @@ class MainStackComponent extends Component {
 			cardSlug = this.props.slugs.hash[shortSlug],
 			feedSlug = this.props.router.location.pathname.split('/')[4] || '';
 
-		logTitle('Slug data:');
+		logTitle('MainStack loadFeedData:');
 		log('Short slug: ' + shortSlug);
 		log('Feed slug: ' + feedSlug);
 		log('this.props.router.location:');
@@ -127,7 +127,7 @@ class MainStackComponent extends Component {
 			conceptual = feedsList.filter(post => post.level === 'conceptual'),
 			narrative = feedsList.filter(post => post.level === 'narrative');
 
-		logTitle('Feeds list:');
+		logTitle('MainStack loadFeedsData, feedsList:');
 		logObject(feedsList);
 		log('');
 
@@ -207,10 +207,21 @@ class MainStackComponent extends Component {
 	}
 
 	async componentWillReceiveProps(nextProps) {
-		if (nextProps.discourse.level !== this.props.discourse.level) {
-			this.deactivateMainStackOverlay();
+		// Mobile
+		if (this.props.app.isMobile) {
+			if (nextProps.discourse.level !== this.props.discourse.level) {
+				this.deactivateMainStackOverlay();
+			}
+
+		// Desktop
+		} else {
+			if (this.props.loading.feeds && !nextProps.loading.feeds) {
+				this.props.setFeedDataLoading(this.levels[this.props.discourse.level]);
+				this.loadFeedData();
+			}
 		}
 
+		// Both
 		// If the slugs finish loading after the component has mounted ...
 		if (!this.props.fetchComplete.slugs &&
 			nextProps.fetchComplete.slugs) {
@@ -312,11 +323,30 @@ class MainStackComponent extends Component {
 	}
 
 	renderDesktop() {
-		return (<Grid></Grid>);
+		const
+			isFeedPost = this.props.cardStackLevel === 2,
+			level = this.levels[this.props.discourse.level];
+
+		logTitle('MainStack renderDesktop:');
+		log('isFeedPost: ' + isFeedPost);
+		log('level: ' + level);
+		log('');
+
+		return (<div>
+
+			{ isFeedPost ? <FeedCard level={level} /> :
+				<CardStack level={level} /> }
+
+		</div>);
 	}
 
 	render() {
 		const mainStackStyles = {top: '50px'};
+
+		logTitle('MainStack render:');
+		log('this.props.app.isMobile: ' + this.props.app.isMobile);
+		log('this.props.app.isDesktop: ' + this.props.app.isDesktop);
+		log('');
 
 		return (
 			<div

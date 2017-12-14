@@ -611,7 +611,7 @@ export default (state = initialState, action) => {
 					isMobile: action.screenWidth < config.breakpoint.MOBILE,
 					isTablet: action.screenWidth < config.breakpoint.TABLET &&
 						action.screenWidth > config.breakpoint.MOBILE,
-					isDesktop: action.screenWidth > config.breakpoint.TABLET
+					isDesktop: action.screenWidth > config.breakpoint.MOBILE // TODO: Switch back to TABLET
 				}
 			};
 
