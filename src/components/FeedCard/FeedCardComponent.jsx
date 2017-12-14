@@ -332,10 +332,7 @@ class FeedCardComponent extends Component {
 		}
 	}
 
-	// Example of a small image URL:
-	// https://s3-us-west-2.amazonaws.com/controversy-cards-feeds/
-	// halton-arp-the-modern-galileo/worldview/10-times-quasar-superluminal-motion/small.jpg
-	render() {
+	renderMobile() {
 		const feeds = !this.props.loading.feeds ?
 			this.props.feeds[this.props.level] :
 			[];
@@ -359,10 +356,7 @@ class FeedCardComponent extends Component {
 
 		const level = this.props.level;
 
-		return (
-			<div className="FeedCard"
-				ref={input => this.feedCard = input}>
-
+		return (<div>
 				<div style={{position: 'fixed', width: '100%'}}
 					className='FeedDeepZoomHome'
 					ref={node => this.topOverlay = node}>
@@ -511,6 +505,24 @@ class FeedCardComponent extends Component {
 					</div> }
 
 				</Grid>
+			</div>)
+	}
+
+	renderDesktop() {
+		return (<Grid></Grid>);
+	}
+
+	// Example of a small image URL:
+	// https://s3-us-west-2.amazonaws.com/controversy-cards-feeds/
+	// halton-arp-the-modern-galileo/worldview/10-times-quasar-superluminal-motion/small.jpg
+	render() {
+		return (
+			<div className="FeedCard"
+				ref={input => this.feedCard = input}>
+
+				{ this.props.app.isMobile && this.renderMobile() }
+				{ this.props.app.isDesktop && this.renderDesktop() }
+
 			</div>
 		);
 	}

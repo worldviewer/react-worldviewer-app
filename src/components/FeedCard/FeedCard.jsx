@@ -14,7 +14,8 @@ const mapStateToProps = (state, ownProps) => {
 		mainStack: state.reducer.mainStack,
 		user: state.reducer.user,
 		router: state.router,
-		feedStack: state.reducer.feedStack
+		feedStack: state.reducer.feedStack,
+		app: state.reducer.app
 	};
 };
 
