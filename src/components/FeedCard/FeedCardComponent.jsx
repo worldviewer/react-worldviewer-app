@@ -239,6 +239,19 @@ class FeedCardComponent extends Component {
 		}
 	}
 
+	async desktopClickFeedPost(index) {
+		await this.clickFeedPost(index);
+		await this.constructText();
+
+		await this.viewer.destroy();
+		this.viewer = null;
+
+		this.setupDeepZoom(false);
+
+		this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+			this.props.level + '/feed/' + this.props.feed[this.props.level].feedSlug);
+	}
+
 	// Selection of feed post by clicking thumbnail
 	async clickFeedPost(index) {
 		const
@@ -263,7 +276,7 @@ class FeedCardComponent extends Component {
 		log('');
 
 		await this.props.setFeedData(feedPost, this.props.level);
-		this.props.activateFeedimage(this.props.level);
+		this.props.activateFeedImage(this.props.level);
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
 
@@ -447,7 +460,7 @@ class FeedCardComponent extends Component {
 					<div className="FeedDeepZoom" style={{top: '51px'}}>
 						<mobiscroll.Widget
 							ref={widget => this.deepZoomWidget = widget}
-							theme="ios-dark"
+							theme="ios"
 							display="top"
 							context={this.topOverlay}
 
@@ -570,25 +583,63 @@ class FeedCardComponent extends Component {
 	}
 
 	renderDesktop() {
+		const feed = this.props.feeds[this.props.level];
+
 		return (<div>
 			<div className="Canvas"
 				id={'openseadragonfeed' + this.props.level}
 				style={{width: '100%', height: '100vh'}} />
 
 			<SlidingPane
-				className='FeedPane'
+				className='ImageFeedPane'
 				overlayClassName='FeedPaneOverlay'
 				isOpen={this.props.feedStack[this.props.level].image}
-				title='Feeds'
+				title={'Other ' + this.props.level.charAt(0).toUpperCase() +
+					this.props.level.slice(1) + '-level Feeds'}
 				width={this.props.app.isLargest ? '450px' : '300px'}
 				subtitle='Feeds are like controversy subtopics'
 				onRequestClose={() => {
-					// triggered on "<" on left top click or on outside click
 					this.props.deactivateFeedImage(this.props.level);
 					this.props.unselectFeed();
 				}}>
 
-				stuff!
+				{ feed.map((post, i) =>
+					<div key={i} className='PanePost'
+						onClick={this.desktopClickFeedPost.bind(this, i)}>
+
+						<img src={config.s3.feeds.URL +
+							this.props.card.data.slug + '/' +
+							this.props.level + '/' + post.slug +
+							'/small.jpg'} alt='Feed Post'
+							className='PanePostImage' />
+
+						<div className='PanePostTitle'>
+							<h3>{post.title}</h3>
+						</div>
+					</div>) }
+
+			</SlidingPane>
+
+			<SlidingPane
+				ref={pane => this.leftPane = pane}
+				className='TextFeedPane'
+				overlayClassName='FeedPaneOverlay'
+				isOpen={this.props.feedStack[this.props.level].text}
+				title={this.props.card.data.cardName}
+				from='left'
+				width={this.props.app.isLargest ? '450px' : '300px'}
+				subtitle={this.props.card.data.cardSummary}
+				onRequestClose={() => {
+					this.props.deactivateFeedText(this.props.level);
+					this.props.unselectFeed();
+				}}
+				onAfterOpen={() => {
+					// TODO: Make card title and summary clickable
+					this.constructText();
+				}}>
+
+				<h3>{this.props.feed[this.props.level].feedName}</h3>
+				{this.state.text}
 
 			</SlidingPane>
 		</div>);
