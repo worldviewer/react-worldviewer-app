@@ -18,4 +18,8 @@
 		padding-right: 0;
 		width: 100%;
 	}
+
+	.navbar-default .navbar-nav > li > a:focus {
+		display: none;
+	}
 }
