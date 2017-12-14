@@ -41,7 +41,10 @@ class FeedCardComponent extends Component {
 				width: '100%'
 			},
 			image: null,
-			minZoomLevel: calculateMinZoomLevel()
+
+			// Slight correction applied for square feed post image form factor,
+			// which permits a slightly larger view space than the controversy cards
+			minZoomLevel: calculateMinZoomLevel() + 0.35
 		};
 
 		this.levels = [
@@ -106,9 +109,11 @@ class FeedCardComponent extends Component {
 		// this.setupZoomHandler(this.viewer);
 	}
 
+	// slight correction applied for square feed post image form factor,
+	// which permits a slightly larger view space than the controversy cards
 	setupResizeHandler() {
 		this.setState({
-			minZoomLevel: calculateMinZoomLevel()
+			minZoomLevel: calculateMinZoomLevel() + 0.35
 		});
 	}
 
@@ -321,7 +326,7 @@ class FeedCardComponent extends Component {
 				this.props.loading.feed[this.props.level] &&
 				!nextProps.loading.feed[nextProps.level]) {
 
-				const [, shortSlug, discourseLevel,, feedSlug, isText] =
+				const [,,,,, isText] =
 					this.props.router.location.pathname.split('/');
 
 				this.setupDeepZoom(false);
@@ -380,7 +385,7 @@ class FeedCardComponent extends Component {
 				!this.props.loading.feed[this.props.level] &&
 				!isEmptyObject(this.props.feed[this.props.level])) {
 
-				const [, shortSlug, discourseLevel,, feedSlug, isText] =
+				const [,,,,, isText] =
 					this.props.router.location.pathname.split('/');
 
 				this.setupDeepZoom(false);

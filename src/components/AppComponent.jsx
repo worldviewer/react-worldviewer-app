@@ -255,6 +255,8 @@ class AppComponent extends Component {
 	}
 
 	selectFeedHandler(event) {
+		const levelName = this.levels[this.props.discourse.level];
+
 		if (this.props.app.isMobile) {
 			this.props.selectFeed(this.props.discourse.level);			
 
@@ -263,8 +265,18 @@ class AppComponent extends Component {
 				this.props.selectFeed(this.props.discourse.level);			
 			} else {
 				this.props.unselectFeed();
-				this.props.deactivateFeedImage(this.levels[this.props.discourse.level]);
+				this.props.deactivateFeedImage(levelName);
 			}
+		}
+	}
+
+	showFeedText(event) {
+		const levelName = this.levels[this.props.discourse.level];
+
+		if (this.props.feedStack[levelName].text) {
+			this.props.deactivateFeedText(levelName);
+		} else {
+			this.props.activateFeedText(levelName);
 		}
 	}
 
@@ -319,22 +331,16 @@ class AppComponent extends Component {
 		setDiskInstructions(newInstructionState);
 	}
 
-	renderFeedMenuOption() {
-		return this.props.cardStack.level === 2 ?
-			<NavItem key={3}
-				onClick={this.selectFeedHandler.bind(this)}>
-				{ this.props.mainStack.selectFeedPopup === -1 ?
-					'Select Feed' : 'Close Feed Select' }
-			</NavItem> : null;
-	}
-
 	render() {
-		const NavTitleStyle = {
-			fontFamily: 'LeagueGothic',
-			textTransform: 'uppercase',
-			fontSize: '20px',
-			letterSpacing: '1px'
-		};
+		const
+			NavTitleStyle = {
+				fontFamily: 'LeagueGothic',
+				textTransform: 'uppercase',
+				fontSize: '20px',
+				letterSpacing: '1px'
+			},
+
+			levelName = this.levels[this.props.discourse.level];
 
 		let navStyles = {
 				cursor: 'pointer',
@@ -344,12 +350,23 @@ class AppComponent extends Component {
 			};
 
 		// Dynamically build menu options based upon cardStack level
-		const feedMenuOption =
-			<NavItem key={20}
+		const feedMenuOptions =
+			this.props.app.isDesktop ? [ <NavItem key={20}
 				onClick={this.selectFeedHandler.bind(this)}>
 				{ this.props.mainStack.selectFeedPopup === -1 ?
 					'Select Feed' : 'Close Feed Select' }
-			</NavItem>;
+			</NavItem>,
+
+			<NavItem key={21}
+				onClick={this.showFeedText.bind(this)}>
+				{ !this.props.feedStack[levelName].text ?
+					'Show Feed Text' : 'Hide Feed Text' }
+			</NavItem> ] :
+
+			[ <NavItem key={20}
+				onClick={this.selectFeedHandler.bind(this)}>
+				Select Feed
+			</NavItem> ];
 
 		const contactMenuOption = this.props.pyramid.styles.display !== 'none' ?
 			<NavItem key={20}
@@ -418,7 +435,7 @@ class AppComponent extends Component {
 			</NavItem> ]
 
 		if (this.props.cardStack.level === 2) {
-			menuOptions.push(feedMenuOption);
+			menuOptions = menuOptions.concat(feedMenuOptions);
 		}
 
 		if (this.props.router.location.pathname === '/') {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { deactivateFeedImage, setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, setNewUserInstructionsState, setPyramidStyles } from '../redux.js';
+import { deactivateFeedText, activateFeedText, deactivateFeedImage, setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, setNewUserInstructionsState, setPyramidStyles } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -21,7 +21,8 @@ const mapStateToProps = (state, ownProps) => {
 		instructions: state.reducer.instructions,
 		pyramid: state.reducer.pyramid,
 		mainStack: state.reducer.mainStack,
-		app: state.reducer.app
+		app: state.reducer.app,
+		feedStack: state.reducer.feedStack
 	};
 };
 
@@ -89,6 +90,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		deactivateFeedImage: (levelName) => {
 			return dispatch(deactivateFeedImage(levelName));
+		},
+		activateFeedText: (levelName) => {
+			return dispatch(activateFeedText(levelName));
+		},
+		deactivateFeedText: (levelName) => {
+			return dispatch(deactivateFeedText(levelName));
 		}
 	}
 };
