@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 // UI Dependencies
 import { Grid } from 'react-bootstrap';
 import OpenSeadragon from 'openseadragon';
+import { calculateMinZoomLevel } from '../../libs/utils';
 import './FeedCard.css';
 // import '../../libs/gridlex-classes.css';
 
@@ -44,7 +45,8 @@ class FeedCardComponent extends Component {
 			pyramidStyle: {
 				width: '100%'
 			},
-			image: null
+			image: null,
+			minZoomLevel: calculateMinZoomLevel()
 		};
 
 		this.levels = [
@@ -58,18 +60,19 @@ class FeedCardComponent extends Component {
 		this.props = props;
 	}
 
-	setupDeepZoom() {
+	setupDeepZoom(isMobile) {
 		const feed = this.props.feed[this.props.level];
 
 		logTitle('Deep Zoom for level ' + this.props.level);
+		log('isMobile: ' + isMobile);
 		log('');
 
 		this.viewer = OpenSeadragon({
 			id: 'openseadragonfeed' + this.props.level,
 			constrainDuringPan: true,
 			visibilityRatio: 1.0,
-			defaultZoomLevel: 1,
-			minZoomLevel: 1,
+			defaultZoomLevel: isMobile ? 1 : this.state.minZoomLevel,
+			minZoomLevel: isMobile ? 1 : this.state.minZoomLevel,
 			maxZoomLevel: feed.images.pyramid.maxZoomLevel,
 			autoResize: true,
 			showZoomControl: false,
@@ -93,6 +96,9 @@ class FeedCardComponent extends Component {
 			}
 		});
 
+		window.addEventListener('resize',
+			() => this.setupResizeHandler());
+
 		logTitle('Setting up Deep Zoom ...');
 		log('feed:');
 		log(feed);
@@ -101,6 +107,12 @@ class FeedCardComponent extends Component {
 		log('');
 
 		// this.setupZoomHandler(this.viewer);
+	}
+
+	setupResizeHandler() {
+		this.setState({
+			minZoomLevel: calculateMinZoomLevel()
+		});
 	}
 
 	// Use this to react to OpenSeadragon zoom events
@@ -409,7 +421,7 @@ class FeedCardComponent extends Component {
 								}}]}
 
 							onShow={(event, inst) => {
-								this.setupDeepZoom();
+								this.setupDeepZoom(true);
 								this.props.disableMainStackSwipeable();
 
 								logTitle('Feed Image onShow() ...');

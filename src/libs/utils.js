@@ -246,3 +246,30 @@ export function isScrolledIntoView(el) {
     
     return isVisible;
 }
+
+// minZoomLevel approaches 1.4 when screen width is 0
+// minZoomLevel should be 0.95 when screen width is 480px
+// minZoomLevel should be 0.7 when screen width is 800px
+// minZoomLevel should be 0.58 when screen width is 1000px
+// minZoomLevel should be 0.48 when screen width is 1200px
+// minZoomLevel should be 0.40 when screen width is 1400px
+// minZoomLevel should be 0.34 when screen width is 1600px
+// minZoomLevel should be 0.26 when screen width is 2000px
+// minZoomLevel should be 0.14 when screen width is 3000px
+
+// 3rd-order polynomial cubic regression at https://www.mycurvefit.com/
+// y = 1.40601 - 0.000115417x + 3.755247 * 10-7 * x^2
+//     - 4.377216 * 10-11 * x^3
+export function calculateMinZoomLevel() {
+	const x = window.innerWidth;
+
+	if (x <= 480) {
+		return 1;
+	} else {
+		// return 1.406101 - (0.001154107 * x) + (3.755247 * (10 ** -7) * x * x) -
+		// 	(4.377216 * (10 ** -11) * x * x * x);
+
+		return 1.30329 - (0.000973696 * x) + (2.780705 * (10 ** -7) * x * x) -
+			(2.752571 * (10 ** -11) * x * x * x);
+	}
+}
