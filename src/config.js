@@ -1,7 +1,8 @@
 export default {
 	breakpoint: {
 		MOBILE: 767,
-		TABLET: 1023 // DESKTOP everything greater
+		TABLET: 1023, // DESKTOP everything greater
+		LARGEST: 1400
 	},
 
 	cognito: {

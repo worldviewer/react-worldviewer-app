@@ -40,3 +40,23 @@
 .md-dialog-text {
 	overflow-y: scroll !important;
 }
+
+.FeedPane {
+	margin-top: 52px;
+
+	.slide-pane__title, .slide-pane__subtitle, .slide-pane__close,
+	.slide-pane__header, .slide-pane__content {
+		color: #ff8400;
+		background: #1c1c1c;
+		box-sizing: border-box;
+	}
+
+	.slide-pane__header, .slide-pane__content {
+		border: 1px solid #333333;
+		box-sizing: border-box;
+	}
+}
+
+.FeedPaneOverlay {
+
+}

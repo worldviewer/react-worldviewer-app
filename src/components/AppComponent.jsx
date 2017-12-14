@@ -31,6 +31,14 @@ class AppComponent extends Component {
 		};
 
 		this.props = props;
+
+		this.levels = [
+			'worldview',
+			'model',
+			'propositional',
+			'conceptual',
+			'narrative'
+		];
 	}
 
 	handleNavLink = (event) => {
@@ -247,7 +255,17 @@ class AppComponent extends Component {
 	}
 
 	selectFeedHandler(event) {
-		this.props.selectFeed(this.props.discourse.level);
+		if (this.props.app.isMobile) {
+			this.props.selectFeed(this.props.discourse.level);			
+
+		} else {
+			if (this.props.mainStack.selectFeedPopup === -1) {
+				this.props.selectFeed(this.props.discourse.level);			
+			} else {
+				this.props.unselectFeed();
+				this.props.deactivateFeedImage(this.levels[this.props.discourse.level]);
+			}
+		}
 	}
 
 	exitThreadViewer(event) {
@@ -305,7 +323,8 @@ class AppComponent extends Component {
 		return this.props.cardStack.level === 2 ?
 			<NavItem key={3}
 				onClick={this.selectFeedHandler.bind(this)}>
-				Select Feed
+				{ this.props.mainStack.selectFeedPopup === -1 ?
+					'Select Feed' : 'Close Feed Select' }
 			</NavItem> : null;
 	}
 
@@ -328,7 +347,8 @@ class AppComponent extends Component {
 		const feedMenuOption =
 			<NavItem key={20}
 				onClick={this.selectFeedHandler.bind(this)}>
-				Select Feed
+				{ this.props.mainStack.selectFeedPopup === -1 ?
+					'Select Feed' : 'Close Feed Select' }
 			</NavItem>;
 
 		const contactMenuOption = this.props.pyramid.styles.display !== 'none' ?

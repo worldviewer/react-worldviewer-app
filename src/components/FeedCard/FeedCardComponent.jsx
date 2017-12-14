@@ -6,16 +6,11 @@ import ReactDOM from 'react-dom';
 import { Grid } from 'react-bootstrap';
 import OpenSeadragon from 'openseadragon';
 import { calculateMinZoomLevel } from '../../libs/utils';
+import SlidingPane from 'react-sliding-pane';
+import 'react-sliding-pane/dist/react-sliding-pane.css';
 import './FeedCard.css';
-// import '../../libs/gridlex-classes.css';
 
-// import share from '../../images/share.svg';
-// import down from '../../images/downdown.svg';
-// import shareHover from '../../images/share-hover.svg';
-// import downHover from '../../images/downdown-hover.svg';
-// import chris from '../../images/chris.jpg';
 // import zenscroll from 'zenscroll';
-// import { Badge } from 'react-bootstrap';
 
 // mobiscroll.Image + mobiscroll.Form
 import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta2.min';
@@ -263,7 +258,7 @@ class FeedCardComponent extends Component {
 		log('');
 
 		await this.props.setFeedData(feedPost, this.props.level);
-		this.props.activateFeedImage(this.props.level);
+		this.props.activateFeedimage(this.props.level);
 		this.props.unsetFeedDataLoading(this.props.level);
 	}
 
@@ -326,7 +321,17 @@ class FeedCardComponent extends Component {
 				this.props.loading.feed[this.props.level] &&
 				!nextProps.loading.feed[nextProps.level]) {
 
+				const [, shortSlug, discourseLevel,, feedSlug, isText] =
+					this.props.router.location.pathname.split('/');
+
 				this.setupDeepZoom(false);
+			}
+
+			if (this.props.mainStack.selectFeedPopup === -1 &&
+				nextProps.mainStack.selectFeedPopup ===
+				this.levels.indexOf(nextProps.level)) {
+
+				this.props.activateFeedImage(this.props.level);
 			}
 		}
 	}
@@ -374,6 +379,9 @@ class FeedCardComponent extends Component {
 			if (this.props.app.isDesktop && !this.props.loading.feeds &&
 				!this.props.loading.feed[this.props.level] &&
 				!isEmptyObject(this.props.feed[this.props.level])) {
+
+				const [, shortSlug, discourseLevel,, feedSlug, isText] =
+					this.props.router.location.pathname.split('/');
 
 				this.setupDeepZoom(false);
 			}	
@@ -557,9 +565,28 @@ class FeedCardComponent extends Component {
 	}
 
 	renderDesktop() {
-		return (<div className="Canvas"
-			id={'openseadragonfeed' + this.props.level}
-			style={{width: '100%', height: '100vh'}} />);
+		return (<div>
+			<div className="Canvas"
+				id={'openseadragonfeed' + this.props.level}
+				style={{width: '100%', height: '100vh'}} />
+
+			<SlidingPane
+				className='FeedPane'
+				overlayClassName='FeedPaneOverlay'
+				isOpen={this.props.feedStack[this.props.level].image}
+				title='Feeds'
+				width={this.props.app.isLargest ? '450px' : '300px'}
+				subtitle='Feeds are like controversy subtopics'
+				onRequestClose={() => {
+					// triggered on "<" on left top click or on outside click
+					this.props.deactivateFeedImage(this.props.level);
+					this.props.unselectFeed();
+				}}>
+
+				stuff!
+
+			</SlidingPane>
+		</div>);
 	}
 
 	// Example of a small image URL:
