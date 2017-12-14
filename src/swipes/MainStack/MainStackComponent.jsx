@@ -215,7 +215,9 @@ class MainStackComponent extends Component {
 
 		// Desktop
 		} else {
-			if (this.props.loading.feeds && !nextProps.loading.feeds) {
+			if (this.props.loading.feeds && !nextProps.loading.feeds &&
+				nextProps.cardStackLevel === 2) {
+
 				this.props.setFeedDataLoading(this.levels[this.props.discourse.level]);
 				this.loadFeedData();
 			}

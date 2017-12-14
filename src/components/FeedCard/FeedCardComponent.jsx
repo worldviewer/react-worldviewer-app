@@ -64,6 +64,8 @@ class FeedCardComponent extends Component {
 		const feed = this.props.feed[this.props.level];
 
 		logTitle('Deep Zoom for level ' + this.props.level);
+		log('feed:');
+		log(feed);
 		log('isMobile: ' + isMobile);
 		log('');
 
