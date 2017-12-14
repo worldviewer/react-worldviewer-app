@@ -28,8 +28,8 @@ import { log, logTitle, logObject } from '../../libs/utils';
 import { setDiskInstructions } from '../../libs/utils';
 
 // mobiscroll.Image + mobiscroll.Form
-import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta.min';
-import '../../libs/mobiscroll.custom-4.0.0-beta.min.css';
+import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta2.min';
+import '../../libs/mobiscroll.custom-4.0.0-beta2.min.css';
 
 // Permits HTML markup encoding in controversy card text
 // import { Parser as HtmlToReactParser } from 'html-to-react';

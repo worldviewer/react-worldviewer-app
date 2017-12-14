@@ -16,8 +16,8 @@ import RouteLoader from './RouteLoader/RouteLoader';
 
 // Error/Logger/Notifications Handling
 import { log, logTitle, logError, logObject, logRoute } from '../libs/utils';
-import mobiscroll from '../libs/mobiscroll.custom-4.0.0-beta.min';
-import '../libs/mobiscroll.custom-4.0.0-beta.min.css';
+import mobiscroll from '../libs/mobiscroll.custom-4.0.0-beta2.min';
+import '../libs/mobiscroll.custom-4.0.0-beta2.min.css';
 
 // LocalStorage / New User Instructions
 import { fetchDiskInstructions, setDiskInstructions } from '../libs/utils';

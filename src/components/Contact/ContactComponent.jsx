@@ -7,8 +7,8 @@ import { withRouter } from 'react-router-dom';
 // UI Dependencies
 import { Grid, Row, Col } from 'react-bootstrap';
 import SwipeableViews from 'react-swipeable-views';
-import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta.min';
-import '../../libs/mobiscroll.custom-4.0.0-beta.min.css';
+import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta2.min';
+import '../../libs/mobiscroll.custom-4.0.0-beta2.min.css';
 import OpenSeadragon from 'openseadragon';
 import './Contact.css';
 

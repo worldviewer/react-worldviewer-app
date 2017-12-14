@@ -22,4 +22,5 @@ yarn-error.log*
 
 src/**/*.css
 !src/styles/bootstrap-solar.css
-!src/styles/react-instantsearch-algolia.css
+!src/styles/react-instantsearch-algolia-theme.css
+!src/libs/mobiscroll.custom-4.0.0-beta2.min.css

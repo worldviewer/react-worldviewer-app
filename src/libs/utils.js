@@ -3,8 +3,8 @@ import DeviceStorage from 'react-device-storage';
 
 // Error/Logger Handling
 // mobiscroll.Image + mobiscroll.Form + 
-import mobiscroll from './mobiscroll.custom-4.0.0-beta.min';
-import './mobiscroll.custom-4.0.0-beta.min.css';
+import mobiscroll from './mobiscroll.custom-4.0.0-beta2.min';
+import './mobiscroll.custom-4.0.0-beta2.min.css';
 
 // https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
 export function isEmptyObject(obj) {
