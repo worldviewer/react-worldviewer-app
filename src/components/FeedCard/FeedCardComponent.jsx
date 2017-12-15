@@ -318,22 +318,22 @@ class FeedCardComponent extends Component {
 			}
 
 		} else {
-			logTitle('FeedCard componentWillReceiveProps:');
-			log('this.props.app.isDesktop: ' + this.props.app.isDesktop);
-			log('this.props.level: ' + this.props.level);
-			log('this.props.loading.feed[this.props.level]: ' +
-				this.props.loading.feed[this.props.level]);
+			// logTitle('FeedCard componentWillReceiveProps:');
+			// log('this.props.app.isDesktop: ' + this.props.app.isDesktop);
+			// log('this.props.level: ' + this.props.level);
+			// log('this.props.loading.feed[this.props.level]: ' +
+			// 	this.props.loading.feed[this.props.level]);
 
-			log('this.props.loading.feeds: ' + this.props.loading.feeds);
-			log('nextProps.loading.feeds: ' + nextProps.loading.feeds);
+			// log('this.props.loading.feeds: ' + this.props.loading.feeds);
+			// log('nextProps.loading.feeds: ' + nextProps.loading.feeds);
 
-			log('this.props.loading.feed[this.props.level]: ' +
-				this.props.loading.feed[this.props.level]);
-			log('nextProps.loading.feed[nextProps.level]: ' +
-				nextProps.loading.feed[nextProps.level]);			
+			// log('this.props.loading.feed[this.props.level]: ' +
+			// 	this.props.loading.feed[this.props.level]);
+			// log('nextProps.loading.feed[nextProps.level]: ' +
+			// 	nextProps.loading.feed[nextProps.level]);			
 
-			log('feed exists: ' + !isEmptyObject(this.props.feed[this.props.level]));
-			log('');
+			// log('feed exists: ' + !isEmptyObject(this.props.feed[this.props.level]));
+			// log('');
 
 			if (!nextProps.loading.feeds &&
 				this.props.loading.feed[this.props.level] &&
@@ -361,7 +361,7 @@ class FeedCardComponent extends Component {
 				const [, shortSlug, discourseLevel,, feedSlug, isText] =
 					this.props.router.location.pathname.split('/');
 
-				logTitle('Determining feed post state from route ...');
+				logTitle('FeedCard componentDidMount:');
 				log('full path: ' + this.props.router.location.pathname);
 				log('shortSlug: ' + shortSlug);
 				log('discourseLevel: ' + discourseLevel);

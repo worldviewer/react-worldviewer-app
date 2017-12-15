@@ -329,11 +329,6 @@ class MainStackComponent extends Component {
 			isFeedPost = this.props.cardStackLevel === 2,
 			level = this.levels[this.props.discourse.level];
 
-		logTitle('MainStack renderDesktop:');
-		log('isFeedPost: ' + isFeedPost);
-		log('level: ' + level);
-		log('');
-
 		return (<div>
 
 			{ isFeedPost ? <FeedCard level={level} /> :
@@ -344,11 +339,6 @@ class MainStackComponent extends Component {
 
 	render() {
 		const mainStackStyles = {top: '50px'};
-
-		logTitle('MainStack render:');
-		log('this.props.app.isMobile: ' + this.props.app.isMobile);
-		log('this.props.app.isDesktop: ' + this.props.app.isDesktop);
-		log('');
 
 		return (
 			<div

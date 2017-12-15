@@ -59,10 +59,6 @@ export async function invokeApig(
 			endpoint,
 		});
 
-	logTitle('V4 Signature:');
-	logObject('sigV4Client', newClient);
-	log('');
-
 	if (newClient) {
 		const signedRequest = sigV4Client
 			.newClient({
@@ -84,10 +80,6 @@ export async function invokeApig(
 		headers = signedRequest.headers;
 
 		log('Creating a signed API request to ' + signedRequest.url + ' ...');
-		log('');
-
-		logTitle('HTTP headers:');
-		logObject('headers', headers);
 		log('');
 
 		const results = await fetch(signedRequest.url, {
