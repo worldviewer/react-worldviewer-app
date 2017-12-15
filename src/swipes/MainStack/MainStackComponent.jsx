@@ -354,8 +354,6 @@ class MainStackComponent extends Component {
 	}
 
 	render() {
-		const mainStackStyles = {top: '50px', position: 'relative'};
-
 		return (
 			<div
 				ref={c => this.container = c}

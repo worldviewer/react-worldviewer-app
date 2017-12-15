@@ -19,6 +19,9 @@ import { Parser as HtmlToReactParser } from 'html-to-react';
 // Error/Logger Handling
 import { log, logTitle, logObject } from '../../libs/utils';
 
+// Discourse Level Navigation
+import worldview from '../../images/science-structure-worldviews.svg';
+
 class CardComponent extends Component {
 	constructor(props) {
 		super(props);
@@ -173,10 +176,24 @@ class CardComponent extends Component {
 	}
 
 	renderDesktop() {
+		const
+			overlayStyles = {
+				height: '30%',
+				position: 'absolute',
+				right: '5%',
+				top: '50%',
+				transform: 'translateY(-50%)'
+			};
+
 		return (<div>
 			<div className="Canvas"
 				id='openseadragon-cards'
 				style={{width: '100%', height: '100vh'}} />
+
+			<div style={overlayStyles}>
+				<img alt='Discourse Level Navigation'
+					src={worldview} />
+			</div>
 
 			<SlidingPane
 				ref={pane => this.leftPane = pane}

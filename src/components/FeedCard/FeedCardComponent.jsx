@@ -30,6 +30,13 @@ import { Parser as HtmlToReactParser } from 'html-to-react';
 // Error/Logger Handling
 import { log, logObject, logTitle, logError, isEmptyObject } from '../../libs/utils';
 
+// Discourse Level Navigation
+import worldview from '../../images/science-structure-worldviews.svg';
+import model from '../../images/science-structure-models.svg';
+import propositional from '../../images/science-structure-propositions.svg';
+import conceptual from '../../images/science-structure-concepts.svg';
+import narrative from '../../images/science-structure-narratives.svg';
+
 class FeedCardComponent extends Component {
 	constructor(props) {
 		super(props);
@@ -54,6 +61,14 @@ class FeedCardComponent extends Component {
 			'conceptual',
 			'narrative'
 		];
+
+		this.levelImages = {
+			'worldview': worldview,
+			'model': model,
+			'propositional': propositional,
+			'conceptual': conceptual,
+			'narrative': narrative
+		};
 
 		this.props = props;
 	}
@@ -583,12 +598,25 @@ class FeedCardComponent extends Component {
 	}
 
 	renderDesktop() {
-		const feed = this.props.feeds[this.props.level];
+		const
+			feed = this.props.feeds[this.props.level],
+			overlayStyles = {
+				height: '30%',
+				position: 'absolute',
+				right: '5%',
+				top: '50%',
+				transform: 'translateY(-50%)'
+			};
 
 		return (<div>
 			<div className="Canvas"
 				id={'openseadragonfeed' + this.props.level}
 				style={{width: '100%', height: '100vh'}} />
+
+			<div style={overlayStyles}>
+				<img alt='Discourse Level Navigation'
+					src={this.levelImages[this.props.level]} />
+			</div>
 
 			<SlidingPane
 				className='ImageFeedPane'
