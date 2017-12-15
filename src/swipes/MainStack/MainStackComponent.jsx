@@ -189,8 +189,6 @@ class MainStackComponent extends Component {
 	async componentDidMount() {
 		// Mobile
 		if (this.props.app.isMobile) {
-			this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
-				this.props.discourse.isFullScreen ? 3000 : 6000);
 
 		// Desktop
 		} else {
@@ -198,6 +196,9 @@ class MainStackComponent extends Component {
 		}
 
 		// Both
+
+		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
+			this.props.discourse.isFullScreen ? 3000 : 6000);
 
 		window.addEventListener('resize', this.debouncedResizeHandler);
 
@@ -217,7 +218,7 @@ class MainStackComponent extends Component {
 
 	async componentWillReceiveProps(nextProps) {
 		// Mobile
-		if (this.props.app.isMobile) {
+		if (nextProps.app.isMobile) {
 			if (nextProps.discourse.level !== this.props.discourse.level) {
 				this.deactivateMainStackOverlay();
 			}
@@ -357,7 +358,6 @@ class MainStackComponent extends Component {
 
 		return (
 			<div
-				style={mainStackStyles}
 				ref={c => this.container = c}
 				className="MainStack">
 
