@@ -50,7 +50,7 @@ class CardTextComponent extends Component {
 			}
 
 			text = text + paragraphTag + this.props.card.data.text[num].paragraph +
-				'</p><br/>';
+				'</p>';
 		}
 
 		const
@@ -96,7 +96,11 @@ class CardTextComponent extends Component {
 
 	render() {
 		return (<div id="CardParagraphs"
-			ref={ node => this.paragraphs = node }>{ this.state.text }</div>);
+			ref={ node => this.paragraphs = node }>
+
+			{this.state.text}
+
+			</div>);
 	}
 
 }

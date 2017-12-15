@@ -27,7 +27,9 @@ class CardComponent extends Component {
 			pyramidStyle: {
 				width: '100%'
 			},
-			minZoomLevel: calculateMinZoomLevel() + 0.19,
+			minZoomLevel: this.props.app.isMobile ?
+				calculateMinZoomLevel() - 0.10 :
+				calculateMinZoomLevel() + 0.19,
 			text: ''
 		};
 
@@ -72,7 +74,9 @@ class CardComponent extends Component {
 
 	setupResizeHandler() {
 		this.setState({
-			minZoomLevel: calculateMinZoomLevel() + 0.19
+			minZoomLevel: this.props.app.isMobile ?
+				calculateMinZoomLevel() - 0.10 :
+				calculateMinZoomLevel() + 0.19
 		});
 	}
 

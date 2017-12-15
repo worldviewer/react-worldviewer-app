@@ -42,7 +42,6 @@
 }
 
 .ImageFeedPane {
-	margin-top: 52px;
 	pointer-events: auto;
 
 	.slide-pane__close, .slide-pane__content {
@@ -87,7 +86,6 @@
 }
 
 .TextFeedPane {
-	margin-top: 52px;
 	pointer-events: auto;
 
 	h3 {
@@ -155,7 +153,9 @@
 
 .FeedPaneOverlay {
 	background-color: unset !important;
+	bottom: -52px;
 	pointer-events: none;
+	top: 52px;
 }
 
 .PanePost {

@@ -1,6 +1,6 @@
 .CardText {
-	background-color: #839BA1;
-	color: #073642;
+	background-color: white;
+	color: black;
 	overflow-wrap: break-word;
 
 	.FirstCardParagraph {
@@ -22,13 +22,5 @@
 
 	#CardParagraphs {
 		padding: 30px;
-		position: relative;
-		top: 50px;
 	}
-
-	// This does not appear to be working (?)
-	// .react-swipeable-view-container {
-	// 	overflow-y: scroll; has to be scroll, not auto
-	// 	-webkit-overflow-scrolling: touch;
-	// }
 }

@@ -68,14 +68,7 @@ class CardStackComponent extends Component {
 							index={this.props.cardStack.level}
 							onChangeIndex={this.handleSwipe}>
 
-							{/* We have to do this because there app needs help differentiating
-							    swipes from scrolls ... */}
 							<div className="CardText">
-								<div className="TextSwitch" onClick={this.toggleReading.bind(this)}>
-									{ this.props.mainStack.swipeable ?
-										'Click to Read' :
-										'Click to Finish Reading' }
-								</div>
 								<CardText />
 							</div>
 
