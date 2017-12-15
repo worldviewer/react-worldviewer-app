@@ -425,11 +425,6 @@ class AppComponent extends Component {
 				Kill New User Instructions
 			</NavItem>,
 
-			<NavItem key={8}
-				onClick={() => this.props.history.push('/submit')}>
-				Submit a New Controversy
-			</NavItem>,
-
 			<NavItem key={9}
 				onClick={() => this.props.history.push('/help')}>
 				Help Wanted
