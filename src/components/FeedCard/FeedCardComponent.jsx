@@ -697,7 +697,7 @@ class FeedCardComponent extends Component {
 					this.props.level.slice(1) + '-level Feeds'}
 				from='left'
 				width={this.props.app.isLargest ? '450px' : '300px'}
-				subtitle='Feeds are like controversy subtopics'
+				subtitle={'Subtopics for ' + this.props.card.data.cardName}
 				onRequestClose={() => {
 					this.props.deactivateFeedImage(this.props.level);
 					this.props.unselectFeed();
