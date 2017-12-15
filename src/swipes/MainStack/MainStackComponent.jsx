@@ -100,15 +100,20 @@ class MainStackComponent extends Component {
 		log(this.props.router.location);
 		log('');
 
-		const
-			feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
-				cardSlug + '/' + feedSlug }, this.props.user.token);
+		// If there is no feedSlug, then we're just going to get a list of
+		// feed posts, so we don't want to save that into this.props.feed
+		if (feedSlug) {
+			const
+				feed = await invokeApig( {base: 'feeds', path: '/feeds/' +
+					cardSlug + '/' + feedSlug }, this.props.user.token);
 
-		logTitle('Data Step 3: Fetching controversy feed data ...');
-		logObject(feed);
-		log('');
+			logTitle('Data Step 3: Fetching controversy feed data ...');
+			logObject(feed);
+			log('');
 
-		this.props.setFeedData(feed, this.levels[this.props.discourse.level]);
+			this.props.setFeedData(feed, this.levels[this.props.discourse.level]);
+		}
+
 		this.props.unsetFeedDataLoading(this.levels[this.props.discourse.level]);
 	}
 

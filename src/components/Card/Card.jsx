@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CardComponent from './CardComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { activateDesktopText, deactivateDesktopText, setNewUserInstructionsState } from '../../redux';
+import { setCardStackLevel, activateFeedImage, setDiscourseLevel, activateDesktopText, deactivateDesktopText, setNewUserInstructionsState } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -24,6 +24,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		deactivateDesktopText: () => {
 			return dispatch(deactivateDesktopText());
+		},
+		setDiscourseLevel: (level, direction) => {
+			return dispatch(setDiscourseLevel(level, direction));
+		},
+		activateFeedImage: (levelName) => {
+			return dispatch(activateFeedImage(levelName));
+		},
+		setCardStackLevel: (level, direction) => {
+			return dispatch(setCardStackLevel(level, direction));
 		}
 	};
 };

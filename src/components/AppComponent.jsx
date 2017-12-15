@@ -358,40 +358,45 @@ class AppComponent extends Component {
 			};
 
 		// Dynamically build menu options based upon cardStack level
-		const feedMenuOptions =
-			this.props.app.isDesktop ? [ <NavItem key={20}
+		const feedSelectMenuOption =
+			this.props.app.isDesktop ?
+
+			<NavItem key={20}
 				onClick={this.selectFeedHandler.bind(this)}>
 				{ this.props.mainStack.selectFeedPopup === -1 ?
 					'Select Feed' : 'Close Feed Select' }
-			</NavItem>,
+			</NavItem> : null;
+
+		const feedTextDesktopMenuOption =
+			this.props.feed[levelName].text &&
+			this.props.app.isDesktop ?
 
 			<NavItem key={21}
 				onClick={this.showFeedText.bind(this)}>
 				{ !this.props.feedStack[levelName].text ?
 					'Show Feed Text' : 'Hide Feed Text' }
-			</NavItem> ] :
+			</NavItem> : null;
 
-			[ <NavItem key={20}
+		const feedTextMobileMenuOption =
+			this.props.app.isMobile ?
+
+			<NavItem key={22}
 				onClick={this.selectFeedHandler.bind(this)}>
 				Select Feed
-			</NavItem> ];
+			</NavItem> : null;
 
 		const cardMenuOptions =
-			this.props.app.isDesktop ? <NavItem key={21}
+			this.props.app.isDesktop ? <NavItem key={30}
 				onClick={this.showCardText.bind(this)}>
 				{ !this.props.desktop.text ?
 					'Show Card Text' : 'Hide Card Text' }
-			</NavItem> :
-
-			null;
+			</NavItem> : null;
 
 		const contactMenuOption = this.props.pyramid.styles.display !== 'none' ?
-			<NavItem key={20}
+			<NavItem key={40}
 				onClick={this.exitThreadViewer.bind(this)}>
 				Exit Thread Viewer
-			</NavItem> :
-
-			null;
+			</NavItem> : null;
 
 		// Dynamically build menu options for homepage
 		const homeMenuOptions =
@@ -452,7 +457,9 @@ class AppComponent extends Component {
 			</NavItem> ]
 
 		if (this.props.cardStack.level === 2) {
-			menuOptions = menuOptions.concat(feedMenuOptions);
+			menuOptions = menuOptions.concat(feedSelectMenuOption,
+				feedTextDesktopMenuOption, feedTextMobileMenuOption);
+
 		} else if (this.props.cardStack.level === 1) {
 			menuOptions = menuOptions.concat(cardMenuOptions);
 		}

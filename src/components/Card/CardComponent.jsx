@@ -36,6 +36,14 @@ class CardComponent extends Component {
 			text: ''
 		};
 
+		this.levels = [
+			'worldview',
+			'model',
+			'propositional',
+			'conceptual',
+			'narrative'
+		];
+
 		this.props = props;
 	}
 
@@ -165,6 +173,66 @@ class CardComponent extends Component {
 		}
 	}
 
+	getPosition(element) {
+		var xPosition = 0;
+		var yPosition = 0;
+
+		while(element) {
+			xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+			yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+			element = element.offsetParent;
+		}
+
+		return { x: xPosition, y: yPosition };
+	}
+
+	overlayClickHandler(event) {
+		const
+			el = this.overlay,
+			y = event.clientY,
+			height = el.offsetHeight,
+			top = this.getPosition(el).y,
+			percentY = (y - top)/height;
+
+		let level = 0;
+
+		// The scale is somewhat off on this, but it does appear to work
+		logTitle('Calculations:');
+		log('y: ' + y);
+		log('height: ' + height);
+		log('top: ' + top);
+		log('percentY: ' + percentY);
+		log('');
+
+		if (percentY < -0.30) {
+			level = 0;
+		} else if (percentY < -0.06) {
+			level = 1;
+		} else if (percentY < 0.14) {
+			level = 2;
+		} else if (percentY < 0.35) {
+			level = 3;
+		} else {
+			level = 4;
+		}
+
+		this.props.setDiscourseLevel(level,
+			this.props.level > level ? 'down' : 'up');
+
+		logTitle('Clicked Overlay Level ' + level);
+		log('');
+
+		if (this.viewer) {
+			this.viewer.destroy();
+			this.viewer = null;
+		}
+
+		this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+			this.levels[level]);
+		this.props.setCardStackLevel(2, 'right');
+		this.props.activateFeedImage(this.levels[level]);
+	}
+
 	renderMobile() {
 		return (
 			<div
@@ -191,8 +259,9 @@ class CardComponent extends Component {
 				style={{width: '100%', height: '100vh'}} />
 
 			<div style={overlayStyles}>
-				<img alt='Discourse Level Navigation'
-					src={worldview} />
+				<img alt='Discourse Level Navigation' src={worldview} 
+					onClick={this.overlayClickHandler.bind(this)}
+					ref={element => this.overlay = element} />
 			</div>
 
 			<SlidingPane

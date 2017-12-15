@@ -471,6 +471,7 @@ class FeedCardComponent extends Component {
 		}
 
 		this.props.deactivateFeedImage(this.props.level);
+		this.props.setFeedData({}, this.props.level);
 
 		this.props.setDiscourseLevel(level,
 			this.props.level > level ? 'down' : 'up');
@@ -682,7 +683,7 @@ class FeedCardComponent extends Component {
 				style={{width: '100%', height: '96vh'}} />
 
 			<div style={overlayStyles}>
-				<img alt='Discourse Level Navigation' 
+				<img alt='Discourse Level Navigation'
 					ref={element => this.overlay = element}
 					src={this.levelImages[this.props.level]}
 					onClick={this.overlayClickHandler.bind(this)} />
