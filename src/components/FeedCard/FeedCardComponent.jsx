@@ -258,8 +258,10 @@ class FeedCardComponent extends Component {
 		await this.clickFeedPost(index);
 		await this.constructText();
 
-		await this.viewer.destroy();
-		this.viewer = null;
+		if (this.viewer) {
+			await this.viewer.destroy();
+			this.viewer = null;
+		}
 
 		this.setupDeepZoom(false);
 
@@ -354,10 +356,12 @@ class FeedCardComponent extends Component {
 				this.props.loading.feed[this.props.level] &&
 				!nextProps.loading.feed[nextProps.level]) {
 
-				const [,,,,, isText] =
+				const [,,,, feedSlug, isText] =
 					this.props.router.location.pathname.split('/');
 
-				this.setupDeepZoom(false);
+				if (feedSlug) {
+					this.setupDeepZoom(false);
+				}
 			}
 
 			if (this.props.mainStack.selectFeedPopup === -1 &&
@@ -413,12 +417,76 @@ class FeedCardComponent extends Component {
 				!this.props.loading.feed[this.props.level] &&
 				!isEmptyObject(this.props.feed[this.props.level])) {
 
-				const [,,,,, isText] =
+				const [,,,, feedSlug, isText] =
 					this.props.router.location.pathname.split('/');
 
-				this.setupDeepZoom(false);
+				if (feedSlug) {
+					this.setupDeepZoom(false);
+				}
 			}	
 		}
+	}
+
+	getPosition(element) {
+		var xPosition = 0;
+		var yPosition = 0;
+
+		while(element) {
+			xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+			yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+			element = element.offsetParent;
+		}
+
+		return { x: xPosition, y: yPosition };
+	}
+
+	overlayClickHandler(event) {
+		const
+			el = this.overlay,
+			y = event.clientY,
+			height = el.offsetHeight,
+			top = this.getPosition(el).y,
+			percentY = (y - top)/height;
+
+		let level = 0;
+
+		// The scale is somewhat off on this, but it does appear to work
+		logTitle('Calculations:');
+		log('y: ' + y);
+		log('height: ' + height);
+		log('top: ' + top);
+		log('percentY: ' + percentY);
+		log('');
+
+		if (percentY < -0.30) {
+			level = 0;
+		} else if (percentY < -0.06) {
+			level = 1;
+		} else if (percentY < 0.14) {
+			level = 2;
+		} else if (percentY < 0.35) {
+			level = 3;
+		} else {
+			level = 4;
+		}
+
+		this.props.deactivateFeedImage(this.props.level);
+
+		this.props.setDiscourseLevel(level,
+			this.props.level > level ? 'down' : 'up');
+
+		this.props.activateFeedImage(this.levels[level]);
+
+		logTitle('Clicked Overlay Level ' + level);
+		log('');
+
+		if (this.viewer) {
+			this.viewer.destroy();
+			this.viewer = null;
+		}
+
+		this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+			this.levels[level]);
 	}
 
 	renderMobile() {
@@ -611,11 +679,13 @@ class FeedCardComponent extends Component {
 		return (<div>
 			<div className="Canvas"
 				id={'openseadragonfeed' + this.props.level}
-				style={{width: '100%', height: '100vh'}} />
+				style={{width: '100%', height: '96vh'}} />
 
 			<div style={overlayStyles}>
-				<img alt='Discourse Level Navigation'
-					src={this.levelImages[this.props.level]} />
+				<img alt='Discourse Level Navigation' 
+					ref={element => this.overlay = element}
+					src={this.levelImages[this.props.level]}
+					onClick={this.overlayClickHandler.bind(this)} />
 			</div>
 
 			<SlidingPane
@@ -624,6 +694,7 @@ class FeedCardComponent extends Component {
 				isOpen={this.props.feedStack[this.props.level].image}
 				title={'Other ' + this.props.level.charAt(0).toUpperCase() +
 					this.props.level.slice(1) + '-level Feeds'}
+				from='left'
 				width={this.props.app.isLargest ? '450px' : '300px'}
 				subtitle='Feeds are like controversy subtopics'
 				onRequestClose={() => {
@@ -654,7 +725,7 @@ class FeedCardComponent extends Component {
 				overlayClassName='FeedPaneOverlay'
 				isOpen={this.props.feedStack[this.props.level].text}
 				title={this.props.card.data.cardName}
-				from='left'
+				from='right'
 				width={this.props.app.isLargest ? '450px' : '300px'}
 				subtitle={this.props.card.data.cardSummary}
 				onRequestClose={() => {

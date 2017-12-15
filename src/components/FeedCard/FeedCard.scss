@@ -80,7 +80,6 @@
 	.slide-pane__close {
 		background: black;
 		color: white;
-		transform: scaleX(-1);
 		cursor: pointer;
 	}
 
@@ -127,7 +126,7 @@
 		display: inline-block;
 		position: absolute;
 		top: 50%;
-		transform: translateY(-50%);
+		transform: translateY(-50%) scaleX(-1);;
 	}
 
 	.slide-pane__header {
