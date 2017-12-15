@@ -13,3 +13,76 @@
 // 		top: -25px !important;
 // 	}
 // }
+
+
+.TextCardPane {
+	margin-top: 52px;
+	pointer-events: auto;
+
+	h3 {
+		-webkit-margin-before: 0;
+	}
+
+	.slide-pane__close, .slide-pane__content {
+		// a {
+		// 	color: #ff8400;
+		// }
+
+		// color: white;
+		// background: #1c1c1c;
+		// font-weight: 300;
+
+		a {
+			color: blue;
+		}
+
+		color: black;
+		background: white;
+
+		box-sizing: border-box;
+	}
+
+	.slide-pane__header, .slide-pane__content {
+		border: 1px solid #333333;
+		box-sizing: border-box;
+	}
+
+	.slide-pane__close {
+		background: black;
+		color: white;
+		cursor: pointer;
+		display: inline-block;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.slide-pane__header {
+		background: black;
+		color: white;
+		display: block;
+		flex: unset;
+		height: auto;
+		overflow: visible;
+		position: relative;
+	}
+
+	.slide-pane__title-wrapper {
+		display: inline-block;
+		float: right;
+		padding-top: 25px;
+		padding-bottom: 25px;
+		padding-right: 30px;
+		width: 78%;
+	}
+
+	.slide-pane__content {
+		margin-bottom: 50px;
+		word-wrap: break-word;
+	}
+}
+
+.CardPaneOverlay {
+	background-color: unset !important;
+	pointer-events: none;
+}

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { deactivateFeedText, activateFeedText, deactivateFeedImage, setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, setNewUserInstructionsState, setPyramidStyles } from '../redux.js';
+import { deactivateDesktopText, activateDesktopText, deactivateFeedText, activateFeedText, deactivateFeedImage, setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, setNewUserInstructionsState, setPyramidStyles } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -22,7 +22,8 @@ const mapStateToProps = (state, ownProps) => {
 		pyramid: state.reducer.pyramid,
 		mainStack: state.reducer.mainStack,
 		app: state.reducer.app,
-		feedStack: state.reducer.feedStack
+		feedStack: state.reducer.feedStack,
+		desktop: state.reducer.desktop
 	};
 };
 
@@ -96,6 +97,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		deactivateFeedText: (levelName) => {
 			return dispatch(deactivateFeedText(levelName));
+		},
+		activateDesktopText: () => {
+			return dispatch(activateDesktopText());
+		},
+		deactivateDesktopText: () => {
+			return dispatch(deactivateDesktopText());
 		}
 	}
 };

@@ -76,6 +76,9 @@ const types = {
 	DEACTIVATE_FEED_TEXT: 'DEACTIVATE_FEED_TEXT',
 	ACTIVATE_FEED_IMAGE_AND_TEXT: 'ACTIVATE_FEED_IMAGE_AND_TEXT',
 
+	ACTIVATE_DESKTOP_TEXT: 'ACTIVATE_DESKTOP_TEXT',
+	DEACTIVATE_DESKTOP_TEXT: 'DEACTIVATE_DESKTOP_TEXT',
+
 	SET_PYRAMID_STYLES: 'SET_PYRAMID_STYLES'
 };
 
@@ -230,6 +233,10 @@ const initialState = {
 		isDesktop: false,
 		isTablet: false,
 		isLargest: false
+	},
+
+	desktop: {
+		text: false
 	}
 };
 
@@ -594,6 +601,18 @@ export const activateFeedImageAndText = (levelName) => {
 	};
 }
 
+export const activateDesktopText = () => {
+	return {
+		type: types.ACTIVATE_DESKTOP_TEXT
+	};
+}
+
+export const deactivateDesktopText = () => {
+	return {
+		type: types.DEACTIVATE_DESKTOP_TEXT
+	};
+}
+
 export const setPyramidStyles = (styles) => {
 	return {
 		type: types.SET_PYRAMID_STYLES,
@@ -651,7 +670,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					app: true
 				}
-			}
+			};
 
 		case types.UNSET_APP_LOADING:
 			return {
@@ -660,7 +679,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					app: false
 				}
-			}
+			};
 
 		case types.SET_USER_TOKEN_LOADING:
 			return {
@@ -687,7 +706,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					slugs: true
 				}
-			}
+			};
 
 		case types.UNSET_SLUGS_LOADING:
 			return {
@@ -696,7 +715,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					slugs: false
 				}
-			}
+			};
 
 		case types.SET_FEED_DATA_LOADING:
 			return {
@@ -708,7 +727,7 @@ export default (state = initialState, action) => {
 						[action.level]: true
 					}
 				}
-			}
+			};
 
 		case types.UNSET_FEED_DATA_LOADING:
 			return {
@@ -720,7 +739,7 @@ export default (state = initialState, action) => {
 						[action.level]: false
 					}
 				}
-			}
+			};
 
 		case types.SET_FEEDS_DATA_LOADING:
 			return {
@@ -729,7 +748,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					feeds: true
 				}
-			}
+			};
 
 		case types.UNSET_FEEDS_DATA_LOADING:
 			return {
@@ -738,7 +757,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					feeds: false
 				}
-			}
+			};
 
 		case types.SET_CARD_DATA_LOADING:
 			return {
@@ -747,7 +766,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					card: true
 				}
-			}
+			};
 
 		case types.UNSET_CARD_DATA_LOADING:
 			return {
@@ -756,7 +775,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					card: false
 				}
-			}
+			};
 
 		case types.SET_USER_TOKEN:
 			return {
@@ -919,7 +938,7 @@ export default (state = initialState, action) => {
 					...state.discourse,
 					isFullScreen: action.isFullScreen
 				}
-			}
+			};
 
 		case types.SET_CARD_SLUGS:
 			return {
@@ -928,7 +947,7 @@ export default (state = initialState, action) => {
 					...state.slugs,
 					hash: action.slugsHash
 				}
-			}
+			};
 
 		case types.SET_CARD_DATA:
 			return {
@@ -939,7 +958,7 @@ export default (state = initialState, action) => {
 						...action.card
 					}
 				}
-			}
+			};
 
 		case types.SET_FEED_DATA:
 			return {
@@ -948,7 +967,7 @@ export default (state = initialState, action) => {
 					...state.feed,
 					[action.level]: action.feed
 				}
-			}
+			};
 
 		case types.SET_FEEDS_DATA:
 			return {
@@ -961,7 +980,7 @@ export default (state = initialState, action) => {
 					conceptual: action.conceptual,
 					narrative: action.narrative
 				}
-			}
+			};
 
 		case types.ENABLE_MAINSTACK_SWIPEABLE:
 			return {
@@ -970,7 +989,7 @@ export default (state = initialState, action) => {
 					...state.mainStack,
 					swipeable: true
 				}
-			}
+			};
 
 		case types.DISABLE_MAINSTACK_SWIPEABLE:
 			return {
@@ -979,7 +998,7 @@ export default (state = initialState, action) => {
 					...state.mainStack,
 					swipeable: false
 				}
-			}
+			};
 			
 		case types.SHOW_SNACKBAR:
 			return {
@@ -989,7 +1008,7 @@ export default (state = initialState, action) => {
 					message: action.message,
 					duration: action.duration
 				}
-			}
+			};
 
 		case types.SET_SEARCH_QUERY:
 			return {
@@ -998,7 +1017,7 @@ export default (state = initialState, action) => {
 					...state.search,
 					query: action.query
 				}
-			}
+			};
 
 		case types.SET_SEARCH_FACET:
 			return {
@@ -1009,13 +1028,13 @@ export default (state = initialState, action) => {
 					facetSubCategory: action.facetSubCategory,
 					facets: action.facets
 				}
-			}
+			};
 
 		case types.SET_SEARCH_STATE:
 			return {
 				...state,
 				searchState: action.searchState
-			}
+			};
 
 		case types.SELECT_FEED:
 			return {
@@ -1024,7 +1043,7 @@ export default (state = initialState, action) => {
 					...state.mainStack,
 					selectFeedPopup: action.discourseLevel
 				}
-			}
+			};
 
 		case types.UNSELECT_FEED:
 			return {
@@ -1033,7 +1052,7 @@ export default (state = initialState, action) => {
 					...state.mainStack,
 					selectFeedPopup: -1
 				}
-			}
+			};
 
 		case types.SELECT_FACET:
 			return {
@@ -1042,7 +1061,7 @@ export default (state = initialState, action) => {
 					...state.navbar,
 					facetTrigger: true
 				}
-			}
+			};
 
 		case types.UNSELECT_FACET:
 			return {
@@ -1051,7 +1070,7 @@ export default (state = initialState, action) => {
 					...state.navbar,
 					facetTrigger: false
 				}
-			}
+			};
 
 		case types.ACTIVATE_FEED_IMAGE:
 			return {
@@ -1063,7 +1082,7 @@ export default (state = initialState, action) => {
 						image: true
 					}
 				}
-			}
+			};
 
 		case types.DEACTIVATE_FEED_IMAGE:
 			return {
@@ -1075,7 +1094,7 @@ export default (state = initialState, action) => {
 						image: false
 					}
 				}
-			}
+			};
 
 		case types.ACTIVATE_FEED_TEXT:
 			return {
@@ -1087,7 +1106,7 @@ export default (state = initialState, action) => {
 						text: true
 					}
 				}
-			}
+			};
 
 		case types.DEACTIVATE_FEED_TEXT:
 			return {
@@ -1099,7 +1118,7 @@ export default (state = initialState, action) => {
 						text: false
 					}
 				}
-			}
+			};
 
 		case types.ACTIVATE_FEED_IMAGE_AND_TEXT:
 			return {
@@ -1112,7 +1131,25 @@ export default (state = initialState, action) => {
 						image: true
 					}
 				}
-			}
+			};
+
+		case types.ACTIVATE_DESKTOP_TEXT:
+			return {
+				...state,
+				desktop: {
+					...state.desktop,
+					text: true
+				}
+			};
+
+		case types.DEACTIVATE_DESKTOP_TEXT:
+			return {
+				...state,
+				desktop: {
+					...state.desktop,
+					text: false
+				}
+			};
 
 		case types.SET_PYRAMID_STYLES:
 			return {

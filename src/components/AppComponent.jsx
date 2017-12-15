@@ -280,6 +280,14 @@ class AppComponent extends Component {
 		}
 	}
 
+	showCardText(event) {
+		if (this.props.desktop.text) {
+			this.props.deactivateDesktopText();
+		} else {
+			this.props.activateDesktopText();
+		}		
+	}
+
 	exitThreadViewer(event) {
 		this.props.setPyramidStyles({
 			...this.props.pyramid.styles,
@@ -368,6 +376,15 @@ class AppComponent extends Component {
 				Select Feed
 			</NavItem> ];
 
+		const cardMenuOptions =
+			this.props.app.isDesktop ? <NavItem key={21}
+				onClick={this.showCardText.bind(this)}>
+				{ !this.props.desktop.text ?
+					'Show Card Text' : 'Hide Card Text' }
+			</NavItem> :
+
+			null;
+
 		const contactMenuOption = this.props.pyramid.styles.display !== 'none' ?
 			<NavItem key={20}
 				onClick={this.exitThreadViewer.bind(this)}>
@@ -436,6 +453,8 @@ class AppComponent extends Component {
 
 		if (this.props.cardStack.level === 2) {
 			menuOptions = menuOptions.concat(feedMenuOptions);
+		} else if (this.props.cardStack.level === 1) {
+			menuOptions = menuOptions.concat(cardMenuOptions);
 		}
 
 		if (this.props.router.location.pathname === '/') {

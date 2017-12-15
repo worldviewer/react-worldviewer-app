@@ -8,6 +8,7 @@ import './MainStack.css';
 
 // Components
 import SwipeableViews from 'react-swipeable-views';
+import Card from '../../components/Card/Card';
 import CardStack from '../CardStack/CardStack';
 import FeedCard from '../../components/FeedCard/FeedCard';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -75,7 +76,6 @@ class MainStackComponent extends Component {
 
 		this.handleSwipe = this.handleSwipe.bind(this);
 		this.changeRoute = this.changeRoute.bind(this);
-
 
 		this.debouncedCardInstructionHandler = debounce(() => this.handleInstructionState('firstControversyCard',
 			'Click the controversy card to zoom into it. The URL is sharable. Swipe left to read the text, right to more information about the controversy (search on "Halton Arp" for a full example).'), 500);
@@ -187,10 +187,19 @@ class MainStackComponent extends Component {
 	}
 
 	async componentDidMount() {
-		window.addEventListener('resize', this.debouncedResizeHandler);
+		// Mobile
+		if (this.props.app.isMobile) {
+			this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
+				this.props.discourse.isFullScreen ? 3000 : 6000);
 
-		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
-			this.props.discourse.isFullScreen ? 3000 : 6000);
+		// Desktop
+		} else {
+
+		}
+
+		// Both
+
+		window.addEventListener('resize', this.debouncedResizeHandler);
 
 		// window.onscroll = function () { window.scrollTo(0, 0); };
 
@@ -224,6 +233,7 @@ class MainStackComponent extends Component {
 		}
 
 		// Both
+
 		// If the slugs finish loading after the component has mounted ...
 		if (!this.props.fetchComplete.slugs &&
 			nextProps.fetchComplete.slugs) {
@@ -329,10 +339,15 @@ class MainStackComponent extends Component {
 			isFeedPost = this.props.cardStackLevel === 2,
 			level = this.levels[this.props.discourse.level];
 
+		logTitle('MainStack renderDesktop:');
+		log('this.props.cardStackLevel: ' + this.props.cardStackLevel);
+		log('isFeedPost: ' + isFeedPost);
+		log('');
+
 		return (<div>
 
 			{ isFeedPost ? <FeedCard level={level} /> :
-				<CardStack level={level} /> }
+				<Card level={level} /> }
 
 		</div>);
 	}
