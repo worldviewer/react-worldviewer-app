@@ -19,8 +19,9 @@ import { Parser as HtmlToReactParser } from 'html-to-react';
 // Error/Logger Handling
 import { log, logTitle, logObject } from '../../libs/utils';
 
-// Discourse Level Navigation
-import worldview from '../../images/science-structure-worldviews.svg';
+// Overlays
+import MainStackOverlay from '../../overlays/MainStackOverlay/MainStackOverlay';
+import debounce from 'debounce';
 
 class CardComponent extends Component {
 	constructor(props) {
@@ -81,6 +82,17 @@ class CardComponent extends Component {
 			() => this.setupResizeHandler());
 
 		this.setupZoomHandler(this.viewer);
+
+		this.debouncedZoomHandler = debounce((data) => {
+			logTitle('zoom: ' + data.zoom);
+			log('');
+
+			if (data.zoom > 1.2) {
+				this.props.deactivateMainStackOverlay();
+			} else {
+				this.props.activateMainStackOverlay();
+			}
+		}, 2000);
 	}
 
 	setupResizeHandler() {
@@ -93,9 +105,10 @@ class CardComponent extends Component {
 
 	// Use this to react to OpenSeadragon zoom events
 	setupZoomHandler(viewer) {
-		viewer.addHandler('zoom', (data) => {
+		logTitle('Setting up overlay resize handler ...');
+		log('');
 
-		});
+		viewer.addHandler('zoom', (data) => this.debouncedZoomHandler(data));
 	}
 
 	constructText() {
@@ -258,11 +271,11 @@ class CardComponent extends Component {
 				id='openseadragon-cards'
 				style={{width: '100%', height: '100vh'}} />
 
-			<div style={overlayStyles}>
-				<img alt='Discourse Level Navigation' src={worldview} 
-					onClick={this.overlayClickHandler.bind(this)}
-					ref={element => this.overlay = element} />
-			</div>
+			<MainStackOverlay
+				discourseLevel={0}
+				active={this.props.discourse.overlay}
+				discourseHandler={this.props.setDiscourseLevel}
+				deactivateOverlayHandler={this.props.deactivateMainStackOverlay} />
 
 			<SlidingPane
 				ref={pane => this.leftPane = pane}

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import FeedCardComponent from './FeedCardComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setDiscourseLevel, unselectFeed, setFeedDataLoading, unsetFeedDataLoading, setFeedData, activateFeedImage, deactivateFeedImage, activateFeedText, deactivateFeedText, activateFeedImageAndText, enableMainStackSwipeable, disableMainStackSwipeable } from '../../redux';
+import { setDiscourseLevel, unselectFeed, setFeedDataLoading, unsetFeedDataLoading, setFeedData, activateFeedImage, deactivateFeedImage, activateFeedText, deactivateFeedText, activateFeedImageAndText, enableMainStackSwipeable, disableMainStackSwipeable, deactivateMainStackOverlay, activateMainStackOverlay } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -56,6 +56,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setDiscourseLevel: (level, direction) => {
 			return dispatch(setDiscourseLevel(level, direction));
+		},
+		deactivateMainStackOverlay: () => {
+			return dispatch(deactivateMainStackOverlay());
+		},
+		activateMainStackOverlay: () => {
+			return dispatch(activateMainStackOverlay());
 		}
 	}
 };

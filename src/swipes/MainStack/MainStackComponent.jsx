@@ -202,8 +202,7 @@ class MainStackComponent extends Component {
 
 		// Both
 
-		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay,
-			this.props.discourse.isFullScreen ? 3000 : 6000);
+		this.deactivateMainStackOverlay = debounce(this.props.deactivateMainStackOverlay, 3000);
 
 		window.addEventListener('resize', this.debouncedResizeHandler);
 

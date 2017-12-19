@@ -168,18 +168,28 @@ class AnimatedMainStackOverlay extends Component {
 	componentDidMount() {
 		const el = this.element;
 
-		this.swipedetect(el, swipedir => {
-			if (swipedir === "right") {
-				this.props.deactivateOverlayHandler();
-			}
-		});
+		if (this.props.app.isMobile) {
+			this.swipedetect(el, swipedir => {
+				if (swipedir === "right") {
+					this.props.deactivateOverlayHandler();
+				}
+			});
+
+		} else {
+
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		const el = this.element;
 
-		if (this.splatChange && nextProps.discourseLevel !== this.props.discourseLevel) {
-			this.splatChange.applyTo(el);
+		if (this.props.app.isMobile) {
+			if (this.splatChange && nextProps.discourseLevel !== this.props.discourseLevel) {
+				this.splatChange.applyTo(el);
+			}
+
+		} else {
+
 		}
 	}
 
@@ -223,26 +233,30 @@ class AnimatedMainStackOverlay extends Component {
 
 	render() {
 		const
-			swipeOverlayContainerStyles = this.props.isFullScreen ?
+			swipeOverlayContainerStyles = this.props.app.isMobile ?
 				{
 					left: 0,
 					top: '50%',
 					transform: 'translateY(-40vh)'
 				} :
+
 				{
-					top: '80px'
+					height: 'initial',
+					right: '5%',
+					top: '50%',
+					transform: 'translateY(-50%)',
+					width: 'initial'
 				},
 
-			swipeOverlayStyles = this.props.isFullScreen ?
+			swipeOverlayStyles = this.props.app.isMobile ?
 				{
 					display: 'block',
 					height: '80vh',
 					margin: '0 auto'
 				} :
+
 				{
-					height: '40vh',
-					position: 'absolute',
-					right: '30px'
+					height: '40vh'
 				},
 
 			scienceLevelImages = [worldviews, models, propositions, concepts, narratives];
@@ -269,7 +283,7 @@ class MainStackOverlayStateless extends Component {
 			<TransitionGroup component="div">
 				{ this.props.active &&
 					<AnimatedMainStackOverlay
-						isFullScreen={this.props.isFullScreen}
+						app={this.props.app}
 						discourseLevel={this.props.discourseLevel}
 						discourseHandler={this.props.discourseHandler}
 						deactivateOverlayHandler={this.props.deactivateOverlayHandler} />

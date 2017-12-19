@@ -30,12 +30,9 @@ import { Parser as HtmlToReactParser } from 'html-to-react';
 // Error/Logger Handling
 import { log, logObject, logTitle, logError, isEmptyObject } from '../../libs/utils';
 
-// Discourse Level Navigation
-import worldview from '../../images/science-structure-worldviews.svg';
-import model from '../../images/science-structure-models.svg';
-import propositional from '../../images/science-structure-propositions.svg';
-import conceptual from '../../images/science-structure-concepts.svg';
-import narrative from '../../images/science-structure-narratives.svg';
+// Overlays
+import MainStackOverlay from '../../overlays/MainStackOverlay/MainStackOverlay';
+import debounce from 'debounce';
 
 class FeedCardComponent extends Component {
 	constructor(props) {
@@ -61,14 +58,6 @@ class FeedCardComponent extends Component {
 			'conceptual',
 			'narrative'
 		];
-
-		this.levelImages = {
-			'worldview': worldview,
-			'model': model,
-			'propositional': propositional,
-			'conceptual': conceptual,
-			'narrative': narrative
-		};
 
 		this.props = props;
 	}
@@ -121,7 +110,18 @@ class FeedCardComponent extends Component {
 		log(this.viewer);
 		log('');
 
-		// this.setupZoomHandler(this.viewer);
+		this.setupZoomHandler(this.viewer);
+
+		this.debouncedZoomHandler = debounce((data) => {
+			logTitle('zoom: ' + data.zoom);
+			log('');
+
+			if (data.zoom > 1.2) {
+				this.props.deactivateMainStackOverlay();
+			} else {
+				this.props.activateMainStackOverlay();
+			}
+		}, 2000);
 	}
 
 	// slight correction applied for square feed post image form factor,
@@ -134,9 +134,10 @@ class FeedCardComponent extends Component {
 
 	// Use this to react to OpenSeadragon zoom events
 	setupZoomHandler(viewer) {
-		viewer.addHandler('zoom', (data) => {
+		logTitle('Setting up overlay resize handler ...');
+		log('');
 
-		});
+		viewer.addHandler('zoom', (data) => this.debouncedZoomHandler(data));
 	}
 
 	titleCase(string) {
@@ -668,26 +669,18 @@ class FeedCardComponent extends Component {
 
 	renderDesktop() {
 		const
-			feed = this.props.feeds[this.props.level],
-			overlayStyles = {
-				height: '30%',
-				position: 'absolute',
-				right: '5%',
-				top: '50%',
-				transform: 'translateY(-50%)'
-			};
+			feed = this.props.feeds[this.props.level];
 
 		return (<div>
 			<div className="Canvas"
 				id={'openseadragonfeed' + this.props.level}
 				style={{width: '100%', height: '96vh'}} />
 
-			<div style={overlayStyles}>
-				<img alt='Discourse Level Navigation'
-					ref={element => this.overlay = element}
-					src={this.levelImages[this.props.level]}
-					onClick={this.overlayClickHandler.bind(this)} />
-			</div>
+			<MainStackOverlay
+				discourseLevel={this.levels.indexOf(this.props.level)}
+				active={this.props.discourse.overlay}
+				discourseHandler={this.props.setDiscourseLevel}
+				deactivateOverlayHandler={this.props.deactivateMainStackOverlay} />
 
 			<SlidingPane
 				className='ImageFeedPane'

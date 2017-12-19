@@ -4,7 +4,8 @@ import MainStackOverlayComponent from './MainStackOverlayComponent.jsx';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		discourse: state.discourse
+		discourse: state.reducer.discourse,
+		app: state.reducer.app
 	};
 };
 
