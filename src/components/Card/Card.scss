@@ -12,14 +12,6 @@
 	}
 
 	.slide-pane__close, .slide-pane__content {
-		// a {
-		// 	color: #ff8400;
-		// }
-
-		// color: white;
-		// background: #1c1c1c;
-		// font-weight: 300;
-
 		a {
 			color: blue;
 		}
@@ -40,6 +32,7 @@
 		color: white;
 		cursor: pointer;
 		display: inline-block;
+		margin-left: 16px;
 		position: absolute;
 		top: 50%;
 		transform: translateY(-50%);

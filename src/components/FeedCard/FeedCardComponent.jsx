@@ -414,12 +414,19 @@ class FeedCardComponent extends Component {
 			log('feed exists: ' + !isEmptyObject(this.props.feed[this.props.level]));
 			log('');
 
+			const [,,,, feedSlug, isText] =
+				this.props.router.location.pathname.split('/');
+
+			if (!feedSlug) {
+				this.props.selectFeed(this.props.level);
+				this.props.activateFeedImage(this.props.level);
+			}
+
+			this.props.activateMainStackOverlay(this.props.level, 'up');
+
 			if (this.props.app.isDesktop && !this.props.loading.feeds &&
 				!this.props.loading.feed[this.props.level] &&
 				!isEmptyObject(this.props.feed[this.props.level])) {
-
-				const [,,,, feedSlug, isText] =
-					this.props.router.location.pathname.split('/');
 
 				if (feedSlug) {
 					this.setupDeepZoom(false);
@@ -642,8 +649,11 @@ class FeedCardComponent extends Component {
 				className='ImageFeedPane'
 				overlayClassName='FeedPaneOverlay'
 				isOpen={this.props.feedStack[this.props.level].image}
-				title={'Other ' + this.props.level.charAt(0).toUpperCase() +
-					this.props.level.slice(1) + '-level Feeds'}
+				title={this.props.app.isLargest ?
+					'Other ' + this.props.level.charAt(0).toUpperCase() +
+					this.props.level.slice(1) + '-level Feeds' :
+					this.props.level.charAt(0).toUpperCase() +
+					this.props.level.slice(1) + ' Feeds'}
 				from='left'
 				width={this.props.app.isLargest ? '450px' : '300px'}
 				subtitle={'Subtopics for ' + this.props.card.data.cardName}
