@@ -219,31 +219,16 @@ class AnimatedMainStackOverlay extends Component {
 
 		let level = 0;
 
-		if (this.props.app.isMobile) {
-			if (percentY < 0.17) {
-				level = 0;
-			} else if (percentY < 0.40) {
-				level = 1;
-			} else if (percentY < 0.61) {
-				level = 2;
-			} else if (percentY < 0.83) {
-				level = 3;
-			} else {
-				level = 4;
-			}
-
+		if (percentY < -0.31) {
+			level = 0;
+		} else if (percentY < -0.10) {
+			level = 1;
+		} else if (percentY < 0.11) {
+			level = 2;
+		} else if (percentY < 0.33) {
+			level = 3;
 		} else {
-			if (percentY < -0.31) {
-				level = 0;
-			} else if (percentY < -0.10) {
-				level = 1;
-			} else if (percentY < 0.11) {
-				level = 2;
-			} else if (percentY < 0.33) {
-				level = 3;
-			} else {
-				level = 4;
-			}
+			level = 4;
 		}
 
 		this.props.discourseHandler(level);
@@ -257,9 +242,10 @@ class AnimatedMainStackOverlay extends Component {
 		const
 			swipeOverlayContainerStyles = this.props.app.isMobile ?
 				{
+					height: 'initial',
 					left: 0,
 					top: '50%',
-					transform: 'translateY(-40vh)'
+					transform: 'translateY(-50%)'
 				} :
 
 				{
@@ -273,7 +259,7 @@ class AnimatedMainStackOverlay extends Component {
 			swipeOverlayStyles = this.props.app.isMobile ?
 				{
 					display: 'block',
-					height: '80vh',
+					height: '40vh',
 					margin: '0 auto'
 				} :
 

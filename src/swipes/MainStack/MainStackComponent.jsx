@@ -299,7 +299,6 @@ class MainStackComponent extends Component {
 		return (<Grid>
 					<Row>
 						<MainStackOverlay
-							isFullScreen={this.props.discourse.isFullScreen}
 							discourseLevel={this.props.discourse.level}
 							active={this.props.discourse.overlay}
 							discourseHandler={this.props.setDiscourseLevel}
