@@ -186,13 +186,8 @@ class AnimatedMainStackOverlay extends Component {
 	componentWillReceiveProps(nextProps) {
 		const el = this.element;
 
-		if (this.props.app.isMobile) {
-			if (this.splatChange && nextProps.discourseLevel !== this.props.discourseLevel) {
-				this.splatChange.applyTo(el);
-			}
-
-		} else {
-
+		if (this.splatChange && nextProps.discourseLevel !== this.props.discourseLevel) {
+			this.splatChange.applyTo(el);
 		}
 	}
 
