@@ -266,6 +266,10 @@ export function isScrolledIntoView(el) {
 // 3rd-order polynomial cubic regression at https://www.mycurvefit.com/
 // y = 1.40601 - 0.000115417x + 3.755247 * 10-7 * x^2
 //     - 4.377216 * 10-11 * x^3
+
+// This may not be the best approach, because there is not always a strong
+// correlation between screen width and necessary height; it probably makes
+// more sense to just set the height, and let the width be calculated.
 export function calculateMinZoomLevel() {
 	const x = window.innerWidth;
 

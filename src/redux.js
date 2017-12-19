@@ -49,7 +49,6 @@ const types = {
 
 	ACTIVATE_MAIN_STACK_OVERLAY: 'ACTIVATE_MAIN_STACK_OVERLAY',
 	DEACTIVATE_MAIN_STACK_OVERLAY: 'DEACTIVATE_MAIN_STACK_OVERLAY',
-	SET_MAIN_STACK_OVERLAY_SIZE: 'SET_MAIN_STACK_OVERLAY_SIZE',
 
 	SET_CARD_SLUGS: 'SET_CARD_SLUGS',
 	SET_CARD_DATA: 'SET_CARD_DATA',
@@ -132,7 +131,6 @@ const initialState = {
 		level: 0,
 		overlay: false,
 		swipeDirection: 'up',
-		isFullScreen: false,
 		timeoutId: null
 	},
 
@@ -454,13 +452,6 @@ export const activateMainStackOverlay = (timeoutId) => {
 export const deactivateMainStackOverlay = () => {
 	return {
 		type: types.DEACTIVATE_MAIN_STACK_OVERLAY
-	};
-};
-
-export const setMainStackOverlaySize = (isFullScreen) => {
-	return {
-		type: types.SET_MAIN_STACK_OVERLAY_SIZE,
-		isFullScreen
 	};
 };
 
@@ -928,15 +919,6 @@ export default (state = initialState, action) => {
 				discourse: {
 					...state.discourse,
 					overlay: false
-				}
-			};
-
-		case types.SET_MAIN_STACK_OVERLAY_SIZE:
-			return {
-				...state,
-				discourse: {
-					...state.discourse,
-					isFullScreen: action.isFullScreen
 				}
 			};
 

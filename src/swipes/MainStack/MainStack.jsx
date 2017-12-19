@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { setLoaded, setDiscourseLevel, activateMainStackOverlay,
-	deactivateMainStackOverlay, setMainStackOverlaySize, setCardStackLevel, setFeedData, setFeedDataLoading, unsetFeedDataLoading, setFeedsData, setFeedsDataLoading, unsetFeedsDataLoading, setCardData, setCardDataLoading, unsetCardDataLoading, setNewUserInstructionsState, setAppInterface } from '../../redux';
+	deactivateMainStackOverlay, setCardStackLevel, setFeedData, setFeedDataLoading, unsetFeedDataLoading, setFeedsData, setFeedsDataLoading, unsetFeedsDataLoading, setCardData, setCardDataLoading, unsetCardDataLoading, setNewUserInstructionsState, setAppInterface } from '../../redux';
 import MainStackComponent from './MainStackComponent.jsx';
 import { withRouter } from 'react-router-dom';
 
@@ -40,9 +40,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		deactivateMainStackOverlay: () => {
 			return dispatch(deactivateMainStackOverlay());
-		},
-		setMainStackOverlaySize: (isFullScreen) => {
-			return dispatch(setMainStackOverlaySize(isFullScreen));
 		},
 		setCardStackLevel: (level, direction) => {
 			return dispatch(setCardStackLevel(level, direction));
