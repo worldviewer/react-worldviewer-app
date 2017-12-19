@@ -33,7 +33,7 @@ class CardComponent extends Component {
 			},
 			minZoomLevel: this.props.app.isMobile ?
 				calculateMinZoomLevel() - 0.10 :
-				calculateMinZoomLevel() + 0.19,
+				calculateMinZoomLevel(),
 			text: ''
 		};
 
@@ -87,7 +87,7 @@ class CardComponent extends Component {
 			logTitle('zoom: ' + data.zoom);
 			log('');
 
-			if (data.zoom > 1.2) {
+			if (data.zoom > 0.7) {
 				this.props.deactivateMainStackOverlay();
 			} else {
 				this.props.activateMainStackOverlay();
@@ -99,7 +99,7 @@ class CardComponent extends Component {
 		this.setState({
 			minZoomLevel: this.props.app.isMobile ?
 				calculateMinZoomLevel() - 0.10 :
-				calculateMinZoomLevel() + 0.19
+				calculateMinZoomLevel()
 		});
 	}
 
@@ -186,49 +186,7 @@ class CardComponent extends Component {
 		}
 	}
 
-	getPosition(element) {
-		var xPosition = 0;
-		var yPosition = 0;
-
-		while(element) {
-			xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-			yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
-			element = element.offsetParent;
-		}
-
-		return { x: xPosition, y: yPosition };
-	}
-
-	overlayClickHandler(event) {
-		const
-			el = this.overlay,
-			y = event.clientY,
-			height = el.offsetHeight,
-			top = this.getPosition(el).y,
-			percentY = (y - top)/height;
-
-		let level = 0;
-
-		// The scale is somewhat off on this, but it does appear to work
-		logTitle('Calculations:');
-		log('y: ' + y);
-		log('height: ' + height);
-		log('top: ' + top);
-		log('percentY: ' + percentY);
-		log('');
-
-		if (percentY < -0.30) {
-			level = 0;
-		} else if (percentY < -0.06) {
-			level = 1;
-		} else if (percentY < 0.14) {
-			level = 2;
-		} else if (percentY < 0.35) {
-			level = 3;
-		} else {
-			level = 4;
-		}
-
+	navigate(level) {
 		this.props.setDiscourseLevel(level,
 			this.props.level > level ? 'down' : 'up');
 
@@ -244,6 +202,7 @@ class CardComponent extends Component {
 			this.levels[level]);
 		this.props.setCardStackLevel(2, 'right');
 		this.props.activateFeedImage(this.levels[level]);
+		this.props.selectFeed(level);
 	}
 
 	renderMobile() {
@@ -273,8 +232,8 @@ class CardComponent extends Component {
 
 			<MainStackOverlay
 				discourseLevel={0}
+				discourseHandler={this.navigate.bind(this)}
 				active={this.props.discourse.overlay}
-				discourseHandler={this.props.setDiscourseLevel}
 				deactivateOverlayHandler={this.props.deactivateMainStackOverlay} />
 
 			<SlidingPane

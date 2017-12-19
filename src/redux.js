@@ -299,17 +299,17 @@ export const unsetSlugsLoading = () => {
 	};
 };
 
-export const setFeedDataLoading = (level) => {
+export const setFeedDataLoading = (levelName) => {
 	return {
 		type: types.SET_FEED_DATA_LOADING,
-		level
+		levelName
 	};
 };
 
-export const unsetFeedDataLoading = (level) => {
+export const unsetFeedDataLoading = (levelName) => {
 	return {
 		type: types.UNSET_FEED_DATA_LOADING,
-		level
+		levelName
 	};
 };
 
@@ -426,18 +426,18 @@ export const setLoaded = () => {
 	};
 };
 
-export const setDiscourseLevel = (level, direction) => {
+export const setDiscourseLevel = (levelNumber, direction) => {
 	return {
 		type: types.SET_DISCOURSE_LEVEL,
-		level,
+		levelNumber,
 		direction
 	};
 };
 
-export const setCardStackLevel = (level, direction) => {
+export const setCardStackLevel = (levelNumber, direction) => {
 	return {
 		type: types.SET_CARDSTACK_LEVEL,
-		level,
+		levelNumber,
 		direction
 	};
 };
@@ -469,11 +469,11 @@ export const setCardData = (card) => {
 	};
 };
 
-export const setFeedData = (feed, level) => {
+export const setFeedData = (feed, levelName) => {
 	return {
 		type: types.SET_FEED_DATA,
 		feed,
-		level
+		levelName
 	};
 };
 
@@ -532,10 +532,10 @@ export const setSearchState = (searchState) => {
 	};
 }
 
-export const selectFeed = (discourseLevel) => {
+export const selectFeed = (levelNumber) => {
 	return {
 		type: types.SELECT_FEED,
-		discourseLevel
+		levelNumber
 	};
 }
 
@@ -715,7 +715,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					feed: {
 						...state.loading.feed,
-						[action.level]: true
+						[action.levelName]: true
 					}
 				}
 			};
@@ -727,7 +727,7 @@ export default (state = initialState, action) => {
 					...state.loading,
 					feed: {
 						...state.loading.feed,
-						[action.level]: false
+						[action.levelName]: false
 					}
 				}
 			};
@@ -888,7 +888,7 @@ export default (state = initialState, action) => {
 				...state,
 				discourse: {
 					...state.discourse,
-					level: action.level,
+					level: action.levelNumber,
 					swipeDirection: action.direction
 				}
 			};
@@ -898,7 +898,7 @@ export default (state = initialState, action) => {
 				...state,
 				cardStack: {
 					...state.cardStack,
-					level: action.level,
+					level: action.levelNumber,
 					swipeDirection: action.direction
 				}
 			};
@@ -947,7 +947,7 @@ export default (state = initialState, action) => {
 				...state,
 				feed: {
 					...state.feed,
-					[action.level]: action.feed
+					[action.levelName]: action.feed
 				}
 			};
 
@@ -1023,7 +1023,7 @@ export default (state = initialState, action) => {
 				...state,
 				mainStack: {
 					...state.mainStack,
-					selectFeedPopup: action.discourseLevel
+					selectFeedPopup: action.levelNumber
 				}
 			};
 

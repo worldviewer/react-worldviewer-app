@@ -9,6 +9,9 @@ import propositions from '../../images/science-structure-propositions.svg';
 import concepts from '../../images/science-structure-concepts.svg';
 import narratives from '../../images/science-structure-narratives.svg';
 
+// Error/Logger Handling
+import { log, logTitle } from '../../libs/utils';
+
 class AnimatedMainStackOverlay extends Component {
 	constructor(props) {
 		super(props);
@@ -216,19 +219,38 @@ class AnimatedMainStackOverlay extends Component {
 
 		let level = 0;
 
-		if (percentY < 0.17) {
-			level = 0;
-		} else if (percentY < 0.40) {
-			level = 1;
-		} else if (percentY < 0.61) {
-			level = 2;
-		} else if (percentY < 0.83) {
-			level = 3;
+		if (this.props.app.isMobile) {
+			if (percentY < 0.17) {
+				level = 0;
+			} else if (percentY < 0.40) {
+				level = 1;
+			} else if (percentY < 0.61) {
+				level = 2;
+			} else if (percentY < 0.83) {
+				level = 3;
+			} else {
+				level = 4;
+			}
+
 		} else {
-			level = 4;
+			if (percentY < -0.31) {
+				level = 0;
+			} else if (percentY < -0.10) {
+				level = 1;
+			} else if (percentY < 0.11) {
+				level = 2;
+			} else if (percentY < 0.33) {
+				level = 3;
+			} else {
+				level = 4;
+			}
 		}
 
 		this.props.discourseHandler(level);
+
+		logTitle('Clicked Overlay Level ' + level);
+		log('percentY: ' + percentY);
+		log('');
 	}
 
 	render() {

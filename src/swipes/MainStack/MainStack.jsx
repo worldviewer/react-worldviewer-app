@@ -32,8 +32,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		setLoaded: () => {
 			return dispatch(setLoaded());
 		},
-		setDiscourseLevel: (level, direction) => {
-			return dispatch(setDiscourseLevel(level, direction));
+		setDiscourseLevel: (levelNumber, direction) => {
+			return dispatch(setDiscourseLevel(levelNumber, direction));
 		},
 		activateMainStackOverlay: (timeoutId) => {
 			return dispatch(activateMainStackOverlay(timeoutId));
@@ -41,17 +41,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		deactivateMainStackOverlay: () => {
 			return dispatch(deactivateMainStackOverlay());
 		},
-		setCardStackLevel: (level, direction) => {
-			return dispatch(setCardStackLevel(level, direction));
+		setCardStackLevel: (levelNumber, direction) => {
+			return dispatch(setCardStackLevel(levelNumber, direction));
 		},
-		setFeedData: (feed, level) => {
-			return dispatch(setFeedData(feed, level));
+		setFeedData: (feed, levelName) => {
+			return dispatch(setFeedData(feed, levelName));
 		},
-		setFeedDataLoading: (level) => {
-			return dispatch(setFeedDataLoading(level));
+		setFeedDataLoading: (levelName) => {
+			return dispatch(setFeedDataLoading(levelName));
 		},
-		unsetFeedDataLoading: (level) => {
-			return dispatch(unsetFeedDataLoading(level));
+		unsetFeedDataLoading: (levelName) => {
+			return dispatch(unsetFeedDataLoading(levelName));
 		},
 		setFeedsData: (worldview, model, propositional, conceptual, narrative) => {
 			return dispatch(setFeedsData(worldview, model, propositional, conceptual, narrative));

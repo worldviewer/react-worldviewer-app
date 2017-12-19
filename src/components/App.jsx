@@ -74,8 +74,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		showSnackbar: (message, duration) => {
 			return dispatch(showSnackbar(message, duration));
 		},
-		selectFeed: (level) => {
-			return dispatch(selectFeed(level));
+		selectFeed: (levelNumber) => {
+			return dispatch(selectFeed(levelNumber));
 		},
 		unselectFeed: () => {
 			return dispatch(unselectFeed());

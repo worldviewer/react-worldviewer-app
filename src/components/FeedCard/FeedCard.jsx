@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import FeedCardComponent from './FeedCardComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setDiscourseLevel, unselectFeed, setFeedDataLoading, unsetFeedDataLoading, setFeedData, activateFeedImage, deactivateFeedImage, activateFeedText, deactivateFeedText, activateFeedImageAndText, enableMainStackSwipeable, disableMainStackSwipeable, deactivateMainStackOverlay, activateMainStackOverlay } from '../../redux';
+import { setDiscourseLevel, selectFeed, unselectFeed, setFeedDataLoading, unsetFeedDataLoading, setFeedData, activateFeedImage, deactivateFeedImage, activateFeedText, deactivateFeedText, activateFeedImageAndText, enableMainStackSwipeable, disableMainStackSwipeable, deactivateMainStackOverlay, activateMainStackOverlay, setCardStackLevel } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -21,17 +21,20 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
+		selectFeed: (levelNumber) => {
+			return dispatch(selectFeed(levelNumber));
+		},
 		unselectFeed: () => {
 			return dispatch(unselectFeed());
 		},
-		setFeedDataLoading: (level) => {
-			return dispatch(setFeedDataLoading(level));
+		setFeedDataLoading: (levelName) => {
+			return dispatch(setFeedDataLoading(levelName));
 		},
-		unsetFeedDataLoading: (level) => {
-			return dispatch(unsetFeedDataLoading(level));
+		unsetFeedDataLoading: (levelName) => {
+			return dispatch(unsetFeedDataLoading(levelName));
 		},
-		setFeedData: (feed, level) => {
-			return dispatch(setFeedData(feed, level));
+		setFeedData: (feed, levelName) => {
+			return dispatch(setFeedData(feed, levelName));
 		},
 		activateFeedImage: (levelName) => {
 			return dispatch(activateFeedImage(levelName));
@@ -54,14 +57,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		disableMainStackSwipeable: () => {
 			return dispatch(disableMainStackSwipeable());
 		},
-		setDiscourseLevel: (level, direction) => {
-			return dispatch(setDiscourseLevel(level, direction));
+		setDiscourseLevel: (levelNumber, direction) => {
+			return dispatch(setDiscourseLevel(levelNumber, direction));
 		},
 		deactivateMainStackOverlay: () => {
 			return dispatch(deactivateMainStackOverlay());
 		},
 		activateMainStackOverlay: () => {
 			return dispatch(activateMainStackOverlay());
+		},
+		setCardStackLevel: (levelNumber, direction) => {
+			return dispatch(setCardStackLevel(levelNumber, direction));
 		}
 	}
 };

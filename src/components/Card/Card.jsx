@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CardComponent from './CardComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setCardStackLevel, activateFeedImage, setDiscourseLevel, activateDesktopText, deactivateDesktopText, setNewUserInstructionsState, deactivateMainStackOverlay, activateMainStackOverlay } from '../../redux';
+import { setCardStackLevel, activateFeedImage, setDiscourseLevel, activateDesktopText, deactivateDesktopText, setNewUserInstructionsState, deactivateMainStackOverlay, activateMainStackOverlay, selectFeed } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -26,20 +26,23 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		deactivateDesktopText: () => {
 			return dispatch(deactivateDesktopText());
 		},
-		setDiscourseLevel: (level, direction) => {
-			return dispatch(setDiscourseLevel(level, direction));
+		setDiscourseLevel: (levelNumber, direction) => {
+			return dispatch(setDiscourseLevel(levelNumber, direction));
 		},
 		activateFeedImage: (levelName) => {
 			return dispatch(activateFeedImage(levelName));
 		},
-		setCardStackLevel: (level, direction) => {
-			return dispatch(setCardStackLevel(level, direction));
+		setCardStackLevel: (levelNumber, direction) => {
+			return dispatch(setCardStackLevel(levelNumber, direction));
 		},
 		deactivateMainStackOverlay: () => {
 			return dispatch(deactivateMainStackOverlay());
 		},
 		activateMainStackOverlay: () => {
 			return dispatch(activateMainStackOverlay());
+		},
+		selectFeed: (levelNumber) => {
+			return dispatch(selectFeed(levelNumber));
 		}
 	};
 };
