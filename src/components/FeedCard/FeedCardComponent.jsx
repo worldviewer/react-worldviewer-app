@@ -326,14 +326,6 @@ class FeedCardComponent extends Component {
 					this.selectFeedHandler();
 				}
 
-				// logTitle('componentWillReceiveProps for level ' + this.props.level + ':');
-				// log('thisFeedLoading: ' + thisFeedLoading);
-				// log('!nextFeedLoading: ' + !nextFeedLoading);
-				// log('nextFeedStack.image: ' + nextFeedStack.image);
-				// log(this.deepZoomWidget);
-				// log(this.textWidget);
-				// log('');
-
 				// Triggers when component finishes loading before the feed
 				if (thisFeedLoading && !nextFeedLoading && nextFeedStack.image) {
 					logTitle('Detected deep zoom widget activation (feedLoading change)');
@@ -347,23 +339,6 @@ class FeedCardComponent extends Component {
 			}
 
 		} else {
-			// logTitle('FeedCard componentWillReceiveProps:');
-			// log('this.props.app.isDesktop: ' + this.props.app.isDesktop);
-			// log('this.props.level: ' + this.props.level);
-			// log('this.props.loading.feed[this.props.level]: ' +
-			// 	this.props.loading.feed[this.props.level]);
-
-			// log('this.props.loading.feeds: ' + this.props.loading.feeds);
-			// log('nextProps.loading.feeds: ' + nextProps.loading.feeds);
-
-			// log('this.props.loading.feed[this.props.level]: ' +
-			// 	this.props.loading.feed[this.props.level]);
-			// log('nextProps.loading.feed[nextProps.level]: ' +
-			// 	nextProps.loading.feed[nextProps.level]);			
-
-			// log('feed exists: ' + !isEmptyObject(this.props.feed[this.props.level]));
-			// log('');
-
 			if (!nextProps.loading.feeds &&
 				this.props.loading.feed[this.props.level] &&
 				!nextProps.loading.feed[nextProps.level]) {
@@ -656,7 +631,7 @@ class FeedCardComponent extends Component {
 
 			{ isEmptyObject(feed) &&
 				<div style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '50%'}}>
-					// construction sign
+					{/* construction sign */}
 				</div> }
 
 			<MainStackOverlay

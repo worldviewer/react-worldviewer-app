@@ -227,15 +227,6 @@ class CardComponent extends Component {
 	}
 
 	renderDesktop() {
-		const
-			overlayStyles = {
-				height: '30%',
-				position: 'absolute',
-				right: '5%',
-				top: '50%',
-				transform: 'translateY(-50%)'
-			};
-
 		return (<div>
 			<div className="Canvas"
 				id='openseadragon-cards'
