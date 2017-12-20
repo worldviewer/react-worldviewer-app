@@ -63,6 +63,17 @@ class CardComponent extends Component {
 			showHomeControl: false,
 			showFullPageControl: false,
 			showSequenceControl: false,
+
+			// Adjustments for Juan
+			gestureSettingsMouse: {
+				flickEnabled: true,
+				clickToZoom: false,
+				dblClickToZoom: true
+			},
+			zoomPerSecond: 0.2,
+			zoomPerScroll: 1.1,
+			animationTime: 0.3,
+
 			tileSources: {
 				Image: {
 					xmlns: 'http://schemas.microsoft.com/deepzoom/2008',
