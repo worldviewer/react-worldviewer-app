@@ -346,9 +346,6 @@ class AppComponent extends Component {
 	}
 
 	createMenu() {
-		logTitle('Constructing menu');
-		log('');
-
 		const
 			levelName = this.levels[this.props.discourse.level];
 
