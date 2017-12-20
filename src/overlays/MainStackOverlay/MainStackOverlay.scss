@@ -9,4 +9,30 @@
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 		pointer-events: auto;
 	}
+
+	.WorldviewBadge {
+		position: relative;
+	}
+
+	.ModelBadge {
+		position: relative;
+	}
+
+	.PropositionalBadge {
+		position: relative;
+	}
+
+	.ConceptualBadge {
+		position: relative;
+	}
+
+	.NarrativeBadge {
+		position: relative;
+	}
+
+	.Badges {
+		position: relative;
+		top: -202px;
+		left: 108px;
+	}
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TransitionGroup from 'react-addons-transition-group';
 import Bounce from 'bounce.js';
+import { Badge } from 'react-bootstrap';
 import './MainStackOverlay.css';
 
 import worldviews from '../../images/science-structure-worldviews.svg';
@@ -262,18 +263,58 @@ class AnimatedMainStackOverlay extends Component {
 					height: '40vh'
 				},
 
-			scienceLevelImages = [worldviews, models, propositions, concepts, narratives];
+			scienceLevelImages = [worldviews, models, propositions, concepts, narratives],
+			worldviewLength = this.props.feeds['worldview'].length,
+			modelLength = this.props.feeds['model'].length,
+			propositionalLength = this.props.feeds['propositional'].length,
+			conceptualLength = this.props.feeds['conceptual'].length,
+			narrativeLength = this.props.feeds['narrative'].length;
 
 		return (
 			<div className="MainStackOverlay"
 				style={swipeOverlayContainerStyles}>
 
-				<img className="science-structure"
-					alt="epistemology"
-					src={scienceLevelImages[this.props.discourseLevel]}
-					style={swipeOverlayStyles}
-					ref={c => this.element = c}
-					onClick={this.clickHandler} />
+				<div ref={c => this.element = c}>
+					<img className="science-structure"
+						alt="epistemology"
+						src={scienceLevelImages[this.props.discourseLevel]}
+						style={swipeOverlayStyles}
+						onClick={this.clickHandler} />
+
+					{ !this.props.feedsLoading && this.props.app.isDesktop &&
+						this.props.discourse.overlay ?
+
+						<div className='Badges'>
+
+							<Badge className='WorldviewBadge'
+								style={{top: '-175px', left: worldviewLength === 0 ? '-26px' : '-28px'}}>
+
+								{worldviewLength}
+							</Badge>
+							<Badge className='ModelBadge'
+								style={{top: '-82px', left: modelLength === 0 ? '-57px' : '-62px'}}>
+
+								{modelLength}
+							</Badge>
+							<Badge className='PropositionalBadge'
+								style={{top: '0px', left: propositionalLength === 0 ? '-65px' : '-70px'}}>
+
+								{propositionalLength}
+							</Badge>
+							<Badge className='ConceptualBadge'
+								style={{top: '87px', left: conceptualLength === 0 ? '-94px' : '-102px'}}>
+
+								{conceptualLength}
+							</Badge>
+							<Badge className='NarrativeBadge'
+								style={{top: '165px', left: narrativeLength === 0 ? '-111px' : '-123px'}}>
+
+								{narrativeLength}
+							</Badge>
+
+						</div> : null }
+					
+				</div>
 
 			</div>
 		)
@@ -287,6 +328,9 @@ class MainStackOverlayStateless extends Component {
 				{ this.props.active &&
 					<AnimatedMainStackOverlay
 						app={this.props.app}
+						feeds={this.props.feeds}
+						discourse={this.props.discourse}
+						feedsLoading={this.props.feedsLoading}
 						discourseLevel={this.props.discourseLevel}
 						discourseHandler={this.props.discourseHandler}
 						deactivateOverlayHandler={this.props.deactivateOverlayHandler} />

@@ -643,12 +643,21 @@ class FeedCardComponent extends Component {
 
 	renderDesktop() {
 		const
-			feed = this.props.feeds[this.props.level];
+			feeds = this.props.feeds[this.props.level],
+			feed = this.props.feed[this.props.level];
+
+		logTitle('Canvas State: ' + isEmptyObject(feed));
+		log('');
 
 		return (<div>
 			<div className="Canvas"
 				id={'openseadragonfeed' + this.props.level}
 				style={{width: '100%', height: '96vh'}} />
+
+			{ isEmptyObject(feed) &&
+				<div style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '50%'}}>
+					// construction sign
+				</div> }
 
 			<MainStackOverlay
 				discourseLevel={this.levels.indexOf(this.props.level)}
@@ -673,7 +682,7 @@ class FeedCardComponent extends Component {
 					this.props.unselectFeed();
 				}}>
 
-				{ feed.map((post, i) =>
+				{ feeds.map((post, i) =>
 					<div key={i} className='PanePost'
 						onClick={this.desktopClickFeedPost.bind(this, i)}>
 
@@ -708,7 +717,7 @@ class FeedCardComponent extends Component {
 					this.constructText();
 				}}>
 
-				<h3>{this.props.feed[this.props.level].feedName}</h3>
+				<h3>{feed.feedName}</h3>
 				{this.state.text}
 
 			</SlidingPane>

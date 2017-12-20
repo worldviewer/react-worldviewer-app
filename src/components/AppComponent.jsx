@@ -370,7 +370,7 @@ class AppComponent extends Component {
 			</NavItem> : null;
 
 		const returnToCardMenuOption =
-			<NavItem key={22}
+			<NavItem key={50}
 				onClick={this.returnToCardHandler.bind(this)}>
 				View Controversy Card
 			</NavItem>;
