@@ -189,14 +189,16 @@
 	text-align: center;
 }
 
-.ViewArpButton {
+.ViewArpButton, .ViewCommentsButton {
 	background-color: black;
-	border-color: black;
+	border: 3px solid black;
+	border-radius: 10px;
 	color: white;
 }
 
-.ViewArpButton:active, .ViewArpButton:hover {
+.ViewArpButton:active, .ViewArpButton:hover,
+.ViewCommentsButton:active, .ViewCommentsButton:hover {
 	background-color: white;
-	border-color: white;
+	border: 3px solid black;
 	color: black;
 }

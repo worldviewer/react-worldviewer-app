@@ -446,6 +446,10 @@ class FeedCardComponent extends Component {
 		document.location.replace('/arp/worldview/card');
 	}
 
+	viewComments() {
+		window.open(this.props.card.data.gplusUrl, '_blank');
+	}
+
 	renderConstructionAlert() {
 		return (<Alert bsStyle='danger'>
 				<h3>Site Under Construction</h3>
@@ -823,7 +827,7 @@ class FeedCardComponent extends Component {
 					this.props.unselectFeed();
 				}}>
 
-				{ feeds.map((post, i) =>
+				{ feeds.length > 0 ? feeds.map((post, i) =>
 					<div key={i} className='PanePost'
 						onClick={this.desktopClickFeedPost.bind(this, i)}>
 
@@ -836,7 +840,21 @@ class FeedCardComponent extends Component {
 						<div className='PanePostTitle'>
 							<h3>{post.title}</h3>
 						</div>
-					</div>) }
+					</div>) :
+
+					<div className='LinkToComments' style={{position: 'relative', top: '20vh',
+						textAlign: 'center', width: '100%'}}>
+
+						<div style={{width: '180px', margin: '0 auto'}}>
+							<p>We are in the process of migrating the Controversies of Science Google+ collection content into our app.</p>
+							<p>You may wish to visit the original collection to view any tracking which may have already occurred for this card.</p><br />
+
+							<Button className='ViewCommentsButton'
+								onClick={this.viewComments.bind(this)}>
+								View G+ Card Comments
+							</Button>
+						</div>
+					</div> }
 
 			</SlidingPane>
 
