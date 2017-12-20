@@ -91,7 +91,7 @@ class FeedCardComponent extends Component {
 				dblClickToZoom: true
 			},
 			zoomPerSecond: 0.2,
-			zoomPerScroll: 1.1,
+			zoomPerScroll: 1.2,
 			animationTime: 0.3,
 
 			tileSources: {
