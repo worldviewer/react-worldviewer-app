@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppComponent from './AppComponent.jsx';
-import { deactivateDesktopText, activateDesktopText, deactivateFeedText, activateFeedText, deactivateFeedImage, setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, setNewUserInstructionsState, setPyramidStyles } from '../redux.js';
+import { deactivateDesktopText, activateDesktopText, deactivateFeedText, activateFeedText, deactivateFeedImage, setUserTokenLoading, unsetUserTokenLoading, setUserToken, setTokenFetchComplete, setCredentialsFetchComplete, setSlugsFetchComplete, setCardSlugs, setSlugsLoading, unsetSlugsLoading, setAppLoading, unsetAppLoading, clearUser, setSearchFacet, setSearchQuery, showSnackbar, selectFeed, unselectFeed, selectFacet, setNewUserInstructionsState, setPyramidStyles, setCardStackLevel, setDiscourseLevel } from '../redux.js';
 import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
@@ -103,6 +103,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		deactivateDesktopText: () => {
 			return dispatch(deactivateDesktopText());
+		},
+		setCardStackLevel: (levelNumber, direction) => {
+			return dispatch(setCardStackLevel(levelNumber, direction));
+		},
+		setDiscourseLevel: (levelNumber, direction) => {
+			return dispatch(setDiscourseLevel(levelNumber, direction));
 		}
 	}
 };

@@ -270,6 +270,12 @@ class AppComponent extends Component {
 		}
 	}
 
+	returnToCardHandler(event) {
+		this.props.setCardStackLevel(1, 'left');
+		this.props.setDiscourseLevel(0, 'up');
+		this.props.history.push('/' + this.props.card.data.shortSlug + '/worldview/card');
+	}
+
 	showFeedText(event) {
 		const levelName = this.levels[this.props.discourse.level];
 
@@ -339,23 +345,12 @@ class AppComponent extends Component {
 		setDiskInstructions(newInstructionState);
 	}
 
-	render() {
+	createMenu() {
+		logTitle('Constructing menu');
+		log('');
+
 		const
-			NavTitleStyle = {
-				fontFamily: 'LeagueGothic',
-				textTransform: 'uppercase',
-				fontSize: '20px',
-				letterSpacing: '1px'
-			},
-
 			levelName = this.levels[this.props.discourse.level];
-
-		let navStyles = {
-				cursor: 'pointer',
-				position: 'fixed',
-				width: '100%',
-				zIndex: 100
-			};
 
 		// Dynamically build menu options based upon cardStack level
 		const feedSelectMenuOption =
@@ -376,6 +371,12 @@ class AppComponent extends Component {
 				{ !this.props.feedStack[levelName].text ?
 					'Show Feed Text' : 'Hide Feed Text' }
 			</NavItem> : null;
+
+		const returnToCardMenuOption =
+			<NavItem key={22}
+				onClick={this.returnToCardHandler.bind(this)}>
+				View Controversy Card
+			</NavItem>;
 
 		const feedTextMobileMenuOption =
 			this.props.app.isMobile ?
@@ -453,7 +454,8 @@ class AppComponent extends Component {
 
 		if (this.props.cardStack.level === 2) {
 			menuOptions = menuOptions.concat(feedSelectMenuOption,
-				feedTextDesktopMenuOption, feedTextMobileMenuOption);
+				feedTextDesktopMenuOption, feedTextMobileMenuOption,
+				returnToCardMenuOption);
 
 		} else if (this.props.cardStack.level === 1) {
 			menuOptions = menuOptions.concat(cardMenuOptions);
@@ -466,6 +468,27 @@ class AppComponent extends Component {
 		if (this.props.router.location.pathname.match(/^\/contact/)) {
 			menuOptions = menuOptions.concat(contactMenuOption);
 		}
+
+		return menuOptions;
+	}
+
+	render() {
+		const
+			NavTitleStyle = {
+				fontFamily: 'LeagueGothic',
+				textTransform: 'uppercase',
+				fontSize: '20px',
+				letterSpacing: '1px'
+			},
+
+			menuOptions = this.createMenu();
+
+		let navStyles = {
+				cursor: 'pointer',
+				position: 'fixed',
+				width: '100%',
+				zIndex: 100
+			};
 
 		return !this.props.loading.app && this.props.fetchComplete.slugs && (
 			<div className="App">
