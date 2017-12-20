@@ -1,5 +1,9 @@
 .FeedCard {
 	padding-top: 52px;
+
+	h3 {
+		-webkit-margin-before: 0;
+	}
 }
 
 @media (min-width: 720px) {
@@ -183,4 +187,16 @@
 	cursor: pointer;
 	padding: 25px;
 	text-align: center;
+}
+
+.ViewArpButton {
+	background-color: black;
+	border-color: black;
+	color: white;
+}
+
+.ViewArpButton:active, .ViewArpButton:hover {
+	background-color: white;
+	border-color: white;
+	color: black;
 }

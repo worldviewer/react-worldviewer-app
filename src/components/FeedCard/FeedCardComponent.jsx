@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 // UI Dependencies
-import { Grid } from 'react-bootstrap';
+import { Grid, Alert, Button } from 'react-bootstrap';
 import OpenSeadragon from 'openseadragon';
 import { calculateMinZoomLevel } from '../../libs/utils';
 import SlidingPane from 'react-sliding-pane';
@@ -440,6 +440,169 @@ class FeedCardComponent extends Component {
 		this.props.selectFeed(level);
 	}
 
+	gotoArpCard() {
+		this.props.setCardStackLevel(1, 'left');
+		this.props.setDiscourseLevel(0, 'up');
+		document.location.replace('/arp/worldview/card');
+	}
+
+	renderConstructionAlert() {
+		return (<Alert bsStyle='danger'>
+				<h3>Site Under Construction</h3>
+				<p>There are no {this.props.level}-level posts for this card yet (for an example that has been filled out, view the Halton Arp controversy card).</p><br />
+				<Button className='ViewArpButton' block onClick={this.gotoArpCard.bind(this)}>
+					View Halton Arp Controversy Card
+				</Button>
+			</Alert>);
+	}
+
+	worldviewGuidelines() {
+		const
+			feeds = this.props.feeds[this.props.level];
+
+		return (<div>
+			{ feeds.length === 0 ? <div>
+				{this.renderConstructionAlert()}
+
+				<p>Users will eventually be able to add their own posts here of type:</p>
+			</div> :
+
+			<div>
+				<p>The types of posts which go into the {this.props.level} level include:</p>
+			</div> }
+
+			<ul>
+				<li>A Related Observational or Experimental Result</li>
+				<li>Links to the Best Related Critiques</li>
+				<li>Deconstruction of Mainstream Inferences + Reconstruction of Source from the Alternative Worldview</li>
+				<li>Noteworthy Online Discussions</li>
+				<li>A Proposal for an Observation or Experiment to Test the Claim</li>
+				<li>Help Tracking Down Crucial or Obscure Related Resources</li>
+				<li>In Defense of the Existing Theory</li>
+			</ul>
+		</div>);
+	}
+
+	modelGuidelines() {
+		const
+			feeds = this.props.feeds[this.props.level];
+
+		return (<div>
+			{ feeds.length === 0 ? <div>
+				{this.renderConstructionAlert()}
+
+				<p>Users will eventually be able to add their own posts here of type:</p>
+			</div> :
+
+			<div>
+				<p>The types of posts which go into the {this.props.level} level include:</p>
+			</div> }
+
+			<ul>
+				<li>The Best Explanations of the Model</li>
+				<li>Modeling Practices & Assumptions that Should Not Be Ignored</li>
+				<li>The History and Origin of the Idea</li>
+				<li>Tracking the Science Journalism and Public Perception</li>
+				<li>Things to Know About Wikipedia's Coverage on This</li>
+				<li>Annotations of Scientific Papers for Laypeople</li>
+				<li>The Mainstream's Inconsistencies and Anomalies</li>
+			</ul>
+		</div>);
+	}
+
+	propositionalGuidelines() {
+		const
+			feeds = this.props.feeds[this.props.level];
+
+		return (<div>
+			{ feeds.length === 0 ? <div>
+				{this.renderConstructionAlert()}
+
+				<p>Users will eventually be able to add their own posts here of type:</p>
+			</div> :
+
+			<div>
+				<p>The types of posts which go into the {this.props.level} level include:</p>
+			</div> }
+
+			<ul>
+				<li>Dumb Questions</li>
+				<li>Poignant Questions</li>
+				<li>Creative Conjectures</li>
+				<li>Confident Claims</li>
+				<li>Predictions</li>
+			</ul>
+		</div>);
+	}
+
+	conceptualGuidelines() {
+		const
+			feeds = this.props.feeds[this.props.level];
+
+		return (<div>
+			{ feeds.length === 0 ? <div>
+				{this.renderConstructionAlert()}
+
+				<p>Users will eventually be able to add their own posts here of type:</p>
+			</div> :
+
+			<div>
+				<p>The types of posts which go into the {this.props.level} level include:</p>
+			</div> }
+
+			<ul>
+				<li>Concept Maps</li>
+				<li>Explain the Math</li>
+				<li>Multiple Representations in Multiple Agents</li>
+			</ul>
+		</div>);
+	}
+
+	narrativeGuidelines() {
+		const
+			feeds = this.props.feeds[this.props.level];
+
+		return (<div>
+			{ feeds.length === 0 ? <div>
+				{this.renderConstructionAlert()}
+
+				<p>Users will eventually be able to add their own posts here of type:</p>
+			</div> :
+
+			<div>
+				<p>The types of posts which go into the {this.props.level} level include:</p>
+			</div> }
+
+			<ul>
+				<li>Examples</li>
+			</ul>
+		</div>);
+	}
+
+	renderFeedPostGuidelines(level) {
+		logTitle('renderFeedPostGuidelines: ' + level);
+		log('');
+
+		switch (level) {
+			case 'worldview':
+				return this.worldviewGuidelines();
+			
+			case 'model':
+				return this.modelGuidelines();
+
+			case 'propositional':
+				return this.propositionalGuidelines();
+
+			case 'conceptual':
+				return this.conceptualGuidelines();
+
+			case 'narrative':
+				return this.narrativeGuidelines();
+
+			default:
+		}
+	}
+
 	renderMobile() {
 		const feeds = !this.props.loading.feeds ?
 			this.props.feeds[this.props.level] :
@@ -629,9 +792,12 @@ class FeedCardComponent extends Component {
 				id={'openseadragonfeed' + this.props.level}
 				style={{width: '100%', height: '96vh'}} />
 
-			{ isEmptyObject(feed) &&
-				<div style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '50%'}}>
-					{/* construction sign */}
+			{ !this.viewer &&
+				<div style={{position: 'absolute', left: '50%', width: '30vw', top: '50%',
+					transform: 'translateX(-50%) translateY(-50%)', minWidth: '255px'}}>
+
+					{this.renderFeedPostGuidelines(this.props.level)}
+
 				</div> }
 
 			<MainStackOverlay

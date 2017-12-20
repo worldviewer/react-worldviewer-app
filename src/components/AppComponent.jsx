@@ -249,6 +249,9 @@ class AppComponent extends Component {
 		logTitle('Reseting Route ...');
 		log('');
 
+		this.props.setCardStackLevel(-1, 'left');
+		this.props.setDiscourseLevel(-1, 'up');
+
 		this.props.setSearchFacet('', '', '');
 		this.props.setSearchQuery('');
 		this.props.history.push({pathname: '/', search: ''});
@@ -360,6 +363,7 @@ class AppComponent extends Component {
 			</NavItem> : null;
 
 		const feedTextDesktopMenuOption =
+			this.props.feed[levelName] &&
 			this.props.feed[levelName].text &&
 			this.props.app.isDesktop ?
 
