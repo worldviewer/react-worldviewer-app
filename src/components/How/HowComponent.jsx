@@ -21,7 +21,7 @@ class HowComponent extends Component {
 					<Row>
 						<Col>
 							<div className='QuotedText' style={{cursor: 'pointer'}}
-								onClick={() => this.props.history.push('/science-as-a-golum/worldview/card')}>
+								onClick={() => window.location.replace('/science-as-a-golum/worldview/card', '_blank')}>
 
 								<p>[W]e stand by our claim that <b>'For citizens who want to take part in the democratic processes of a technological society, all the science they need to know about is controversial'</b> ...</p>
 
