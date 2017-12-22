@@ -817,13 +817,10 @@ class HomeComponent extends Component {
 	}
 
 	async updateClickToCopy() {
-    	this.quoteHits = await document.querySelectorAll('.QuoteHit');
-    	this.clipboard = new Clipboard(this.quoteHits);
-
-    	logTitle('Setting up click-to-copy:');
-    	log('.QuoteHit:');
-    	log(this.quoteHits);
+	   	logTitle('Setting up click-to-copy:');
     	log('');
+
+    	this.clipboard = new Clipboard('.QuoteHit, .ClickToCopyIcon');
 	}
 
 	render() {

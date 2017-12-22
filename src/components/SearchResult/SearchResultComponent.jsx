@@ -22,6 +22,14 @@ import { connectHighlight } from 'react-instantsearch/connectors';
 // HTML-to-React Parser Dependencies
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
+// Click-to-Copy
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import GPlusIcon from 'react-icons/lib/ti/social-google-plus';
+import CircledGPlusIcon from 'react-icons/lib/ti/social-google-plus-circular';
+import LinkIcon from 'react-icons/lib/md/link';
+import TitledLinkIcon from 'react-icons/lib/md/short-text';
+import MarkdownIcon from 'react-icons/lib/md/subject';
+
 // This is a custom combination of two tools:
 // (1) https://www.npmjs.com/package/html-to-react
 // (2) https://community.algolia.com/react-instantsearch/connectors/connectHighlight.html 
@@ -200,51 +208,108 @@ class SearchResultComponent extends Component {
 				this.props.hit.discourseLevel + '/feed/' + this.props.hit.feedSlug
 		}
 
-		return (<a className="CardHit"
-				href={href}
-				style={ {overflowWrap: 'break-word'} }>
+		const
+			gplusLinkTooltip = (<Tooltip id="tooltip">Copy to clipboard G+ link</Tooltip>),
+			titledGplusLinkTooltip = (<Tooltip id="tooltip">Copy to clipboard titled G+ link</Tooltip>),
+			linkTooltip = (<Tooltip id="tooltip">Copy to clipboard new site link</Tooltip>),
+			titledLinkTooltip = (<Tooltip id="tooltip">Copy to clipboard titled new site link</Tooltip>),
+			searchResultTooltip = (<Tooltip id="tooltip">Copy to clipboard search result content</Tooltip>);
 
-			<Row
-				className="CardHit"
-				ref={c => this.hitdiv = c}
-				key={this.props.hit.objectID}>
+		return (<Row
+			className="CardHit"
+			ref={c => this.hitdiv = c}
+			key={this.props.hit.objectID}>
 
-				<Col xs={3} className="hit-image">
-					<img
-						ref="loaded"
+			<Col xs={3} className="hit-image">
+				<a className="CardHit" href={href} style={{overflowWrap: 'break-word'}}>
+					<img ref="loaded"
 						alt="controversy card"
 						src={this.props.hit.images.thumbnail.url}
 						className="CardThumbnail"
 						onError={ e => e.target.src = notFoundImage } />
+				</a>
 
-					{ (this.props.hit.recordType === 'cardParagraph' ||
-						this.props.hit.recordType === 'postParagraph' ||
-						this.props.hit.recordType === 'cardSummary') && <img
-						className="hit-level Left"
-						src={discourseLevel}
-						alt="the level of discussion" /> }
-				</Col>
-				<Col xs={9}>
-					<span
-						className="hit-text"
-						style={hitTextStyle}>
+				{ (this.props.hit.recordType === 'cardParagraph' ||
+					this.props.hit.recordType === 'postParagraph' ||
+					this.props.hit.recordType === 'cardSummary') && <img
+					className="hit-level Left"
+					src={discourseLevel}
+					alt="the level of discussion" /> }
+			</Col>
+			<Col xs={9}>
+				<span
+					className="hit-text"
+					style={hitTextStyle}>
 
-						{isTitleOrSummary ? null : attributeHeader}
-						<CustomHighlight
-							attributeName={attributeName}
-							hit={this.props.hit} />
+					{isTitleOrSummary ? null : attributeHeader}
+					<CustomHighlight
+						attributeName={attributeName}
+						hit={this.props.hit} />
 
-					</span>
+				</span>
 
-					{ (this.props.hit.recordType !== 'cardParagraph' &&
-						this.props.hit.recordType !== 'postParagraph' &&
-						this.props.hit.recordType !== 'cardSummary') && <img
-						className="hit-level Right"
-						src={discourseLevel}
-						alt="the level of discussion" /> }
-				</Col>
-			</Row>
-		</a>)
+				{/* G+ Link */}
+				{ (this.props.hit.recordType === 'cardParagraph' ||
+					this.props.hit.recordType === 'cardSummary' ||
+					this.props.hit.recordType === 'cardName') &&
+
+					<OverlayTrigger placement='top' overlay={gplusLinkTooltip}>
+						<GPlusIcon className='ClickToCopyIcon'
+							onClick={() => this.props.showSnackbar('Copied G+ link to clipboard for<br />' +
+								this.props.hit.sortBy + ':<br />...' +
+								this.props.hit.gplusUrl.split('Broken')[1], 3000)}
+							data-clipboard-text={this.props.hit.gplusUrl} />
+					</OverlayTrigger>}
+
+				{/* Titled G+ Link (Note hack: using sortBy field for title) */}
+				{ (this.props.hit.recordType === 'cardParagraph' ||
+					this.props.hit.recordType === 'cardSummary' ||
+					this.props.hit.recordType === 'cardName') &&
+
+					<OverlayTrigger placement='bottom' overlay={titledGplusLinkTooltip}>
+						<CircledGPlusIcon className='ClickToCopyIcon'
+							onClick={() => this.props.showSnackbar('Copied titled G+ link to clipboard for:<br />' +
+								(this.props.hit.cardName || this.props.hit.sortBy) + ':<br />' +
+								 '...' + this.props.hit.gplusUrl.split('Broken')[1], 3000)}
+							data-clipboard-text={(this.props.hit.cardName || this.props.hit.sortBy) +
+								'\n' + this.props.hit.gplusUrl} />
+					</OverlayTrigger>}
+
+				{/* Site Link */}
+				<OverlayTrigger placement='top' overlay={linkTooltip}>
+					<LinkIcon className='ClickToCopyIcon'
+						onClick={() => this.props.showSnackbar('Copied link to clipboard:<br />' +
+							'https://www.controversiesofscience.com' + href, 3000)}
+						data-clipboard-text={'https://www.controversiesofscience.com' + href} />
+				</OverlayTrigger>
+
+				{/* Titled Site Link */}
+				<OverlayTrigger placement='bottom' overlay={titledLinkTooltip}>
+					<TitledLinkIcon className='ClickToCopyIcon'
+						onClick={() => this.props.showSnackbar('Copied titled link to clipboard:<br />' +
+							(this.props.hit.cardName || this.props.hit.postName) + '<br />' + 
+							'https://www.controversiesofscience.com' + href, 3000)}
+						data-clipboard-text={(this.props.hit.cardName || this.props.hit.postName) + '\n' + 
+						'https://www.controversiesofscience.com' + href} />
+				</OverlayTrigger>
+
+				{/* Search Result Content */}
+				<OverlayTrigger placement='top' overlay={searchResultTooltip}>
+					<MarkdownIcon className='ClickToCopyIcon'
+						onClick={() => this.props.showSnackbar('Copied search result to clipboard', 3000)}
+						data-clipboard-text={this.props.hit[this.props.hit.recordType]} />
+				</OverlayTrigger>
+
+				<br />
+
+				{ (this.props.hit.recordType !== 'cardParagraph' &&
+					this.props.hit.recordType !== 'postParagraph' &&
+					this.props.hit.recordType !== 'cardSummary') && <img
+					className="hit-level Right"
+					src={discourseLevel}
+					alt="the level of discussion" /> }
+			</Col>
+		</Row>)
 	}
 
 	render() {
