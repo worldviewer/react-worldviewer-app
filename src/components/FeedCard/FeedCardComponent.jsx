@@ -354,6 +354,7 @@ class FeedCardComponent extends Component {
 			if (nextProps.feedStack[nextProps.level].text &&
 				this.props.loading.feed[this.props.level] &&
 				!nextProps.loading.feed[nextProps.level]) {
+
 				this.constructText();
 			}
 
@@ -796,7 +797,8 @@ class FeedCardComponent extends Component {
 	renderDesktop() {
 		const
 			feeds = this.props.feeds[this.props.level],
-			feed = this.props.feed[this.props.level];
+			feed = this.props.feed[this.props.level],
+			levelName = this.levels[this.props.discourse.level];
 
 		logTitle('Canvas State: ' + isEmptyObject(feed));
 		log('');
@@ -880,6 +882,8 @@ class FeedCardComponent extends Component {
 				onRequestClose={() => {
 					this.props.deactivateFeedText(this.props.level);
 					this.props.unselectFeed();
+					this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+						levelName + '/feed/' + this.props.feed[levelName].feedSlug);
 				}}
 				onAfterOpen={() => {
 					// TODO: Make card title and summary clickable

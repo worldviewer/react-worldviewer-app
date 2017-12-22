@@ -260,6 +260,7 @@ class CardComponent extends Component {
 				subtitle={this.props.card.data.cardSummary}
 				onRequestClose={() => {
 					this.props.deactivateDesktopText();
+					this.props.history.push('/' + this.props.card.data.shortSlug + '/worldview/card');
 				}}
 				onAfterOpen={() => {
 					this.props.card.data.text && this.constructText();

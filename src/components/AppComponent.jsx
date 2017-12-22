@@ -286,14 +286,20 @@ class AppComponent extends Component {
 			this.props.deactivateFeedText(levelName);
 		} else {
 			this.props.activateFeedText(levelName);
+			this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+				levelName + '/feed/' + this.props.feed[levelName].feedSlug + '/text');
 		}
 	}
 
 	showCardText(event) {
+		const levelName = this.levels[this.props.discourse.level];
+
 		if (this.props.desktop.text) {
 			this.props.deactivateDesktopText();
 		} else {
 			this.props.activateDesktopText();
+			this.props.history.push('/' + this.props.card.data.shortSlug + '/' +
+				levelName + '/text');
 		}		
 	}
 
