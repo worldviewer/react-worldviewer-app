@@ -202,13 +202,13 @@ class SearchResultComponent extends Component {
 		// http://localhost:3000/phantom-debate/worldview/text/?paragraph=73
 		} else if (this.props.hit.recordType === 'cardParagraph') {
 			const splitId = this.props.hit.id.split('-');
-			href = '/' + this.props.hit.shortSlug + '/worldview/text/?paragraph=' +
+			href = '/' + this.props.hit.shortSlug + '/worldview/text?paragraph=' +
 				splitId[splitId.length-1];
 
 		} else if (this.props.hit.recordType === 'postParagraph') {
 			const splitId = this.props.hit.id.split('-');
 			href = '/' + this.props.hit.cardSlug + '/worldview/feed/' +
-				this.props.hit.feedSlug + '/text/?paragraph=' +
+				this.props.hit.feedSlug + '/text?paragraph=' +
 				splitId[splitId.length-1];
 
 		} else if (isPostHit) {
