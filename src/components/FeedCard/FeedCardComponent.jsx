@@ -351,6 +351,12 @@ class FeedCardComponent extends Component {
 				}
 			}
 
+			if (nextProps.feedStack[nextProps.level].text &&
+				this.props.loading.feed[this.props.level] &&
+				!nextProps.loading.feed[nextProps.level]) {
+				this.constructText();
+			}
+
 			if (this.props.mainStack.selectFeedPopup === -1 &&
 				nextProps.mainStack.selectFeedPopup ===
 				this.levels.indexOf(nextProps.level)) {
@@ -417,7 +423,11 @@ class FeedCardComponent extends Component {
 				if (feedSlug) {
 					this.setupDeepZoom(false);
 				}
-			}	
+			}
+
+			if (isText) {
+				this.props.activateFeedText(this.props.level);
+			}
 		}
 	}
 
@@ -873,7 +883,7 @@ class FeedCardComponent extends Component {
 				}}
 				onAfterOpen={() => {
 					// TODO: Make card title and summary clickable
-					this.constructText();
+					feed && feed.text && this.constructText();
 				}}>
 
 				<h3>{feed.feedName}</h3>

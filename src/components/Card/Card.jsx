@@ -11,7 +11,8 @@ const mapStateToProps = (state, ownProps) => {
 		instructions: state.reducer.instructions,
 		app: state.reducer.app,
 		desktop: state.reducer.desktop,
-		discourse: state.reducer.discourse
+		discourse: state.reducer.discourse,
+		router: state.router
 	};
 };
 

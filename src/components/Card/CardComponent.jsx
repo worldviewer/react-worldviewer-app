@@ -177,7 +177,15 @@ class CardComponent extends Component {
 		if (this.props.app.isMobile) {
 
 		} else {
+			const isText =
+				this.props.router.location.pathname.split('/')[3];
 
+			logTitle('isText: ' + isText);
+			log('');
+
+			if (isText) {
+				this.props.activateDesktopText();
+			}
 		}
 
 		if (!this.props.loading.card) {
@@ -189,7 +197,10 @@ class CardComponent extends Component {
 		if (this.props.app.isMobile) {
 
 		} else {
-			
+			if (nextProps.desktop.text && this.props.loading.card &&
+				!nextProps.loading.card) {
+				this.constructText();
+			}
 		}
 
 		if (this.props.loading.card && !nextProps.loading.card) {
@@ -251,7 +262,7 @@ class CardComponent extends Component {
 					this.props.deactivateDesktopText();
 				}}
 				onAfterOpen={() => {
-					this.constructText();
+					this.props.card.data.text && this.constructText();
 				}}>
 
 				{this.state.text}
