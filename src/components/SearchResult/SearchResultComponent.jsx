@@ -273,9 +273,8 @@ class SearchResultComponent extends Component {
 
 					<OverlayTrigger placement='top' overlay={gplusLinkTooltip}>
 						<GPlusIcon className='ClickToCopyIcon'
-							onClick={() => this.props.showSnackbar('Copied G+ link to clipboard for<br />' +
-								this.props.hit.sortBy + ':<br />...' +
-								this.props.hit.gplusUrl.split('Broken')[1], 3000)}
+							onClick={() => this.props.showSnackbar('Copied G+ link to clipboard:<br />' +
+								'...' + this.props.hit.gplusUrl.split('Broken')[1], 3000)}
 							data-clipboard-text={this.props.hit.gplusUrl} />
 					</OverlayTrigger>}
 
@@ -286,7 +285,7 @@ class SearchResultComponent extends Component {
 
 					<OverlayTrigger placement='bottom' overlay={titledGplusLinkTooltip}>
 						<CircledGPlusIcon className='ClickToCopyIcon'
-							onClick={() => this.props.showSnackbar('Copied titled G+ link to clipboard for:<br />' +
+							onClick={() => this.props.showSnackbar('Copied titled G+ link to clipboard:<br />' +
 								(this.props.hit.cardName || this.props.hit.sortBy) + ':<br />' +
 								 '...' + this.props.hit.gplusUrl.split('Broken')[1], 3000)}
 							data-clipboard-text={(this.props.hit.cardName || this.props.hit.sortBy) +
@@ -305,7 +304,7 @@ class SearchResultComponent extends Component {
 				<OverlayTrigger placement='bottom' overlay={titledLinkTooltip}>
 					<TitledLinkIcon className='ClickToCopyIcon'
 						onClick={() => this.props.showSnackbar('Copied titled link to clipboard:<br />' +
-							(this.props.hit.cardName || this.props.hit.postName) + '<br />' + 
+							(this.props.hit.cardName || this.props.hit.sortBy) + '<br />' + 
 							'https://www.controversiesofscience.com' + href, 3000)}
 						data-clipboard-text={(this.props.hit.cardName || this.props.hit.postName) + '\n' + 
 						'https://www.controversiesofscience.com' + href} />
