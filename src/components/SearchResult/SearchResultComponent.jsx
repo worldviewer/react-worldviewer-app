@@ -30,6 +30,8 @@ import LinkIcon from 'react-icons/lib/md/link';
 import TitledLinkIcon from 'react-icons/lib/md/short-text';
 import MarkdownIcon from 'react-icons/lib/md/subject';
 
+// import { log } from '../../libs/utils';
+
 // This is a custom combination of two tools:
 // (1) https://www.npmjs.com/package/html-to-react
 // (2) https://community.algolia.com/react-instantsearch/connectors/connectHighlight.html 
@@ -208,12 +210,18 @@ class SearchResultComponent extends Component {
 				this.props.hit.discourseLevel + '/feed/' + this.props.hit.feedSlug
 		}
 
+		const feedLink = '/' + (this.props.hit.shortSlug || this.props.hit.cardSlug) + '/' +
+			(this.props.hit.discourseLevel || 'worldview') + '/feed';
+
 		const
 			gplusLinkTooltip = (<Tooltip id="tooltip">Copy to clipboard G+ link</Tooltip>),
 			titledGplusLinkTooltip = (<Tooltip id="tooltip">Copy to clipboard titled G+ link</Tooltip>),
 			linkTooltip = (<Tooltip id="tooltip">Copy to clipboard new site link</Tooltip>),
 			titledLinkTooltip = (<Tooltip id="tooltip">Copy to clipboard titled new site link</Tooltip>),
 			searchResultTooltip = (<Tooltip id="tooltip">Copy to clipboard search result content</Tooltip>);
+
+		// log(this.props.hit);
+		// log('');
 
 		return (<Row
 			className="CardHit"
@@ -231,10 +239,14 @@ class SearchResultComponent extends Component {
 
 				{ (this.props.hit.recordType === 'cardParagraph' ||
 					this.props.hit.recordType === 'postParagraph' ||
-					this.props.hit.recordType === 'cardSummary') && <img
-					className="hit-level Left"
-					src={discourseLevel}
-					alt="the level of discussion" /> }
+					this.props.hit.recordType === 'cardSummary') &&
+
+					<a href={feedLink} alt='Feed Posts for this Controversy Card'>
+						<img
+							className="hit-level Left"
+							src={discourseLevel}
+							alt="the level of discussion" />
+					</a> }
 			</Col>
 			<Col xs={9}>
 				<span
@@ -304,10 +316,14 @@ class SearchResultComponent extends Component {
 
 				{ (this.props.hit.recordType !== 'cardParagraph' &&
 					this.props.hit.recordType !== 'postParagraph' &&
-					this.props.hit.recordType !== 'cardSummary') && <img
-					className="hit-level Right"
-					src={discourseLevel}
-					alt="the level of discussion" /> }
+					this.props.hit.recordType !== 'cardSummary') &&
+
+					<a href={feedLink} alt='Feed Posts for this Controversy Card'>
+						<img
+							className="hit-level Right"
+							src={discourseLevel}
+							alt="the level of discussion" />
+					</a> }
 			</Col>
 		</Row>)
 	}
