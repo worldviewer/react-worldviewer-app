@@ -258,7 +258,9 @@ class WhatComponent extends Component {
 				<Grid>
 					<Row>
 						<Col>
-							<div className='QuotedText'>
+							<div className='QuotedText' style={{cursor: 'pointer'}}
+								onClick={() => window.open('https://www.scientificexploration.org/edgescience/32', '_blank')}>
+
 								The following essay was accepted by EdgeScience for publication in its December 2017 issue (Issue 32).  The editor made significant changes to the Robert Goddard story and the selection of images in order to fit the long article into their slim magazine format.  I am told that they even expanded the typical issue length from 20 to 24 pages to make this happen.  I am extremely grateful that Patrick contacted me to do this article, and I trust his decisions about what to print for his magazine's audience.  That said, I want to also publish here the original longer version with my own selected images and original title, because it leverages the work which has already gone into the Controversies of Science G+ collection as a way of teaching what this site is about.
 							</div>
 

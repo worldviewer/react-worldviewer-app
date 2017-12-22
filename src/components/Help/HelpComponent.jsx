@@ -28,7 +28,7 @@ class HelpComponent extends Component {
 							<div style={{margin: '25px'}}>
 								<p>It takes a science fiction author to explain why I work on this project.</p>
 
-								<a href='http://www.worldpolicy.org/journal/fall2011/innovation-starvation'>Innovation Starvation
+								<a href='http://www.worldpolicy.org/journal/fall2011/innovation-starvation' target='_blank' rel='noopener noreferrer'>Innovation Starvation
 								</a><br />
 
 								<p>By Neal Stephenson</p>
@@ -73,7 +73,7 @@ class HelpComponent extends Component {
 
 								<h3>Thinkers</h3><br />
 
-								<p>We are tracking all 182 controversy cards in the comments of each card of the <a href="https://plus.google.com/collection/Yhn4Y">G+ collection</a>.  Join us.</p><br />
+								<p>We are tracking all 182 controversy cards in the comments of each card of the <a href='https://plus.google.com/collection/Yhn4Y' target='_blank' rel='noopener noreferrer'>G+ collection</a>.  Join us.</p><br />
 
 								<p>You can email me <a href='/contact'>here</a></p>
 							</div>
