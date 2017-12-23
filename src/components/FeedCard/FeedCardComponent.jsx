@@ -342,7 +342,7 @@ class FeedCardComponent extends Component {
 				this.props.loading.feed[this.props.level] &&
 				!nextProps.loading.feed[nextProps.level]) {
 
-				const [,,,, feedSlug, isText] =
+				const [,,,, feedSlug,] =
 					this.props.router.location.pathname.split('/');
 
 				if (feedSlug) {

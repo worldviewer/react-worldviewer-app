@@ -18,7 +18,7 @@ import './Card.css';
 import { Parser as HtmlToReactParser } from 'html-to-react';
 
 // Error/Logger Handling
-import { log, logTitle, logObject } from '../../libs/utils';
+import { log, logTitle } from '../../libs/utils';
 
 // Overlays
 import MainStackOverlay from '../../overlays/MainStackOverlay/MainStackOverlay';
@@ -130,7 +130,7 @@ class CardComponent extends Component {
 			activeParagraph = queryString['paragraph'] ?
 				parseInt(queryString['paragraph'], 10) :
 				-1;
-				
+
 		logTitle('constructText:')
 		log('card.text:');
 		log(this.props.card.data.text);
