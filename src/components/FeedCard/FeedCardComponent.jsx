@@ -8,9 +8,8 @@ import OpenSeadragon from 'openseadragon';
 import { calculateMinZoomLevel } from '../../libs/utils';
 import SlidingPane from 'react-sliding-pane';
 import 'react-sliding-pane/dist/react-sliding-pane.css';
+import zenscroll from 'zenscroll';
 import './FeedCard.css';
-
-// import zenscroll from 'zenscroll';
 
 // mobiscroll.Image + mobiscroll.Form
 import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta2.min';
@@ -157,7 +156,7 @@ class FeedCardComponent extends Component {
 			.join(' ');
 	}
 
-	constructText() {
+	constructText() {		
 		const
 			feed = this.props.feed[this.props.level],
 			h = new HtmlToReactParser(),
@@ -166,9 +165,16 @@ class FeedCardComponent extends Component {
 				parseInt(queryString['paragraph'], 10) :
 				-1;
 
+		logTitle('constructText:');
+		log('feed.text:');
+		log(feed.text);
+		log('activeParagraph: ' + activeParagraph);
+		log('feed.text.length: ' + feed.text.length);
+		log('');
+
 		let paragraphTag, text = '';
 
-		for (let num = 0; num < feed.text.length; num++) {
+		for (let num = 1; num < feed.text.length; num++) {
 			if (num === 0) {
 				paragraphTag = "<p className='FirstFeedParagraph'>";
 			} else if (num === activeParagraph + 1) {
@@ -188,20 +194,7 @@ class FeedCardComponent extends Component {
 			text: parsed
 		});
 
-		// setTimeout(() => {
-		// 	const
-		// 		activeParagraphElement =
-		// 			document.getElementById('ActiveFeedParagraph'),
-
-		// 		// This was a nightmare to locate
-		// 		scrollableElement =
-		// 			document.querySelector('.FeedStack .react-swipeable-view-container div:nth-of-type(2)');
-
-		// 	if (activeParagraphElement && scrollableElement) {
-		// 		const scroller = zenscroll.createScroller(scrollableElement, 1000, 0);
-		// 		scroller.center(activeParagraphElement);	
-		// 	}
-		// }, 1000);
+		this.scrollToActiveParagraph(activeParagraph);
 	}
 
 	fetchImage() {
@@ -430,6 +423,28 @@ class FeedCardComponent extends Component {
 				this.props.activateFeedText(this.props.level);
 			}
 		}
+	}
+
+	scrollToActiveParagraph(activeParagraph) {
+		setTimeout(() => {
+			const
+				activeParagraphElement =
+					document.getElementById('ActiveFeedParagraph'),
+
+				// This was a nightmare to locate
+				scrollableElement =
+					document.querySelector('.TextFeedPane .slide-pane__content');
+
+				logTitle('Scrolling to Active Paragraph ' + activeParagraph);
+				log('scrollableElement: ' + scrollableElement);
+				log('');
+
+			// No need to scroll if the URL does not contain a paragraph query parameter
+			if (activeParagraphElement && scrollableElement) {
+				const scroller = zenscroll.createScroller(scrollableElement, 1000, 0);
+				scroller.center(activeParagraphElement);
+			}
+		}, 1000);		
 	}
 
 	navigate(level) {

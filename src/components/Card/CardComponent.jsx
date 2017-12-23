@@ -11,6 +11,7 @@ import config from '../../config';
 import { calculateMinZoomLevel } from '../../libs/utils';
 import SlidingPane from 'react-sliding-pane';
 import 'react-sliding-pane/dist/react-sliding-pane.css';
+import zenscroll from 'zenscroll';
 import './Card.css';
 
 // Permits HTML markup encoding in feed text
@@ -156,21 +157,29 @@ class CardComponent extends Component {
 			text: parsed
 		});
 
-		// setTimeout(() => {
-		// 	const
-		// 		activeParagraphElement =
-		// 			document.getElementById('ActiveCardParagraph'),
+		this.scrollToActiveParagraph(activeParagraph);
+	}
 
-		// 		// This was a nightmare to locate
-		// 		scrollableElement =
-		// 			document.querySelector('.CardStack .react-swipeable-view-container div:nth-of-type(2)');
+	scrollToActiveParagraph(activeParagraph) {
+		setTimeout(() => {
+			const
+				activeParagraphElement =
+					document.getElementById('ActiveCardParagraph'),
 
-		// 	// No need to scroll if the URL does not contain a paragraph query parameter
-		// 	if (activeParagraphElement && scrollableElement) {
-		// 		const scroller = zenscroll.createScroller(scrollableElement, 1000, 0);
-		// 		scroller.center(activeParagraphElement);
-		// 	}
-		// }, 1000);
+				// This was a nightmare to locate
+				scrollableElement =
+					document.querySelector('.TextCardPane .slide-pane__content');
+
+				logTitle('Scrolling to Active Paragraph ' + activeParagraph);
+				log('scrollableElement: ' + scrollableElement);
+				log('');
+
+			// No need to scroll if the URL does not contain a paragraph query parameter
+			if (activeParagraphElement && scrollableElement) {
+				const scroller = zenscroll.createScroller(scrollableElement, 1000, 0);
+				scroller.center(activeParagraphElement);
+			}
+		}, 1000);		
 	}
 
 	componentDidMount() {
