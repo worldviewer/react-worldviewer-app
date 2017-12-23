@@ -124,16 +124,19 @@ class CardComponent extends Component {
 	}
 
 	constructText() {
-		logTitle('Card data:')
-		logObject(this.props.card);
-		log('');
-
 		const
 			h = new HtmlToReactParser(),
 			queryString = qs.parse(this.props.location.search.slice(1)),
 			activeParagraph = queryString['paragraph'] ?
 				parseInt(queryString['paragraph'], 10) :
 				-1;
+				
+		logTitle('constructText:')
+		log('card.text:');
+		log(this.props.card.data.text);
+		log('activeParagraph: ' + activeParagraph);
+		log('this.props.card.data.text.length: ' + this.props.card.data.text.length);
+		log('');
 
 		let paragraphTag, text = '';
 
@@ -166,12 +169,12 @@ class CardComponent extends Component {
 				activeParagraphElement =
 					document.getElementById('ActiveCardParagraph'),
 
-				// This was a nightmare to locate
 				scrollableElement =
 					document.querySelector('.TextCardPane .slide-pane__content');
 
 				logTitle('Scrolling to Active Paragraph ' + activeParagraph);
-				log('scrollableElement: ' + scrollableElement);
+				log('scrollableElement: ');
+				log(scrollableElement);
 				log('');
 
 			// No need to scroll if the URL does not contain a paragraph query parameter

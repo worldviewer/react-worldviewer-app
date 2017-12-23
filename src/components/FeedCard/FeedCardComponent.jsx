@@ -172,19 +172,25 @@ class FeedCardComponent extends Component {
 		log('feed.text.length: ' + feed.text.length);
 		log('');
 
-		let paragraphTag, text = '';
+		let paragraphTag, text = '', tagless = '';
 
-		for (let num = 1; num < feed.text.length; num++) {
-			if (num === 0) {
-				paragraphTag = "<p className='FirstFeedParagraph'>";
-			} else if (num === activeParagraph + 1) {
-				paragraphTag = "<p id='ActiveFeedParagraph'>";
-			} else {
-				paragraphTag = "<p>";
+		for (let num = 0; num < feed.text.length; num++) {
+
+			// Remove the unwanted p tags
+			tagless = feed.text[num].paragraph.replace(/^<p>/, '');
+			tagless = tagless.replace(/<\/p>$/, '');
+
+			if (tagless !== '<p></p>') {
+				if (num === 0) {
+					paragraphTag = "<p className='FirstFeedParagraph'>";
+				} else if (num === activeParagraph) {
+					paragraphTag = "<p id='ActiveFeedParagraph'>";
+				} else {
+					paragraphTag = "<p>";
+				}
+
+				text = text + paragraphTag + tagless + '</p>';
 			}
-
-			text = text + paragraphTag + feed.text[num].paragraph +
-				'</p>';
 		}
 
 		const
@@ -436,7 +442,8 @@ class FeedCardComponent extends Component {
 					document.querySelector('.TextFeedPane .slide-pane__content');
 
 				logTitle('Scrolling to Active Paragraph ' + activeParagraph);
-				log('scrollableElement: ' + scrollableElement);
+				log('scrollableElement: ');
+				log(scrollableElement);
 				log('');
 
 			// No need to scroll if the URL does not contain a paragraph query parameter
