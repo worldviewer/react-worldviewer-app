@@ -336,6 +336,8 @@ class HomeComponent extends Component {
 			event.keyCode === 27) {
 
 			this.searchBoxDOMNode.blur();
+			this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
+				'animation-down-desktop-target' : 'animation-down-mobile-target');
 
 			setTimeout(() => {
 				mobiscroll.toast({
@@ -735,10 +737,23 @@ class HomeComponent extends Component {
 			this.props.setSearchState(newSearchState);
 			this.props.setSearchQuery(this.state.searchState.quote);
 
+			this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
+				'animation-up-desktop-target' : 'animation-up-mobile-target');
+
 		} else {
 			this.props.setSearchState(qs.parse(this.props.location.search.slice(1)));
 			// When we load the page with a search term already in the query parameters
 			this.props.setSearchQuery(this.state.searchState.query);
+
+			if (this.props.router.location.search) {
+				setTimeout(() => this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
+					'animation-up-desktop-target' : 'animation-up-mobile-target'), 1000);
+
+				logTitle('componentDidMount search term present:');
+				log(this.props.app.isDesktop ?
+					'animation-up-desktop-target' : 'animation-up-mobile-target');
+				log('');
+			}
 		}
 
 		const [decodedFacet, facetCategory, facetSubCategory] =
@@ -835,11 +850,6 @@ class HomeComponent extends Component {
 		if (!this.props.app.searchIsActive && nextProps.app.searchIsActive) {
 			this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
 				'animation-up-desktop-target' : 'animation-up-mobile-target');
-
-			// setTimeout(() => {
-				// this.props.setSearchBoxAnimationClass(null);
-				// this.props.setSearchTop(this.props.app.isDesktop ? '-250px' : '-100px');
-			// }, 2000);
 		}
 
 		if (this.props.app.searchIsActive && !nextProps.app.searchIsActive &&
@@ -849,10 +859,6 @@ class HomeComponent extends Component {
 			setTimeout(() =>
 				this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
 					'animation-down-desktop-target' : 'animation-down-mobile-target'), 1000);
-
-			// setTimeout(() => {
-			// 	this.props.setSearchBoxAnimationClass(null)
-			// }, 2000);
 		}
 	}
 
