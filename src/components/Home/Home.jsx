@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import HomeComponent from './HomeComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setSearchQuery, setSearchFacet, setSearchState, unselectFacet, setNewUserInstructionsState } from '../../redux.js';
+import { setSearchQuery, setSearchFacet, setSearchState, unselectFacet, setNewUserInstructionsState, setSearchIsActive, unsetSearchIsActive } from '../../redux.js';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -11,7 +11,8 @@ const mapStateToProps = (state, ownProps) => {
 		searchState: state.reducer.searchState,
 		navbar: state.reducer.navbar,
 		instructions: state.reducer.instructions,
-		router: state.router
+		router: state.router,
+		desktop: state.reducer.desktop
 	};
 };
 
@@ -31,6 +32,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		setNewUserInstructionsState: (instructions) => {
 			return dispatch(setNewUserInstructionsState(instructions));
+		},
+		setSearchIsActive: () => {
+			return dispatch(setSearchIsActive());
+		},
+		unsetSearchIsActive: () => {
+			return dispatch(unsetSearchIsActive());
 		}
 	}
 };

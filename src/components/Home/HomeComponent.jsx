@@ -136,6 +136,24 @@ class HomeComponent extends Component {
 		log('');
 	}
 
+	setupFocusedSearchBox() {
+		this.searchBoxDOMNode.onfocus = () => {
+			this.props.setSearchIsActive();
+
+			logTitle('this.searchBoxDOMNode.onfocus');
+			log('');
+		}
+	}
+
+	setupDefocusedSearchBox() {
+		this.searchBoxDOMNode.onblur = () => {
+			this.props.unsetSearchIsActive();
+
+			logTitle('this.searchBoxDOMNode.onblur');
+			log('');
+		}
+	}
+
 	refreshForm() {
 		if (this.refs.form !== undefined) {
 			this.refs.form.instance.refresh();
@@ -655,6 +673,8 @@ class HomeComponent extends Component {
 		// This is necessary because the autoFocus={true} prop which is supposedly on
 		// the SearchBox component apparently does nothing
 		this.searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
+		this.setupFocusedSearchBox();
+		this.setupDefocusedSearchBox();
 		this.searchBoxDOMNode.focus();
 
 		logTitle('Setting search and facets based upon URL ...');

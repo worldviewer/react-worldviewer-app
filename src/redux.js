@@ -8,6 +8,8 @@ if (!Object.values) {
 
 const types = {
 	SET_APP_INTERFACE: 'SET_APP_INTERFACE',
+	SET_SEARCH_IS_ACTIVE: 'SET_SEARCH_IS_ACTIVE',
+	UNSET_SEARCH_IS_ACTIVE: 'UNSET_SEARCH_IS_ACTIVE',
 
 	SET_TOKEN_FETCH_COMPLETE: 'SET_TOKEN_FETCH_COMPLETE',
 	SET_CREDENTIALS_FETCH_COMPLETE: 'SET_CREDENTIALS_FETCH_COMPLETE',
@@ -234,7 +236,8 @@ const initialState = {
 	},
 
 	desktop: {
-		text: false
+		text: false,
+		searchIsActive: false
 	}
 };
 
@@ -242,6 +245,18 @@ export const setAppInterface = (screenWidth) => {
 	return {
 		type: types.SET_APP_INTERFACE,
 		screenWidth
+	};
+};
+
+export const setSearchIsActive = () => {
+	return {
+		type: types.SET_SEARCH_IS_ACTIVE
+	};
+};
+
+export const unsetSearchIsActive = () => {
+	return {
+		type: types.UNSET_SEARCH_IS_ACTIVE
 	};
 };
 
@@ -624,6 +639,24 @@ export default (state = initialState, action) => {
 						action.screenWidth > config.breakpoint.MOBILE,
 					isDesktop: action.screenWidth > config.breakpoint.MOBILE, // TODO: Switch back to TABLET
 					isLargest: action.screenWidth > config.breakpoint.LARGEST
+				}
+			};
+
+		case types.SET_SEARCH_IS_ACTIVE:
+			return {
+				...state,
+				desktop: {
+					...state.desktop,
+					searchIsActive: true
+				}
+			};
+
+		case types.UNSET_SEARCH_IS_ACTIVE:
+			return {
+				...state,
+				desktop: {
+					...state.desktop,
+					searchIsActive: false
 				}
 			};
 
