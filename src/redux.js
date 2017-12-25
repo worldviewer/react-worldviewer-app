@@ -10,6 +10,8 @@ const types = {
 	SET_APP_INTERFACE: 'SET_APP_INTERFACE',
 	SET_SEARCH_IS_ACTIVE: 'SET_SEARCH_IS_ACTIVE',
 	UNSET_SEARCH_IS_ACTIVE: 'UNSET_SEARCH_IS_ACTIVE',
+	SET_SEARCH_TOP: 'SET_SEARCH_TOP',
+	SET_SEARCH_BOX_ANIMATION_CLASS: 'SET_SEARCH_BOX_ANIMATION_CLASS',
 
 	SET_TOKEN_FETCH_COMPLETE: 'SET_TOKEN_FETCH_COMPLETE',
 	SET_CREDENTIALS_FETCH_COMPLETE: 'SET_CREDENTIALS_FETCH_COMPLETE',
@@ -232,12 +234,14 @@ const initialState = {
 		isMobile: false,
 		isDesktop: false,
 		isTablet: false,
-		isLargest: false
+		isLargest: false,
+		searchTop: 0,
+		searchBoxAnimationClass: null,
+		searchIsActive: false
 	},
 
 	desktop: {
-		text: false,
-		searchIsActive: false
+		text: false
 	}
 };
 
@@ -259,6 +263,20 @@ export const unsetSearchIsActive = () => {
 		type: types.UNSET_SEARCH_IS_ACTIVE
 	};
 };
+
+export const setSearchBoxAnimationClass = (animationClass) => {
+	return {
+		type: types.SET_SEARCH_BOX_ANIMATION_CLASS,
+		animationClass
+	};
+};
+
+export const setSearchTop = (top) => {
+	return {
+		type: types.SET_SEARCH_TOP,
+		top
+	}
+}
 
 export const setTokenFetchComplete = () => {
 	return {
@@ -645,8 +663,8 @@ export default (state = initialState, action) => {
 		case types.SET_SEARCH_IS_ACTIVE:
 			return {
 				...state,
-				desktop: {
-					...state.desktop,
+				app: {
+					...state.app,
 					searchIsActive: true
 				}
 			};
@@ -654,11 +672,29 @@ export default (state = initialState, action) => {
 		case types.UNSET_SEARCH_IS_ACTIVE:
 			return {
 				...state,
-				desktop: {
-					...state.desktop,
+				app: {
+					...state.app,
 					searchIsActive: false
 				}
 			};
+
+		case types.SET_SEARCH_BOX_ANIMATION_CLASS:
+			return {
+				...state,
+				app: {
+					...state.app,
+					searchBoxAnimationClass: action.animationClass
+				}
+			}
+
+		case types.SET_SEARCH_TOP:
+			return {
+				...state,
+				app: {
+					...state.app,
+					searchTop: action.top
+				}
+			}
 
 		case types.SET_TOKEN_FETCH_COMPLETE:
 			return {

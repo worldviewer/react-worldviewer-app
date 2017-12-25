@@ -112,6 +112,13 @@ class HomeComponent extends Component {
 		this.debouncedSetupInstructionScrollers = debounce(this.setupInstructionScrollers, 500);
 	}
 
+	getWindowWidth() {
+		const width = window.innerWidth;
+		this.props.setAppInterface(width);
+
+		return width;
+	}
+
 	// This is how we make sure that the back button alters the page content
 	async onBackOrForwardButtonEvent(event) {
 		const
@@ -139,6 +146,11 @@ class HomeComponent extends Component {
 	setupFocusedSearchBox() {
 		this.searchBoxDOMNode.onfocus = () => {
 			this.props.setSearchIsActive();
+
+			// setTimeout(() => {
+			// 	this.props.unsetSearchIsActive();
+			// 	this.props.setSearchTop(this.props.app.isDesktop ? '-250px' : '-100px');
+			// }, 2000);
 
 			logTitle('this.searchBoxDOMNode.onfocus');
 			log('');
@@ -244,6 +256,30 @@ class HomeComponent extends Component {
 
 		this.debouncedSetupInstructionScrollers();
 	}
+
+	// async onSearchReset() {
+	// 	logTitle('onSearchReset');
+	// 	log('');
+
+	// 	await this.setState({
+	// 		searchState: {}
+	// 	});
+
+	// 	this.props.history.push(
+	// 		searchStateToUrl(this.props, {}),
+	// 		{}
+	// 	);
+
+	// 	await this.props.setSearchQuery('');
+
+	// 	const
+	// 		[facetCategory, facetSubCategory] =
+	// 			getPartsFromFacetString('');
+
+	// 	await this.props.setSearchFacet(facetCategory, facetSubCategory, '');
+
+	// 	this.searchBoxDOMNode.blur();
+	// }
 
 	getCurrentFacetIndex(value) {
 		return config.categories.findIndex(category =>
@@ -667,6 +703,8 @@ class HomeComponent extends Component {
 	}
 
 	async componentDidMount() {
+		this.getWindowWidth();
+
 		// To prevent flash of unstyled content
 		document.getElementById('fouc').style.display = 'block';
 
@@ -675,7 +713,7 @@ class HomeComponent extends Component {
 		this.searchBoxDOMNode = ReactDOM.findDOMNode(this.textInput).querySelector('input');
 		this.setupFocusedSearchBox();
 		this.setupDefocusedSearchBox();
-		this.searchBoxDOMNode.focus();
+		// this.searchBoxDOMNode.focus();
 
 		logTitle('Setting search and facets based upon URL ...');
 		log('searchState:');
@@ -792,6 +830,29 @@ class HomeComponent extends Component {
 		if (nextProps.location.search !== this.props.location.search) {
 			logQuery(this.props.location.search);
 			logQuery('--> ' + nextProps.location.search);
+		}
+
+		if (!this.props.app.searchIsActive && nextProps.app.searchIsActive) {
+			this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
+				'animation-up-desktop-target' : 'animation-up-mobile-target');
+
+			// setTimeout(() => {
+				// this.props.setSearchBoxAnimationClass(null);
+				// this.props.setSearchTop(this.props.app.isDesktop ? '-250px' : '-100px');
+			// }, 2000);
+		}
+
+		if (this.props.app.searchIsActive && !nextProps.app.searchIsActive &&
+			!((nextProps.searchState && nextProps.searchState.query) ||
+			(nextProps.searchState && nextProps.searchState.quote))) {
+
+			setTimeout(() =>
+				this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
+					'animation-down-desktop-target' : 'animation-down-mobile-target'), 1000);
+
+			// setTimeout(() => {
+			// 	this.props.setSearchBoxAnimationClass(null)
+			// }, 2000);
 		}
 	}
 
@@ -924,66 +985,89 @@ class HomeComponent extends Component {
     			7 : 3;
     	}
 
+   //  	let searchAnimation = null;
+
+   //  	if (this.props.app.isDesktop) {
+   //  		searchAnimation = this.props.app.searchIsActive ?
+			// 	'animation-up-desktop-target' : 'animation-down-desktop-target';
+
+			// setTimeout(() => {
+			// 	searchAnimation = null;
+			// }, 2000);
+   //  	} else {
+   //  		searchAnimation = this.props.app.searchIsActive ?
+			// 	'animation-up-mobile-target' : 'animation-down-mobile-target';
+
+			// setTimeout(() => {
+			// 	searchAnimation = null;
+			// }, 2000);
+   //  	}
+
 		return (
-			<div className="Home" id="fouc">
+			<div className='Home' id="fouc" style={this.props.app.isDesktop ?
+				{marginTop: '100px'} : {}}>
 
-				<FadeIn>
-					<RatioImage
-						clickHandler={this.selectFacet.bind(this)} />
+				<div className={this.props.app.searchBoxAnimationClass}
+					style={{position: 'relative', top: '100px'}}>
 
-					<div className="FacetSelect">
-						<mobiscroll.Image
-							ref={input => this.inputElement = input}
-							theme="ios-dark"
-							display="center"
-							enhance={true}
-							onInit={this.refreshForm.bind(this)}
-							onSet={this.setFacetValue.bind(this)}>
+					<FadeIn>
+						<RatioImage
+							clickHandler={this.selectFacet.bind(this)} />
 
-							{ config.categories.map((category, i) =>
-								<li data-val={category.text} key={i}>
-									{/* <img src={category.icon} /> */}
-									<p>{category.text}</p>
-								</li>) }
+						<div className="FacetSelect">
+							<mobiscroll.Image
+								ref={input => this.inputElement = input}
+								theme="ios-dark"
+								display="center"
+								enhance={true}
+								onInit={this.refreshForm.bind(this)}
+								onSet={this.setFacetValue.bind(this)}>
 
-						</mobiscroll.Image>
-					</div>
+								{ config.categories.map((category, i) =>
+									<li data-val={category.text} key={i}>
+										{/* <img src={category.icon} /> */}
+										<p>{category.text}</p>
+									</li>) }
 
-					<InstantSearch
-						appId="HDX7ZDMWE9"
-						apiKey="f9898dbf6ec456d206e59bcbc604419d"
-						indexName="controversy-cards"
-						searchState={this.state.searchState}
-						onSearchStateChange={this.onSearchStateChange.bind(this)}
-						createURL={createURL}>
+							</mobiscroll.Image>
+						</div>
 
-						<Grid>
-							<SearchBox
-								ref={ input => { this.textInput = input } }
-								className="SearchBox"
-								focusShortcuts={[' ']}
-								translations={{placeholder: 'Enter a Controversy'}} />
+						<InstantSearch
+							appId="HDX7ZDMWE9"
+							apiKey="f9898dbf6ec456d206e59bcbc604419d"
+							indexName="controversy-cards"
+							searchState={this.state.searchState}
+							onSearchStateChange={this.onSearchStateChange.bind(this)}
+							createURL={createURL}>
 
-							<p className='CategoryLabel'>Searching {categoryText || 'All'}</p>
-						</Grid>
+							<Grid>
+								<SearchBox
+									ref={ input => { this.textInput = input } }
+									className="SearchBox"
+									focusShortcuts={[' ']}
+									translations={{placeholder: 'Enter a Controversy'}} />
 
-						<br />
+								<p className='CategoryLabel'>Searching {categoryText || 'All'}</p>
+							</Grid>
 
-						<Index indexName="controversy-categories">
-							<Configure hitsPerPage={hitsPerPage} />
-							<Hits hitComponent={CategorySearchResult} />
-						</Index>
+							<br />
 
-						<Index indexName="controversy-cards" ref={index => this.index = index}>
-							<Configure facetFilters={facetArray} />
-							<ConditionalHits
-								facetCategory={this.props.search.facetCategory}
-								facetSubCategory={this.props.search.facetSubCategory} />
-						</Index>
+							<Index indexName="controversy-categories">
+								<Configure hitsPerPage={hitsPerPage} />
+								<Hits hitComponent={CategorySearchResult} />
+							</Index>
 
-					</InstantSearch>
-				</FadeIn>
+							<Index indexName="controversy-cards" ref={index => this.index = index}>
+								<Configure facetFilters={facetArray} />
+								<ConditionalHits
+									facetCategory={this.props.search.facetCategory}
+									facetSubCategory={this.props.search.facetSubCategory} />
+							</Index>
 
+						</InstantSearch>
+					</FadeIn>
+
+				</div>
 			</div>
 		);
 	}
