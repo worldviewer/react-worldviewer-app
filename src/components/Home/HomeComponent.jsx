@@ -147,11 +147,6 @@ class HomeComponent extends Component {
 		this.searchBoxDOMNode.onfocus = () => {
 			this.props.setSearchIsActive();
 
-			// setTimeout(() => {
-			// 	this.props.unsetSearchIsActive();
-			// 	this.props.setSearchTop(this.props.app.isDesktop ? '-250px' : '-100px');
-			// }, 2000);
-
 			logTitle('this.searchBoxDOMNode.onfocus');
 			log('');
 		}
@@ -212,6 +207,8 @@ class HomeComponent extends Component {
 
 	setFacetValue(selection) {
 		if (selection.valueText) {
+			this.props.setSearchIsActive();
+
 			let facetCategory = '',
 				facetSubCategory = '';
 
@@ -335,9 +332,11 @@ class HomeComponent extends Component {
 		if ((document.activeElement === this.searchBoxDOMNode) &&
 			event.keyCode === 27) {
 
-			this.searchBoxDOMNode.blur();
-			this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
-				'animation-down-desktop-target' : 'animation-down-mobile-target');
+			if (this.props.search.facets === 'All') {
+				this.searchBoxDOMNode.blur();
+				this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
+					'animation-down-desktop-target' : 'animation-down-mobile-target');				
+			}
 
 			setTimeout(() => {
 				mobiscroll.toast({
@@ -424,6 +423,8 @@ class HomeComponent extends Component {
 						facetIndex = this.getFacetIndexFromCharCode(character);
 
 					if (facetIndex !== -1) {
+						this.props.setSearchIsActive();
+
 						const
 							newFacetValue = config.categories[facetIndex].text,
 							[facetCategory, facetSubCategory] =
@@ -465,6 +466,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('c o n', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'con' });
 			this.clearQuote();
 
@@ -485,6 +488,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('q u o', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'quo' });
 			this.clearQuote();
 
@@ -505,6 +510,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('f e e', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'fee' });
 			this.clearQuote();
 
@@ -525,6 +532,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('c o m', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'com' });
 			this.clearQuote();
 
@@ -545,6 +554,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('c r i', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'cri' });
 			this.clearQuote();
 
@@ -565,6 +576,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('h i s', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'his' });
 			this.clearQuote();
 
@@ -585,6 +598,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('o n g', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'ong' });
 			this.clearQuote();
 
@@ -605,6 +620,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('p e r', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'per' });
 			this.clearQuote();
 
@@ -625,6 +642,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('r e f', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'ref' });
 			this.clearQuote();
 
@@ -645,6 +664,8 @@ class HomeComponent extends Component {
 		});
 
 		Mousetrap.bind('t h i', () => {
+			this.props.setSearchIsActive();
+
 			this.setState({ sequence: 'thi' });
 			this.clearQuote();
 
@@ -780,6 +801,15 @@ class HomeComponent extends Component {
 	// needs to update, even though the Stats component does update -- and it appears to happen
 	// exclusively when the page has scrolled past the first.
 	async componentWillReceiveProps(nextProps) {
+		if (!(this.props.search.facets === 'All' || this.props.search.facets === '') && 
+			(nextProps.search.facets === 'All' || nextProps.search.facets === '')) {
+
+			setTimeout(() =>
+				this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
+					'animation-down-desktop-target' : 'animation-down-mobile-target'), 1000);
+				this.props.unsetSearchIsActive();
+		}
+
 		if (!this.props.navbar.facetTrigger && nextProps.navbar.facetTrigger) {
 			this.selectFacet();
 			this.props.unselectFacet();
@@ -842,23 +872,24 @@ class HomeComponent extends Component {
 			this.forceUpdate();
 		}
 
-		if (nextProps.location.search !== this.props.location.search) {
-			logQuery(this.props.location.search);
-			logQuery('--> ' + nextProps.location.search);
-		}
-
 		if (!this.props.app.searchIsActive && nextProps.app.searchIsActive) {
 			this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
 				'animation-up-desktop-target' : 'animation-up-mobile-target');
 		}
 
-		if (this.props.app.searchIsActive && !nextProps.app.searchIsActive &&
+		if (nextProps.search.facets === 'All' &&
+			this.props.app.searchIsActive && !nextProps.app.searchIsActive &&
 			!((nextProps.searchState && nextProps.searchState.query) ||
 			(nextProps.searchState && nextProps.searchState.quote))) {
 
 			setTimeout(() =>
 				this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
 					'animation-down-desktop-target' : 'animation-down-mobile-target'), 1000);
+		}
+
+		if (nextProps.location.search !== this.props.location.search) {
+			logQuery(this.props.location.search);
+			logQuery('--> ' + nextProps.location.search);
 		}
 	}
 
