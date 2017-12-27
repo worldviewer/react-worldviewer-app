@@ -877,14 +877,14 @@ class HomeComponent extends Component {
 				'animation-up-desktop-target' : 'animation-up-mobile-target');
 		}
 
-		if (nextProps.search.facets === 'All' &&
+		if ((nextProps.search.facets === 'All' || nextProps.search.facets === '') &&
 			this.props.app.searchIsActive && !nextProps.app.searchIsActive &&
 			!((nextProps.searchState && nextProps.searchState.query) ||
 			(nextProps.searchState && nextProps.searchState.quote))) {
 
 			setTimeout(() =>
 				this.props.setSearchBoxAnimationClass(this.props.app.isDesktop ?
-					'animation-down-desktop-target' : 'animation-down-mobile-target'), 1000);
+					'animation-down-desktop-target' : 'animation-down-mobile-target'), 500);
 		}
 
 		if (nextProps.location.search !== this.props.location.search) {
