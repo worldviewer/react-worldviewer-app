@@ -187,6 +187,9 @@ class CardComponent extends Component {
 
 	componentDidMount() {
 		if (this.props.app.isMobile) {
+			if (!this.props.loading.card && !this.props.mainStack.swipeable) {
+				this.setupDeepZoom();
+			}
 
 		} else {
 			const isText =
@@ -198,26 +201,29 @@ class CardComponent extends Component {
 			if (isText) {
 				this.props.activateDesktopText();
 			}
-		}
 
-		if (!this.props.loading.card && !this.props.mainStack.swipeable) {
-			this.setupDeepZoom();
+			if (!this.props.loading.card) {
+				this.setupDeepZoom();
+			}
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.app.isMobile) {
+			if (this.props.loading.card && !nextProps.loading.card &&
+				!nextProps.mainStack.swipeable) {
+				this.setupDeepZoom();
+			}
 
 		} else {
 			if (nextProps.desktop.text && this.props.loading.card &&
 				!nextProps.loading.card) {
 				this.constructText();
 			}
-		}
 
-		if (this.props.loading.card && !nextProps.loading.card &&
-			!nextProps.mainStack.swipeable) {
-			this.setupDeepZoom();
+			if (this.props.loading.card && !nextProps.loading.card) {
+				this.setupDeepZoom();
+			}
 		}
 	}
 
