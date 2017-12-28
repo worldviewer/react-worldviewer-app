@@ -286,11 +286,12 @@ class CardComponent extends Component {
 		return (<div>
 			{ !this.props.mainStack.swipeable ?
 
-				<div ref={node => { this.root = node; }}
-					className="Card"
-					id="openseadragon-cards"
-					style={this.state.pyramidStyle}
-					onClick={this.deactivateDeepZoom.bind(this)} /> :
+				<div onClick={this.deactivateDeepZoom.bind(this)}>
+					<div ref={node => { this.root = node; }}
+						className="Card"
+						id="openseadragon-cards"
+						style={this.state.pyramidStyle} />
+				</div> :
 
 				<div>
 					{ this.props.loading.card ? null :
