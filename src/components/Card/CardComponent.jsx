@@ -200,7 +200,7 @@ class CardComponent extends Component {
 			}
 		}
 
-		if (!this.props.loading.card) {
+		if (!this.props.loading.card && !this.props.mainStack.swipeable) {
 			this.setupDeepZoom();
 		}
 	}
@@ -215,9 +215,31 @@ class CardComponent extends Component {
 			}
 		}
 
-		if (this.props.loading.card && !nextProps.loading.card) {
+		if (this.props.loading.card && !nextProps.loading.card &&
+			!nextProps.mainStack.swipeable) {
 			this.setupDeepZoom();
 		}
+	}
+
+	componentWillMount() {
+		if (this.props.app.isMobile) {
+			this.props.enableMainStackSwipeable();
+		}
+	}
+
+	async activateDeepZoom(event) {
+		logTitle('Activating Deep Zoom ...');
+		log('');
+
+		await this.props.disableMainStackSwipeable();
+		this.setupDeepZoom();
+	}
+
+	deactivateDeepZoom(event) {
+		logTitle('Deactivating Deep Zoom ...');
+		log('');
+
+		this.props.enableMainStackSwipeable();
 	}
 
 	navigate(level) {
@@ -240,12 +262,40 @@ class CardComponent extends Component {
 	}
 
 	renderMobile() {
-		return (
-			<div
-				ref={node => { this.root = node; }}
-				className="Card"
-				id="openseadragon-cards"
-				style={this.state.pyramidStyle} />
+		const
+			windowHeight = window.innerHeight,
+			windowHeightMid = windowHeight/2,
+
+			mobileStyles = {
+				top: windowHeightMid,
+				transform: 'translateY(-50%)',
+				width: '100%',
+				display: 'block',
+				margin: '15px auto 0 auto',
+				height: 'auto',
+				position: 'absolute',
+				padding: '18px'
+			};
+
+		return (<div>
+			{ !this.props.mainStack.swipeable ?
+
+				<div ref={node => { this.root = node; }}
+					className="Card"
+					id="openseadragon-cards"
+					style={this.state.pyramidStyle}
+					onClick={this.deactivateDeepZoom.bind(this)} /> :
+
+				<div>
+					{ this.props.loading.card ? null :
+						<img alt='static version of controversy card'
+							className="Card"
+							src={config.s3.cards.URL + this.props.card.data.slug +
+								'/large.jpg'}
+							onClick={this.activateDeepZoom.bind(this)}
+							style={mobileStyles} /> }
+				</div> }
+			</div>
 		);
 	}
 

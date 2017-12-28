@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CardComponent from './CardComponent.jsx';
 import { withRouter } from 'react-router-dom';
-import { setCardStackLevel, activateFeedImage, setDiscourseLevel, activateDesktopText, deactivateDesktopText, setNewUserInstructionsState, deactivateMainStackOverlay, activateMainStackOverlay, selectFeed } from '../../redux';
+import { setCardStackLevel, activateFeedImage, setDiscourseLevel, activateDesktopText, deactivateDesktopText, setNewUserInstructionsState, deactivateMainStackOverlay, activateMainStackOverlay, selectFeed, enableMainStackSwipeable, disableMainStackSwipeable } from '../../redux';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -12,7 +12,8 @@ const mapStateToProps = (state, ownProps) => {
 		app: state.reducer.app,
 		desktop: state.reducer.desktop,
 		discourse: state.reducer.discourse,
-		router: state.router
+		router: state.router,
+		mainStack: state.reducer.mainStack
 	};
 };
 
@@ -44,6 +45,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		selectFeed: (levelNumber) => {
 			return dispatch(selectFeed(levelNumber));
+		},
+		enableMainStackSwipeable: () => {
+			return dispatch(enableMainStackSwipeable());
+		},
+		disableMainStackSwipeable: () => {
+			return dispatch(disableMainStackSwipeable());
 		}
 	};
 };
