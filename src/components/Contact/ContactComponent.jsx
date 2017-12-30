@@ -24,6 +24,8 @@ import haltonArpPrototype from '../../images/halton-arp-prototype.jpg';
 import cosGithub from '../../images/controversies-of-science-github.png';
 import resume from '../../images/resume.png';
 import personalJourney from '../../images/science-as-a-personal-journey.png';
+import trackingControversies from '../../images/tracking-scientific-controversies.png';
+import edgeScienceCover from '../../images/edgescience-dec-issue-cover.png';
 
 // Logging
 import { log, logTitle } from '../../libs/utils';
@@ -191,27 +193,28 @@ class ContactComponent extends Component {
 
 		return (
 			<div className="Contact">
+				<mobiscroll.TabNav
+					theme="ios-dark"
+					display="inline"
+					ref="tabNav">
+
+						{ this.state.menus.map((item, index) => {
+
+						return <mobiscroll.NavItem
+								ref={el => this.tabnav = el}
+								key={item} 
+								selected={index === this.state.selectedMenuIndex}
+								onClick={this.selectMenu.bind(this, index)}>
+
+								{item}
+
+							</mobiscroll.NavItem> }) }
+
+				</mobiscroll.TabNav>
+
 				<Grid>
 					<Row>
 						<Col>
-							<mobiscroll.TabNav
-								theme="ios-dark"
-								display="inline"
-								ref="tabNav">
-
-									{ this.state.menus.map((item, index) => {
-
-									return <mobiscroll.NavItem
-											ref={el => this.tabnav = el}
-											key={item} 
-											selected={index === this.state.selectedMenuIndex}
-											onClick={this.selectMenu.bind(this, index)}>
-
-											{item}
-
-										</mobiscroll.NavItem> }) }
-
-							</mobiscroll.TabNav>
 
 							<SwipeableViews index={this.state.selectedMenuIndex}
 								onChangeIndex={this.handleSwipe.bind(this)}>
@@ -319,7 +322,17 @@ class ContactComponent extends Component {
 								</div>
 
 								<div style={containerStyles}>
-									<p>I would next explain the origin of the scientific social network idea in the December 2017 Edge issue (which releases on December 15th).</p>
+									<p>I would next explain the origin of the scientific social network idea in the December 2017 Edge issue (which released on December 15th).</p><br />
+
+									<a href='https://www.scientificexploration.org/edgescience/32'>
+										<img src={edgeScienceCover} alt='edgescience december issue cover' style={{width: '100%'}} />
+									</a>
+
+									<br /><br />
+
+									<a href='https://www.scientificexploration.org/edgescience/32'>
+										<img src={trackingControversies} alt='edgescience article' style={{width: '100%'}} />
+									</a>
 								</div>
 
 								<div style={containerStyles}>

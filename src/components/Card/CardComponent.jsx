@@ -1,5 +1,6 @@
 // React Dependencies
 import React, { Component } from 'react';
+// import ReactDOM from 'react-dom';
 
 // React Router Dependences
 import { withRouter } from 'react-router-dom';
@@ -30,7 +31,8 @@ class CardComponent extends Component {
 
 		this.state = {
 			pyramidStyle: {
-				width: '100%'
+				width: '100%',
+				pointerEvents: 'none'
 			},
 			minZoomLevel: this.props.app.isMobile ?
 				calculateMinZoomLevel() - 0.10 :
@@ -69,11 +71,12 @@ class CardComponent extends Component {
 			gestureSettingsMouse: {
 				flickEnabled: true,
 				clickToZoom: false,
-				dblClickToZoom: true
+				dblClickToZoom: false
 			},
 			zoomPerSecond: 0.2,
 			zoomPerScroll: 1.2,
 			animationTime: 0.3,
+			zoomPerClick: 1,
 
 			tileSources: {
 				Image: {
@@ -90,6 +93,28 @@ class CardComponent extends Component {
 			}
 		});
 
+		// this.viewer.addHandler('click', () => {
+		// 	const osdviewer = ReactDOM.findDOMNode(this.root);
+
+		// 	logTitle('Setting up OSD Viewer click handler ...');
+		// 	log(osdviewer);
+		// 	log('');
+
+		//     osdviewer.click(event => {
+		// 		this.setState(prevState => ({
+		// 			pyramidStyle: {
+		// 				...prevState.pyramidStyle,
+		// 				pointerEvents: 'none'
+		// 			}
+		// 		}));
+				
+		// 		logTitle('Deactivating Deep Zoom ...');
+		// 		log('');
+
+		// 		this.props.enableMainStackSwipeable();
+		//     });
+		// });
+
 		window.addEventListener('resize',
 			() => this.setupResizeHandler());
 
@@ -99,12 +124,42 @@ class CardComponent extends Component {
 			logTitle('zoom: ' + data.zoom);
 			log('');
 
-			if (data.zoom > 0.7) {
-				this.props.deactivateMainStackOverlay();
+			if (this.props.app.isDesktop) {
+				if (data.zoom > 0.7) {
+					this.props.deactivateMainStackOverlay();
+				} else {
+					this.props.activateMainStackOverlay();
+				}
+
 			} else {
-				this.props.activateMainStackOverlay();
+				if (data.zoom > 1.0) {
+					this.props.disableMainStackSwipeable();
+
+					this.setState(prevState => ({
+						pyramidStyle: {
+							...prevState.pyramidStyle,
+							pointerEvents: 'auto'
+						}
+					}));
+
+					logTitle('Activating Deep Zoom ...');
+					log('');
+
+				} else {
+					this.props.enableMainStackSwipeable();
+
+					this.setState(prevState => ({
+						pyramidStyle: {
+							...prevState.pyramidStyle,
+							pointerEvents: 'none'
+						}
+					}));
+					
+					logTitle('Deactivating Deep Zoom ...');
+					log('');
+				}
 			}
-		}, 2000);
+		}, 500);
 	}
 
 	setupResizeHandler() {
@@ -187,9 +242,15 @@ class CardComponent extends Component {
 
 	componentDidMount() {
 		if (this.props.app.isMobile) {
-			if (!this.props.loading.card && !this.props.mainStack.swipeable) {
+			// if (!this.props.loading.card && !this.props.mainStack.swipeable) {
+			// 	this.setupDeepZoom();
+			// }
+
+			if (!this.props.loading.card) {
 				this.setupDeepZoom();
 			}
+
+			this.props.enableMainStackSwipeable();
 
 		} else {
 			const isText =
@@ -210,8 +271,12 @@ class CardComponent extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.app.isMobile) {
-			if (this.props.loading.card && !nextProps.loading.card &&
-				!nextProps.mainStack.swipeable) {
+			// if (this.props.loading.card && !nextProps.loading.card &&
+			// 	!nextProps.mainStack.swipeable) {
+			// 	this.setupDeepZoom();
+			// }
+
+			if (this.props.loading.card && !nextProps.loading.card) {
 				this.setupDeepZoom();
 			}
 
@@ -227,25 +292,69 @@ class CardComponent extends Component {
 		}
 	}
 
-	componentWillMount() {
-		if (this.props.app.isMobile) {
-			this.props.enableMainStackSwipeable();
-		}
-	}
+	// componentWillMount() {
+	// 	if (this.props.app.isMobile) {
+	// 		this.props.enableMainStackSwipeable();
+	// 	}
+	// }
 
 	async activateDeepZoom(event) {
-		logTitle('Activating Deep Zoom ...');
-		log('');
+		this.props.disableMainStackSwipeable();
 
-		await this.props.disableMainStackSwipeable();
-		this.setupDeepZoom();
+		this.setState(prevState => ({
+			pyramidStyle: {
+				...prevState.pyramidStyle,
+				pointerEvents: 'auto'
+			}
+		}));
+
+		logTitle('Activating Deep Zoom ...');
+		log('');		
 	}
 
 	deactivateDeepZoom(event) {
+		event.stopPropagation();
+
 		logTitle('Deactivating Deep Zoom ...');
 		log('');
 
+		if (this.viewer) {
+			this.viewer.destroy();
+			this.viewer = null;
+		}
+
 		this.props.enableMainStackSwipeable();
+	}
+
+	toggleDeepZoom(event) {
+		// event.stopPropagation();
+
+		if (this.props.mainStack.swipeable) {
+			this.setState(prevState => ({
+				pyramidStyle: {
+					...prevState.pyramidStyle,
+					pointerEvents: 'auto'
+				}
+			}));
+
+			logTitle('Activating Deep Zoom ...');
+			log('');
+
+			this.props.disableMainStackSwipeable();
+
+		} else {
+			this.setState(prevState => ({
+				pyramidStyle: {
+					...prevState.pyramidStyle,
+					pointerEvents: 'none'
+				}
+			}));
+			
+			logTitle('Deactivating Deep Zoom ...');
+			log('');
+
+			this.props.enableMainStackSwipeable();
+		}
 	}
 
 	navigate(level) {
@@ -272,7 +381,7 @@ class CardComponent extends Component {
 			windowHeight = window.innerHeight,
 			windowHeightMid = windowHeight/2,
 
-			mobileStyles = {
+			staticImageStyles = {
 				top: windowHeightMid,
 				transform: 'translateY(-50%)',
 				width: '100%',
@@ -283,14 +392,17 @@ class CardComponent extends Component {
 				padding: '18px'
 			};
 
-		return (<div>
+/*
+			<div>
 			{ !this.props.mainStack.swipeable ?
 
 				<div onClick={this.deactivateDeepZoom.bind(this)}>
+
 					<div ref={node => { this.root = node; }}
 						className="Card"
 						id="openseadragon-cards"
 						style={this.state.pyramidStyle} />
+
 				</div> :
 
 				<div>
@@ -300,10 +412,19 @@ class CardComponent extends Component {
 							src={config.s3.cards.URL + this.props.card.data.slug +
 								'/large.jpg'}
 							onClick={this.activateDeepZoom.bind(this)}
-							style={mobileStyles} /> }
+							style={staticImageStyles} /> }
 				</div> }
 			</div>
-		);
+*/
+
+		return (<div onClick={this.activateDeepZoom.bind(this)}>
+
+				<div ref={node => { this.root = node; }}
+					className="Card"
+					id="openseadragon-cards"
+					style={this.state.pyramidStyle} />
+
+			</div>);
 	}
 
 	renderDesktop() {

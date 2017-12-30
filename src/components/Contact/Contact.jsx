@@ -6,7 +6,8 @@ import { setPyramidStyles, showSnackbar } from '../../redux.js';
 const mapStateToProps = (state, ownProps) => {
 	return {
 		router: state.router,
-		pyramid: state.reducer.pyramid
+		pyramid: state.reducer.pyramid,
+		app: state.reducer.app
 	};
 };
 
