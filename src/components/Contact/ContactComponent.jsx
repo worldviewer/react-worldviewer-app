@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // UI Dependencies
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
 import SwipeableViews from 'react-swipeable-views';
 import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta2.min';
 import '../../libs/mobiscroll.custom-4.0.0-beta2.min.css';
@@ -26,6 +26,7 @@ import resume from '../../images/resume.png';
 import personalJourney from '../../images/science-as-a-personal-journey.png';
 import trackingControversies from '../../images/tracking-scientific-controversies.png';
 import edgeScienceCover from '../../images/edgescience-dec-issue-cover.png';
+import chrisGivingTalk from '../../images/chris-giving-talk.png';
 
 // Logging
 import { log, logTitle } from '../../libs/utils';
@@ -220,25 +221,29 @@ class ContactComponent extends Component {
 								onChangeIndex={this.handleSwipe.bind(this)}>
 
 								<div style={containerStyles}>
-									<p>I'm happy to talk to anybody who will take the time to learn how I arrived at this point of realizing that we must reform the way we discuss controversial science.</p>
+									<p>I'm happy to talk to anybody who will take some time to learn how I arrived at this point of realizing that we must reform the way we discuss controversial science.</p>
 
-									<p>This is crucial background information which must inform our conversations.</p>
+									<p>This is crucial background information which must inform our conversations.</p><br />
+
+									<img src={chrisGivingTalk} alt='Chris Giving Talk' style={{width: '100%'}} />
 								</div>
 
 								<div style={containerStyles}>
 									<img src={cmu} style={{width: '100%', marginBottom: '25px'}} alt='Carnegie Mellon University' />
 
 									<p>When I graduated from Carnegie Mellon in '97, I lacked any personal interest in science at all. My focus was instead on engineering -- at first on hardware engineering.</p>
+
+									<p>In just a few short years, I would come to dislike San Jose.  Clearly, in light of the tech invasion which has since inundated San Francisco, I was not the only one.  By the 2000 timeframe, I had managed to escape San Jose for San Francisco.</p>
 								</div>
 
 								<div style={containerStyles}>
 									By 2005, a couple of thought-provoking Youtube documentaries led me to take a closer look at the electricity in space debate.<br /><br />
 
-									<iframe width="100%" title="Universe: The Cosmology Quest (Part 1)" src="https://www.youtube.com/embed/IFFl9S39CTM" frameBorder="0" allowFullScreen></iframe>
+									<iframe title="Universe: The Cosmology Quest (Part 1)" src="https://www.youtube.com/embed/IFFl9S39CTM" frameBorder="0" allowFullScreen className='YoutubeVideo'></iframe><br />
 
-									<iframe width="100%" title="Universe: The Cosmology Quest (Part 2)" src="https://www.youtube.com/embed/m-2uvQ_MJz8" frameBorder="0" allowFullScreen></iframe>
+									<iframe title="Universe: The Cosmology Quest (Part 2)" src="https://www.youtube.com/embed/m-2uvQ_MJz8" frameBorder="0" allowFullScreen className='YoutubeVideo'></iframe><br />
 
-									<iframe width="100%" title="Thunderbolts of the Gods" src="https://www.youtube.com/embed/5AUA7XS0TvA" frameBorder="0" allowFullScreen></iframe>
+									<iframe title="Thunderbolts of the Gods" src="https://www.youtube.com/embed/5AUA7XS0TvA" frameBorder="0" allowFullScreen className='YoutubeVideo'></iframe>
 								</div>
 
 								<div style={containerStyles}>
@@ -246,11 +251,9 @@ class ContactComponent extends Component {
 
 									<p>I was especially shocked by the observation that the tech community was so incredibly hostile to the simple proposal that electricity might flow through space.  Something about the situation and the way that people referred to the Electric Universe on Slashdot, in particular, seemed very enigmatic.  My curiosity was piqued, and I felt that I had to understand the source of this resistance.</p>
 
-									<mobiscroll.Form theme="ios-dark" onSubmit={this.viewSlashdotComments.bind(this)}>
-										<div className="mbsc-btn-group mbsc-btn-group-block">
-											<button>View thread</button>
-										</div>
-									</mobiscroll.Form>
+									<Button onClick={this.viewSlashdotComments.bind(this)} block className='CmapButton'>
+										View Thread
+									</Button>
 
 									<a href='https://science.slashdot.org/story/07/05/05/0421244/astronomers-again-baffled-by-solar-observations'
 										target='_blank' rel='noopener noreferrer'>
@@ -308,9 +311,9 @@ class ContactComponent extends Component {
 								<div style={containerStyles}>
 									<p>By mid-June, I had formulated a pitch for why we need to pay more attention to scientific controversies -- which I delivered in two parts at the <a href='https://www.thunderbolts.info/wp/2015/12/30/eu2016-speakers/'>2016 Electric Universe conference</a>.</p><br />
 
-									<iframe width="100%" title="What We Failed to Learn from the Moonshot" src="https://www.youtube.com/embed/rwDnOLg0Nss" frameBorder="0" allowFullScreen></iframe>
+									<iframe title="What We Failed to Learn from the Moonshot" src="https://www.youtube.com/embed/rwDnOLg0Nss" frameBorder="0" allowFullScreen className='YoutubeVideo'></iframe><br />
 
-									<iframe width="100%" title="Controversy-First Science Instruction" src="https://www.youtube.com/embed/GBaArcWmPo4" frameBorder="0" allowFullScreen></iframe>
+									<iframe title="Controversy-First Science Instruction" src="https://www.youtube.com/embed/GBaArcWmPo4" frameBorder="0" allowFullScreen className='YoutubeVideo'></iframe>
 								</div>
 
 								<div style={containerStyles}>
@@ -324,13 +327,13 @@ class ContactComponent extends Component {
 								<div style={containerStyles}>
 									<p>I would next explain the origin of the scientific social network idea in the December 2017 Edge issue (which released on December 15th).</p><br />
 
-									<a href='https://www.scientificexploration.org/edgescience/32'>
+									<a href='https://www.scientificexploration.org/edgescience/32' target='_blank' rel='noopener noreferrer'>
 										<img src={edgeScienceCover} alt='edgescience december issue cover' style={{width: '100%'}} />
 									</a>
 
 									<br /><br />
 
-									<a href='https://www.scientificexploration.org/edgescience/32'>
+									<a href='https://www.scientificexploration.org/edgescience/32' target='_blank' rel='noopener noreferrer'>
 										<img src={trackingControversies} alt='edgescience article' style={{width: '100%'}} />
 									</a>
 								</div>
@@ -340,15 +343,9 @@ class ContactComponent extends Component {
 
 									<p>Although I have over time frequented a variety of online platforms under a variety of pseudonyms (including Digg, BoingBoing, Slashdot and Parlio), my current daily interactions are on phys.org, where I now post under my real name. You can replicate my own experience by opening up this controversy app in one browser and phys.org in another.</p>
 
-									<mobiscroll.Form theme="ios-dark"
-										onSubmit={this.viewPhysOrgComments.bind(this)}>
-
-										<div className="mbsc-btn-group mbsc-btn-group-block">
-											<button style={{marginBottom: '18px'}}>
-												View a recent phys.org thread
-											</button>
-										</div>
-									</mobiscroll.Form>
+									<Button onClick={this.viewPhysOrgComments.bind(this)} block className='CmapButton'>
+										View a recent phys.org thread
+									</Button>
 
 									<p>My daily routine involves checking online science articles and published papers for new information that is relevant to any of the <a href='https://plus.google.com/collection/Yhn4Y'>182 controversy cards</a> which have already been published. When I encounter something of value, I post it into the comments of those cards. Unfortunately, many of the images associated with these posts have apparently been destroyed by Google. When the crowdsourcing features are added to the app, I will transfer all of the best comments to it.</p>
 
@@ -360,13 +357,10 @@ class ContactComponent extends Component {
 
 									<img src={emailMeImage} alt='stuff' style={{width: '100%'}} />
 
-									<mobiscroll.Form theme="ios-dark" onSubmit={this.becomePatron.bind(this)}>
-										<div className="mbsc-btn-group mbsc-btn-group-block">
-											<button style={{marginTop: '13px'}}>
-												Become a Patron
-											</button>
-										</div>
-									</mobiscroll.Form>									
+									<Button onClick={this.becomePatron.bind(this)} block className='CmapButton'>
+										Become a Patron
+									</Button>
+
 								</div>
 							</SwipeableViews>
 						</Col>

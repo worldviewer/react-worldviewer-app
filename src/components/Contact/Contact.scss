@@ -27,4 +27,24 @@
 	.SlashdotStoryImage {
 		margin-top: 15px;
 	}
+
+	.YoutubeVideo {
+		display: block;
+		margin: 0 auto;
+	}
+
+	.CmapButton {
+		background-color: black;
+		border: 3px solid black;
+		border-radius: 10px;
+		color: white;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	.CmapButton:active, .CmapButton:hover {
+		background-color: white;
+		border: 3px solid black;
+		color: black;
+	}
 }
