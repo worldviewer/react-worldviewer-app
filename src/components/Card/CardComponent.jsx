@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // SEO Dependencies
-import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotCanonical, setGoogleBotSchema } from '../../libs/seo';
+import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotSchema } from '../../libs/seo';
 
 // UI Dependencies
 import qs from 'qs';
@@ -284,17 +284,14 @@ class CardComponent extends Component {
 			}
 
 		} else {
-			if (nextProps.desktop.text && this.props.loading.card &&
-				!nextProps.loading.card) {
-				this.constructText();
-			}
-
 			if (this.props.loading.card && !nextProps.loading.card) {
 				this.setupDeepZoom();
 			}
 		}
 
 		if (this.props.loading.card && !nextProps.loading.card) {
+			this.constructText();
+
 			setGoogleBotTitle(this.props.card.data.cardName);
 			setGoogleBotDescription(this.props.card.data.cardSummary);
 
@@ -400,6 +397,7 @@ class CardComponent extends Component {
 	}
 
 	renderMobile() {
+/*
 		const
 			windowHeight = window.innerHeight,
 			windowHeightMid = windowHeight/2,
@@ -415,7 +413,6 @@ class CardComponent extends Component {
 				padding: '18px'
 			};
 
-/*
 			<div>
 			{ !this.props.mainStack.swipeable ?
 
