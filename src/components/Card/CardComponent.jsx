@@ -272,7 +272,7 @@ class CardComponent extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	async componentWillReceiveProps(nextProps) {
 		if (this.props.app.isMobile) {
 			// if (this.props.loading.card && !nextProps.loading.card &&
 			// 	!nextProps.mainStack.swipeable) {
@@ -290,7 +290,7 @@ class CardComponent extends Component {
 		}
 
 		if (this.props.loading.card && !nextProps.loading.card) {
-			this.constructText();
+			await this.constructText();
 
 			setGoogleBotTitle(this.props.card.data.cardName);
 			setGoogleBotDescription(this.props.card.data.cardSummary);
