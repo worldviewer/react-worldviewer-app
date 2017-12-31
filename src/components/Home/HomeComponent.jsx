@@ -729,7 +729,7 @@ class HomeComponent extends Component {
 		this.getWindowWidth();
 
 		// To prevent flash of unstyled content
-		document.getElementById('fouc').style.display = 'block';
+		// document.getElementById('fouc').style.display = 'block';
 
 		// This is necessary because the autoFocus={true} prop which is supposedly on
 		// the SearchBox component apparently does nothing
