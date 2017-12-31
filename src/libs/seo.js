@@ -65,8 +65,8 @@ export function setOGTitle(title) {
 		el.setAttribute('content', title);
 	} else {
 		el = document.createElement('meta');
-		el.setAttribute('content', title);
 		el.setAttribute('property', 'og:title');
+		el.setAttribute('content', title);
 
 		document.getElementsByTagName('head')[0].appendChild(el);	
 	}
@@ -79,8 +79,8 @@ export function setOGType(type) {
 		el.setAttribute('content', type);
 	} else {
 		el = document.createElement('meta');
-		el.setAttribute('content', type);
 		el.setAttribute('property', 'og:type');
+		el.setAttribute('content', type);
 
 		document.getElementsByTagName('head')[0].appendChild(el);	
 	}
@@ -93,8 +93,8 @@ export function setOGUrl(url) {
 		el.setAttribute('content', url);
 	} else {
 		el = document.createElement('meta');
-		el.setAttribute('content', url);
 		el.setAttribute('property', 'og:url');
+		el.setAttribute('content', url);
 
 		document.getElementsByTagName('head')[0].appendChild(el);	
 	}
@@ -107,8 +107,8 @@ export function setOGImage(url) {
 		el.setAttribute('content', url);
 	} else {
 		el = document.createElement('meta');
-		el.setAttribute('content', url);
 		el.setAttribute('property', 'og:image');
+		el.setAttribute('content', url);
 
 		document.getElementsByTagName('head')[0].appendChild(el);	
 	}
@@ -121,8 +121,8 @@ export function setOGDescription(text) {
 		el.setAttribute('content', text);
 	} else {
 		el = document.createElement('meta');
-		el.setAttribute('content', text);
 		el.setAttribute('property', 'og:description');
+		el.setAttribute('content', text);
 
 		document.getElementsByTagName('head')[0].appendChild(el);	
 	}
@@ -135,8 +135,8 @@ export function setFBAppId(id) {
 		el.setAttribute('content', id);
 	} else {
 		el = document.createElement('meta');
-		el.setAttribute('content', id);
 		el.setAttribute('property', 'fb:app_id');
+		el.setAttribute('content', id);
 
 		document.getElementsByTagName('head')[0].appendChild(el);	
 	}
