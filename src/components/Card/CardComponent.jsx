@@ -293,6 +293,12 @@ class CardComponent extends Component {
 				this.setupDeepZoom();
 			}
 		}
+
+		if (this.props.loading.card && !nextProps.loading.card) {
+			setGoogleBotTitle('Scientific Controversy: ' + this.props.card.data.cardName);
+
+			setGoogleBotDescription(this.props.card.data.cardSummary);
+		}
 	}
 
 	// componentWillMount() {
@@ -300,12 +306,6 @@ class CardComponent extends Component {
 	// 		this.props.enableMainStackSwipeable();
 	// 	}
 	// }
-
-	componentWillMount() {
-		setGoogleBotTitle('Scientific Controversy: ' + this.props.card.data.cardName);
-
-		setGoogleBotDescription(this.props.card.data.cardSummary);
-	}
 
 	async activateDeepZoom(event) {
 		this.props.disableMainStackSwipeable();
