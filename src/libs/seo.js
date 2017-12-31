@@ -43,8 +43,8 @@ export function setGoogleBotRobots(index, follow) {
 	}
 }
 
-function setGoogleBotSchema() {
-	var jsonld = JSON.stringify(this.schema);
+export function setGoogleBotSchema(schema) {
+	var jsonld = JSON.stringify(schema);
 	let el = document.querySelector('script[type="application/ld+json"]');
 
 	if (el) {

@@ -295,9 +295,23 @@ class CardComponent extends Component {
 		}
 
 		if (this.props.loading.card && !nextProps.loading.card) {
-			setGoogleBotTitle('Scientific Controversy: ' + this.props.card.data.cardName);
-
+			setGoogleBotTitle(this.props.card.data.cardName);
 			setGoogleBotDescription(this.props.card.data.cardSummary);
+
+			const schema = {
+				"@context": "http://schema.org",
+				"@graph": [
+					{
+						"@type": "ScholarlyArticle",
+						"genre": this.props.card.data.cardCategory,
+						"text": this.state.text,
+						"thumbnailUrl": config.s3.cards.URL + this.props.card.data.slug + '/thumbnail.jpg',
+						"image": config.s3.cards.URL + this.props.card.data.slug + '/large.jpg'
+					}
+				]
+			};
+
+			setGoogleBotSchema(schema);
 		}
 	}
 
