@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // SEO Dependencies
-import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotSchema } from '../../libs/seo';
+import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotSchema, setOGTitle, setOGType, setOGUrl, setOGImage } from '../../libs/seo';
 
 // UI Dependencies
 import qs from 'qs';
@@ -292,6 +292,7 @@ class CardComponent extends Component {
 		if (this.props.loading.card && !nextProps.loading.card) {
 			this.constructText();
 
+			// Google
 			setGoogleBotTitle(this.props.card.data.cardName);
 			setGoogleBotDescription(this.props.card.data.cardSummary);
 
@@ -307,6 +308,14 @@ class CardComponent extends Component {
 			};
 
 			setGoogleBotSchema(schema);
+
+			// Facebook
+			setOGTitle(this.props.card.data.cardName);
+			setOGType('article');
+			setOGUrl('https://www.controversiesofscience.com/' +
+				this.props.card.data.shortSlug + '/worldview/card');
+			setOGImage(config.s3.cards.URL + this.props.card.data.slug +
+				'/large.jpg');
 		}
 	}
 
