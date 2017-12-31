@@ -302,6 +302,7 @@ class CardComponent extends Component {
 				'thumbnailUrl': config.s3.cards.URL + this.props.card.data.slug + '/thumbnail.jpg',
 				'image': config.s3.cards.URL + this.props.card.data.slug + '/large.jpg',
 				'datePublished': this.props.card.data.publishDate,
+				'dateModified': this.props.card.data.updateDate,
 				'headline': this.props.card.data.cardName
 			};
 

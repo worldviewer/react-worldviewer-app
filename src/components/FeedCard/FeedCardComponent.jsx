@@ -351,13 +351,6 @@ class FeedCardComponent extends Component {
 				if (feedSlug) {
 					this.setupDeepZoom(false);
 				}
-			}
-
-			if (nextProps.feedStack[nextProps.level].text &&
-				this.props.loading.feed[this.props.level] &&
-				!nextProps.loading.feed[nextProps.level]) {
-
-				this.constructText();
 
 				setGoogleBotTitle(this.props.feed[this.props.level].feedName);
 				setGoogleBotDescription(this.props.card.data.cardSummary);
@@ -371,14 +364,22 @@ class FeedCardComponent extends Component {
 					'@type': 'ScholarlyArticle',
 					'genre': this.props.card.data.cardCategory,
 					'thumbnailUrl': config.s3.feeds.URL + this.props.card.data.slug + '/' +
-						this.props.level + '/' + this.props.feed[this.props.level] + '/thumbnail.jpg',
+						this.props.level + '/' + this.props.feed[this.props.level].feedSlug + '/thumbnail.jpg',
 					'image': config.s3.feeds.URL + this.props.card.data.slug + '/' +
-						this.props.level + '/' + this.props.feed[this.props.level] + '/large.jpg',
+						this.props.level + '/' + this.props.feed[this.props.level].feedSlug + '/large.jpg',
 					'datePublished': this.props.feed[this.props.level].publishDate,
+					'dateModified': this.props.feed[this.props.level].updateDate,
 					'headline': this.props.feed[this.props.level].feedName
 				};
 
 				setGoogleBotSchema(schema);
+			}
+
+			if (nextProps.feedStack[nextProps.level].text &&
+				this.props.loading.feed[this.props.level] &&
+				!nextProps.loading.feed[nextProps.level]) {
+
+				this.constructText();
 			}
 
 			if (this.props.mainStack.selectFeedPopup === -1 &&
