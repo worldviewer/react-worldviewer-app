@@ -11,6 +11,9 @@ import 'react-sliding-pane/dist/react-sliding-pane.css';
 import zenscroll from 'zenscroll';
 import './FeedCard.css';
 
+// SEO Dependencies
+import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotSchema } from '../../libs/seo';
+
 // mobiscroll.Image + mobiscroll.Form
 import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta2.min';
 import '../../libs/mobiscroll.custom-4.0.0-beta2.min.css';
@@ -355,6 +358,27 @@ class FeedCardComponent extends Component {
 				!nextProps.loading.feed[nextProps.level]) {
 
 				this.constructText();
+
+				setGoogleBotTitle(this.props.feed[this.props.level].feedName);
+				setGoogleBotDescription(this.props.card.data.cardSummary);
+
+				// Example of a small image URL:
+				// https://s3-us-west-2.amazonaws.com/controversy-cards-feeds/
+				// halton-arp-the-modern-galileo/worldview/10-times-quasar-superluminal-motion/small.jpg
+
+				const schema = {
+					'@context': 'http://schema.org',
+					'@type': 'ScholarlyArticle',
+					'genre': this.props.card.data.cardCategory,
+					'thumbnailUrl': config.s3.feeds.URL + this.props.card.data.slug + '/' +
+						this.props.level + '/' + this.props.feed[this.props.level] + '/thumbnail.jpg',
+					'image': config.s3.feeds.URL + this.props.card.data.slug + '/' +
+						this.props.level + '/' + this.props.feed[this.props.level] + '/large.jpg',
+					'datePublished': this.props.feed[this.props.level].publishDate,
+					'headline': this.props.feed[this.props.level].feedName
+				};
+
+				setGoogleBotSchema(schema);
 			}
 
 			if (this.props.mainStack.selectFeedPopup === -1 &&

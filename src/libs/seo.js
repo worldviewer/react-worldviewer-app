@@ -51,7 +51,7 @@ export function setGoogleBotSchema(schema) {
 		el.text = jsonld;
 	} else {
 		el = document.createElement('script');
-		el.setAttribute('type', 'type="application/ld+json"');
+		el.setAttribute('type', 'application/ld+json');
 		el.text = jsonld;
 		var doc = document.getElementsByTagName('head')[0];
 		doc.appendChild(el);

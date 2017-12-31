@@ -272,7 +272,7 @@ class CardComponent extends Component {
 		}
 	}
 
-	async componentWillReceiveProps(nextProps) {
+	componentWillReceiveProps(nextProps) {
 		if (this.props.app.isMobile) {
 			// if (this.props.loading.card && !nextProps.loading.card &&
 			// 	!nextProps.mainStack.swipeable) {
@@ -290,22 +290,19 @@ class CardComponent extends Component {
 		}
 
 		if (this.props.loading.card && !nextProps.loading.card) {
-			await this.constructText();
+			this.constructText();
 
 			setGoogleBotTitle(this.props.card.data.cardName);
 			setGoogleBotDescription(this.props.card.data.cardSummary);
 
 			const schema = {
-				"@context": "http://schema.org",
-				"@graph": [
-					{
-						"@type": "ScholarlyArticle",
-						"genre": this.props.card.data.cardCategory,
-						"text": this.state.text,
-						"thumbnailUrl": config.s3.cards.URL + this.props.card.data.slug + '/thumbnail.jpg',
-						"image": config.s3.cards.URL + this.props.card.data.slug + '/large.jpg'
-					}
-				]
+				'@context': 'http://schema.org',
+				'@type': 'ScholarlyArticle',
+				'genre': this.props.card.data.cardCategory,
+				'thumbnailUrl': config.s3.cards.URL + this.props.card.data.slug + '/thumbnail.jpg',
+				'image': config.s3.cards.URL + this.props.card.data.slug + '/large.jpg',
+				'datePublished': this.props.card.data.publishDate,
+				'headline': this.props.card.data.cardName
 			};
 
 			setGoogleBotSchema(schema);
