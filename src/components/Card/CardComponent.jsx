@@ -5,6 +5,9 @@ import React, { Component } from 'react';
 // React Router Dependences
 import { withRouter } from 'react-router-dom';
 
+// SEO Dependencies
+import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotCanonical, setGoogleBotSchema } from '../../libs/seo';
+
 // UI Dependencies
 import qs from 'qs';
 import OpenSeadragon from 'openseadragon';
@@ -297,6 +300,12 @@ class CardComponent extends Component {
 	// 		this.props.enableMainStackSwipeable();
 	// 	}
 	// }
+
+	componentWillMount() {
+		setGoogleBotTitle('Scientific Controversy: ' + this.props.card.data.cardName);
+
+		setGoogleBotDescription(this.props.card.data.cardSummary);
+	}
 
 	async activateDeepZoom(event) {
 		this.props.disableMainStackSwipeable();
