@@ -12,7 +12,7 @@ import zenscroll from 'zenscroll';
 import './FeedCard.css';
 
 // SEO Dependencies
-import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotSchema, setOGTitle, setOGType, setOGUrl, setOGImage } from '../../libs/seo';
+import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotSchema, setOGTitle, setOGType, setOGUrl, setOGImage, setOGDescription, setFBAppId } from '../../libs/seo';
 
 // mobiscroll.Image + mobiscroll.Form
 import mobiscroll from '../../libs/mobiscroll.custom-4.0.0-beta2.min';
@@ -379,6 +379,8 @@ class FeedCardComponent extends Component {
 					'/feed/' + this.props.feed[this.props.level].feedSlug);
 				setOGImage(config.s3.feeds.URL + this.props.card.data.slug +
 					'/' + this.props.level + '/' + this.props.feed[this.props.level].feedSlug + '/large.jpg');
+				setOGDescription(this.props.card.data.cardSummary);
+				setFBAppId(338360299973520);
 			}
 
 			if (nextProps.feedStack[nextProps.level].text &&

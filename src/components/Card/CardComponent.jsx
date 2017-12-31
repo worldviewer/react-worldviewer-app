@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // SEO Dependencies
-import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotSchema, setOGTitle, setOGType, setOGUrl, setOGImage } from '../../libs/seo';
+import { setGoogleBotTitle, setGoogleBotDescription, setGoogleBotSchema, setOGTitle, setOGType, setOGUrl, setOGImage, setOGDescription, setFBAppId } from '../../libs/seo';
 
 // UI Dependencies
 import qs from 'qs';
@@ -316,6 +316,8 @@ class CardComponent extends Component {
 				this.props.card.data.shortSlug + '/worldview/card');
 			setOGImage(config.s3.cards.URL + this.props.card.data.slug +
 				'/large.jpg');
+			setOGDescription(this.props.card.data.cardSummary);
+			setFBAppId(338360299973520);
 		}
 	}
 

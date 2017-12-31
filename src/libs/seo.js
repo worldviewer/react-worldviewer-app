@@ -113,3 +113,32 @@ export function setOGImage(url) {
 		document.getElementsByTagName('head')[0].appendChild(el);	
 	}
 }
+
+export function setOGDescription(text) {
+	let el = document.querySelector('meta[property="og:description"]');
+
+	if (el) {
+		el.setAttribute('content', text);
+	} else {
+		el = document.createElement('meta');
+		el.setAttribute('content', text);
+		el.setAttribute('property', 'og:description');
+
+		document.getElementsByTagName('head')[0].appendChild(el);	
+	}
+}
+
+export function setFBAppId(id) {
+	let el = document.querySelector('meta[property="fb:app_id"]');
+
+	if (el) {
+		el.setAttribute('content', id);
+	} else {
+		el = document.createElement('meta');
+		el.setAttribute('content', id);
+		el.setAttribute('property', 'fb:app_id');
+
+		document.getElementsByTagName('head')[0].appendChild(el);	
+	}
+}
+
