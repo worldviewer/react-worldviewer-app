@@ -54,7 +54,7 @@ function getUrlFromCategoryLabel(label) {
 
 algoliaSitemap({
 	algoliaConfig,
-	sitemapLoc: 'https://www.controversiesofscience.com/sitemaps',
+	sitemapLoc: 'https://www.controversiesofscience.com',
 	outputFolder: 'sitemaps',
 
 	// params: {
