@@ -110,7 +110,7 @@
     "build": "npm run build-css && react-scripts build",
     "test": "node scripts/test.js --env=jsdom",
     "build-css": "node-sass-chokidar src/ -o src/",
-    "copy-sitemap": "cp -r src/sitemaps build/",
+    "copy-sitemap": "cp src/sitemaps/* public/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "predeploy": "npm run build && npm run copy-sitemap",
     "deploy": "aws s3 sync build/ s3://www.controversiesofscience.com --profile 'serverless'",
