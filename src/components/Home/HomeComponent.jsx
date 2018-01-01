@@ -52,8 +52,8 @@ const
 	createURL = (state, facets) => {
 		const encodedFacets = facets
 			.replace(/:\s/, '.')
-			.replace(/\s/, '-')
-			.replace(/\//, '~');
+			.replace(/\s\/\s/, '~')
+			.replace(/\s/, '-');
 
 		logTitle('Updating URL with state:');
 		log(state);

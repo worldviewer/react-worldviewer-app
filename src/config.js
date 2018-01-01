@@ -1,4 +1,4 @@
-export default {
+module.exports = {
 	breakpoint: {
 		MOBILE: 767,
 		TABLET: 1023, // DESKTOP everything greater

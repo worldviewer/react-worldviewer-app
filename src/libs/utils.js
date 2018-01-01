@@ -56,7 +56,7 @@ export function getFacetStringFromURL(rawFacetString) {
 	if (rawFacetString) {
 		decodedFacetString = rawFacetString
 			.replace('.', ': ')
-			.replace('~', '/')
+			.replace('~', ' / ')
 			.replace('-', ' ');
 
 		[facetCategory, facetSubCategory] =
