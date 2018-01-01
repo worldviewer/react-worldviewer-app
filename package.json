@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "algolia-sitemap": "^2.0.7",
     "amazon-cognito-identity-js": "^1.19.0",
     "bezier-easing": "^2.0.3",
     "bootstrap": "^3.3.7",
