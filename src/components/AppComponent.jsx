@@ -394,7 +394,10 @@ class AppComponent extends Component {
 			</NavItem> : null;
 
 		const cardMenuOptions =
-			this.props.app.isDesktop ? <NavItem key={30}
+			this.props.app.isDesktop &&
+				this.props.router.location.pathname.match(/\/worldview\//) ?
+
+			<NavItem key={30}
 				onClick={this.showCardText.bind(this)}>
 				{ !this.props.desktop.text ?
 					'Show Card Text' : 'Hide Card Text' }
